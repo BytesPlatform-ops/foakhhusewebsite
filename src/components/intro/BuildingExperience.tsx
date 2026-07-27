@@ -165,9 +165,22 @@ export default function BuildingExperience() {
     io.observe(el);
     document.addEventListener("visibilitychange", sync);
 
+    // Settled pointer response (max ~1.5 degrees, handled in the scene).
+    // Fine pointers only — touch devices get a perfectly still hero.
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const onPointer = (e: PointerEvent) => {
+      if (!onScreen) return;
+      sceneRef.current?.setPointer(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        (e.clientY / window.innerHeight) * 2 - 1,
+      );
+    };
+    if (fine) window.addEventListener("pointermove", onPointer, { passive: true });
+
     return () => {
       io.disconnect();
       document.removeEventListener("visibilitychange", sync);
+      if (fine) window.removeEventListener("pointermove", onPointer);
       sceneRef.current?.stop();
     };
   }, [introDone, showStatic]);
@@ -198,7 +211,9 @@ export default function BuildingExperience() {
         ref={shellRef}
         aria-hidden="true"
         className={`pointer-events-none ${
-          introPlaying ? "fixed inset-0" : "absolute inset-x-0 top-0 h-svh"
+          introPlaying
+            ? "fixed inset-0"
+            : "absolute inset-x-0 top-0 h-[52svh] lg:h-svh"
         }`}
         style={{ zIndex: introPlaying ? 91 : "var(--z-canvas)" }}
       >

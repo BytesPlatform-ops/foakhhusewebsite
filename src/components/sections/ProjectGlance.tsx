@@ -1,162 +1,172 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
-import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
+import Image from "next/image";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 
 /**
- * 03 — Project at a Glance.
- * High three-quarter site view (~40 degrees above the model, 40mm feel):
- * an isometric-leaning SVG site diagram whose lines draw once, with the
- * four figures entering at staggered vertical positions — no identical
- * card row. The road line exits the frame bottom-right and becomes the
- * snake route in the next chapter.
+ * 01 — The Project: cinematic approach to the entrance.
+ *
+ * Scroll behaviour inspired by collabcapitolium.fr (mood/pacing only): the
+ * dusk frontal render holds the sticky stage while a slow camera push —
+ * scale anchored on the gate at 50% 74% of the frame — draws the visitor
+ * down the walkway toward the entrance. The centred copy begins dim and
+ * softly blurred, then brightens and sharpens as the doors approach; the
+ * block names and CTA arrive with the final frame.
+ *
+ * Native scrolling, transform/opacity only, spring-driven progress (the
+ * ScrollTimeline stale-range guard), no 3D. Reduced motion renders the
+ * settled end-frame statically with everything readable.
  */
 
-const STATS = [
-  { value: "12", label: "Storeys", offset: "lg:mt-0" },
-  { value: "02", label: "Blocks", offset: "lg:mt-14" },
-  { value: "84", label: "Apartments", offset: "lg:mt-4" },
-  { value: "DHA", label: "View City, Karachi", offset: "lg:mt-20" },
-];
+const COPY = {
+  eyebrow: "01 · The project at a glance",
+  headline: "Limited in number. Considered in every detail.",
+  body: "Two distinguished residential blocks bring together thoughtful layouts, modern architecture and a more private community of only 84 apartments.",
+  caption: "Umer Block · Abdullah Block — 12 storeys · 84 residences",
+};
 
 export default function ProjectGlance() {
-  const ref = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress: rawP } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  // Spring-wrapped so the binding stays JS-driven — see WindTunnel.tsx.
-  const scrollYProgress = useSpring(rawP, { stiffness: 300, damping: 36, mass: 0.4 });
-  // 2–4 degree drift only — the diagram breathes, it does not spin.
-  const drift = useTransform(scrollYProgress, [0, 1], [-2.5, 2.5]);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const p = useSpring(scrollYProgress, { stiffness: 100, damping: 26, mass: 0.4 });
+
+  /* the camera push — origin sits on the entrance */
+  const scale = useTransform(p, [0, 1], [1.08, 1.62]);
+  const y = useTransform(p, [0, 1], ["0%", "3.5%"]); // gate drifts toward centre
+  /* atmosphere clears as we approach */
+  const overlay = useTransform(p, [0, 0.75], [0.56, 0.28]);
+  /* the message reveals */
+  const textOpacity = useTransform(p, [0.05, 0.55], [0.35, 1]);
+  const textBlur = useTransform(p, [0.05, 0.5], ["blur(5px)", "blur(0px)"]);
+  const textY = useTransform(p, [0.05, 0.55], [16, 0]);
+  /* end-frame arrivals */
+  const lateOpacity = useTransform(p, [0.68, 0.85], [0, 1]);
+  const lateY = useTransform(p, [0.68, 0.85], [12, 0]);
+
+  if (reduced) return <StaticFrame />;
 
   return (
     <section
       id="glance"
-      ref={ref}
+      ref={sectionRef}
       data-section="glance"
-      className="mineral-ivory grain blend-top relative overflow-hidden py-(--spacing-section)"
-      style={{ "--blend-from": "#efe7dd" } as React.CSSProperties}
       aria-labelledby="glance-heading"
+      className="relative h-[170svh] lg:h-[220svh]"
     >
-      <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
-        <Eyebrow num="01">The project at a glance</Eyebrow>
-        <ChapterHeading id="glance-heading">
-          Limited in number. Considered in every detail.
-        </ChapterHeading>
-        <Lead>
-          Two distinguished residential blocks bring together thoughtful layouts, modern
-          architecture and a more private community of only 84 apartments.
-        </Lead>
+      <div className="sticky top-0 h-svh overflow-hidden bg-[#1D1714]">
+        {/* image layer — the push */}
+        <motion.div
+          className="absolute inset-0 will-change-transform"
+          style={{ scale, y, transformOrigin: "50% 74%" }}
+        >
+          <Image
+            src="/building-approach.jpg"
+            alt=""
+            fill
+            priority={false}
+            sizes="100vw"
+            className="object-cover"
+            style={{ objectPosition: "50% 60%" }}
+          />
+        </motion.div>
 
-        <div className="mt-14 grid items-center gap-10 lg:grid-cols-12">
-          {/* Site diagram */}
-          <motion.figure
-            style={reduced ? undefined : { rotate: drift }}
-            className="lg:col-span-7"
+        {/* atmosphere: dark overlay + vignette + grain */}
+        <motion.div aria-hidden="true" className="absolute inset-0 bg-[#14100d]" style={{ opacity: overlay }} />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 90% at 50% 42%, transparent 48%, rgb(20 16 13 / 0.55) 100%)",
+          }}
+        />
+        <div className="grain absolute inset-0" aria-hidden="true" />
+
+        {/* the message — centred, slightly above centre */}
+        <motion.div
+          className="absolute inset-x-0 top-[30%] mx-auto max-w-3xl px-6 text-center lg:top-[26%]"
+          style={{ opacity: textOpacity, y: textY, filter: reduced ? undefined : textBlur }}
+        >
+          <p className="text-[0.65rem] font-medium tracking-[0.32em] text-[#C6A46B] uppercase">
+            {COPY.eyebrow}
+          </p>
+          <h2
+            id="glance-heading"
+            className="font-display mt-5 text-[clamp(2.1rem,4.6vw,4.1rem)] leading-[1.06] font-medium text-[#F7F0E8] text-balance"
           >
-            <svg
-              viewBox="0 0 640 420"
-              className="h-auto w-full"
-              role="img"
-              aria-label="Site diagram: Umer and Abdullah blocks either side of a central shared square, with the access road along the front."
-            >
-              <defs>
-                <linearGradient id="gl-block" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#c98a68" />
-                  <stop offset="100%" stopColor="#8a5138" />
-                </linearGradient>
-              </defs>
-              <g transform="translate(40 30) skewX(-9)">
-                {/* Site boundary + inner grid, drawn on entry */}
-                <motion.rect
-                  x="0"
-                  y="0"
-                  width="540"
-                  height="330"
-                  fill="none"
-                  stroke="#87543e"
-                  strokeWidth="1.6"
-                  initial={{ pathLength: reduced ? 1 : 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                />
-                {[80, 160, 240].map((y) => (
-                  <line key={y} x1="0" y1={y} x2="540" y2={y} stroke="#87543e" strokeWidth="0.5" opacity="0.25" />
-                ))}
-                {/* Blocks with slight extrusion */}
-                {[
-                  { x: 46, name: "UMER BLOCK" },
-                  { x: 330, name: "ABDULLAH BLOCK" },
-                ].map((b, i) => (
-                  <motion.g
-                    key={b.name}
-                    initial={reduced ? undefined : { opacity: 0, y: 14 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ duration: 0.7, delay: 0.5 + i * 0.18, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <rect x={b.x + 10} y="66" width="164" height="118" fill="#6d3f2c" />
-                    <rect x={b.x} y="56" width="164" height="118" fill="url(#gl-block)" />
-                    <rect x={b.x} y="56" width="164" height="14" fill="#daa27e" />
-                    <text x={b.x + 8} y="196" fontSize="12" letterSpacing="2" fill="#5f3826">
-                      {b.name}
-                    </text>
-                  </motion.g>
-                ))}
-                {/* Central shared square */}
-                <rect x="252" y="196" width="56" height="44" fill="#c9baa6" />
-                <rect x="260" y="203" width="40" height="30" fill="#4c7056" />
-                {/* Road along the front — its tail becomes the snake route */}
-                <motion.path
-                  d="M-30 268 L540 268 M-30 300 L540 300"
-                  stroke="#3b3a37"
-                  strokeWidth="2.4"
-                  fill="none"
-                  initial={{ pathLength: reduced ? 1 : 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 1.1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                />
-                <motion.path
-                  d="M540 284 C 600 284, 620 330, 600 400"
-                  stroke="#22a8aa"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeDasharray="2 7"
-                  initial={{ pathLength: reduced ? 1 : 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.9, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                />
-              </g>
-            </svg>
-            <figcaption className="text-ink-soft mt-3 text-xs">
-              Site arrangement derived from the architectural model — schematic, not to scale.
-            </figcaption>
-          </motion.figure>
+            {COPY.headline}
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-[0.85rem] leading-relaxed font-light text-[#F3E7D8]/85 md:text-[0.95rem]">
+            {COPY.body}
+          </p>
+        </motion.div>
 
-          {/* Staggered figures */}
-          <div className="grid grid-cols-2 gap-x-8 lg:col-span-5">
-            {STATS.map((s, i) => (
-              <motion.div
-                key={s.label}
-                className={s.offset}
-                initial={reduced ? undefined : { opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.65, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <span className="font-display text-charcoal block text-6xl font-semibold lg:text-7xl">
-                  {s.value}
-                </span>
-                <span className="text-bronze mt-2 block text-xs tracking-[0.16em] uppercase">
-                  {s.label}
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        {/* end-frame: block names + CTA, arriving as the doors near */}
+        <motion.div
+          className="absolute inset-x-0 bottom-[8%] mx-auto flex max-w-3xl flex-col items-center gap-5 px-6 text-center"
+          style={{ opacity: lateOpacity, y: lateY }}
+        >
+          <p className="text-[0.65rem] tracking-[0.26em] text-[#F7F0E8]/75 uppercase">
+            {COPY.caption}
+          </p>
+          <a
+            href="#residences"
+            className="rounded-lg border border-[#C6A46B]/55 bg-[#1D1714]/35 px-6 py-3 text-sm font-medium text-[#F7F0E8] backdrop-blur-sm transition-colors hover:bg-[#1D1714]/60"
+          >
+            Explore the Residences
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/** Reduced motion: the settled end-frame, fully readable, no pin. */
+function StaticFrame() {
+  return (
+    <section
+      id="glance"
+      data-section="glance"
+      aria-labelledby="glance-heading"
+      className="relative flex min-h-svh items-center overflow-hidden bg-[#1D1714]"
+    >
+      <Image
+        src="/building-approach.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        className="scale-125 object-cover"
+        style={{ objectPosition: "50% 66%" }}
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-[#14100d]/40" />
+      <div className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center">
+        <p className="text-[0.65rem] font-medium tracking-[0.32em] text-[#C6A46B] uppercase">
+          {COPY.eyebrow}
+        </p>
+        <h2
+          id="glance-heading"
+          className="font-display mt-5 text-[clamp(2.1rem,4.6vw,4.1rem)] leading-[1.06] font-medium text-[#F7F0E8] text-balance"
+        >
+          {COPY.headline}
+        </h2>
+        <p className="mx-auto mt-6 max-w-xl text-[0.9rem] leading-relaxed font-light text-[#F3E7D8]/85">
+          {COPY.body}
+        </p>
+        <p className="mt-8 text-[0.65rem] tracking-[0.26em] text-[#F7F0E8]/75 uppercase">
+          {COPY.caption}
+        </p>
       </div>
     </section>
   );

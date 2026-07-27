@@ -63,14 +63,20 @@ export default function BuildingExperience() {
     markIntroPlayed();
     setIntroDone(true);
     setShowSkip(false);
+    // The hero UI (facts rail, CTAs) listens for this — it appears only
+    // once the camera has settled, never during the close-up shots.
+    window.dispatchEvent(new Event("wcr:intro-done"));
   }, []);
 
   /* ------------------------------------------------------------- boot up */
 
   useEffect(() => {
     // Reduced motion and absent WebGL both resolve to the static composition,
-    // and three.js is never fetched at all.
-    if (isStatic) return;
+    // and three.js is never fetched at all. The UI shows immediately.
+    if (isStatic) {
+      window.dispatchEvent(new Event("wcr:intro-done"));
+      return;
+    }
 
     let cancelled = false;
     const skipIntro = hasIntroPlayed();

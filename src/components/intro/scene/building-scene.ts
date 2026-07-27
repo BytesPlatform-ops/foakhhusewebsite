@@ -75,25 +75,35 @@ interface CamKey {
   fov: number;
 }
 
+/** Winch reel position (Umer roof) — Shot 1's macro subject. */
+const REEL: [number, number, number] = [-2.95, BUILDING_H + 0.34, 0.55];
+/** Shrouded-turbine ring centre (Abdullah roof) — Shot 2's subject. */
+const SHROUD: [number, number, number] = [3.35, BUILDING_H + 0.75, 0.55];
+
 /**
- * The intro camera script — Shots A to E from docs/VISUAL-PLAN.md.
- * FOV animates with position: 18 degrees reads as a ~90 mm macro lens,
- * 40 degrees as the ~35 mm architectural hero framing.
+ * The intro camera script — the film's close-up-to-wide grammar:
+ * winch macro -> shrouded-turbine reveal -> rooftop pull-back -> full
+ * two-block reveal -> ~24 degree orbit that LOWERS -> monumental
+ * low-to-mid three-quarter settle with a 3 degree up-tilt.
+ * FOV animates with position: 16 reads as ~100mm macro, 36 as ~35mm hero.
  */
 const CAMERA_SCRIPT: CamKey[] = [
-  // A — macro on the rooftop winch, ~12 degrees above the roof plane.
-  { at: 0.0, pos: [-3.9, BUILDING_H + 0.62, 1.9], look: [-2.95, BUILDING_H + 0.34, 0.55], fov: 18 },
-  // B — pull back and up: solar, turbine and wind-catcher head appear.
-  { at: 0.22, pos: [-5.4, BUILDING_H + 2.1, 5.4], look: [-2.0, BUILDING_H - 0.4, 0], fov: 30 },
-  // C — out to the full three-quarter reveal, both blocks in frame.
-  { at: 0.5, pos: [-9.5, 6.4, 11.5], look: [0, 3.4, 0], fov: 44 },
-  // D — orbit: swing ~22 degrees across the front, slight up-tilt...
-  { at: 0.72, pos: [-3.5, 6.0, 14.2], look: [0, 3.9, 0], fov: 42 },
-  // ...ending with a gentle dip that brings the site road into view.
-  { at: 0.9, pos: [4.0, 5.6, 15.2], look: [-0.8, 3.2, 0.4], fov: 40 },
-  // E — hero settle: near-frontal so the gap between the blocks reads,
-  // building right of frame, left column clear for copy.
-  { at: 1.0, pos: [4.8, 6.2, 17.6], look: [-3.0, 3.6, 0], fov: 38 },
+  // Shot 1 — extreme macro on the tensioned winch, ~12 degrees above the
+  // roof plane, with a small lateral drift (two keys, one shot).
+  { at: 0.0, pos: [-2.35, BUILDING_H + 0.66, 1.75], look: REEL, fov: 16 },
+  { at: 0.1, pos: [-2.1, BUILDING_H + 0.6, 1.62], look: REEL, fov: 16.5 },
+  // Shot 2 — swing across the roof to face the shrouded turbine ring.
+  { at: 0.24, pos: [3.35, BUILDING_H + 0.82, 3.2], look: SHROUD, fov: 26 },
+  // Shot 3 — back and diagonally up: solar, catcher, mast, the gap.
+  { at: 0.42, pos: [1.2, BUILDING_H + 2.6, 6.0], look: [0.6, BUILDING_H - 0.3, 0], fov: 33 },
+  // Shot 4 — complete two-block reveal, high three-quarter (~25 degrees).
+  { at: 0.62, pos: [-6.5, 7.6, 12.5], look: [0, 3.6, 0], fov: 40 },
+  // Shot 5 — orbit ~24 degrees across the front while LOWERING...
+  { at: 0.8, pos: [-1.0, 6.2, 15.4], look: [-0.6, 3.8, 0], fov: 38 },
+  { at: 0.93, pos: [3.6, 4.4, 16.2], look: [-1.8, 4.0, 0], fov: 37 },
+  // Settle — low-to-mid three-quarter, ~3 degree up-tilt, Umer slightly
+  // forward, building right of frame, monumental.
+  { at: 1.0, pos: [5.0, 3.5, 16.8], look: [-2.6, 4.35, 0], fov: 36 },
 ];
 
 /* ================================================================== scene == */
@@ -238,14 +248,31 @@ export class BuildingScene {
       this.scene.add(m);
     };
 
-    // Road running along the front of both blocks, kerb strips inside it.
-    plate(17, 2.2, 0, 3.3, PALETTE.asphalt);
-    plate(15.5, 0.12, 0, 2.55, PALETTE.kerb, 0.016);
-    plate(15.5, 0.12, 0, 4.05, PALETTE.kerb, 0.016);
-    // Green landscape bands and the central shared square.
-    plate(17, 1.1, 0, 5.1, PALETTE.garden);
-    plate(1.9, 1.6, 0, 0, PALETTE.kerb, 0.01);
-    plate(1.5, 1.2, 0, 0, PALETTE.garden, 0.014);
+    // RESTRAINED site base — enough geometry to ground the building, never
+    // a model-table road dominating the hero. Thin road edge, minimal green
+    // strip, small shared square.
+    plate(9.5, 0.9, 0, 3.1, 0x4a4844);
+    plate(8.6, 0.06, 0, 2.72, PALETTE.kerb, 0.016);
+    plate(8.6, 0.06, 0, 3.48, PALETTE.kerb, 0.016);
+    plate(9.5, 0.45, 0, 3.85, PALETTE.garden);
+    plate(1.7, 1.4, 0, 0, PALETTE.kerb, 0.01);
+    plate(1.3, 1.05, 0, 0, PALETTE.garden, 0.014);
+
+    // Faint architectural site lines instead of solid paving.
+    const pts: number[] = [];
+    const rect = (cx: number, cz: number, w: number, d: number) => {
+      const x0 = cx - w / 2, x1 = cx + w / 2, z0 = cz - d / 2, z1 = cz + d / 2;
+      pts.push(x0, 0.02, z0, x1, 0.02, z0, x1, 0.02, z0, x1, 0.02, z1);
+      pts.push(x1, 0.02, z1, x0, 0.02, z1, x0, 0.02, z1, x0, 0.02, z0);
+    };
+    rect(0, 0.6, 12.5, 8.5);
+    for (const x of BLOCK_X) rect(x, 0, BLOCK_W + 0.7, BLOCK_D + 0.7);
+    const lineGeo = this.track(new THREE.BufferGeometry());
+    lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+    const lineMat = this.trackMat(
+      new THREE.LineBasicMaterial({ color: PALETTE.bronze, transparent: true, opacity: 0.22 }),
+    );
+    this.scene.add(new THREE.LineSegments(lineGeo, lineMat));
   }
 
   /* --------------------------------------------------------------- blocks */
@@ -362,20 +389,121 @@ export class BuildingScene {
   private buildRooftop() {
     const roofY = BUILDING_H;
 
-    /* --- Winch/cable reel: the intro's opening macro subject ------------ */
+    /* --- Winch/cable reel: Shot 1's macro subject ------------------------ */
+    // Flanged drum with wound cable and a tensioned line running to the
+    // mast — the film's opening frame, in geometry.
     const steelMat = this.trackMat(
-      new THREE.MeshStandardMaterial({ color: PALETTE.steel, roughness: 0.32, metalness: 0.8 }),
+      new THREE.MeshStandardMaterial({ color: PALETTE.steel, roughness: 0.28, metalness: 0.85 }),
     );
-    const reel = new THREE.Mesh(this.track(new THREE.TorusGeometry(0.16, 0.05, 10, 26)), steelMat);
-    reel.rotation.y = Math.PI / 2.3;
-    reel.position.set(-2.95, roofY + 0.34, 0.55);
-    this.scene.add(reel);
-    const hubGlow = new THREE.Mesh(
-      this.track(new THREE.SphereGeometry(0.045, 10, 8)),
-      this.trackMat(new THREE.MeshBasicMaterial({ color: PALETTE.orange })),
+    const darkSteelMat = this.trackMat(
+      new THREE.MeshStandardMaterial({ color: 0x5c6165, roughness: 0.45, metalness: 0.7 }),
     );
-    hubGlow.position.copy(reel.position);
-    this.scene.add(hubGlow);
+    const winch = new THREE.Group();
+    // two polished flanges
+    const flangeGeo = this.track(new THREE.CylinderGeometry(0.2, 0.2, 0.02, 24));
+    for (const off of [-0.11, 0.11]) {
+      const flange = new THREE.Mesh(flangeGeo, steelMat);
+      flange.rotation.z = Math.PI / 2;
+      flange.position.x = off;
+      winch.add(flange);
+    }
+    // wound cable barrel between them
+    const barrel = new THREE.Mesh(
+      this.track(new THREE.CylinderGeometry(0.13, 0.13, 0.2, 18)),
+      darkSteelMat,
+    );
+    barrel.rotation.z = Math.PI / 2;
+    winch.add(barrel);
+    // wraps read as fine ridges
+    const wrapGeo = this.track(new THREE.TorusGeometry(0.135, 0.012, 6, 20));
+    for (let wI = 0; wI < 4; wI++) {
+      const wrap = new THREE.Mesh(wrapGeo, steelMat);
+      wrap.rotation.y = Math.PI / 2;
+      wrap.position.x = -0.075 + wI * 0.05;
+      winch.add(wrap);
+    }
+    // A-frame mount
+    const legGeo = this.track(new THREE.BoxGeometry(0.04, 0.34, 0.04));
+    for (const off of [-0.14, 0.14]) {
+      const leg = new THREE.Mesh(legGeo, darkSteelMat);
+      leg.position.set(off, -0.17, 0);
+      winch.add(leg);
+    }
+    winch.position.set(REEL[0], REEL[1], REEL[2]);
+    winch.rotation.y = 0.35;
+    this.scene.add(winch);
+
+    /* --- Mast the cable tensions against (video's rooftop lattice) ------- */
+    const mastTop: [number, number, number] = [1.1, roofY + 1.75, 0.2];
+    const mast = new THREE.Mesh(
+      this.track(new THREE.CylinderGeometry(0.022, 0.05, 1.75, 8)),
+      darkSteelMat,
+    );
+    mast.position.set(mastTop[0], roofY + 0.875, mastTop[2]);
+    this.scene.add(mast);
+    // tensioned cable: reel -> mast top (slight catenary via mid point)
+    const cablePts = [
+      new THREE.Vector3(...REEL),
+      new THREE.Vector3((REEL[0] + mastTop[0]) / 2, (REEL[1] + mastTop[1]) / 2 - 0.08, (REEL[2] + mastTop[2]) / 2),
+      new THREE.Vector3(...mastTop),
+    ];
+    const cableCurve = new THREE.CatmullRomCurve3(cablePts);
+    const cableGeo = this.track(new THREE.TubeGeometry(cableCurve, 16, 0.012, 6, false));
+    this.scene.add(new THREE.Mesh(cableGeo, darkSteelMat));
+
+    /* --- Shrouded turbine: Shot 2's subject (the film's covered rotor) --- */
+    const shroudGroup = new THREE.Group();
+    // outer ring
+    const ring = new THREE.Mesh(this.track(new THREE.TorusGeometry(0.55, 0.05, 12, 36)), steelMat);
+    shroudGroup.add(ring);
+    // housing depth: open cylinder behind the ring, dark inside — the
+    // tunnel-like space the camera later pushes through
+    const housing = new THREE.Mesh(
+      this.track(new THREE.CylinderGeometry(0.53, 0.5, 0.34, 28, 1, true)),
+      this.trackMat(
+        new THREE.MeshStandardMaterial({
+          color: 0x2a3238,
+          roughness: 0.6,
+          metalness: 0.4,
+          side: THREE.DoubleSide,
+        }),
+      ),
+    );
+    housing.rotation.x = Math.PI / 2;
+    housing.position.z = -0.18;
+    shroudGroup.add(housing);
+    // rotor: four blades + hub inside the shroud
+    const shroudRotor = new THREE.Group();
+    const sBladeGeo = this.track(new THREE.BoxGeometry(0.07, 0.44, 0.02));
+    for (let b = 0; b < 4; b++) {
+      const blade = new THREE.Mesh(sBladeGeo, steelMat);
+      blade.position.y = 0.24;
+      const pivot = new THREE.Group();
+      pivot.rotation.z = (b / 4) * Math.PI * 2;
+      pivot.add(blade);
+      shroudRotor.add(pivot);
+    }
+    const sHub = new THREE.Mesh(this.track(new THREE.SphereGeometry(0.08, 12, 10)), steelMat);
+    shroudRotor.add(sHub);
+    shroudGroup.add(shroudRotor);
+    // three support arms + mounting to the parapet
+    const armGeo = this.track(new THREE.BoxGeometry(0.03, 0.5, 0.03));
+    for (const a of [Math.PI * 0.25, Math.PI * 0.75, Math.PI * 1.5]) {
+      const arm = new THREE.Mesh(armGeo, darkSteelMat);
+      arm.position.set(Math.sin(a) * 0.28, Math.cos(a) * 0.28, 0);
+      arm.rotation.z = -a;
+      shroudGroup.add(arm);
+    }
+    const shroudMast = new THREE.Mesh(
+      this.track(new THREE.CylinderGeometry(0.035, 0.05, 0.75, 8)),
+      darkSteelMat,
+    );
+    shroudMast.position.set(SHROUD[0], roofY + 0.375, SHROUD[2]);
+    this.scene.add(shroudMast);
+    shroudGroup.position.set(...SHROUD);
+    shroudGroup.userData.rotor = shroudRotor;
+    this.scene.add(shroudGroup);
+    this.turbines.push(shroudGroup);
 
     /* --- Solar array ----------------------------------------------------- */
     const cols = 7;
@@ -412,7 +540,9 @@ export class BuildingScene {
     const bladeGeo = this.track(new THREE.BoxGeometry(0.045, 0.62, 0.012));
     const hubGeo = this.track(new THREE.CylinderGeometry(0.05, 0.05, 0.1, 10));
     const mastGeo = this.track(new THREE.CylinderGeometry(0.028, 0.038, 0.62, 8));
-    for (const bx of BLOCK_X) {
+    // One conventional turbine (Umer roof) — the shrouded unit owns the
+    // Abdullah side, as in the film's rooftop frame.
+    for (const bx of [BLOCK_X[0]]) {
       const mast = new THREE.Mesh(mastGeo, steelMat);
       mast.position.set(bx + BLOCK_W / 2 - 0.35, roofY + 0.31, -BLOCK_D / 2 + 0.3);
       const rotor = new THREE.Group();
@@ -508,6 +638,13 @@ export class BuildingScene {
     );
     this.camera.fov = THREE.MathUtils.lerp(a.fov, b.fov, local);
 
+    // Rotors turn slowly during the reveal — deterministic (a pure function
+    // of progress) so scrubbing stays exact. Reads as gentle hub movement
+    // in the macro and believable rotation in the wide shots.
+    for (const turbine of this.turbines) {
+      (turbine.userData.rotor as THREE.Group).rotation.z = t * 9;
+    }
+
     // Portrait viewports: as the camera approaches the hero pose, blend the
     // composition toward centre — the desktop right-of-frame framing would
     // push the building off a narrow screen entirely.
@@ -532,10 +669,11 @@ export class BuildingScene {
   /* ----------------------------------------------------------- live frame */
 
   private updateLive(elapsed: number, dt: number) {
-    // Turbines: slow enough to read as physically plausible.
+    // Turbines: slow enough to read as physically plausible. Offset by the
+    // intro's final rotor angle (9 rad) so the handoff doesn't snap.
     for (const turbine of this.turbines) {
       const rotor = turbine.userData.rotor as THREE.Group;
-      rotor.rotation.z = elapsed * 1.15;
+      rotor.rotation.z = 9 + elapsed * 1.15;
     }
 
     // Solar scan — one narrow light band travelling across the cells.

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
 
 /**
@@ -27,7 +27,9 @@ const SYMBOLS = [
 export default function SolarHarmony() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const { scrollYProgress: rawP } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  // Spring-wrapped so the binding stays JS-driven — see WindTunnel.tsx.
+  const scrollYProgress = useSpring(rawP, { stiffness: 300, damping: 36, mass: 0.4 });
   const drift = useTransform(scrollYProgress, [0, 1], [-3, 3]);
 
   return (
@@ -162,8 +164,8 @@ export default function SolarHarmony() {
                           key={a}
                           x1={s.x}
                           y1={s.y}
-                          x2={s.x + 10 * Math.cos((a * Math.PI) / 180)}
-                          y2={s.y + 10 * Math.sin((a * Math.PI) / 180)}
+                          x2={(s.x + 10 * Math.cos((a * Math.PI) / 180)).toFixed(2)}
+                          y2={(s.y + 10 * Math.sin((a * Math.PI) / 180)).toFixed(2)}
                           stroke="#8fd0e0"
                           strokeWidth="1.3"
                         />

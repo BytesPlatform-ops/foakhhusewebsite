@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ChapterHeading, Eyebrow } from "@/components/shared/Chapter";
 import { Plate, type PlateId } from "./plates";
 
@@ -130,7 +130,9 @@ function StoryCard({
 }) {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const { scrollYProgress: rawP } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  // Spring-wrapped so the binding stays JS-driven — see WindTunnel.tsx.
+  const scrollYProgress = useSpring(rawP, { stiffness: 300, damping: 36, mass: 0.4 });
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [48, 0, -48]);
   const lift = useTransform(scrollYProgress, [0.15, 0.5, 0.85], [0.97, 1, 0.97]);
 

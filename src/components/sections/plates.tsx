@@ -278,10 +278,10 @@ function Family() {
         return (
           <line
             key={i}
-            x1={400 + Math.cos(a) * 18}
-            y1={284 + Math.sin(a) * 18}
-            x2={400 + Math.cos(a) * 78}
-            y2={284 + Math.sin(a) * 78}
+            x1={(400 + Math.cos(a) * 18).toFixed(2)}
+            y1={(284 + Math.sin(a) * 18).toFixed(2)}
+            x2={(400 + Math.cos(a) * 78).toFixed(2)}
+            y2={(284 + Math.sin(a) * 78).toFixed(2)}
             stroke="#fff3d8"
             strokeWidth="5"
             strokeLinecap="round"

@@ -1,4 +1,5 @@
 import BuildingExperience from "@/components/intro/BuildingExperience";
+import FactsRail from "./FactsRail";
 import { FLAGS } from "@/lib/flags";
 
 /**
@@ -16,14 +17,7 @@ import { FLAGS } from "@/lib/flags";
  */
 
 const BACK_LINES = ["WHERE", "NATURE", "POWERS"];
-const FRONT_LINES = ["MODERN", "LIVING"];
-
-const FACTS = [
-  { value: "12", label: "Luxury storeys" },
-  { value: "02", label: "Umer & Abdullah blocks" },
-  { value: "84", label: "Exclusive apartments" },
-  { value: "DHA", label: "View City, Karachi" },
-];
+const FRONT_LINES = ["MODERN LIVING"];
 
 export default function Hero() {
   return (
@@ -77,7 +71,7 @@ export default function Hero() {
         lines={FRONT_LINES}
         z="var(--z-hero-text-front)"
         className="hidden pt-[9vh] lg:block"
-        offsetClass="mt-[calc(3.04*0.92*var(--text-d1))] ml-[30vw]"
+        offsetClass="mt-[calc(3.06*0.92*var(--text-d1))] ml-[2vw]"
       />
 
       {/* Accessible headline: styled and in-flow on mobile (the canvas sits
@@ -112,21 +106,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <dl className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl md:grid-cols-4">
-            {FACTS.map((fact) => (
-              <div key={fact.label} className="glass-light px-5 py-4">
-                <dt className="sr-only">{fact.label}</dt>
-                <dd>
-                  <span className="font-display block text-3xl leading-none font-semibold">
-                    {fact.value}
-                  </span>
-                  <span className="text-ink-soft mt-1.5 block text-xs tracking-[0.1em] uppercase">
-                    {fact.label}
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <FactsRail />
 
           {FLAGS.kitePower && (
             <p className="text-ink-soft mt-4 text-xs">

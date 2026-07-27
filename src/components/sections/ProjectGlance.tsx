@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
 
 /**
@@ -23,7 +23,9 @@ const STATS = [
 export default function ProjectGlance() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const { scrollYProgress: rawP } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  // Spring-wrapped so the binding stays JS-driven — see WindTunnel.tsx.
+  const scrollYProgress = useSpring(rawP, { stiffness: 300, damping: 36, mass: 0.4 });
   // 2–4 degree drift only — the diagram breathes, it does not spin.
   const drift = useTransform(scrollYProgress, [0, 1], [-2.5, 2.5]);
 

@@ -3,8 +3,7 @@ import Hero from "@/components/hero/Hero";
 import ProjectGlance from "@/components/sections/ProjectGlance";
 import DesignedAroundNature from "@/components/sections/DesignedAroundNature";
 import SnakeRoute from "@/components/sections/SnakeRoute";
-import WindCatcher from "@/components/sections/WindCatcher";
-import WindPower from "@/components/sections/WindPower";
+import WindTunnel from "@/components/sections/WindTunnel";
 import SolarGrazing from "@/components/sections/SolarGrazing";
 import SolarHarmony from "@/components/sections/SolarHarmony";
 import WaterPlanning from "@/components/sections/WaterPlanning";
@@ -31,8 +30,7 @@ export default function HomePage() {
         <ProjectGlance />
         <DesignedAroundNature />
         <SnakeRoute />
-        <WindCatcher />
-        <WindPower />
+        <WindTunnel />
         <SolarGrazing />
         <SolarHarmony />
         <WaterPlanning />

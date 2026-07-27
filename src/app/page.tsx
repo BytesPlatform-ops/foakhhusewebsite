@@ -1,5 +1,5 @@
 import ChapterRail from "@/components/navigation/ChapterRail";
-import Hero from "@/components/hero/Hero";
+import ScrollBuildingHero from "@/components/scroll-hero/ScrollBuildingHero";
 import ProjectGlance from "@/components/sections/ProjectGlance";
 import DesignedAroundNature from "@/components/sections/DesignedAroundNature";
 import SnakeRoute from "@/components/sections/SnakeRoute";
@@ -26,7 +26,7 @@ export default function HomePage() {
     <>
       <ChapterRail />
       <div className="lg:pl-44">
-        <Hero />
+        <ScrollBuildingHero />
         <ProjectGlance />
         <DesignedAroundNature />
         <SnakeRoute />

@@ -65,13 +65,13 @@ export default function VideoHero() {
 
       {/* content */}
       <div className="relative z-10 mx-auto w-full max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-10 lg:pb-14">
-        <p className="mb-4 text-[0.6875rem] tracking-[0.26em] text-[#f5ede4]/80 uppercase">
+        <p className="mb-4 text-[0.65rem] font-medium tracking-[0.3em] text-[#C6A46B] uppercase">
           DHA View City · Karachi
         </p>
-        <h1 className="font-display max-w-[13ch] text-[clamp(2.4rem,5.6vw,4.8rem)] leading-[0.96] font-bold tracking-[-0.02em] text-[#f5ede4] text-balance">
-          Where nature powers modern living.
+        <h1 className="font-display max-w-[14ch] text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[1.02] font-semibold tracking-[-0.01em] text-[#F7F0E8] text-balance">
+          Where nature powers <em className="italic">modern living.</em>
         </h1>
-        <p className="mt-5 max-w-md text-sm leading-relaxed text-[#f5ede4]/85 md:text-base">
+        <p className="mt-5 max-w-md text-[0.85rem] leading-relaxed font-light text-[#F3E7D8]/85 md:text-[0.95rem]">
           A future-focused residential development shaped around natural airflow,
           renewable-energy planning and refined family living.
         </p>
@@ -79,18 +79,18 @@ export default function VideoHero() {
         <div className="mt-7 flex flex-wrap items-center gap-3">
           <a
             href="#enquire"
-            className="rounded-full bg-[#f5ede4] px-6 py-3 text-sm font-bold text-[#111111] transition-colors hover:bg-[#d2815d] hover:text-[#111111]"
+            className="rounded-lg bg-[#C6A46B] px-6 py-3 text-sm font-semibold tracking-wide text-[#1D1714] transition-colors hover:bg-[#B8935A]"
           >
             Register Interest
           </a>
           <a
             href="#residences"
-            className="rounded-full border border-[#f5ede4]/40 px-6 py-3 text-sm font-semibold text-[#f5ede4] backdrop-blur-sm transition-colors hover:bg-[#f5ede4]/15"
+            className="rounded-lg border border-[#C6A46B]/55 bg-[#1D1714]/30 px-6 py-3 text-sm font-medium text-[#F7F0E8] backdrop-blur-sm transition-colors hover:bg-[#1D1714]/55"
           >
             Explore the Residences
           </a>
           <span
-            className="hidden rounded-full border border-[#f5ede4]/20 px-6 py-3 text-sm text-[#f5ede4]/60 sm:inline"
+            className="hidden rounded-lg border border-[#F7F0E8]/18 px-6 py-3 text-sm text-[#F7F0E8]/50 sm:inline"
             title="Available once the final brochure is approved"
           >
             Brochure — soon
@@ -98,22 +98,22 @@ export default function VideoHero() {
         </div>
 
         {/* compact facts rail */}
-        <dl className="mt-10 flex w-fit flex-wrap items-start rounded-xl border border-[#f5ede4]/15 bg-[#111111]/45 px-2 py-4 backdrop-blur-md">
+        <dl className="mt-10 flex w-fit flex-wrap items-start rounded-xl border border-[#C6A46B]/25 bg-[#1D1714]/50 px-2 py-4 backdrop-blur-md">
           {FACTS.map((fact, i) => (
             <div
               key={fact.label}
-              className={`px-5 ${i > 0 ? "border-l border-[#f5ede4]/15" : ""}`}
+              className={`px-5 ${i > 0 ? "border-l border-[#F7F0E8]/12" : ""}`}
             >
               <dt className="sr-only">{fact.label}</dt>
               <dd>
                 <span
-                  className={`font-display block leading-none font-semibold text-[#f5ede4] ${
-                    i === 2 ? "text-4xl" : "text-3xl"
+                  className={`font-display block leading-none font-semibold text-[#F7F0E8] ${
+                    i === 2 ? "text-[2.6rem]" : "text-[2.1rem]"
                   }`}
                 >
                   {fact.value}
                 </span>
-                <span className="mt-1.5 block max-w-[7rem] text-[0.6rem] tracking-[0.14em] text-[#f5ede4]/65 uppercase">
+                <span className="mt-1.5 block max-w-[7rem] text-[0.6rem] tracking-[0.14em] text-[#C6A46B] uppercase">
                   {fact.label}
                 </span>
               </dd>

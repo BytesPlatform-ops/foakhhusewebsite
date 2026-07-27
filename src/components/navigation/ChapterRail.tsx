@@ -19,13 +19,15 @@ interface Chapter {
   title: string;
   href: string;
   colour: string;
+  /** text/arrow colour tuned per surface for contrast */
+  text: string;
 }
 
 const CHAPTERS: Chapter[] = [
-  { number: "01", title: "The Project", href: "#glance", colour: "#1874E8" },
-  { number: "02", title: "Natural Systems", href: "#route", colour: "#FFB400" },
-  { number: "03", title: "Residences & Lifestyle", href: "#residences", colour: "#FF5A20" },
-  { number: "04", title: "Location & Gallery", href: "#location", colour: "#00AD4F" },
+  { number: "01", title: "The Project", href: "#glance", colour: "#294338", text: "#F7F0E8" },
+  { number: "02", title: "Natural Systems", href: "#route", colour: "#6F7C63", text: "#F7F0E8" },
+  { number: "03", title: "Residences & Lifestyle", href: "#residences", colour: "#9C6247", text: "#F7F0E8" },
+  { number: "04", title: "Location & Gallery", href: "#location", colour: "#B5967F", text: "#1D1714" },
 ];
 
 /** section ids that roll up into each chapter for the scroll-spy */
@@ -73,7 +75,7 @@ function Wordmark({ big = false }: { big?: boolean }) {
   return (
     <span className="block">
       <span
-        className={`font-display block leading-[0.9] font-black tracking-[-0.02em] text-[#111111] ${
+        className={`font-display block leading-[0.9] font-bold tracking-[-0.01em] text-[#9C6247] ${
           big ? "text-4xl" : "text-[1.7rem]"
         }`}
       >
@@ -81,7 +83,7 @@ function Wordmark({ big = false }: { big?: boolean }) {
         <br />
         corridor.
       </span>
-      <span className="mt-1.5 block text-[0.55rem] font-medium tracking-[0.18em] text-[#111111]/70 uppercase">
+      <span className="mt-1.5 block text-[0.55rem] font-medium tracking-[0.18em] text-[#1D1714]/70 uppercase">
         Unique residences · Karachi
       </span>
     </span>
@@ -110,19 +112,20 @@ function ChapterCard({
         height: tall
           ? `clamp(104px, ${isActive ? "15vh" : "14vh"}, ${isActive ? "140px" : "132px"})`
           : "96px",
-        boxShadow: isActive ? "inset 0 0 0 2px rgb(17 17 17 / 0.8)" : undefined,
+        boxShadow: isActive ? "inset 0 0 0 2px rgb(247 240 232 / 0.55)" : undefined,
+        color: chapter.text,
       }}
     >
       <span className="flex items-start justify-between">
-        <span className="text-[0.7rem] font-bold text-[#111111]">{chapter.number}</span>
+        <span className="text-[0.7rem] font-bold">{chapter.number}</span>
         <span
           aria-hidden="true"
-          className="text-base leading-none font-bold text-[#111111] transition-transform duration-200 group-hover:translate-x-[2.5px] group-hover:-translate-y-[2.5px]"
+          className="text-base leading-none font-bold transition-transform duration-200 group-hover:translate-x-[2.5px] group-hover:-translate-y-[2.5px]"
         >
           ↗
         </span>
       </span>
-      <span className="max-w-[9.5rem] text-[0.95rem] leading-[1.15] font-bold text-[#111111]">
+      <span className="max-w-[9.5rem] text-[0.95rem] leading-[1.15] font-bold">
         {chapter.title}
       </span>
     </a>
@@ -135,12 +138,12 @@ function RailActions({ onNavigate }: { onNavigate?: () => void }) {
       <a
         href="#enquire"
         onClick={onNavigate}
-        className="flex h-[54px] w-full items-center justify-center rounded-[11px] bg-[#A74CF4] text-[0.85rem] font-bold text-[#111111] transition-transform duration-200 hover:scale-[1.01]"
+        className="flex h-[54px] w-full items-center justify-center rounded-[11px] bg-[#C6A46B] text-[0.85rem] font-bold text-[#1D1714] transition-transform duration-200 hover:scale-[1.01]"
       >
         Register Interest
       </a>
       <span
-        className="flex h-[46px] w-full items-center justify-center gap-2 rounded-[11px] bg-[#111111] text-[0.8rem] font-bold text-white/85"
+        className="flex h-[46px] w-full items-center justify-center gap-2 rounded-[11px] bg-[#1D1714] text-[0.8rem] font-bold text-white/85"
         title="Available once the final brochure is approved"
       >
         Download Brochure <span aria-hidden="true">↓</span>
@@ -166,7 +169,7 @@ export default function ChapterRail() {
       {/* ---------------- Desktop rail ---------------- */}
       <nav
         aria-label="Chapters"
-        className="fixed inset-y-0 left-0 z-(--z-rail) hidden w-[200px] flex-col bg-[#F3EAE1] px-4 py-5 lg:flex"
+        className="fixed inset-y-0 left-0 z-(--z-rail) hidden w-[200px] flex-col bg-[#F3ECE4] px-4 py-5 lg:flex"
       >
         <a href="#hero" className="mb-5 block w-[82%]" aria-label="The Wind Corridor Residences — top">
           <Wordmark />
@@ -186,16 +189,16 @@ export default function ChapterRail() {
       </nav>
 
       {/* ---------------- Mobile header + full-screen menu ---------------- */}
-      <header className="fixed inset-x-0 top-0 z-(--z-header) flex items-center justify-between bg-[#F3EAE1] px-4 py-2.5 lg:hidden">
+      <header className="fixed inset-x-0 top-0 z-(--z-header) flex items-center justify-between bg-[#F3ECE4] px-4 py-2.5 lg:hidden">
         <a href="#hero" aria-label="The Wind Corridor Residences — top">
-          <span className="font-display text-xl leading-none font-black tracking-[-0.02em] text-[#111111]">
+          <span className="font-display text-xl leading-none font-bold tracking-[-0.01em] text-[#9C6247]">
             wind corridor.
           </span>
         </a>
         <div className="flex items-center gap-2">
           <a
             href="#enquire"
-            className="rounded-full bg-[#A74CF4] px-3.5 py-2 text-xs font-bold text-[#111111]"
+            className="rounded-full bg-[#C6A46B] px-3.5 py-2 text-xs font-bold text-[#1D1714]"
           >
             Register Interest
           </a>
@@ -204,7 +207,7 @@ export default function ChapterRail() {
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className="rounded-full bg-[#111111] px-3.5 py-2 text-xs font-bold text-white"
+            className="rounded-full bg-[#1D1714] px-3.5 py-2 text-xs font-bold text-white"
           >
             {menuOpen ? "Close" : "Menu"}
           </button>
@@ -214,7 +217,7 @@ export default function ChapterRail() {
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-0 z-(--z-header) flex flex-col bg-[#F3EAE1] px-4 pt-16 pb-5 lg:hidden"
+          className="fixed inset-0 z-(--z-header) flex flex-col bg-[#F3ECE4] px-4 pt-16 pb-5 lg:hidden"
         >
           <div className="mb-5">
             <Wordmark big />

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 
-// Editorial display with architectural weight, paired with a neutral text face.
-const display = Fraunces({
+// High-contrast editorial serif for display — graceful, tall, refined
+// thin-thick strokes; cleaner and more modern than the reference. Inter
+// carries body/UI.
+const display = Playfair_Display({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",

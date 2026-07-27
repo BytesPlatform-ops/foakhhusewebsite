@@ -9,36 +9,36 @@
 
 @theme {
   /* --- Architectural foundation --- */
-  --color-charcoal: #171816;
-  --color-deep-earth: #2d211d;
-  --color-bronze: #87543e;
-  --color-terracotta: #ae6649;
-  --color-copper: #c17b58;
-  --color-mineral: #aaa096;
-  --color-ivory: #efe7dd;
-  --color-cream: #e5dacd;
+  --color-charcoal: #1D1714;
+  --color-deep-earth: #2A1E1A;
+  --color-bronze: #9C6247;
+  --color-terracotta: #A0664B;
+  --color-copper: #B98A6A;
+  --color-mineral: #BDAA98;
+  --color-ivory: #F7F0E8;
+  --color-cream: #EFE5D9;
 
   /* --- Air & water (cool) --- */
-  --color-deep-teal: #125d6a;
-  --color-wind-blue: #6098aa;
-  --color-cyan-optic: #22a8aa;
-  --color-aqua: #51b5b5;
-  --color-garden: #4c7056;
+  --color-deep-teal: #294338;
+  --color-wind-blue: #8FA3AB;
+  --color-cyan-optic: #5E8C94;
+  --color-aqua: #7FA8A8;
+  --color-garden: #6F7C63;
 
   /* --- Energy accents (events only) --- */
-  --color-energy-orange: #ef8a17;
-  --color-champagne: #d4b36f;
-  --color-fabric-red: #8b1719;
-  --color-magenta: #c43b91;
-  --color-violet: #66349b;
+  --color-energy-orange: #C98D4F;
+  --color-champagne: #C6A46B;
+  --color-fabric-red: #7A3B2A;
+  --color-magenta: #8E5A7E;
+  --color-violet: #5C4A6E;
 
   /* --- Semantic surfaces --- */
-  --color-surface: #efe7dd;
-  --color-surface-deep: #171816;
-  --color-surface-warm: #e5dacd;
-  --color-ink: #171816;
+  --color-surface: #F7F0E8;
+  --color-surface-deep: #1D1714;
+  --color-surface-warm: #EFE5D9;
+  --color-ink: #1D1714;
   --color-ink-soft: #4a453f;
-  --color-ink-invert: #efe7dd;
+  --color-ink-invert: #F7F0E8;
 
   /* --- Typography --- */
   --font-display: var(--font-display), Georgia, serif;
@@ -73,10 +73,10 @@
 
 :root {
   /* Glass — architectural, not SaaS neon */
-  --glass-light-bg: rgb(239 231 221 / 0.72);
+  --glass-light-bg: rgb(247 240 232 / 0.72);
   --glass-light-border: rgb(255 255 255 / 0.45);
-  --glass-dark-bg: rgb(23 24 22 / 0.58);
-  --glass-dark-border: rgb(239 231 221 / 0.14);
+  --glass-dark-bg: rgb(29 23 20 / 0.58);
+  --glass-dark-border: rgb(247 240 232 / 0.14);
   --glass-blur: 14px;
 
   --grain-opacity: 0.055;
@@ -127,7 +127,7 @@ body {
   border: 1px solid;
   box-shadow:
     0 1px 0 0 rgb(255 255 255 / 0.22) inset,
-    0 12px 34px -18px rgb(23 24 22 / 0.5);
+    0 12px 34px -18px rgb(29 23 20 / 0.5);
 }
 .glass-light {
   background: var(--glass-light-bg);
@@ -152,74 +152,74 @@ body {
     backdrop-filter: none;
   }
   .glass-light {
-    background: rgb(239 231 221 / 0.94);
+    background: rgb(247 240 232 / 0.94);
   }
   .glass-dark {
-    background: rgb(23 24 22 / 0.88);
+    background: rgb(29 23 20 / 0.88);
   }
 }
 
 /* ---------- Mineral backgrounds ---------- */
 .mineral-ivory {
   background:
-    radial-gradient(120% 80% at 12% 0%, #f6f0e8 0%, transparent 58%),
-    radial-gradient(90% 70% at 92% 18%, rgb(96 152 170 / 0.16) 0%, transparent 62%),
-    radial-gradient(100% 90% at 50% 108%, rgb(174 102 73 / 0.14) 0%, transparent 60%),
+    radial-gradient(120% 80% at 12% 0%, #F8F2EA 0%, transparent 58%),
+    radial-gradient(90% 70% at 92% 18%, rgb(143 163 171 / 0.16) 0%, transparent 62%),
+    radial-gradient(100% 90% at 50% 108%, rgb(160 102 75 / 0.14) 0%, transparent 60%),
     var(--color-ivory);
 }
 .mineral-dark {
   background:
-    radial-gradient(110% 78% at 18% 6%, #2c2b26 0%, transparent 56%),
-    radial-gradient(85% 62% at 88% 84%, rgb(135 84 62 / 0.36) 0%, transparent 60%),
-    radial-gradient(70% 60% at 62% 12%, rgb(34 168 170 / 0.13) 0%, transparent 58%),
+    radial-gradient(110% 78% at 18% 6%, #31261F 0%, transparent 56%),
+    radial-gradient(85% 62% at 88% 84%, rgb(156 98 71 / 0.36) 0%, transparent 60%),
+    radial-gradient(70% 60% at 62% 12%, rgb(94 140 148 / 0.13) 0%, transparent 58%),
     var(--color-charcoal);
 }
 .mineral-terracotta {
   background:
-    radial-gradient(105% 72% at 22% 8%, #c2795a 0%, transparent 58%),
-    radial-gradient(90% 74% at 84% 92%, #7c4632 0%, transparent 62%),
+    radial-gradient(105% 72% at 22% 8%, #AC7355 0%, transparent 58%),
+    radial-gradient(90% 74% at 84% 92%, #6E4633 0%, transparent 62%),
     var(--color-terracotta);
 }
 .mineral-water {
   background:
-    radial-gradient(110% 80% at 26% 4%, #55b9b9 0%, transparent 60%),
-    radial-gradient(95% 76% at 82% 96%, #0f4f5c 0%, transparent 64%),
+    radial-gradient(110% 80% at 26% 4%, #3F6B5F 0%, transparent 60%),
+    radial-gradient(95% 76% at 82% 96%, #22372F 0%, transparent 64%),
     var(--color-deep-teal);
 }
 
 .mineral-clay {
   background:
-    radial-gradient(110% 75% at 20% 6%, #c98a68 0%, transparent 58%),
-    radial-gradient(60% 80% at 78% 30%, rgb(96 152 170 / 0.22) 0%, transparent 60%),
-    radial-gradient(95% 80% at 80% 100%, #8a5038 0%, transparent 62%),
-    #b06c4c;
+    radial-gradient(110% 75% at 20% 6%, #B08163 0%, transparent 58%),
+    radial-gradient(60% 80% at 78% 30%, rgb(143 163 171 / 0.22) 0%, transparent 60%),
+    radial-gradient(95% 80% at 80% 100%, #7A4A36 0%, transparent 62%),
+    #9C6247;
 }
 .mineral-windsky {
   background:
-    radial-gradient(120% 80% at 30% 0%, #2a6a80 0%, transparent 60%),
+    radial-gradient(120% 80% at 30% 0%, #3A5A5C 0%, transparent 60%),
     radial-gradient(90% 70% at 85% 90%, rgb(193 123 88 / 0.34) 0%, transparent 58%),
-    radial-gradient(70% 55% at 70% 20%, rgb(212 179 111 / 0.2) 0%, transparent 55%),
-    #12455a;
+    radial-gradient(70% 55% at 70% 20%, rgb(198 164 107 / 0.2) 0%, transparent 55%),
+    #2E4747;
 }
 .mineral-sunset {
   background:
-    radial-gradient(115% 78% at 50% 0%, #d99a5a 0%, transparent 58%),
-    radial-gradient(95% 75% at 50% 100%, #4a4441 0%, transparent 66%),
-    radial-gradient(60% 50% at 85% 30%, rgb(96 152 170 / 0.25) 0%, transparent 58%),
-    #a06a44;
+    radial-gradient(115% 78% at 50% 0%, #C08A57 0%, transparent 58%),
+    radial-gradient(95% 75% at 50% 100%, #3E362F 0%, transparent 66%),
+    radial-gradient(60% 50% at 85% 30%, rgb(143 163 171 / 0.25) 0%, transparent 58%),
+    #8F6547;
 }
 .mineral-graphite {
   background:
-    radial-gradient(110% 75% at 25% 5%, #34322f 0%, transparent 58%),
-    radial-gradient(85% 65% at 85% 90%, rgb(135 84 62 / 0.4) 0%, transparent 60%),
-    radial-gradient(60% 50% at 65% 15%, rgb(34 168 170 / 0.1) 0%, transparent 55%),
-    #201f1d;
+    radial-gradient(110% 75% at 25% 5%, #332A24 0%, transparent 58%),
+    radial-gradient(85% 65% at 85% 90%, rgb(156 98 71 / 0.4) 0%, transparent 60%),
+    radial-gradient(60% 50% at 65% 15%, rgb(94 140 148 / 0.1) 0%, transparent 55%),
+    #221C18;
 }
 .mineral-garden {
   background:
-    radial-gradient(110% 78% at 22% 4%, #5c8168 0%, transparent 58%),
-    radial-gradient(92% 74% at 84% 94%, #33503e 0%, transparent 62%),
-    radial-gradient(70% 55% at 75% 15%, rgb(239 231 221 / 0.2) 0%, transparent 55%),
+    radial-gradient(110% 78% at 22% 4%, #77836B 0%, transparent 58%),
+    radial-gradient(92% 74% at 84% 94%, #3C4A3A 0%, transparent 62%),
+    radial-gradient(70% 55% at 75% 15%, rgb(247 240 232 / 0.2) 0%, transparent 55%),
     var(--color-garden);
 }
 

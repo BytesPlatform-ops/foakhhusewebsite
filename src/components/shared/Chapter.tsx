@@ -38,8 +38,8 @@ export function ChapterHeading({
   return (
     <h2
       id={id}
-      className={`font-display text-d2 max-w-[16ch] font-semibold text-balance ${
-        tone === "light" ? "text-ivory" : "text-charcoal"
+      className={`font-display text-d2 max-w-[16ch] font-medium text-balance ${
+        tone === "light" ? "text-ivory" : "text-bronze"
       } ${className}`}
     >
       {children}

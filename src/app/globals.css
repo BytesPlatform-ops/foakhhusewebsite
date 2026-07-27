@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+/* ============================================================
+   THE WIND CORRIDOR RESIDENCES — TOKEN SYSTEM
+   Mineral architectural foundation + vibrant energy accents.
+   Accents are EVENTS (activation, scan, active chapter), never
+   base surfaces. See docs/IMPLEMENTATION-PLAN.md
+   ============================================================ */
+
+@theme {
+  /* --- Architectural foundation --- */
+  --color-charcoal: #171816;
+  --color-deep-earth: #2d211d;
+  --color-bronze: #87543e;
+  --color-terracotta: #ae6649;
+  --color-copper: #c17b58;
+  --color-mineral: #aaa096;
+  --color-ivory: #efe7dd;
+  --color-cream: #e5dacd;
+
+  /* --- Air & water (cool) --- */
+  --color-deep-teal: #125d6a;
+  --color-wind-blue: #6098aa;
+  --color-cyan-optic: #22a8aa;
+  --color-aqua: #51b5b5;
+  --color-garden: #4c7056;
+
+  /* --- Energy accents (events only) --- */
+  --color-energy-orange: #ef8a17;
+  --color-champagne: #d4b36f;
+  --color-fabric-red: #8b1719;
+  --color-magenta: #c43b91;
+  --color-violet: #66349b;
+
+  /* --- Semantic surfaces --- */
+  --color-surface: #efe7dd;
+  --color-surface-deep: #171816;
+  --color-surface-warm: #e5dacd;
+  --color-ink: #171816;
+  --color-ink-soft: #4a453f;
+  --color-ink-invert: #efe7dd;
+
+  /* --- Typography --- */
+  --font-display: var(--font-display), Georgia, serif;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid display scale — clamped so mobile never breaks */
+  --text-d1: clamp(2.75rem, 7.6vw, 7rem);
+  --text-d1--line-height: 0.92;
+  --text-d1--letter-spacing: -0.03em;
+  --text-d2: clamp(2.25rem, 6.5vw, 5.5rem);
+  --text-d2--line-height: 0.96;
+  --text-d2--letter-spacing: -0.025em;
+  --text-d3: clamp(1.75rem, 4vw, 3.25rem);
+  --text-d3--line-height: 1.04;
+  --text-d3--letter-spacing: -0.02em;
+  --text-lead: clamp(1.0625rem, 1.6vw, 1.375rem);
+  --text-lead--line-height: 1.55;
+
+  /* --- Spacing / layout --- */
+  --spacing-section: clamp(5rem, 11vh, 9rem);
+  --spacing-gutter: clamp(1.25rem, 4vw, 4rem);
+  --container-page: 90rem;
+  --container-prose: 38rem;
+
+  /* --- Motion --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-ui: 280ms;
+  --duration-reveal: 650ms;
+  --duration-section: 950ms;
+}
+
+:root {
+  /* Glass — architectural, not SaaS neon */
+  --glass-light-bg: rgb(239 231 221 / 0.72);
+  --glass-light-border: rgb(255 255 255 / 0.45);
+  --glass-dark-bg: rgb(23 24 22 / 0.58);
+  --glass-dark-border: rgb(239 231 221 / 0.14);
+  --glass-blur: 14px;
+
+  --grain-opacity: 0.055;
+
+  /* Z-index ladder.
+     Hero text splits around the canvas: background copy at 1, canvas at 2,
+     foreground keyword at 3. That ordering is what produces the
+     text-behind-building mask without any clip-path. */
+  --z-hero-text-back: 1;
+  --z-canvas: 2;
+  --z-hero-text-front: 3;
+  --z-content: 10;
+  --z-rail: 40;
+  --z-header: 50;
+  --z-intro: 90;
+}
+
+* {
+  min-width: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Grain: one tiny inline SVG, static, no repaint ---------- */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Glass variants ---------- */
+.glass-light,
+.glass-dark {
+  border: 1px solid;
+  box-shadow:
+    0 1px 0 0 rgb(255 255 255 / 0.22) inset,
+    0 12px 34px -18px rgb(23 24 22 / 0.5);
+}
+.glass-light {
+  background: var(--glass-light-bg);
+  border-color: var(--glass-light-border);
+  color: var(--color-ink);
+}
+.glass-dark {
+  background: var(--glass-dark-bg);
+  border-color: var(--glass-dark-border);
+  color: var(--color-ink-invert);
+}
+@supports (backdrop-filter: blur(1px)) {
+  .glass-light,
+  .glass-dark {
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.35);
+  }
+}
+/* Drop blur on small/low-power screens, keep opaque fallback */
+@media (max-width: 48rem) {
+  .glass-light,
+  .glass-dark {
+    backdrop-filter: none;
+  }
+  .glass-light {
+    background: rgb(239 231 221 / 0.94);
+  }
+  .glass-dark {
+    background: rgb(23 24 22 / 0.88);
+  }
+}
+
+/* ---------- Mineral backgrounds ---------- */
+.mineral-ivory {
+  background:
+    radial-gradient(120% 80% at 12% 0%, #f6f0e8 0%, transparent 58%),
+    radial-gradient(90% 70% at 92% 18%, rgb(96 152 170 / 0.16) 0%, transparent 62%),
+    radial-gradient(100% 90% at 50% 108%, rgb(174 102 73 / 0.14) 0%, transparent 60%),
+    var(--color-ivory);
+}
+.mineral-dark {
+  background:
+    radial-gradient(110% 78% at 18% 6%, #2c2b26 0%, transparent 56%),
+    radial-gradient(85% 62% at 88% 84%, rgb(135 84 62 / 0.36) 0%, transparent 60%),
+    radial-gradient(70% 60% at 62% 12%, rgb(34 168 170 / 0.13) 0%, transparent 58%),
+    var(--color-charcoal);
+}
+.mineral-terracotta {
+  background:
+    radial-gradient(105% 72% at 22% 8%, #c2795a 0%, transparent 58%),
+    radial-gradient(90% 74% at 84% 92%, #7c4632 0%, transparent 62%),
+    var(--color-terracotta);
+}
+.mineral-water {
+  background:
+    radial-gradient(110% 80% at 26% 4%, #55b9b9 0%, transparent 60%),
+    radial-gradient(95% 76% at 82% 96%, #0f4f5c 0%, transparent 64%),
+    var(--color-deep-teal);
+}
+
+/* ---------- Focus ---------- */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-cyan-optic);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.7rem 1.1rem;
+  background: var(--color-charcoal);
+  color: var(--color-ivory);
+  border-radius: 0.5rem;
+  transition: top var(--duration-ui) var(--ease-out-quint);
+}
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

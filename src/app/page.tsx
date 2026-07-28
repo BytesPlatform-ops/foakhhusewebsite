@@ -6,7 +6,7 @@ import SnakeRoute from "@/components/sections/SnakeRoute";
 import WindTunnel from "@/components/sections/WindTunnel";
 import ResidencesStory from "@/components/sections/ResidencesStory";
 import FoakhLocationSection from "@/components/location/FoakhLocationSection";
-import FannedGallery from "@/components/sections/FannedGallery";
+import GallerySection from "@/components/gallery/GallerySection";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/sections/Footer";
 
@@ -19,7 +19,7 @@ export default function HomePage() {
   return (
     <>
       <ChapterRail />
-      <div className="bg-[#F3EAE1] lg:pl-[200px]">
+      <div className="bg-[#F6EBDD] lg:pl-[200px]">
         <VideoHero />
         <ProjectGlance />
         <DesignedAroundNature />
@@ -27,7 +27,7 @@ export default function HomePage() {
         <WindTunnel />
         <ResidencesStory />
         <FoakhLocationSection />
-        <FannedGallery />
+        <GallerySection />
         <FinalCTA />
         <Footer />
       </div>

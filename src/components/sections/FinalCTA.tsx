@@ -32,18 +32,19 @@ export default function FinalCTA() {
     <section
       id="enquire"
       data-section="enquire"
-      className="mineral-dark grain blend-top relative overflow-hidden py-(--spacing-section)"
-      style={{ "--blend-from": "#d5cbb8" } as React.CSSProperties}
+      className="relative overflow-hidden bg-[#F6EBDD] py-(--spacing-section)"
       aria-labelledby="enquire-heading"
     >
-      {/* muted blue atmospheric edge */}
-      <div
-        aria-hidden="true"
-        className="absolute top-0 right-0 h-[45%] w-[40%] opacity-30 blur-3xl"
-        style={{ background: "radial-gradient(closest-side, rgb(96 152 170 / 0.5), transparent 72%)" }}
-      />
-
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
+        {/* deep forest CONTAINED panel — the one deep surface on the page */}
+        <div
+          className="grain relative overflow-hidden rounded-[32px] border border-[#D8B36A]/40 p-8 shadow-[0_44px_90px_-40px_rgba(31,58,48,0.55)] sm:p-12 lg:p-14"
+          style={{
+            background:
+              "radial-gradient(80% 55% at 88% 0%, rgb(101 155 152 / 0.28) 0%, transparent 55%)," +
+              "linear-gradient(160deg, #2E5245 0%, #294A3E 55%, #1F3A30 100%)",
+          }}
+        >
         {/* ---- Long-term value ---- */}
         <Eyebrow num="06" tone="light">
           Limited by design
@@ -190,6 +191,7 @@ export default function FinalCTA() {
                 dropped in the meantime.
               </p>
             </form>
+          </div>
           </div>
         </div>
       </div>

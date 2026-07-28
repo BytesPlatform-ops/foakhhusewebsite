@@ -29,17 +29,19 @@ import {
  * no pin, no horizontal trap.
  */
 
+/* Global warm-editorial tokens (see globals.css :root) — a bright
+   architectural-magazine spread, not a dark dashboard. */
 const C = {
-  bg: "#202522",
-  surface: "#2B302D",
-  ivory: "#F1E8DA",
-  muted: "rgba(241, 232, 218, 0.42)",
-  body: "rgba(241, 232, 218, 0.74)",
-  champagne: "#C5A46C",
-  teal: "#6F9B98",
-  amber: "#D59B54",
-  terracotta: "#9B6047",
-  sage: "#879388",
+  bg: "#F6EBDD",
+  surface: "#FFF5E9",
+  ivory: "#943F2D", /* display headings — deep terracotta on ivory */
+  muted: "rgba(33, 26, 23, 0.5)",
+  body: "rgba(41, 74, 62, 0.88)", /* body — deep forest, small sizes only */
+  champagne: "#A9803C", /* champagne deepened for text legibility */
+  teal: "#659B98",
+  amber: "#E5AD42",
+  terracotta: "#C75B3B",
+  sage: "#6E8163",
 };
 
 interface StoryCard {
@@ -290,7 +292,7 @@ function StoryPanel({
 
         {/* CENTER — the dominant visual card, slightly above centre */}
         <motion.figure
-          className="relative -mt-[4svh] h-[62svh] overflow-hidden rounded-[10px] shadow-[0_36px_80px_-38px_rgba(10,12,11,0.7)]"
+          className="relative -mt-[4svh] h-[62svh] overflow-hidden rounded-[10px] border border-[#D8B36A]/55 bg-[#FFF8EF] shadow-[0_36px_70px_-38px_rgba(148,63,45,0.4)]"
           style={{ scale: settle, y: mediaY }}
         >
           <CardMedia media={card.media} accent={card.accent} />
@@ -302,7 +304,7 @@ function StoryPanel({
             {card.body}
           </p>
           {card.secondary && (
-            <p className="mt-3 text-[0.78rem] leading-[1.6]" style={{ color: "rgba(241,232,218,0.58)" }}>
+            <p className="mt-3 text-[0.78rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.6)" }}>
               {card.secondary}
             </p>
           )}
@@ -350,7 +352,7 @@ function CardMedia({ media, accent }: { media: StoryCard["media"]; accent: strin
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(165deg, rgb(213 155 84 / 0.08) 0%, transparent 38%, rgb(32 37 34 / 0.28) 100%)",
+            "linear-gradient(165deg, rgb(229 173 66 / 0.1) 0%, transparent 38%, rgb(33 26 23 / 0.2) 100%)",
         }}
       />
       <span aria-hidden="true" className="absolute right-0 bottom-0 left-0 h-[2px]" style={{ background: `${accent}88` }} />
@@ -419,19 +421,19 @@ function Ambience() {
     <div aria-hidden="true" className="absolute inset-0">
       <div
         className="absolute top-[12%] left-[2%] h-[50%] w-[40%] rounded-full blur-3xl"
-        style={{ background: `radial-gradient(closest-side, ${C.champagne}17, transparent 72%)` }}
+        style={{ background: `radial-gradient(closest-side, ${C.amber}30, transparent 72%)` }}
       />
       <div
         className="absolute top-[20%] right-[4%] h-[55%] w-[42%] rounded-full blur-3xl"
-        style={{ background: `radial-gradient(closest-side, ${C.amber}1d, transparent 72%)` }}
+        style={{ background: `radial-gradient(closest-side, ${C.terracotta}26, transparent 72%)` }}
       />
       <div
         className="absolute bottom-[8%] left-[30%] h-[36%] w-[36%] rounded-full blur-3xl"
-        style={{ background: `radial-gradient(closest-side, ${C.teal}15, transparent 72%)` }}
+        style={{ background: `radial-gradient(closest-side, ${C.teal}2e, transparent 72%)` }}
       />
       <div
         className="absolute inset-0"
-        style={{ background: "radial-gradient(120% 95% at 50% 45%, transparent 55%, rgb(16 20 19 / 0.5) 100%)" }}
+        style={{ background: "radial-gradient(120% 95% at 50% 45%, transparent 60%, rgb(199 91 59 / 0.1) 100%)" }}
       />
       <div className="grain absolute inset-0" />
     </div>

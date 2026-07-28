@@ -187,12 +187,13 @@ export default function ResidencesStory() {
       className="grain blend-top relative"
       style={
         {
-          "--blend-from": "#202522",
+          "--blend-from": "#F6EBDD",
           background:
-            "radial-gradient(85% 60% at 72% 24%, rgb(213 155 84 / 0.30) 0%, transparent 58%)," +
-            "radial-gradient(75% 55% at 22% 78%, rgb(41 67 56 / 0.38) 0%, transparent 62%)," +
-            "radial-gradient(60% 45% at 50% 50%, rgb(198 164 107 / 0.16) 0%, transparent 70%)," +
-            "linear-gradient(175deg, #2A211C 0%, #7A4B34 26%, #A05C3D 52%, #6E4230 80%, #32271F 100%)",
+            "radial-gradient(85% 60% at 74% 20%, rgb(232 121 87 / 0.5) 0%, transparent 58%)," +
+            "radial-gradient(62% 46% at 50% 52%, rgb(216 179 106 / 0.32) 0%, transparent 70%)," +
+            "radial-gradient(55% 45% at 82% 55%, rgb(255 244 229 / 0.14) 0%, transparent 72%)," +
+            "radial-gradient(70% 50% at 14% 84%, rgb(101 155 152 / 0.16) 0%, transparent 60%)," +
+            "linear-gradient(172deg, #A8492E 0%, #C75B3B 34%, #B34F31 62%, #8A3B26 100%)",
         } as React.CSSProperties
       }
     >
@@ -202,7 +203,7 @@ export default function ResidencesStory() {
           {/* eyebrow — quiet, upper-left, always present */}
           <p
             className="absolute top-[7%] left-[6%] z-30 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
-            style={{ color: "#E7C892" }}
+            style={{ color: "#943F2D" }}
           >
             03 — The Residences
           </p>
@@ -308,7 +309,7 @@ export default function ResidencesStory() {
 
       {/* -------------------------------------------- mobile / reduced -- */}
       <div className="px-(--spacing-gutter) pt-24 lg:hidden">
-        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#E7C892" }}>
+        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
           03 — The Residences
         </p>
         <p

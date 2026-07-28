@@ -37,7 +37,7 @@ export default function VideoHero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-svh items-end overflow-hidden lg:m-3 lg:min-h-[calc(100svh-1.5rem)] lg:rounded-3xl"
+      className="relative z-10 flex min-h-svh items-end overflow-hidden lg:m-3 lg:min-h-[calc(100svh-1.5rem)] lg:rounded-3xl"
     >
       {/* background film */}
       <video

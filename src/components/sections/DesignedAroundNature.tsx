@@ -121,21 +121,7 @@ export default function DesignedAroundNature() {
       aria-labelledby="nature-heading"
       className="relative h-[220svh] lg:h-[250svh]"
     >
-      <div className="sticky top-0 h-svh overflow-hidden bg-[#EFE3D0]">
-        {/* The architectural elevation continues from the Project Glance
-            portal — pinned to the stage so it reads as one fixed drawing
-            behind the whole vision spread. */}
-        <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
-          <div className="relative h-[92svh] w-screen max-w-none opacity-40">
-            <Image
-              src="/building-outline-lines.png"
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-contain"
-            />
-          </div>
-        </div>
+      <div className="sticky top-0 h-svh overflow-hidden">
         <MineralMarks />
         <div className="grain absolute inset-0" aria-hidden="true" />
 

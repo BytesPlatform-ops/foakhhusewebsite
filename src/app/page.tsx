@@ -1,5 +1,6 @@
 import ChapterRail from "@/components/navigation/ChapterRail";
 import VideoHero from "@/components/hero/VideoHero";
+import ElevationBackdrop from "@/components/shared/ElevationBackdrop";
 import ProjectGlance from "@/components/sections/ProjectGlance";
 import DesignedAroundNature from "@/components/sections/DesignedAroundNature";
 import SnakeRoute from "@/components/sections/SnakeRoute";
@@ -21,9 +22,11 @@ export default function HomePage() {
       <ChapterRail />
       <div className="bg-[#F6EBDD] lg:pl-[200px]">
         <VideoHero />
-        <ProjectGlance />
-        <DesignedAroundNature />
-        <SnakeRoute />
+        <ElevationBackdrop>
+          <ProjectGlance />
+          <DesignedAroundNature />
+          <SnakeRoute />
+        </ElevationBackdrop>
         <WindTunnel />
         <ResidencesStory />
         <FoakhLocationSection />

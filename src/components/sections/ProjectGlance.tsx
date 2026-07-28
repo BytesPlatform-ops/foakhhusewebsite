@@ -91,24 +91,7 @@ export default function ProjectGlance() {
       {/* Stage ground is the page's stone — when the window contracts, the
           portal sits on the same surface the next section begins from, so
           the two stages and the following section read as one passage. */}
-      <div className="sticky top-0 h-svh overflow-hidden bg-[#F3ECE4]">
-        {/* Architectural elevation lines in the stone whitespace — fully
-            covered while the scene is full-bleed, revealed as the window
-            contracts around the portal. */}
-        <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
-          {/* Sized so the two drawn blocks clear the portal's edges — the
-              height is the constraint for object-contain at this aspect. */}
-          <div className="relative h-[92svh] w-screen max-w-none opacity-40">
-            <Image
-              src="/building-outline-lines.png"
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-contain"
-            />
-          </div>
-        </div>
-
+      <div className="sticky top-0 h-svh overflow-hidden">
         {/* THE FRAME — full-bleed scene that tightens into a portal */}
         <motion.div className="absolute inset-0" style={{ clipPath: clip }}>
           {/* perspective wrapper: the dolly happens inside real depth */}

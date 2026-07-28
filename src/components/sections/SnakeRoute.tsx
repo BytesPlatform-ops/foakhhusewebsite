@@ -118,7 +118,7 @@ export default function SnakeRoute() {
       aria-labelledby="route-heading"
       className="relative h-[280svh] lg:h-[320svh]"
     >
-      <div className="sticky top-0 h-svh overflow-hidden bg-[#EFE4D2]">
+      <div className="sticky top-0 h-svh overflow-hidden">
         <MineralGround />
         <div className="grain absolute inset-0" aria-hidden="true" />
 

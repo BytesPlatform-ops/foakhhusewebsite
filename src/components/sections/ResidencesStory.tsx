@@ -85,7 +85,7 @@ export default function ResidencesStory() {
       id="residences"
       data-section="residences"
       className="blend-top relative"
-      style={{ "--blend-from": "#125d6a" } as React.CSSProperties}
+      style={{ "--blend-from": "#202522" } as React.CSSProperties}
       aria-labelledby="residences-heading"
     >
       {/* Backdrop stack adopting the active state's surface */}

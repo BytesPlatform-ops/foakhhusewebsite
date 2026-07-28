@@ -4,9 +4,6 @@ import ProjectGlance from "@/components/sections/ProjectGlance";
 import DesignedAroundNature from "@/components/sections/DesignedAroundNature";
 import SnakeRoute from "@/components/sections/SnakeRoute";
 import WindTunnel from "@/components/sections/WindTunnel";
-import SolarGrazing from "@/components/sections/SolarGrazing";
-import SolarHarmony from "@/components/sections/SolarHarmony";
-import WaterPlanning from "@/components/sections/WaterPlanning";
 import ResidencesStory from "@/components/sections/ResidencesStory";
 import TwoBlocks from "@/components/sections/TwoBlocks";
 import Amenities from "@/components/sections/Amenities";
@@ -31,9 +28,6 @@ export default function HomePage() {
         <DesignedAroundNature />
         <SnakeRoute />
         <WindTunnel />
-        <SolarGrazing />
-        <SolarHarmony />
-        <WaterPlanning />
         <ResidencesStory />
         <TwoBlocks />
         <Amenities />

@@ -1,249 +1,438 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 
 /**
- * 03 — Natural Systems: the technical concept, told plainly and
- * premium-ly. Two-column editorial spread over the shared fixed
- * elevation backdrop: LEFT — a composed visual sequence of the real
- * project imagery, each frame chip-labelled with its stage (CAPTURE /
- * CHANNEL / POWER), closed by the four-stage flow strip; RIGHT — the
- * heading, the technical explanation and the four feature blocks that
- * map 1:1 to the stages, ending on the concluding line.
+ * 03 — Natural Systems: the calm diagonal editorial journey — kept —
+ * with the content upgraded in place. Each of the four self-contained
+ * panels now tells one REAL stage of the technical concept: a giant
+ * stage word (CAPTURE / CHANNEL / POWER / COMFORT, matching the rail),
+ * real project imagery in the frame pair (no placeholders), a feature
+ * title and a fuller, technically grounded caption. The section
+ * heading and intro ride the stage top-right and hand off to the
+ * journey as the track begins to move.
  *
- * No pin, no floating words, no placeholders — calm whileInView
- * reveals only. All performance statements framed as planned/intended.
+ * Native vertical scroll glides the track right and down the diagonal
+ * over the shared fixed elevation backdrop. The final panel carries
+ * the concluding line and CTA. Reduced motion renders a static spread.
  */
 
 const INK = "#211A17";
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const STAGES = ["Capture", "Channel", "Power", "Comfort"];
+interface Panel {
+  word: string;
+  title: string;
+  caption: string;
+  src: string;
+  alt: string;
+  srcSmall: string;
+  altSmall: string;
+  objectPosition?: string;
+}
 
-const FEATURES = [
+const PANELS: Panel[] = [
   {
-    num: "01",
+    word: "CAPTURE",
     title: "Natural Air Capture",
-    copy: "High-velocity natural wind is intended to be captured through a dedicated wind-catching system at the crown of the building.",
+    caption:
+      "High-velocity natural wind is intended to be captured through a dedicated wind-catching system at the crown of the building.",
+    src: "/env-air.jpg",
+    alt: "High natural airflow moving through the sunlit terracotta opening of the wind catcher",
+    srcSmall: "/env-context.jpg",
+    altSmall: "The development within its wider landscape, open to the prevailing wind",
+    objectPosition: "60% 40%",
   },
   {
-    num: "02",
+    word: "CHANNEL",
     title: "Corridor Distribution",
-    copy: "Captured air is guided through internal corridors, elevator lobbies and shared circulation zones.",
+    caption:
+      "Captured air is guided through internal corridors, elevator lobbies and shared circulation zones.",
+    src: "/route-corridor.jpg",
+    alt: "Air guided along the warm interior corridor toward the light",
+    srcSmall: "/route-exterior.jpg",
+    altSmall: "The building's circulation spine seen from above",
+    objectPosition: "50% 42%",
   },
   {
-    num: "03",
+    word: "POWER",
     title: "Renewable Energy Support",
-    copy: "Rooftop wind turbines and solar panels are planned to support cleaner electricity generation for selected building requirements.",
+    caption:
+      "Rooftop wind turbines and solar panels are planned to support cleaner electricity generation for selected building requirements.",
+    src: "/route-solar.jpg",
+    alt: "Low-angle rooftop solar panels within the terracotta architecture",
+    srcSmall: "/env-solar.jpg",
+    altSmall: "Solar cells catching the late sun on the roof terrace",
   },
   {
-    num: "04",
+    word: "COMFORT.",
     title: "Everyday Comfort",
-    copy: "Together, these systems are intended to improve ventilation, reduce heat buildup and support more comfortable daily living.",
+    caption:
+      "Together, these systems are intended to improve ventilation, reduce heat buildup and support more comfortable daily living.",
+    src: "/route-comfort.jpg",
+    alt: "Residents greeting in the warm sheltered court",
+    srcSmall: "/hero-poster.jpg",
+    altSmall: "Evening elevation of the residences",
+    objectPosition: "50% 38%",
   },
 ];
 
+const RAIL = [
+  { label: "Capture", range: [0.04, 0.26] as const },
+  { label: "Channel", range: [0.26, 0.5] as const },
+  { label: "Power", range: [0.5, 0.72] as const },
+  { label: "Comfort", range: [0.72, 1.01] as const },
+];
+
 export default function SnakeRoute() {
+  const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const rise = (delay = 0) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 26 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, amount: 0.25 },
-          transition: { duration: 0.75, delay, ease: EASE },
-        };
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const p = useSpring(scrollYProgress, { stiffness: 110, damping: 30, mass: 0.35 });
+
+  /* gentle diagonal glide — right and down */
+  const trackX = useTransform(p, [0.04, 0.9], ["0vw", "-150vw"]);
+  const trackY = useTransform(p, [0.04, 0.9], ["0svh", "-26svh"]);
+
+  /* words emphasise at each panel's focal window */
+  const w1 = useTransform(p, [0, 0.2, 0.3], [1, 1, 0.25]);
+  const w2 = useTransform(p, [0.18, 0.26, 0.4, 0.48], [0.25, 1, 1, 0.25]);
+  const w3 = useTransform(p, [0.46, 0.54, 0.68, 0.76], [0.25, 1, 1, 0.25]);
+  const w4 = useTransform(p, [0.74, 0.84, 1], [0.25, 1, 1]);
+  const wordOps = [w1, w2, w3, w4];
+
+  /* whole panels fade in on approach and OUT before exiting the frame */
+  const p1 = useTransform(p, [0, 0.3, 0.38], [1, 1, 0]);
+  const p2 = useTransform(p, [0.1, 0.16, 0.5, 0.58], [0, 1, 1, 0]);
+  const p3 = useTransform(p, [0.36, 0.42, 0.74, 0.82], [0, 1, 1, 0]);
+  const p4 = useTransform(p, [0.66, 0.72, 1], [0, 1, 1]);
+  const panelOps = [p1, p2, p3, p4];
+  const ctaOp = useTransform(p, [0.8, 0.9], [0, 1]);
+  const railDotTop = useTransform(p, [0.04, 1], ["24%", "72%"]);
+
+  /* the heading + intro hold the top-right, then hand off to the journey */
+  const introOp = useTransform(p, [0, 0.1, 0.18], [1, 1, 0]);
+  const introY = useTransform(p, [0.1, 0.18], ["0svh", "-3svh"]);
+
+  if (reduced) return <StaticSpread />;
 
   return (
     <section
       id="route"
+      ref={sectionRef}
       data-section="route"
       aria-labelledby="route-heading"
-      className="relative py-(--spacing-section)"
+      className="relative h-[280svh] lg:h-[320svh]"
     >
-      <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
-        <div className="grid items-start gap-14 lg:grid-cols-[1.08fr_1fr] lg:gap-16">
-          {/* ==================== LEFT — the visual sequence =========== */}
-          <div className="order-2 lg:order-1">
-            <motion.p
-              {...rise(0)}
-              className="text-[0.62rem] font-semibold tracking-[0.28em] uppercase"
-              style={{ color: "#943F2D" }}
-            >
-              The wind-corridor concept
-            </motion.p>
+      <div className="sticky top-0 h-svh overflow-hidden">
+        <MineralGround />
+        <div className="grain absolute inset-0" aria-hidden="true" />
 
-            {/* composed frames — real project imagery, stage-labelled */}
-            <div className="relative mt-6 pr-[10%] pb-16 lg:pb-20">
-              {/* main frame — CAPTURE */}
-              <motion.figure
-                {...rise(0.08)}
-                className="relative overflow-hidden rounded-[20px] border border-[#D8B36A]/50 bg-[#FFF8EF] p-1.5 shadow-[0_32px_64px_-34px_rgba(148,63,45,0.45)]"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[14px]">
-                  <Image
-                    src="/env-air.jpg"
-                    alt="High natural airflow moving through the sunlit terracotta opening of the wind catcher"
-                    fill
-                    sizes="(min-width:1024px) 44vw, 92vw"
-                    className="object-cover"
-                    style={{ objectPosition: "60% 40%" }}
-                  />
-                  <StageChip>01 · Capture</StageChip>
-                </div>
-              </motion.figure>
+        <p className="absolute top-[5%] left-[8%] z-40 text-[0.62rem] font-medium tracking-[0.3em] text-[#943F2D] uppercase lg:left-[7.5rem]">
+          03 — Natural Systems
+        </p>
+        <h2 id="route-heading" className="sr-only">
+          A building that works with its environment — from natural force to everyday comfort
+        </h2>
 
-              {/* secondary frame — POWER, overlapping lower-right */}
-              <motion.figure
-                {...rise(0.2)}
-                className="absolute right-0 -bottom-2 w-[46%] rotate-[1.6deg] overflow-hidden rounded-[16px] border border-[#D8B36A]/50 bg-[#FFF8EF] p-1.5 shadow-[0_26px_52px_-28px_rgba(148,63,45,0.5)] lg:-bottom-4"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[11px]">
-                  <Image
-                    src="/route-solar.jpg"
-                    alt="Rooftop solar panels within the terracotta architecture"
-                    fill
-                    sizes="22vw"
-                    className="object-cover"
-                  />
-                  <StageChip>03 · Power</StageChip>
-                </div>
-              </motion.figure>
+        {/* heading + intro — present at the start, gone as the journey moves */}
+        <motion.div
+          aria-hidden="true"
+          className="absolute top-[9%] right-[6%] z-30 hidden max-w-md text-right lg:block"
+          style={{ opacity: introOp, y: introY }}
+        >
+          <p
+            className="font-display leading-[1.1] text-balance"
+            style={{ color: INK, fontSize: "clamp(1.9rem,2.4vw,2.6rem)", fontWeight: 500 }}
+          >
+            A building that works with its environment.
+          </p>
+          <p className="mt-3 ml-auto max-w-sm text-[0.85rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.7)" }}>
+            Natural airflow, renewable-energy planning and modern family living, brought into
+            one carefully considered development.
+          </p>
+        </motion.div>
 
-              {/* small frame — CHANNEL, mid-left */}
-              <motion.figure
-                {...rise(0.14)}
-                className="absolute top-[46%] -left-2 w-[34%] -rotate-[1.8deg] overflow-hidden rounded-[14px] border border-[#D8B36A]/50 bg-[#FFF8EF] p-1 shadow-[0_22px_44px_-26px_rgba(148,63,45,0.5)] lg:-left-5"
-              >
-                <div className="relative aspect-[3/4] overflow-hidden rounded-[10px]">
-                  <Image
-                    src="/route-corridor.jpg"
-                    alt="Air guided along the warm interior corridor"
-                    fill
-                    sizes="16vw"
-                    className="object-cover"
-                    style={{ objectPosition: "50% 42%" }}
-                  />
-                  <StageChip>02 · Channel</StageChip>
-                </div>
-              </motion.figure>
-            </div>
-
-            {/* the four-stage flow strip */}
-            <motion.div {...rise(0.26)} className="mt-10 lg:mt-14">
-              <ol
-                className="flex flex-wrap items-center gap-x-3 gap-y-2"
-                aria-label="The four stages of the natural system"
-              >
-                {STAGES.map((stage, i) => (
-                  <li key={stage} className="flex items-center gap-3">
-                    <span className="flex items-baseline gap-2">
-                      <span className="text-[0.62rem] font-semibold tabular-nums" style={{ color: "#943F2D" }}>
-                        0{i + 1}
-                      </span>
-                      <span className="text-[0.68rem] font-semibold tracking-[0.24em] uppercase" style={{ color: INK }}>
-                        {stage}
-                      </span>
-                    </span>
-                    {i < STAGES.length - 1 && (
-                      <span aria-hidden="true" className="h-px w-7" style={{ background: "rgba(148,63,45,0.4)" }} />
-                    )}
-                  </li>
-                ))}
-              </ol>
-              <p className="mt-3 max-w-md text-[0.8rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.62)" }}>
-                Natural wind reaches the site, the wind catcher captures and directs it, planned
-                renewable systems support electricity generation, and residents experience the
-                result as everyday comfort.
-              </p>
-            </motion.div>
-          </div>
-
-          {/* ==================== RIGHT — the explanation ============== */}
-          <div className="order-1 lg:order-2">
-            <motion.p
-              {...rise(0)}
-              className="text-[0.65rem] font-medium tracking-[0.3em] uppercase"
-              style={{ color: "#943F2D" }}
-            >
-              03 — Natural Systems
-            </motion.p>
-            <motion.h2
-              {...rise(0.06)}
-              id="route-heading"
-              className="font-display mt-5 max-w-[16ch] leading-[1.08] text-balance"
-              style={{ color: INK, fontSize: "clamp(2.2rem,3vw,3.2rem)", fontWeight: 500 }}
-            >
-              A building that works with its environment.
-            </motion.h2>
-            <motion.p
-              {...rise(0.12)}
-              className="mt-6 max-w-xl text-[1rem] leading-[1.7]"
-              style={{ color: "rgba(33,26,23,0.8)" }}
-            >
-              The Wind Corridor Residences brings natural airflow, renewable-energy planning and
-              modern family living into one carefully considered development.
-            </motion.p>
-            <motion.p
-              {...rise(0.16)}
-              className="mt-4 max-w-xl text-[0.9rem] leading-[1.7]"
-              style={{ color: "rgba(33,26,23,0.66)" }}
-            >
-              High-velocity natural air reaches the development first. A dedicated wind catcher
-              is designed to capture that airflow and guide it through the building&rsquo;s internal
-              corridors and shared circulation spaces — while rooftop wind and solar systems are
-              planned to support cleaner electricity generation.
-            </motion.p>
-
-            {/* the four feature blocks — one coherent card system */}
-            <div className="mt-9 grid gap-4 sm:grid-cols-2">
-              {FEATURES.map((f, i) => (
-                <motion.article
-                  key={f.num}
-                  {...rise(0.18 + i * 0.08)}
-                  className="rounded-[16px] border border-[#D8B36A]/45 bg-[#FFF8EF]/92 p-5 shadow-[0_18px_38px_-24px_rgba(148,63,45,0.35)] backdrop-blur-[2px]"
-                >
-                  <p className="flex items-baseline gap-2.5">
-                    <span className="text-[0.66rem] font-semibold tabular-nums" style={{ color: "#C75B3B" }}>
-                      {f.num}
-                    </span>
-                    <span className="font-display text-[1.05rem] leading-snug font-medium" style={{ color: INK }}>
-                      {f.title}
-                    </span>
-                  </p>
-                  <p className="mt-2.5 text-[0.8rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.68)" }}>
-                    {f.copy}
-                  </p>
-                </motion.article>
-              ))}
-            </div>
-
-            {/* concluding line */}
-            <motion.p
-              {...rise(0.5)}
-              className="font-display mt-9 text-[1.25rem] italic"
-              style={{ color: "#943F2D" }}
-            >
-              From natural force to everyday comfort.
-            </motion.p>
-          </div>
+        {/* section-local vertical rail */}
+        <div className="absolute inset-y-0 left-0 z-40 hidden w-[4.5rem] flex-col items-center justify-center gap-10 border-r border-[#171311]/10 bg-[#F7F1E7]/85 lg:flex">
+          {RAIL.map((r) => (
+            <RailLabel key={r.label} label={r.label} range={r.range} progress={p} />
+          ))}
+          <motion.span
+            className="absolute left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-[#943F2D]"
+            style={{ top: railDotTop }}
+          />
         </div>
+        <div className="absolute top-[5%] right-[5%] z-40 lg:hidden">
+          {RAIL.map((r, i) => (
+            <MobileRailLabel key={r.label} label={r.label} index={i} range={r.range} progress={p} />
+          ))}
+        </div>
+
+        {/* ==================== THE DIAGONAL TRACK ==================== */}
+        <motion.div
+          className="absolute top-0 left-0 h-[160svh] w-[240vw]"
+          style={{ x: trackX, y: trackY }}
+        >
+          {[
+            { left: "8vw", top: "18svh" },
+            { left: "58vw", top: "30svh" },
+            { left: "108vw", top: "44svh" },
+            { left: "158vw", top: "58svh" },
+          ].map((pos, i) => (
+            <JourneyPanel
+              key={PANELS[i].word}
+              panel={PANELS[i]}
+              index={i}
+              wordOp={wordOps[i]}
+              panelOp={panelOps[i]}
+              style={pos}
+              isLast={i === 3}
+              ctaOp={ctaOp}
+            />
+          ))}
+        </motion.div>
       </div>
     </section>
   );
 }
 
-/* --------------------------------------------------------------------- */
+/* ---------------------------------------------------------- the panel --- */
 
-function StageChip({ children }: { children: React.ReactNode }) {
+/**
+ * Self-contained editorial unit: everything anchors to the panel itself,
+ * so word/image/caption relationships are identical at every viewport.
+ */
+function JourneyPanel({
+  panel,
+  index,
+  wordOp,
+  panelOp,
+  style,
+  isLast,
+  ctaOp,
+}: {
+  panel: Panel;
+  index: number;
+  wordOp: MotionValue<number>;
+  panelOp: MotionValue<number>;
+  style: React.CSSProperties;
+  isLast: boolean;
+  ctaOp: MotionValue<number>;
+}) {
   return (
-    <span
-      className="absolute bottom-2.5 left-2.5 rounded-full border border-[#D8B36A]/70 bg-[#FFF8EF]/95 px-3 py-1 text-[0.55rem] font-bold tracking-[0.2em] uppercase"
-      style={{ color: "#211A17" }}
+    <motion.div className="absolute" style={{ ...style, opacity: panelOp }}>
+      <div className="relative">
+        {/* giant stage word — behind the frames, crossing their top edge */}
+        <motion.p
+          aria-hidden="true"
+          className="font-display absolute -top-[0.5em] left-[22%] z-0 leading-none font-medium whitespace-nowrap"
+          style={{ color: INK, opacity: wordOp, fontSize: "clamp(2.4rem,5.8vw,5.2rem)" }}
+        >
+          {panel.word}
+        </motion.p>
+
+        {/* frame pair — primary + small offset companion, real imagery */}
+        <div className="relative z-10 flex items-start gap-[1.2vw]">
+          <Frame
+            src={panel.src}
+            alt={panel.alt}
+            objectPosition={panel.objectPosition}
+            sizes="24vw"
+            className="h-[32svh] w-[23vw] min-w-56"
+          />
+          <Frame
+            src={panel.srcSmall}
+            alt={panel.altSmall}
+            sizes="10vw"
+            className="mt-[17svh] h-[14svh] w-[9.5vw] min-w-28"
+          />
+        </div>
+
+        {/* stage number + feature title + caption; final panel adds CTA */}
+        <div className="mt-4 max-w-72">
+          <p className="flex items-baseline gap-2">
+            <span className="text-[0.62rem] font-semibold tabular-nums" style={{ color: "#C75B3B" }}>
+              0{index + 1}
+            </span>
+            <span className="font-display text-[1.05rem] leading-snug font-medium" style={{ color: INK }}>
+              {panel.title}
+            </span>
+          </p>
+          <p className="mt-1.5 text-[0.78rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.7)" }}>
+            {panel.caption}
+          </p>
+          {isLast && (
+            <motion.div className="mt-4" style={{ opacity: ctaOp }}>
+              <p className="font-display text-lg leading-snug italic" style={{ color: "#943F2D" }}>
+                From natural force to everyday comfort.
+              </p>
+              <a
+                href="#wind"
+                className="mt-4 inline-block rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#211A17]"
+              >
+                Explore Renewable Systems
+              </a>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/** Real project imagery in the journey frame — warm mat, champagne edge. */
+function Frame({
+  src,
+  alt,
+  sizes,
+  objectPosition,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+  objectPosition?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-[10px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1 shadow-[0_24px_48px_-28px_rgba(148,63,45,0.45)] ${className}`}
     >
-      {children}
-    </span>
+      <div className="relative h-full w-full overflow-hidden rounded-[7px]">
+        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" style={{ objectPosition }} />
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------- helpers -- */
+
+function RailLabel({
+  label,
+  range,
+  progress,
+}: {
+  label: string;
+  range: readonly [number, number];
+  progress: MotionValue<number>;
+}) {
+  const [a, b] = range;
+  const opacity = useTransform(progress, [a - 0.03, a, b, b + 0.03], [0.28, 1, 1, 0.28]);
+  return (
+    <motion.span
+      className="text-[0.6rem] font-medium tracking-[0.3em] text-[#171311] uppercase"
+      style={{ opacity, writingMode: "vertical-rl", rotate: 180 }}
+    >
+      {label}
+    </motion.span>
+  );
+}
+
+function MobileRailLabel({
+  label,
+  index,
+  range,
+  progress,
+}: {
+  label: string;
+  index: number;
+  range: readonly [number, number];
+  progress: MotionValue<number>;
+}) {
+  const [a, b] = range;
+  const opacity = useTransform(progress, [a - 0.02, a, b, b + 0.02], [0, 1, 1, 0]);
+  return (
+    <motion.span
+      className="absolute top-0 right-0 text-[0.6rem] font-medium tracking-[0.22em] whitespace-nowrap text-[#171311]/80 uppercase"
+      style={{ opacity }}
+    >
+      0{index + 1} / 04 — {label}
+    </motion.span>
+  );
+}
+
+/** near-invisible mineral marks */
+function MineralGround() {
+  return (
+    <svg aria-hidden="true" className="absolute inset-0 h-full w-full">
+      <filter id="rt-marks">
+        <feTurbulence type="fractalNoise" baseFrequency="0.0035 0.0055" numOctaves="2" seed="9" />
+        <feColorMatrix values="0 0 0 0 0.32  0 0 0 0 0.22  0 0 0 0 0.14  0 0 0 -1.15 1.06" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#rt-marks)" opacity="0.05" />
+    </svg>
+  );
+}
+
+/* -------------------------------------------------- reduced motion ------ */
+
+function StaticSpread() {
+  return (
+    <section
+      id="route"
+      data-section="route"
+      aria-labelledby="route-heading"
+      className="relative overflow-hidden bg-[#F6EBDD] py-24"
+    >
+      <MineralGround />
+      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
+        <p className="text-[0.62rem] font-medium tracking-[0.3em] text-[#943F2D] uppercase">
+          03 — Natural Systems
+        </p>
+        <h2
+          id="route-heading"
+          className="font-display mt-6 max-w-[15ch] text-[clamp(2.4rem,6vw,5.4rem)] leading-[1.02] font-medium text-[#211A17]"
+        >
+          A building that works with its environment.
+        </h2>
+        <p className="mt-5 max-w-md text-[0.9rem] leading-relaxed text-[#211A17]/75">
+          Natural airflow, renewable-energy planning and modern family living, brought into one
+          carefully considered development.
+        </p>
+        <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
+          {PANELS.map((panel, i) => (
+            <figure key={panel.word}>
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[10px] border border-[#D8B36A]/55">
+                <Image
+                  src={panel.src}
+                  alt={panel.alt}
+                  fill
+                  sizes="(min-width:768px) 24vw, 46vw"
+                  className="object-cover"
+                  style={{ objectPosition: panel.objectPosition }}
+                />
+              </div>
+              <figcaption className="mt-2">
+                <span className="block text-[0.6rem] tracking-[0.24em] text-[#211A17]/80 uppercase">
+                  0{i + 1} — {panel.title}
+                </span>
+                <span className="mt-1 block text-[0.72rem] leading-relaxed text-[#211A17]/65">
+                  {panel.caption}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <a
+          href="#wind"
+          className="mt-8 inline-block rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#211A17]"
+        >
+          Explore Renewable Systems
+        </a>
+      </div>
+    </section>
   );
 }

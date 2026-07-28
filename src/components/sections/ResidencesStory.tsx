@@ -54,6 +54,8 @@ interface DeckSpec {
   rotate: number;
   z: number;
   quality: Quality | null;
+  /** ambient stage glow while this card holds centre */
+  accent: string;
   objectPosition?: string;
 }
 
@@ -71,6 +73,7 @@ const DECK: DeckSpec[] = [
     rotate: 0,
     z: 20,
     quality: null,
+    accent: "198 164 107",
   },
   {
     kind: "image",
@@ -89,6 +92,7 @@ const DECK: DeckSpec[] = [
       title: "Living Spaces",
       copy: "Generous, well-proportioned rooms where daylight crosses the floor — designed to hold real family life.",
     },
+    accent: "213 155 84",
     objectPosition: "50% 42%",
   },
   {
@@ -108,6 +112,7 @@ const DECK: DeckSpec[] = [
       title: "Private Balconies",
       copy: "Residences open outward with quieter outdoor moments, private views and a stronger sense of personal space.",
     },
+    accent: "135 147 131",
     objectPosition: "60% 40%",
   },
   {
@@ -127,6 +132,7 @@ const DECK: DeckSpec[] = [
       title: "Natural Light",
       copy: "Thoughtful orientation helps sunlight move through the home, supporting warmth, calm and everyday comfort.",
     },
+    accent: "111 155 152",
     objectPosition: "50% 30%",
   },
   {
@@ -146,6 +152,7 @@ const DECK: DeckSpec[] = [
       title: "Everyday Comfort",
       copy: "Layouts shaped for practical living — not just visual appeal — with space that feels flexible, usable and refined.",
     },
+    accent: "213 155 84",
     objectPosition: "50% 38%",
   },
 ];
@@ -177,8 +184,17 @@ export default function ResidencesStory() {
       ref={sectionRef}
       data-section="residences"
       aria-labelledby="residences-heading"
-      className="mineral-clay grain blend-top relative"
-      style={{ "--blend-from": "#202522" } as React.CSSProperties}
+      className="grain blend-top relative"
+      style={
+        {
+          "--blend-from": "#202522",
+          background:
+            "radial-gradient(85% 60% at 72% 24%, rgb(213 155 84 / 0.30) 0%, transparent 58%)," +
+            "radial-gradient(75% 55% at 22% 78%, rgb(41 67 56 / 0.38) 0%, transparent 62%)," +
+            "radial-gradient(60% 45% at 50% 50%, rgb(198 164 107 / 0.16) 0%, transparent 70%)," +
+            "linear-gradient(175deg, #2A211C 0%, #7A4B34 26%, #A05C3D 52%, #6E4230 80%, #32271F 100%)",
+        } as React.CSSProperties
+      }
     >
       {/* ------------------------------------------------ pinned stage -- */}
       <div className="relative hidden lg:block lg:h-[420svh]">
@@ -186,7 +202,7 @@ export default function ResidencesStory() {
           {/* eyebrow — quiet, upper-left, always present */}
           <p
             className="absolute top-[7%] left-[6%] z-30 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
-            style={{ color: "rgba(247,240,232,0.75)" }}
+            style={{ color: "#E7C892" }}
           >
             03 — The Residences
           </p>
@@ -200,7 +216,7 @@ export default function ResidencesStory() {
             <motion.p
               className="font-display absolute left-[3.5%] whitespace-nowrap uppercase"
               style={{
-                color: IVORY,
+                color: "#EFD5A3",
                 fontSize: "clamp(2.9rem,4.9vw,5.6rem)",
                 lineHeight: 1,
                 letterSpacing: "-0.01em",
@@ -214,7 +230,7 @@ export default function ResidencesStory() {
             <motion.p
               className="font-display absolute right-[3.5%] whitespace-nowrap uppercase"
               style={{
-                color: "rgba(247,240,232,0.62)",
+                color: "rgba(224,193,148,0.72)",
                 fontSize: "clamp(2.9rem,4.9vw,5.6rem)",
                 lineHeight: 1,
                 letterSpacing: "-0.01em",
@@ -238,6 +254,10 @@ export default function ResidencesStory() {
               </li>
             ))}
           </ul>
+
+          {/* per-beat ambient glow — the stage light shifts with each card */}
+          {!reduced &&
+            DECK.map((spec) => <AccentGlow key={`glow-${spec.src}`} spec={spec} p={p} />)}
 
           {/* the rising deck — each card travels up and covers the last */}
           {(reduced ? DECK.slice(0, 1) : DECK).map((spec) => (
@@ -288,17 +308,17 @@ export default function ResidencesStory() {
 
       {/* -------------------------------------------- mobile / reduced -- */}
       <div className="px-(--spacing-gutter) pt-24 lg:hidden">
-        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "rgba(247,240,232,0.75)" }}>
+        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#E7C892" }}>
           03 — The Residences
         </p>
         <p
           className="font-display mt-5 uppercase"
-          style={{ color: IVORY, fontSize: "clamp(2.3rem,9.5vw,3.6rem)", lineHeight: 1.02, fontWeight: 600 }}
+          style={{ color: "#EFD5A3", fontSize: "clamp(2.3rem,9.5vw,3.6rem)", lineHeight: 1.02, fontWeight: 600 }}
           aria-hidden="true"
         >
           Homes made
           <br />
-          <span style={{ color: "rgba(247,240,232,0.62)" }}>for real life.</span>
+          <span style={{ color: "rgba(224,193,148,0.72)" }}>for real life.</span>
         </p>
         <div className="relative mx-auto mt-10 w-full max-w-sm overflow-hidden rounded-xl shadow-[0_40px_80px_-40px_rgba(26,16,11,0.7)]">
           <FilmMedia reduced={!!reduced} />
@@ -318,7 +338,7 @@ export default function ResidencesStory() {
                 />
               </figure>
               <div className="mt-4 flex items-baseline gap-3">
-                <span className="text-[0.68rem] font-semibold tabular-nums" style={{ color: "rgba(247,240,232,0.65)" }}>
+                <span className="text-[0.68rem] font-semibold tabular-nums" style={{ color: "#F0B269" }}>
                   {d.quality!.num}
                 </span>
                 <span className="font-display text-[1.2rem] font-medium" style={{ color: IVORY }}>
@@ -344,6 +364,27 @@ export default function ResidencesStory() {
 }
 
 /* -------------------------------------------------------------- deck -- */
+
+/** A soft colour wash that breathes in while its card holds centre. */
+function AccentGlow({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
+  const [s, e] = spec.rise;
+  const cover = spec.cover;
+  const opacity = useTransform(
+    p,
+    cover ? [s, e, cover[0], cover[1]] : [s, e],
+    cover ? [0, 1, 1, 0] : [0, 1]
+  );
+  return (
+    <motion.div
+      aria-hidden="true"
+      className="absolute top-1/2 left-1/2 z-[5] h-[80svh] w-[62vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+      style={{
+        opacity,
+        background: `radial-gradient(closest-side, rgb(${spec.accent} / 0.34) 0%, rgb(${spec.accent} / 0.1) 55%, transparent 75%)`,
+      }}
+    />
+  );
+}
 
 function DeckCard({
   spec,
@@ -443,7 +484,7 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
         className="absolute top-1/2 left-[6%] w-[21vw] max-w-[21rem]"
         style={{ opacity, x: headX, y: "-50%" }}
       >
-        <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#E7C892" }}>
+        <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#F0B269" }}>
           {q.num}
         </p>
         <p
@@ -452,7 +493,7 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
         >
           {q.title}
         </p>
-        <span className="mt-4 block h-px w-12" style={{ background: "rgba(247,240,232,0.4)" }} />
+        <span className="mt-4 block h-px w-12" style={{ background: "rgba(240,178,105,0.65)" }} />
       </motion.div>
 
       {/* copy — right gutter */}
@@ -460,7 +501,7 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
         className="absolute top-1/2 right-[6%] w-[19vw] max-w-[19rem]"
         style={{ opacity, x: copyX, y: "-50%" }}
       >
-        <p className="text-[0.92rem] leading-[1.7]" style={{ color: "rgba(247,240,232,0.85)" }}>
+        <p className="text-[0.92rem] leading-[1.7]" style={{ color: "rgba(248,236,218,0.9)" }}>
           {q.copy}
         </p>
       </motion.div>

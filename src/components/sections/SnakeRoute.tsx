@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -12,28 +11,68 @@ import {
 } from "framer-motion";
 
 /**
- * 03 — Natural Systems: a DIAGONAL HORIZONTAL scroll gallery.
+ * 03 — Natural Systems: a calm diagonal editorial journey.
  *
- * Native vertical scrolling drives a wide track that travels right AND
- * down the supplied sketch's diagonal (upper-left -> lower-right). Four
- * editorial panels ride the track — exterior force, corridor capture,
- * solar power, comfort + CTA — with oversized serif words overlapping
- * the photographic frames (words behind frames, slices in front). The
- * section-local vertical rail (CAPTURE / CHANNEL / POWER / LIVE) tracks
- * progress; frame media counter-drift slightly for depth.
+ * Rebuilt after review: the previous large film-still frames, diagonal
+ * guide line and teal connector are removed. Each of the four panels is
+ * now a SELF-CONTAINED composition — a small primary image container, a
+ * tiny offset companion container, one giant serif word crossing the
+ * container's top edge, and a short caption — all anchored panel-locally
+ * (em/% of the panel, never viewport units), so nothing can drift into
+ * collisions on wider or shorter screens. Containers are styled
+ * placeholders awaiting the client's images; drop a file and wire its
+ * name into PANELS to fill a slot.
  *
- * No wheel interception — the sticky stage only holds while the track
- * travels. Media are film stills, swap-ready by filename when approved
- * images arrive. Reduced motion renders the static spread.
+ * Native vertical scroll glides the track right and down the diagonal.
+ * Panels are spaced so one or two are always composing the frame. The
+ * final panel carries the copy and CTA. Reduced motion renders a static
+ * spread.
  */
 
 const INK = "#171311";
 
+interface Panel {
+  word: string;
+  caption: string;
+  /** placeholder tones for the two containers */
+  tonePrimary: string;
+  toneSmall: string;
+  /** optional media — filename in /public once the client supplies it */
+  src?: string;
+}
+
+const PANELS: Panel[] = [
+  {
+    word: "FORCE",
+    caption: "High-velocity natural air reaches the development first.",
+    tonePrimary: "#E2D3BC",
+    toneSmall: "#CBCFC1",
+  },
+  {
+    word: "CAPTURED",
+    caption: "Guided through corridors, lobbies and shared circulation.",
+    tonePrimary: "#DCC5B0",
+    toneSmall: "#E2D3BC",
+  },
+  {
+    word: "SUNLIGHT",
+    caption: "Turbines and rooftop solar planned to work together.",
+    tonePrimary: "#CBCFC1",
+    toneSmall: "#DCC5B0",
+  },
+  {
+    word: "COMFORT.",
+    caption: "Wind, sunlight and thoughtful planning brought together across one carefully considered development.",
+    tonePrimary: "#E2D3BC",
+    toneSmall: "#CBCFC1",
+  },
+];
+
 const RAIL = [
-  { label: "Capture", range: [0.05, 0.3] as const },
-  { label: "Channel", range: [0.3, 0.55] as const },
-  { label: "Power", range: [0.55, 0.78] as const },
-  { label: "Live", range: [0.78, 1.01] as const },
+  { label: "Capture", range: [0.04, 0.26] as const },
+  { label: "Channel", range: [0.26, 0.5] as const },
+  { label: "Power", range: [0.5, 0.72] as const },
+  { label: "Live", range: [0.72, 1.01] as const },
 ];
 
 export default function SnakeRoute() {
@@ -46,25 +85,28 @@ export default function SnakeRoute() {
   });
   const p = useSpring(scrollYProgress, { stiffness: 110, damping: 30, mass: 0.35 });
 
-  /* The diagonal travel: right AND down together. */
-  const trackX = useTransform(p, [0.04, 0.9], ["0vw", "-168vw"]);
-  const trackY = useTransform(p, [0.04, 0.9], ["0vh", "-54vh"]);
+  /* gentle diagonal glide — right and down */
+  const trackX = useTransform(p, [0.04, 0.9], ["0vw", "-150vw"]);
+  const trackY = useTransform(p, [0.04, 0.9], ["0svh", "-26svh"]);
 
-  /* subtle counter-drift inside frames for depth */
-  const drift1 = useTransform(p, [0, 0.4], ["0%", "6%"]);
-  const drift2 = useTransform(p, [0.15, 0.6], ["-4%", "4%"]);
-  const drift3 = useTransform(p, [0.4, 0.85], ["-4%", "4%"]);
-  const drift4 = useTransform(p, [0.6, 1], ["-5%", "3%"]);
+  /* words emphasise at each panel's focal window */
+  const w1 = useTransform(p, [0, 0.2, 0.3], [1, 1, 0.25]);
+  const w2 = useTransform(p, [0.18, 0.26, 0.4, 0.48], [0.25, 1, 1, 0.25]);
+  const w3 = useTransform(p, [0.46, 0.54, 0.68, 0.76], [0.25, 1, 1, 0.25]);
+  const w4 = useTransform(p, [0.74, 0.84, 1], [0.25, 1, 1]);
+  const wordOps = [w1, w2, w3, w4];
 
-  /* active word states along the journey */
-  const wForce = useTransform(p, [0, 0.24, 0.34], [1, 1, 0.06]);
-  const wCapture = useTransform(p, [0.22, 0.3, 0.5, 0.58], [0.07, 1, 1, 0.06]);
-  const wSunlight = useTransform(p, [0.5, 0.58, 0.74, 0.82], [0.07, 1, 1, 0.05]);
-  const wComfort = useTransform(p, [0.74, 0.82, 1], [0.07, 1, 1]);
-  const energyScale = useTransform(p, [0.56, 0.68], [0, 1]);
-  const energyOpacity = useTransform(p, [0.56, 0.6, 0.72, 0.76], [0, 0.9, 0.9, 0]);
-  const ctaOpacity = useTransform(p, [0.84, 0.93], [0, 1]);
-  const railDotTop = useTransform(p, [0.05, 1], ["24%", "72%"]);
+  /* whole panels fade in on approach and OUT before exiting the frame —
+     no more full-opacity fragments riding the viewport edges */
+  // Windows overlap so at least one panel is always at FULL opacity —
+  // handoffs never leave the frame washed out.
+  const p1 = useTransform(p, [0, 0.3, 0.38], [1, 1, 0]);
+  const p2 = useTransform(p, [0.1, 0.16, 0.5, 0.58], [0, 1, 1, 0]);
+  const p3 = useTransform(p, [0.36, 0.42, 0.74, 0.82], [0, 1, 1, 0]);
+  const p4 = useTransform(p, [0.66, 0.72, 1], [0, 1, 1]);
+  const panelOps = [p1, p2, p3, p4];
+  const ctaOp = useTransform(p, [0.8, 0.9], [0, 1]);
+  const railDotTop = useTransform(p, [0.04, 1], ["24%", "72%"]);
 
   if (reduced) return <StaticSpread />;
 
@@ -74,7 +116,7 @@ export default function SnakeRoute() {
       ref={sectionRef}
       data-section="route"
       aria-labelledby="route-heading"
-      className="relative h-[300svh] lg:h-[340svh]"
+      className="relative h-[280svh] lg:h-[320svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden bg-[#EFE4D2]">
         <MineralGround />
@@ -105,166 +147,107 @@ export default function SnakeRoute() {
 
         {/* ==================== THE DIAGONAL TRACK ==================== */}
         <motion.div
-          className="absolute top-0 left-0 h-[170svh] w-[260vw]"
+          className="absolute top-0 left-0 h-[160svh] w-[240vw]"
           style={{ x: trackX, y: trackY }}
         >
-          {/* faint diagonal guide line behind everything */}
-          <svg
-            aria-hidden="true"
-            className="absolute inset-0 h-full w-full"
-            viewBox="0 0 260 170"
-            preserveAspectRatio="none"
-          >
-            <path d="M 14 22 L 246 142" stroke="#171311" strokeWidth="0.08" opacity="0.25" />
-          </svg>
-
-          {/* -------- PANEL 1 · NATURAL FORCE (exterior) --------------- */}
-          <div className="absolute top-[14svh] left-[8vw]">
-            <figure className="relative h-[56svh] w-[34vw] min-w-72 overflow-hidden rounded-[5px]">
-              <motion.div className="absolute inset-0" style={{ x: drift1 }}>
-                <Image
-                  src="/route-exterior.jpg"
-                  alt="Rooftop solar array and wind systems above the landscape at first light"
-                  fill
-                  sizes="38vw"
-                  className="scale-[1.15] object-cover"
-                  style={{ objectPosition: "38% 45%" }}
-                />
-              </motion.div>
-              <span aria-hidden="true" className="absolute inset-0 bg-[#171311]/12" />
-            </figure>
-            {/* overlapping giant words — crossing the frame's right edge */}
-            <motion.p
-              aria-hidden="true"
-              className="font-display absolute top-[12%] left-[76%] z-10 leading-[0.98] font-medium whitespace-nowrap"
-              style={{ color: INK, opacity: wForce }}
-            >
-              <span className="block text-[clamp(1.6rem,3.6vw,3.2rem)]">FROM</span>
-              <span className="block text-[clamp(2.2rem,5.6vw,5rem)]">NATURAL</span>
-              <span className="block text-[clamp(2.2rem,5.6vw,5rem)]">FORCE</span>
-            </motion.p>
-            <p className="absolute top-[calc(100%+0.75rem)] left-0 w-56 text-[0.72rem] leading-relaxed text-[#171311]/70">
-              High-velocity natural air reaches the development first.
-            </p>
-          </div>
-
-          {/* -------- PANEL 2 · CAPTURE (corridor) --------------------- */}
-          <div className="absolute top-[38svh] left-[68vw]">
-            {/* word BEHIND the frame */}
-            <motion.p
-              aria-hidden="true"
-              className="font-display absolute top-[-7%] left-[-10%] z-0 text-[clamp(2.6rem,7vw,6.4rem)] leading-none font-medium whitespace-nowrap"
-              style={{ color: INK, opacity: wCapture }}
-            >
-              CAPTURED
-            </motion.p>
-            <figure className="relative z-10 h-[58svh] w-[30vw] min-w-64 overflow-hidden rounded-[5px]">
-              <motion.div className="absolute inset-0" style={{ x: drift2 }}>
-                <Image
-                  src="/route-corridor.jpg"
-                  alt="Warm residential corridor in one-point perspective, air moving toward the light"
-                  fill
-                  sizes="34vw"
-                  className="scale-[1.15] object-cover"
-                  style={{ objectPosition: "50% 45%" }}
-                />
-              </motion.div>
-            </figure>
-            {/* slice of the same word IN FRONT of the frame */}
-            <motion.p
-              aria-hidden="true"
-              className="font-display absolute top-[-7%] left-[-10%] z-20 text-[clamp(2.6rem,7vw,6.4rem)] leading-none font-medium whitespace-nowrap"
-              style={{ color: INK, opacity: wCapture, clipPath: "inset(0 0 0 72%)" }}
-            >
-              CAPTURED
-            </motion.p>
-            <p className="absolute top-[68%] left-[calc(100%+1.25rem)] w-52 text-[0.72rem] leading-relaxed text-[#171311]/70">
-              Guided through corridors, lobbies and shared circulation.
-            </p>
-          </div>
-
-          {/* -------- PANEL 3 · SUNLIGHT (solar) ----------------------- */}
-          <div className="absolute top-[74svh] left-[128vw]">
-            <figure className="relative h-[52svh] w-[36vw] min-w-72 overflow-hidden rounded-[5px]">
-              <motion.div className="absolute inset-0" style={{ x: drift3 }}>
-                <Image
-                  src="/route-solar.jpg"
-                  alt="Solar panels catching low sunlight on the rooftop"
-                  fill
-                  sizes="40vw"
-                  className="scale-[1.15] object-cover"
-                />
-              </motion.div>
-              <motion.span
-                aria-hidden="true"
-                className="absolute top-[42%] left-0 h-[2px] w-full origin-left bg-gradient-to-r from-transparent via-[#CAA15C] to-transparent"
-                style={{ scaleX: energyScale, opacity: energyOpacity }}
-              />
-            </figure>
-            <motion.p
-              aria-hidden="true"
-              className="font-display absolute top-[62%] left-[42%] z-20 leading-[0.95] font-medium whitespace-nowrap"
-              style={{ color: INK, opacity: wSunlight }}
-            >
-              <span className="block text-[clamp(1.8rem,4vw,3.6rem)]">WIND AND</span>
-              <span className="block text-[clamp(2.8rem,7vw,6.4rem)]">SUNLIGHT</span>
-            </motion.p>
-            <p className="mt-3 max-w-52 text-[0.72rem] leading-relaxed text-[#171311]/70">
-              Turbines and rooftop solar planned to work together.
-            </p>
-          </div>
-
-          {/* -------- PANEL 4 · COMFORT + CTA -------------------------- */}
-          <div className="absolute top-[96svh] left-[188vw] flex items-center gap-8">
-            <div className="relative">
-            {/* word behind, slice in front — same wrapper, same anchor */}
-            <motion.p
-              aria-hidden="true"
-              className="font-display absolute top-[-0.55em] left-[-8%] z-0 text-[clamp(2.8rem,7.6vw,7rem)] leading-none font-medium whitespace-nowrap"
-              style={{ color: INK, opacity: wComfort }}
-            >
-              COMFORT.
-            </motion.p>
-            <figure className="relative z-10 h-[54svh] w-[38vw] min-w-80 overflow-hidden rounded-[5px]">
-              <motion.div className="absolute inset-0" style={{ x: drift4 }}>
-                <Image
-                  src="/route-comfort.jpg"
-                  alt="Residents greeting in the warm sheltered parking court"
-                  fill
-                  sizes="42vw"
-                  className="scale-[1.15] object-cover"
-                  style={{ objectPosition: "50% 40%" }}
-                />
-              </motion.div>
-            </figure>
-            <motion.p
-              aria-hidden="true"
-              className="font-display absolute top-[-0.55em] left-[-8%] z-20 text-[clamp(2.8rem,7.6vw,7rem)] leading-none font-medium whitespace-nowrap"
-              style={{ color: INK, opacity: wComfort, clipPath: "inset(0 62% 0 0)" }}
-            >
-              COMFORT.
-            </motion.p>
-            </div>
-
-            <motion.div className="w-72 shrink-0" style={{ opacity: ctaOpacity }}>
-              <p className="font-display text-lg leading-snug font-medium text-[#171311] md:text-xl">
-                From natural force to everyday comfort.
-              </p>
-              <p className="mt-2 text-[0.78rem] leading-relaxed text-[#171311]/70">
-                Wind, sunlight and thoughtful planning brought together across one carefully
-                considered development.
-              </p>
-              <a
-                href="#wind"
-                className="mt-4 inline-block rounded-lg bg-[#945C43] px-6 py-3 text-sm font-semibold text-[#F7F1E7] transition-colors hover:bg-[#171311]"
-              >
-                Explore Natural Systems
-              </a>
-            </motion.div>
-          </div>
+          {[
+            { left: "8vw", top: "16svh" },
+            { left: "58vw", top: "30svh" },
+            { left: "108vw", top: "44svh" },
+            { left: "158vw", top: "58svh" },
+          ].map((pos, i) => (
+            <JourneyPanel
+              key={PANELS[i].word}
+              panel={PANELS[i]}
+              wordOp={wordOps[i]}
+              panelOp={panelOps[i]}
+              style={pos}
+              isLast={i === 3}
+              ctaOp={ctaOp}
+            />
+          ))}
         </motion.div>
       </div>
     </section>
+  );
+}
+
+/* ---------------------------------------------------------- the panel --- */
+
+/**
+ * Self-contained editorial unit: everything anchors to the panel itself,
+ * so word/image/caption relationships are identical at every viewport.
+ */
+function JourneyPanel({
+  panel,
+  wordOp,
+  panelOp,
+  style,
+  isLast,
+  ctaOp,
+}: {
+  panel: Panel;
+  wordOp: MotionValue<number>;
+  panelOp: MotionValue<number>;
+  style: React.CSSProperties;
+  isLast: boolean;
+  ctaOp: MotionValue<number>;
+}) {
+  return (
+    <motion.div className="absolute" style={{ ...style, opacity: panelOp }}>
+      <div className="relative">
+        {/* giant word — behind the containers, crossing their top edge */}
+        <motion.p
+          aria-hidden="true"
+          className="font-display absolute -top-[0.5em] left-[22%] z-0 leading-none font-medium whitespace-nowrap"
+          style={{ color: INK, opacity: wordOp, fontSize: "clamp(2.4rem,5.8vw,5.2rem)" }}
+        >
+          {panel.word}
+        </motion.p>
+
+        {/* small container pair — primary + tiny offset companion */}
+        <div className="relative z-10 flex items-start gap-[1.2vw]">
+          <Slot tone={panel.tonePrimary} className="h-[30svh] w-[21vw] min-w-52" />
+          <Slot tone={panel.toneSmall} className="mt-[16svh] h-[13svh] w-[9vw] min-w-24" />
+        </div>
+
+        {/* caption + (final panel) CTA */}
+        {isLast ? (
+          <motion.div className="mt-4 max-w-64" style={{ opacity: ctaOp }}>
+            <p className="font-display text-lg leading-snug font-medium text-[#171311]">
+              From natural force to everyday comfort.
+            </p>
+            <p className="mt-2 text-[0.75rem] leading-relaxed text-[#171311]/70">{panel.caption}</p>
+            <a
+              href="#wind"
+              className="mt-4 inline-block rounded-lg bg-[#945C43] px-6 py-3 text-sm font-semibold text-[#F7F1E7] transition-colors hover:bg-[#171311]"
+            >
+              Explore Natural Systems
+            </a>
+          </motion.div>
+        ) : (
+          <p className="mt-3 max-w-52 text-[0.72rem] leading-relaxed text-[#171311]/70">
+            {panel.caption}
+          </p>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+/** Styled placeholder container — awaiting the client's imagery. */
+function Slot({ tone, className = "" }: { tone: string; className?: string }) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-[5px] border border-[#171311]/10 ${className}`}
+      style={{ background: `linear-gradient(150deg, ${tone}, ${tone}cc)` }}
+    >
+      <span className="absolute inset-0 grid place-items-center text-center text-[0.52rem] tracking-[0.24em] text-[#171311]/35 uppercase">
+        Image
+        <br />
+        coming soon
+      </span>
+    </div>
   );
 }
 
@@ -314,6 +297,7 @@ function MobileRailLabel({
   );
 }
 
+/** near-invisible mineral marks (the guide/connector lines are removed) */
 function MineralGround() {
   return (
     <svg aria-hidden="true" className="absolute inset-0 h-full w-full">
@@ -322,13 +306,12 @@ function MineralGround() {
         <feColorMatrix values="0 0 0 0 0.32  0 0 0 0 0.22  0 0 0 0 0.14  0 0 0 -1.15 1.06" />
       </filter>
       <rect width="100%" height="100%" filter="url(#rt-marks)" opacity="0.05" />
-      <line x1="18%" y1="0" x2="18%" y2="100%" stroke="#171311" strokeWidth="1" opacity="0.04" />
-      <line x1="0" y1="62%" x2="100%" y2="62%" stroke="#171311" strokeWidth="1" opacity="0.04" />
     </svg>
   );
 }
 
-/** Reduced motion: composed static spread, no track. */
+/* -------------------------------------------------- reduced motion ------ */
+
 function StaticSpread() {
   return (
     <section
@@ -352,18 +335,12 @@ function StaticSpread() {
           See how wind, sunlight and thoughtful planning are brought together across the
           development.
         </p>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {[
-            { src: "/route-exterior.jpg", alt: "Rooftop systems above the landscape", cap: "Capture" },
-            { src: "/route-corridor.jpg", alt: "Warm residential corridor", cap: "Channel" },
-            { src: "/route-comfort.jpg", alt: "Residents in the sheltered court", cap: "Live" },
-          ].map((f) => (
-            <figure key={f.src}>
-              <div className="relative aspect-[4/3] overflow-hidden rounded-md">
-                <Image src={f.src} alt={f.alt} fill sizes="33vw" className="object-cover" />
-              </div>
+        <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
+          {PANELS.map((panel) => (
+            <figure key={panel.word}>
+              <Slot tone={panel.tonePrimary} className="aspect-[3/4] w-full" />
               <figcaption className="mt-2 text-[0.6rem] tracking-[0.24em] text-[#171311]/70 uppercase">
-                {f.cap}
+                {panel.word.replace(".", "")}
               </figcaption>
             </figure>
           ))}

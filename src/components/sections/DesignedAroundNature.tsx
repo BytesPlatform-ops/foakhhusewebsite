@@ -83,7 +83,7 @@ export default function DesignedAroundNature() {
   const f2W = useTransform(p, [0.45, 0.68, 0.86], ["34vw", "38vw", "36vw"]);
   const f2H = useTransform(p, [0.45, 0.68, 0.86], ["44vh", "50vh", "42vh"]);
   const f2X = useTransform(p, [0.68, 0.9], ["0vw", "-4vw"]);
-  const f2Y = useTransform(p, [0.68, 0.9], ["0vh", "-6vh"]);
+  const f2Y = useTransform(p, [0.68, 0.9], ["0vh", "-10vh"]);
   const f2Clip = useTransform(p, (v) => {
     const t = Math.min(Math.max((v - 0.45) / 0.17, 0), 1);
     const e = 1 - Math.pow(1 - t, 3);
@@ -159,7 +159,7 @@ export default function DesignedAroundNature() {
         </motion.p>
         <motion.p
           aria-hidden="true"
-          className="font-display absolute bottom-[16%] left-[6%] z-10 text-[clamp(2.8rem,8.2vw,7.6rem)] leading-none font-medium"
+          className="font-display absolute bottom-[26%] left-[6%] z-10 text-[clamp(2.4rem,6.6vw,6rem)] leading-none font-medium"
           style={{ color: INK, opacity: l4Opacity, y: l4Y }}
         >
           ENVIRONMENT.
@@ -167,7 +167,7 @@ export default function DesignedAroundNature() {
         {/* foreground slice of the dominant word, in front of Frame Two */}
         <motion.p
           aria-hidden="true"
-          className="font-display absolute bottom-[16%] left-[6%] z-30 text-[clamp(2.8rem,8.2vw,7.6rem)] leading-none font-medium"
+          className="font-display absolute bottom-[26%] left-[6%] z-30 text-[clamp(2.4rem,6.6vw,6rem)] leading-none font-medium"
           style={{
             color: INK,
             opacity: sliceOpacity,
@@ -235,11 +235,11 @@ export default function DesignedAroundNature() {
         <motion.div className="pointer-events-none absolute inset-0 z-30" style={{ opacity: labelsOpacity }}>
           <SystemLabel text="Natural airflow" x="26%" y="34%" lineTo="left" />
           <SystemLabel text="Renewable energy" x="71%" y="40%" lineTo="right" />
-          <SystemLabel text="Modern family living" x="55%" y="76%" lineTo="right" />
+          <SystemLabel text="Modern family living" x="10%" y="80%" lineTo="left" />
         </motion.div>
 
         {/* ---------------- supporting copy + CTA ------------------------ */}
-        <motion.div className="absolute bottom-[6%] left-[6%] z-40 max-w-sm" style={{ opacity: copyOpacity }}>
+        <motion.div className="absolute right-[6%] bottom-[7%] z-40 max-w-xs rounded-md border border-[#241B17]/10 bg-[#EFE3D0]/92 p-5 text-left shadow-[0_18px_44px_-28px_rgba(36,27,23,0.45)] backdrop-blur-sm lg:max-w-sm" style={{ opacity: copyOpacity }}>
           <p className="font-display text-xl leading-snug font-medium text-[#241B17] md:text-2xl">
             A building that works with its environment.
           </p>

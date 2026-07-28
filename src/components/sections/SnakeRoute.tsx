@@ -12,30 +12,28 @@ import {
 } from "framer-motion";
 
 /**
- * 03 — Natural Systems: "NATURAL SYSTEMS BECOME LIVING SPACE."
+ * 03 — Natural Systems: a DIAGONAL HORIZONTAL scroll gallery.
  *
- * Editorial sticky spread built on Normal-is-Boring's grammar (oversized
- * luxury serif with active/muted phrases, photographic frames overlapping
- * one another across generous negative space, a thin vertical chapter
- * rail) with MONOLOG's interrupting frame and Capitolium's diagonal
- * choreography. Original composition; media are graded stills from the
- * client's film.
+ * Native vertical scrolling drives a wide track that travels right AND
+ * down the supplied sketch's diagonal (upper-left -> lower-right). Four
+ * editorial panels ride the track — exterior force, corridor capture,
+ * solar power, comfort + CTA — with oversized serif words overlapping
+ * the photographic frames (words behind frames, slices in front). The
+ * section-local vertical rail (CAPTURE / CHANNEL / POWER / LIVE) tracks
+ * progress; frame media counter-drift slightly for depth.
  *
- * Narrative: WIND -> CAPTURE -> CIRCULATION -> SOLAR SUPPORT ->
- * EVERYDAY COMFORT. Imagery travels outside -> system -> energy ->
- * human comfort. Every frame has an independent outer aperture
- * (size / position / clip-path) and inner media (scale / overlay) layer.
- * Five states across 250svh; native scroll; settles readable.
+ * No wheel interception — the sticky stage only holds while the track
+ * travels. Media are film stills, swap-ready by filename when approved
+ * images arrive. Reduced motion renders the static spread.
  */
 
 const INK = "#171311";
 
-/** vertical rail chapters with their active progress windows */
 const RAIL = [
-  { label: "Capture", range: [0.2, 0.33] as const },
-  { label: "Channel", range: [0.33, 0.45] as const },
-  { label: "Power", range: [0.45, 0.68] as const },
-  { label: "Live", range: [0.68, 1.01] as const },
+  { label: "Capture", range: [0.05, 0.3] as const },
+  { label: "Channel", range: [0.3, 0.55] as const },
+  { label: "Power", range: [0.55, 0.78] as const },
+  { label: "Live", range: [0.78, 1.01] as const },
 ];
 
 export default function SnakeRoute() {
@@ -48,79 +46,25 @@ export default function SnakeRoute() {
   });
   const p = useSpring(scrollYProgress, { stiffness: 110, damping: 30, mass: 0.35 });
 
-  /* ================ typography: active phrase sequence ================= */
-  const naturalOpacity = useTransform(p, [0, 0.2, 0.3], [1, 1, 0.14]);
-  const naturalX = useTransform(p, [0.2, 0.45], ["0vw", "-3vw"]);
-  const forceOpacity = useTransform(p, [0, 0.2, 0.3], [1, 1, 0.14]);
+  /* The diagonal travel: right AND down together. */
+  const trackX = useTransform(p, [0.04, 0.9], ["0vw", "-168vw"]);
+  const trackY = useTransform(p, [0.04, 0.9], ["0vh", "-54vh"]);
 
-  // WIND / AND / SUNLIGHT — sequential actives (state 3)
-  const windColOpacity = useTransform(p, [0.42, 0.47, 0.66, 0.72], [0, 1, 1, 0]);
-  const windOp = useTransform(p, [0.45, 0.47, 0.53, 0.55], [0.16, 1, 1, 0.16]);
-  const andOp = useTransform(p, [0.53, 0.55, 0.59, 0.61], [0.16, 1, 1, 0.16]);
-  const sunOp = useTransform(p, [0.59, 0.61, 0.68, 0.7], [0.16, 1, 1, 0.16]);
+  /* subtle counter-drift inside frames for depth */
+  const drift1 = useTransform(p, [0, 0.4], ["0%", "6%"]);
+  const drift2 = useTransform(p, [0.15, 0.6], ["-4%", "4%"]);
+  const drift3 = useTransform(p, [0.4, 0.85], ["-4%", "4%"]);
+  const drift4 = useTransform(p, [0.6, 1], ["-5%", "3%"]);
 
-  const everydayOpacity = useTransform(p, [0.6, 0.68, 1], [0.12, 0.12, 0.5]);
-  const comfortOpacity = useTransform(p, [0.6, 0.68, 1], [0.12, 1, 1]);
-  const comfortY = useTransform(p, [0.68, 0.9], ["0vh", "-2vh"]);
-  const sliceOpacity = useTransform(p, [0.74, 0.82], [0, 1]);
-
-  /* ================ Frame One — exterior, already open ================= */
-  const f1W = useTransform(p, [0.2, 0.45, 0.68], ["27vw", "27vw", "20vw"]);
-  const f1H = useTransform(p, [0.2, 0.45, 0.68], ["78vh", "66vh", "28vh"]);
-  const f1X = useTransform(p, [0.45, 0.68], ["0vw", "-6vw"]);
-  const f1Y = useTransform(p, [0.45, 0.68], ["0vh", "-14vh"]);
-  const f1InnerScale = useTransform(p, [0, 0.45, 0.68], [1.12, 1.04, 1.14]);
-  const f1Shade = useTransform(p, [0, 0.4], [0.22, 0.1]);
-
-  /* ================ Frame Two — corridor opens from centre ============= */
-  const f2Clip = useTransform(p, (v) => {
-    // opens horizontally from a slit [0.2, 0.42]
-    const t = Math.min(Math.max((v - 0.2) / 0.22, 0), 1);
-    const e = 1 - Math.pow(1 - t, 3);
-    const side = 42 - e * 42;
-    // partially closes again in state 4 [0.68, 0.84]
-    const t2 = Math.min(Math.max((v - 0.68) / 0.16, 0), 1);
-    const e2 = 1 - Math.pow(1 - t2, 2);
-    const side2 = side + e2 * 16;
-    const top2 = e2 * 10;
-    return `inset(${top2}% ${side2}% ${top2}% ${side2}% round 5px)`;
-  });
-  const f2W = useTransform(p, [0.2, 0.42, 0.68], ["13vw", "45vw", "40vw"]);
-  const f2H = useTransform(p, [0.2, 0.42, 0.68], ["38vh", "54vh", "48vh"]);
-  const f2X = useTransform(p, [0.42, 0.68, 0.86], ["0vw", "-4vw", "-5vw"]);
-  const f2Y = useTransform(p, [0.68, 0.86], ["0vh", "-8vh"]);
-  const f2InnerScale = useTransform(p, [0.2, 0.42, 0.68], [1.35, 1.05, 1.1]);
-  const f2Shade = useTransform(p, [0.2, 0.4], [0.3, 0.08]);
-
-  /* ================ Frame Three — solar slit -> comfort ================ */
-  const f3Opacity = useTransform(p, [0.45, 0.48], [0, 1]);
-  const f3Clip = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - 0.45) / 0.16, 0), 1);
-    const e = 1 - Math.pow(1 - t, 3);
-    return `inset(${86 - e * 86}% 0% 0% 0% round 5px)`; // opens from bottom
-  });
-  const f3W = useTransform(p, [0.45, 0.68, 0.87], ["33vw", "38vw", "40vw"]);
-  const f3H = useTransform(p, [0.45, 0.68, 0.87], ["40vh", "48vh", "52vh"]);
-  const f3X = useTransform(p, [0.68, 0.87], ["0vw", "-3vw"]);
-  const f3Y = useTransform(p, [0.68, 0.87], ["0vh", "-4vh"]);
-  const f3InnerScale = useTransform(p, [0.45, 0.68], [1.2, 1.05]);
-  // masked transition: solar -> comfort via an internal wipe
-  const comfortWipe = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - 0.7) / 0.14, 0), 1);
-    const e = 1 - Math.pow(1 - t, 3);
-    return `inset(0% 0% 0% ${100 - e * 100}%)`;
-  });
-  // one champagne energy line across the solar frame
-  const energyScale = useTransform(p, [0.52, 0.62], [0, 1]);
-  const energyOpacity = useTransform(p, [0.52, 0.56, 0.64, 0.68], [0, 0.9, 0.9, 0]);
-
-  /* ================ connective tissue ================================= */
-  const tealDraw = useTransform(p, [0.24, 0.4], [0, 1]);
-  const tealOpacity = useTransform(p, [0.24, 0.28, 0.6, 0.66], [0, 0.7, 0.7, 0]);
-  const microOpacity = useTransform(p, [0.26, 0.32, 0.42, 0.46], [0, 1, 1, 0]);
-  const copyOpacity = useTransform(p, [0.7, 0.8, 0.87, 0.94], [0, 0.4, 0.4, 1]);
-  const ctaOpacity = useTransform(p, [0.9, 0.97], [0, 1]);
-  const railDotTop = useTransform(p, [0.2, 1], ["24%", "72%"]);
+  /* active word states along the journey */
+  const wForce = useTransform(p, [0, 0.24, 0.34], [1, 1, 0.06]);
+  const wCapture = useTransform(p, [0.22, 0.3, 0.5, 0.58], [0.07, 1, 1, 0.06]);
+  const wSunlight = useTransform(p, [0.5, 0.58, 0.74, 0.82], [0.07, 1, 1, 0.05]);
+  const wComfort = useTransform(p, [0.74, 0.82, 1], [0.07, 1, 1]);
+  const energyScale = useTransform(p, [0.56, 0.68], [0, 1]);
+  const energyOpacity = useTransform(p, [0.56, 0.6, 0.72, 0.76], [0, 0.9, 0.9, 0]);
+  const ctaOpacity = useTransform(p, [0.84, 0.93], [0, 1]);
+  const railDotTop = useTransform(p, [0.05, 1], ["24%", "72%"]);
 
   if (reduced) return <StaticSpread />;
 
@@ -130,13 +74,12 @@ export default function SnakeRoute() {
       ref={sectionRef}
       data-section="route"
       aria-labelledby="route-heading"
-      className="relative h-[225svh] lg:h-[250svh]"
+      className="relative h-[300svh] lg:h-[340svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden bg-[#EFE4D2]">
         <MineralGround />
         <div className="grain absolute inset-0" aria-hidden="true" />
 
-        {/* eyebrow + accessible heading */}
         <p className="absolute top-[5%] left-[8%] z-40 text-[0.62rem] font-medium tracking-[0.3em] text-[#945C43] uppercase lg:left-[7.5rem]">
           03 — Natural Systems
         </p>
@@ -144,7 +87,7 @@ export default function SnakeRoute() {
           From natural force to everyday comfort
         </h2>
 
-        {/* ---------- vertical chapter rail (this section only) ---------- */}
+        {/* section-local vertical rail */}
         <div className="absolute inset-y-0 left-0 z-40 hidden w-[4.5rem] flex-col items-center justify-center gap-10 border-r border-[#171311]/10 bg-[#F7F1E7]/85 lg:flex">
           {RAIL.map((r) => (
             <RailLabel key={r.label} label={r.label} range={r.range} progress={p} />
@@ -154,182 +97,171 @@ export default function SnakeRoute() {
             style={{ top: railDotTop }}
           />
         </div>
-        {/* mobile: compact progress label */}
         <div className="absolute top-[5%] right-[5%] z-40 lg:hidden">
           {RAIL.map((r, i) => (
             <MobileRailLabel key={r.label} label={r.label} index={i} range={r.range} progress={p} />
           ))}
         </div>
 
-        {/* ------------------- oversized typography ---------------------- */}
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute top-[9%] left-[8%] z-10 leading-[0.98] font-medium lg:left-[8rem]"
-          style={{ color: INK, opacity: naturalOpacity, x: naturalX }}
-        >
-          <span className="block text-[clamp(2rem,5vw,4.6rem)]">FROM</span>
-          <span className="block text-[clamp(2.6rem,7.2vw,6.6rem)]">NATURAL</span>
-        </motion.p>
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute top-[42%] left-[8%] z-10 text-[clamp(2.6rem,7.2vw,6.6rem)] leading-none font-medium lg:left-[8rem]"
-          style={{ color: INK, opacity: forceOpacity }}
-        >
-          FORCE
-        </motion.p>
-
-        {/* WIND / AND / SUNLIGHT column (state 3) */}
+        {/* ==================== THE DIAGONAL TRACK ==================== */}
         <motion.div
-          aria-hidden="true"
-          className="font-display absolute top-[12%] right-[6%] z-10 text-right leading-[1.02] font-medium"
-          style={{ opacity: windColOpacity }}
+          className="absolute top-0 left-0 h-[170svh] w-[260vw]"
+          style={{ x: trackX, y: trackY }}
         >
-          <motion.span className="block text-[clamp(2.2rem,5.6vw,5.2rem)]" style={{ color: INK, opacity: windOp }}>
-            WIND
-          </motion.span>
-          <motion.span className="block text-[clamp(1.6rem,3.6vw,3.2rem)]" style={{ color: INK, opacity: andOp }}>
-            AND
-          </motion.span>
-          <motion.span className="block text-[clamp(2.2rem,5.6vw,5.2rem)]" style={{ color: INK, opacity: sunOp }}>
-            SUNLIGHT
-          </motion.span>
-        </motion.div>
-
-        {/* TO EVERYDAY / COMFORT. */}
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute right-[8%] bottom-[30%] z-10 text-right text-[clamp(1.8rem,4.4vw,4rem)] leading-none font-medium"
-          style={{ color: INK, opacity: everydayOpacity }}
-        >
-          TO EVERYDAY
-        </motion.p>
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute right-[6%] bottom-[13%] z-10 text-[clamp(3rem,8.6vw,8rem)] leading-none font-medium"
-          style={{ color: INK, opacity: comfortOpacity, y: comfortY }}
-        >
-          COMFORT.
-        </motion.p>
-        {/* foreground slice of COMFORT. passing in front of Frame Three */}
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute right-[6%] bottom-[13%] z-30 text-[clamp(3rem,8.6vw,8rem)] leading-none font-medium"
-          style={{ color: INK, opacity: sliceOpacity, y: comfortY, clipPath: "inset(0 55% 0 0)" }}
-        >
-          COMFORT.
-        </motion.p>
-
-        {/* --------------------- Frame One: exterior --------------------- */}
-        <motion.figure
-          className="absolute top-[6%] left-[10%] z-20 lg:left-[9rem]"
-          style={{ width: f1W, height: f1H, x: f1X, y: f1Y }}
-        >
-          <motion.div className="absolute inset-0 overflow-hidden rounded-[5px]">
-            <motion.div className="absolute inset-0" style={{ scale: f1InnerScale }}>
-              <Image
-                src="/route-exterior.jpg"
-                alt="Rooftop solar array and wind systems above the landscape at first light"
-                fill
-                sizes="28vw"
-                className="object-cover"
-                style={{ objectPosition: "38% 45%" }}
-              />
-            </motion.div>
-            <motion.span aria-hidden="true" className="absolute inset-0 bg-[#171311]" style={{ opacity: f1Shade }} />
-          </motion.div>
-        </motion.figure>
-
-        {/* ------------------ Frame Two: the corridor -------------------- */}
-        <motion.figure
-          className="absolute top-[24%] left-[38%] z-20"
-          style={{ width: f2W, height: f2H, x: f2X, y: f2Y, clipPath: f2Clip }}
-        >
-          <motion.div className="absolute inset-0" style={{ scale: f2InnerScale }}>
-            <Image
-              src="/route-corridor.jpg"
-              alt="Warm residential corridor in one-point perspective, air moving toward the light"
-              fill
-              sizes="46vw"
-              className="object-cover"
-              style={{ objectPosition: "50% 45%" }}
-            />
-          </motion.div>
-          <motion.span aria-hidden="true" className="absolute inset-0 bg-[#171311]" style={{ opacity: f2Shade }} />
-        </motion.figure>
-
-        {/* ------------- Frame Three: solar -> comfort wipe -------------- */}
-        <motion.figure
-          className="absolute right-[7%] bottom-[10%] z-20"
-          style={{ width: f3W, height: f3H, x: f3X, y: f3Y, clipPath: f3Clip, opacity: f3Opacity }}
-        >
-          <motion.div className="absolute inset-0" style={{ scale: f3InnerScale }}>
-            <Image
-              src="/route-solar.jpg"
-              alt="Solar panels catching low sunlight on the rooftop"
-              fill
-              sizes="40vw"
-              className="object-cover"
-              style={{ objectPosition: "50% 50%" }}
-            />
-          </motion.div>
-          {/* comfort image wipes across inside the same aperture */}
-          <motion.div className="absolute inset-0" style={{ clipPath: comfortWipe }}>
-            <Image
-              src="/route-comfort.jpg"
-              alt="Residents greeting in the warm sheltered parking court"
-              fill
-              sizes="40vw"
-              className="object-cover"
-              style={{ objectPosition: "50% 40%" }}
-            />
-          </motion.div>
-          {/* single champagne energy line */}
-          <motion.span
+          {/* faint diagonal guide line behind everything */}
+          <svg
             aria-hidden="true"
-            className="absolute top-[38%] left-0 h-[2px] w-full origin-left bg-gradient-to-r from-transparent via-[#CAA15C] to-transparent"
-            style={{ scaleX: energyScale, opacity: energyOpacity }}
-          />
-        </motion.figure>
-
-        {/* fine teal line connecting the frames (state 2) */}
-        <svg aria-hidden="true" className="pointer-events-none absolute inset-0 z-[25] h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <motion.path
-            d="M 24 46 C 34 44, 40 50, 50 48 C 60 46, 66 56, 74 62"
-            fill="none"
-            stroke="#397F82"
-            strokeWidth="0.22"
-            style={{ pathLength: tealDraw, opacity: tealOpacity }}
-          />
-        </svg>
-
-        {/* state-2 microcopy */}
-        <motion.p
-          className="absolute bottom-[16%] left-[10%] z-30 max-w-56 text-[0.72rem] leading-relaxed text-[#171311]/70 lg:left-[9rem]"
-          style={{ opacity: microOpacity }}
-        >
-          Natural airflow is captured and guided through the development.
-        </motion.p>
-
-        {/* ------------------ final copy + CTA (once) -------------------- */}
-        <motion.div className="absolute bottom-[7%] left-[10%] z-40 max-w-xs lg:left-[9rem]" style={{ opacity: copyOpacity }}>
-          <p className="font-display text-xl leading-snug font-medium text-[#171311] md:text-2xl">
-            From natural force to everyday comfort.
-          </p>
-          <p className="mt-2.5 text-[0.82rem] leading-relaxed text-[#171311]/75">
-            See how wind, sunlight and thoughtful planning are brought together across the
-            development.
-          </p>
-          <p className="mt-2 text-[0.78rem] leading-relaxed text-[#171311]/60">
-            Natural airflow, renewable-energy planning and modern family living in one carefully
-            considered development.
-          </p>
-          <motion.a
-            href="#wind"
-            style={{ opacity: ctaOpacity }}
-            className="pointer-events-auto mt-4 inline-block rounded-lg border border-[#945C43]/50 px-5 py-2.5 text-sm font-medium text-[#171311] transition-colors hover:bg-[#945C43] hover:text-[#F7F1E7]"
+            className="absolute inset-0 h-full w-full"
+            viewBox="0 0 260 170"
+            preserveAspectRatio="none"
           >
-            Explore Natural Systems
-          </motion.a>
+            <path d="M 14 22 L 246 142" stroke="#171311" strokeWidth="0.08" opacity="0.25" />
+          </svg>
+
+          {/* -------- PANEL 1 · NATURAL FORCE (exterior) --------------- */}
+          <div className="absolute top-[14svh] left-[8vw]">
+            <figure className="relative h-[56svh] w-[34vw] min-w-72 overflow-hidden rounded-[5px]">
+              <motion.div className="absolute inset-0" style={{ x: drift1 }}>
+                <Image
+                  src="/route-exterior.jpg"
+                  alt="Rooftop solar array and wind systems above the landscape at first light"
+                  fill
+                  sizes="38vw"
+                  className="scale-[1.15] object-cover"
+                  style={{ objectPosition: "38% 45%" }}
+                />
+              </motion.div>
+              <span aria-hidden="true" className="absolute inset-0 bg-[#171311]/12" />
+            </figure>
+            {/* overlapping giant words — crossing the frame's right edge */}
+            <motion.p
+              aria-hidden="true"
+              className="font-display absolute top-[10%] left-[68%] z-10 leading-[0.98] font-medium whitespace-nowrap"
+              style={{ color: INK, opacity: wForce }}
+            >
+              <span className="block text-[clamp(1.6rem,3.6vw,3.2rem)]">FROM</span>
+              <span className="block text-[clamp(2.2rem,5.6vw,5rem)]">NATURAL</span>
+              <span className="block text-[clamp(2.2rem,5.6vw,5rem)]">FORCE</span>
+            </motion.p>
+            <p className="absolute top-[calc(100%+0.75rem)] left-0 w-56 text-[0.72rem] leading-relaxed text-[#171311]/70">
+              High-velocity natural air reaches the development first.
+            </p>
+          </div>
+
+          {/* -------- PANEL 2 · CAPTURE (corridor) --------------------- */}
+          <div className="absolute top-[38svh] left-[68vw]">
+            {/* word BEHIND the frame */}
+            <motion.p
+              aria-hidden="true"
+              className="font-display absolute top-[-14%] left-[-18%] z-0 text-[clamp(3rem,8vw,7.4rem)] leading-none font-medium whitespace-nowrap"
+              style={{ color: INK, opacity: wCapture }}
+            >
+              CAPTURED
+            </motion.p>
+            <figure className="relative z-10 h-[58svh] w-[30vw] min-w-64 overflow-hidden rounded-[5px]">
+              <motion.div className="absolute inset-0" style={{ x: drift2 }}>
+                <Image
+                  src="/route-corridor.jpg"
+                  alt="Warm residential corridor in one-point perspective, air moving toward the light"
+                  fill
+                  sizes="34vw"
+                  className="scale-[1.15] object-cover"
+                  style={{ objectPosition: "50% 45%" }}
+                />
+              </motion.div>
+            </figure>
+            {/* slice of the same word IN FRONT of the frame */}
+            <motion.p
+              aria-hidden="true"
+              className="font-display absolute top-[-14%] left-[-18%] z-20 text-[clamp(3rem,8vw,7.4rem)] leading-none font-medium whitespace-nowrap"
+              style={{ color: INK, opacity: wCapture, clipPath: "inset(0 0 0 72%)" }}
+            >
+              CAPTURED
+            </motion.p>
+            <p className="mt-3 max-w-52 text-[0.72rem] leading-relaxed text-[#171311]/70">
+              Guided through corridors, lobbies and shared circulation.
+            </p>
+          </div>
+
+          {/* -------- PANEL 3 · SUNLIGHT (solar) ----------------------- */}
+          <div className="absolute top-[74svh] left-[128vw]">
+            <figure className="relative h-[52svh] w-[36vw] min-w-72 overflow-hidden rounded-[5px]">
+              <motion.div className="absolute inset-0" style={{ x: drift3 }}>
+                <Image
+                  src="/route-solar.jpg"
+                  alt="Solar panels catching low sunlight on the rooftop"
+                  fill
+                  sizes="40vw"
+                  className="scale-[1.15] object-cover"
+                />
+              </motion.div>
+              <motion.span
+                aria-hidden="true"
+                className="absolute top-[42%] left-0 h-[2px] w-full origin-left bg-gradient-to-r from-transparent via-[#CAA15C] to-transparent"
+                style={{ scaleX: energyScale, opacity: energyOpacity }}
+              />
+            </figure>
+            <motion.p
+              aria-hidden="true"
+              className="font-display absolute top-[62%] left-[42%] z-20 leading-[0.95] font-medium whitespace-nowrap"
+              style={{ color: INK, opacity: wSunlight }}
+            >
+              <span className="block text-[clamp(1.8rem,4vw,3.6rem)]">WIND AND</span>
+              <span className="block text-[clamp(2.8rem,7vw,6.4rem)]">SUNLIGHT</span>
+            </motion.p>
+            <p className="mt-3 max-w-52 text-[0.72rem] leading-relaxed text-[#171311]/70">
+              Turbines and rooftop solar planned to work together.
+            </p>
+          </div>
+
+          {/* -------- PANEL 4 · COMFORT + CTA -------------------------- */}
+          <div className="absolute top-[96svh] left-[188vw] flex items-center gap-8">
+            <div className="relative">
+            {/* word behind, slice in front — same wrapper, same anchor */}
+            <motion.p
+              aria-hidden="true"
+              className="font-display absolute top-[-0.55em] left-[-8%] z-0 text-[clamp(2.8rem,7.6vw,7rem)] leading-none font-medium whitespace-nowrap"
+              style={{ color: INK, opacity: wComfort }}
+            >
+              COMFORT.
+            </motion.p>
+            <figure className="relative z-10 h-[54svh] w-[38vw] min-w-80 overflow-hidden rounded-[5px]">
+              <motion.div className="absolute inset-0" style={{ x: drift4 }}>
+                <Image
+                  src="/route-comfort.jpg"
+                  alt="Residents greeting in the warm sheltered parking court"
+                  fill
+                  sizes="42vw"
+                  className="scale-[1.15] object-cover"
+                  style={{ objectPosition: "50% 40%" }}
+                />
+              </motion.div>
+            </figure>
+            <motion.p
+              aria-hidden="true"
+              className="font-display absolute top-[-0.55em] left-[-8%] z-20 text-[clamp(2.8rem,7.6vw,7rem)] leading-none font-medium whitespace-nowrap"
+              style={{ color: INK, opacity: wComfort, clipPath: "inset(0 62% 0 0)" }}
+            >
+              COMFORT.
+            </motion.p>
+            </div>
+
+            <motion.div className="w-72 shrink-0" style={{ opacity: ctaOpacity }}>
+              <p className="font-display text-lg leading-snug font-medium text-[#171311] md:text-xl">
+                From natural force to everyday comfort.
+              </p>
+              <p className="mt-2 text-[0.78rem] leading-relaxed text-[#171311]/70">
+                Wind, sunlight and thoughtful planning brought together across one carefully
+                considered development.
+              </p>
+              <a
+                href="#wind"
+                className="mt-4 inline-block rounded-lg bg-[#945C43] px-6 py-3 text-sm font-semibold text-[#F7F1E7] transition-colors hover:bg-[#171311]"
+              >
+                Explore Natural Systems
+              </a>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
@@ -382,7 +314,6 @@ function MobileRailLabel({
   );
 }
 
-/** near-invisible mineral marks + faint architectural lines */
 function MineralGround() {
   return (
     <svg aria-hidden="true" className="absolute inset-0 h-full w-full">
@@ -397,7 +328,7 @@ function MineralGround() {
   );
 }
 
-/** Reduced motion: composed static spread. */
+/** Reduced motion: composed static spread, no track. */
 function StaticSpread() {
   return (
     <section
@@ -439,7 +370,7 @@ function StaticSpread() {
         </div>
         <a
           href="#wind"
-          className="mt-8 inline-block rounded-lg border border-[#945C43]/50 px-5 py-2.5 text-sm font-medium text-[#171311] transition-colors hover:bg-[#945C43] hover:text-[#F7F1E7]"
+          className="mt-8 inline-block rounded-lg bg-[#945C43] px-6 py-3 text-sm font-semibold text-[#F7F1E7] transition-colors hover:bg-[#171311]"
         >
           Explore Natural Systems
         </a>

@@ -136,7 +136,7 @@ export default function SnakeRoute() {
             {/* overlapping giant words — crossing the frame's right edge */}
             <motion.p
               aria-hidden="true"
-              className="font-display absolute top-[10%] left-[68%] z-10 leading-[0.98] font-medium whitespace-nowrap"
+              className="font-display absolute top-[12%] left-[76%] z-10 leading-[0.98] font-medium whitespace-nowrap"
               style={{ color: INK, opacity: wForce }}
             >
               <span className="block text-[clamp(1.6rem,3.6vw,3.2rem)]">FROM</span>
@@ -153,7 +153,7 @@ export default function SnakeRoute() {
             {/* word BEHIND the frame */}
             <motion.p
               aria-hidden="true"
-              className="font-display absolute top-[-14%] left-[-18%] z-0 text-[clamp(3rem,8vw,7.4rem)] leading-none font-medium whitespace-nowrap"
+              className="font-display absolute top-[-7%] left-[-10%] z-0 text-[clamp(2.6rem,7vw,6.4rem)] leading-none font-medium whitespace-nowrap"
               style={{ color: INK, opacity: wCapture }}
             >
               CAPTURED
@@ -173,12 +173,12 @@ export default function SnakeRoute() {
             {/* slice of the same word IN FRONT of the frame */}
             <motion.p
               aria-hidden="true"
-              className="font-display absolute top-[-14%] left-[-18%] z-20 text-[clamp(3rem,8vw,7.4rem)] leading-none font-medium whitespace-nowrap"
+              className="font-display absolute top-[-7%] left-[-10%] z-20 text-[clamp(2.6rem,7vw,6.4rem)] leading-none font-medium whitespace-nowrap"
               style={{ color: INK, opacity: wCapture, clipPath: "inset(0 0 0 72%)" }}
             >
               CAPTURED
             </motion.p>
-            <p className="mt-3 max-w-52 text-[0.72rem] leading-relaxed text-[#171311]/70">
+            <p className="absolute top-[68%] left-[calc(100%+1.25rem)] w-52 text-[0.72rem] leading-relaxed text-[#171311]/70">
               Guided through corridors, lobbies and shared circulation.
             </p>
           </div>

@@ -5,9 +5,6 @@ import DesignedAroundNature from "@/components/sections/DesignedAroundNature";
 import SnakeRoute from "@/components/sections/SnakeRoute";
 import WindTunnel from "@/components/sections/WindTunnel";
 import ResidencesStory from "@/components/sections/ResidencesStory";
-import TwoBlocks from "@/components/sections/TwoBlocks";
-import Amenities from "@/components/sections/Amenities";
-import Timeline from "@/components/sections/Timeline";
 import LocationRoad from "@/components/sections/LocationRoad";
 import FannedGallery from "@/components/sections/FannedGallery";
 import FinalCTA from "@/components/sections/FinalCTA";
@@ -29,9 +26,6 @@ export default function HomePage() {
         <SnakeRoute />
         <WindTunnel />
         <ResidencesStory />
-        <TwoBlocks />
-        <Amenities />
-        <Timeline />
         <LocationRoad />
         <FannedGallery />
         <FinalCTA />

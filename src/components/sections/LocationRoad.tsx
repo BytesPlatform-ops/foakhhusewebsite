@@ -56,11 +56,11 @@ export default function LocationRoad() {
       ref={ref}
       data-section="location"
       className="mineral-sunset grain blend-top relative overflow-hidden py-(--spacing-section)"
-      style={{ "--blend-from": "#efe7dd" } as React.CSSProperties}
+      style={{ "--blend-from": "#32271F" } as React.CSSProperties}
       aria-labelledby="location-heading"
     >
       <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
-        <Eyebrow num="05" tone="light">
+        <Eyebrow num="04" tone="light">
           Location
         </Eyebrow>
         <ChapterHeading id="location-heading" tone="light">

@@ -80,7 +80,7 @@ export default function FannedGallery() {
       aria-labelledby="gallery-heading"
     >
       <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
-        <Eyebrow num="06">Gallery</Eyebrow>
+        <Eyebrow num="05">Gallery</Eyebrow>
         <ChapterHeading id="gallery-heading">The project, from every angle.</ChapterHeading>
         <Lead>
           Architectural concepts across the development — model photography joins the deck once

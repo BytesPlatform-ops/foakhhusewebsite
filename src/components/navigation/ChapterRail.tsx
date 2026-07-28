@@ -34,7 +34,7 @@ const CHAPTERS: Chapter[] = [
 const SPY_TARGETS: Record<string, string[]> = {
   "#glance": ["glance", "nature"],
   "#route": ["route", "wind", "solar", "harmony", "water"],
-  "#residences": ["residences", "blocks", "amenities", "timeline"],
+  "#residences": ["residences"],
   "#location": ["location", "gallery", "enquire"],
 };
 

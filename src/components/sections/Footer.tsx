@@ -7,8 +7,8 @@ const INDEX = [
   { num: "01", label: "Project", href: "#glance" },
   { num: "02", label: "Systems", href: "#route" },
   { num: "03", label: "Residences", href: "#residences" },
-  { num: "04", label: "Lifestyle", href: "#amenities" },
-  { num: "05", label: "Location", href: "#location" },
+  { num: "04", label: "Location", href: "#location" },
+  { num: "05", label: "Gallery", href: "#gallery" },
   { num: "06", label: "Enquire", href: "#enquire" },
 ];
 

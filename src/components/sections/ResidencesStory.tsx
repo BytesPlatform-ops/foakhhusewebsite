@@ -108,7 +108,7 @@ export default function ResidencesStory() {
               className="font-display absolute left-[3.5%] whitespace-nowrap uppercase"
               style={{
                 color: IVORY,
-                fontSize: "clamp(3.4rem,6.4vw,7rem)",
+                fontSize: "clamp(2.9rem,4.9vw,5.6rem)",
                 lineHeight: 1,
                 letterSpacing: "-0.01em",
                 fontWeight: 600,
@@ -122,7 +122,7 @@ export default function ResidencesStory() {
               className="font-display absolute right-[3.5%] whitespace-nowrap uppercase"
               style={{
                 color: "rgba(247,240,232,0.62)",
-                fontSize: "clamp(3.4rem,6.4vw,7rem)",
+                fontSize: "clamp(2.9rem,4.9vw,5.6rem)",
                 lineHeight: 1,
                 letterSpacing: "-0.01em",
                 fontWeight: 600,
@@ -142,7 +142,7 @@ export default function ResidencesStory() {
           {/* the portrait media card — centre, above the headline */}
           <div className="absolute inset-0 z-20 flex items-center justify-center">
             <motion.div
-              className="relative w-[clamp(300px,25vw,400px)] overflow-hidden rounded-xl shadow-[0_50px_100px_-40px_rgba(26,16,11,0.7)]"
+              className="relative w-[clamp(280px,20vw,350px)] overflow-hidden rounded-xl shadow-[0_50px_100px_-40px_rgba(26,16,11,0.7)]"
               style={reduced ? undefined : { scale: mediaScale, y: mediaY }}
             >
               <StageMedia reduced={!!reduced} />

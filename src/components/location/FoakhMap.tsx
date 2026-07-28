@@ -3,18 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Branded map card interior for the Location section.
+ * The live map inside the Location card — always a REAL, moveable
+ * Google map, never a drawn illustration.
  *
- * Loads the Google Maps JavaScript API dynamically (only once the card
- * is actually on screen, never blocking initial render) when
- * NEXT_PUBLIC_GOOGLE_MAPS_API_KEY is configured. With a Map ID
- * (NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID) the marker uses
- * AdvancedMarkerElement with a custom Foakh pin; without one the map
- * falls back to inline styling JSON and a custom SVG pin icon.
+ * Two paths:
+ *  1. With NEXT_PUBLIC_GOOGLE_MAPS_API_KEY — Google Maps JS API with
+ *     the cream/green brand styling JSON (or a cloud-styled Map ID via
+ *     NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID) and the custom Foakh pin.
+ *  2. Without a key (current default) — the keyless Google Maps embed,
+ *     colour-graded to the cream/green identity with a CSS grade. The
+ *     camera pans and zooms natively inside the frame.
  *
- * When no key is configured — or the API fails — the card renders the
- * branded illustrative fallback, clearly labelled as illustrative, with
- * the external Google Maps link as the source of truth for navigation.
+ * A click-to-explore veil keeps wheel/touch gestures from trapping the
+ * page scroll until the visitor opts in; leaving the card re-arms it.
  */
 
 export const FOAKH_TOWER_LOCATION = {
@@ -27,25 +28,28 @@ export const FOAKH_MAPS_URL = "https://maps.app.goo.gl/WfWt1ugz5HmEpXur6";
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 const MAP_ID = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID;
 
-/* Inline styling for the no-Map-ID path: deep warm base, sunset roads,
-   muted green nature, ivory labels, POI clutter off. */
+/* Brand styling for the JS-API path: cream ground, champagne/sunset
+   roads, deep-green water and parks, espresso labels, POI clutter off. */
 const MAP_STYLES = [
-  { elementType: "geometry", stylers: [{ color: "#3a241c" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#f2e2ce" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#2a1712" }] },
+  { elementType: "geometry", stylers: [{ color: "#F2E7D6" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#3C2E22" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#FFF7EA" }] },
   { featureType: "poi", stylers: [{ visibility: "off" }] },
   { featureType: "poi.medical", stylers: [{ visibility: "on" }] },
   { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "road", elementType: "geometry", stylers: [{ color: "#8a5637" }] },
-  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#f29a3f" }] },
-  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#d8ae62" }] },
-  { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#b3703f" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#243f33" }] },
-  { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#43302a" }] },
-  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#2e4437" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
+  { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#F4C98E" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#F29A3F" }] },
+  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#D8AE62" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#6F9B84" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#B8CDB4" }] },
+  { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#EBDFC9" }] },
 ];
 
-type MapStatus = "idle" | "loading" | "ready" | "fallback";
+/* CSS grade for the keyless embed: pulls Google's default palette into
+   warm cream while keeping parks/greens legible. */
+const EMBED_GRADE =
+  "sepia(0.34) saturate(1.12) hue-rotate(-8deg) brightness(1.03) contrast(0.97)";
 
 let loaderPromise: Promise<void> | null = null;
 
@@ -77,9 +81,12 @@ function buildPinSvg(): string {
   );
 }
 
+type Mode = "js-pending" | "js-ready" | "embed";
+
 export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: string }) {
   const holderRef = useRef<HTMLDivElement>(null);
-  const [status, setStatus] = useState<MapStatus>(API_KEY ? "idle" : "fallback");
+  const [mode, setMode] = useState<Mode>(API_KEY ? "js-pending" : "embed");
+  const [engaged, setEngaged] = useState(false);
 
   useEffect(() => {
     if (!API_KEY) return;
@@ -91,7 +98,6 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
         io.disconnect();
-        setStatus("loading");
         loadMapsScript(API_KEY)
           .then(async () => {
             if (cancelled || !holderRef.current) return;
@@ -104,7 +110,7 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
               zoomControl: true,
               gestureHandling: "cooperative",
               keyboardShortcuts: true,
-              backgroundColor: "#3a241c",
+              backgroundColor: "#F2E7D6",
               ...(MAP_ID ? { mapId: MAP_ID } : { styles: MAP_STYLES }),
             });
             if (MAP_ID) {
@@ -112,7 +118,7 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
                 "marker"
               )) as google.maps.MarkerLibrary;
               const pin = document.createElement("div");
-              pin.innerHTML = `<img src="${buildPinSvg()}" width="44" height="58" alt="" style="filter:drop-shadow(0 8px 14px rgba(30,15,8,0.45))"/>
+              pin.innerHTML = `<img src="${buildPinSvg()}" width="44" height="58" alt="" style="filter:drop-shadow(0 8px 14px rgba(30,15,8,0.35))"/>
                 <div style="margin-top:2px;background:#FFF4E5;color:#291A16;font:600 10px/1 var(--font-body,sans-serif);letter-spacing:0.14em;padding:5px 9px;border-radius:999px;border:1px solid #D8AE62;text-align:center">FOAKH TOWER</div>`;
               pin.style.display = "grid";
               pin.style.justifyItems = "center";
@@ -134,10 +140,10 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
                 },
               });
             }
-            if (!cancelled) setStatus("ready");
+            if (!cancelled) setMode("js-ready");
           })
           .catch(() => {
-            if (!cancelled) setStatus("fallback");
+            if (!cancelled) setMode("embed");
           });
       },
       { rootMargin: "200px" }
@@ -149,133 +155,54 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
     };
   }, []);
 
+  const showEmbed = mode === "embed";
+
   return (
-    <div className={`relative w-full ${heightClass}`}>
-      {/* live map mounts here */}
+    <div
+      className={`group relative w-full overflow-hidden bg-[#F2E7D6] ${heightClass}`}
+      onMouseLeave={() => setEngaged(false)}
+    >
+      {/* JS-API map mounts here when a key is configured */}
       <div
         ref={holderRef}
-        className="absolute inset-0"
+        className={showEmbed ? "hidden" : "absolute inset-0"}
         aria-label="Map showing the location of Foakh Tower near DHA, Karachi"
         role="application"
       />
-      {status === "loading" && (
-        <div className="absolute inset-0 grid animate-pulse place-items-center bg-[#33201A]">
-          <p className="text-[0.65rem] tracking-[0.28em] text-[#F2E2CE]/70 uppercase">
-            Loading map…
-          </p>
-        </div>
+
+      {/* keyless path: the real Google embed, colour-graded to brand */}
+      {showEmbed && (
+        <iframe
+          title="Google Map — Foakh Tower near DHA, Karachi"
+          src={`https://maps.google.com/maps?q=${FOAKH_TOWER_LOCATION.lat},${FOAKH_TOWER_LOCATION.lng}&z=13&hl=en&output=embed`}
+          className="absolute inset-0 h-full w-full border-0"
+          style={{ filter: EMBED_GRADE }}
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       )}
-      {(status === "fallback" || status === "idle") && (
-        <div className={status === "fallback" ? "absolute inset-0" : "absolute inset-0 opacity-0"}>
-          <IllustrativeMap />
-        </div>
+
+      {/* brand chip — card furniture, not a geo label */}
+      <div className="pointer-events-none absolute top-3.5 left-3.5 rounded-full border border-[#D8AE62] bg-[#FFF4E5]/95 px-3.5 py-1.5 shadow-sm">
+        <p className="text-[0.6rem] font-bold tracking-[0.18em] text-[#291A16] uppercase">
+          Foakh Tower · Near DHA
+        </p>
+      </div>
+
+      {/* click-to-explore veil — keeps page scroll free until opted in */}
+      {showEmbed && !engaged && (
+        <button
+          type="button"
+          onClick={() => setEngaged(true)}
+          aria-label="Activate the interactive map"
+          className="absolute inset-0 z-10 flex cursor-pointer items-end justify-center bg-transparent pb-4"
+        >
+          <span className="rounded-full border border-[#D8AE62]/70 bg-[#291A16]/85 px-4 py-2 text-[0.62rem] font-semibold tracking-[0.2em] text-[#FFF4E5] uppercase backdrop-blur-sm transition-opacity group-hover:opacity-100 lg:opacity-0">
+            Click to explore the map
+          </span>
+        </button>
       )}
     </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Branded illustrative fallback — geography simplified from the real  */
-/* setting: the M-9 Super Highway corridor with DHA City Karachi to    */
-/* its south and Shaukat Khanum Hospital alongside the highway. It is  */
-/* labelled illustrative; the Google Maps link is the navigation truth.*/
-/* ------------------------------------------------------------------ */
-
-function IllustrativeMap() {
-  return (
-    <svg
-      viewBox="0 0 820 620"
-      className="h-full w-full"
-      preserveAspectRatio="xMidYMid slice"
-      role="img"
-      aria-label="Illustrative map: Foakh Tower sits near DHA City Karachi, south of the M-9 Main Super Highway, close to Shaukat Khanum Hospital"
-    >
-      <defs>
-        <linearGradient id="fm-base" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#3E2820" />
-          <stop offset="0.55" stopColor="#33201A" />
-          <stop offset="1" stopColor="#2A1712" />
-        </linearGradient>
-        <filter id="fm-glow" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="7" />
-        </filter>
-      </defs>
-
-      <rect width="820" height="620" fill="url(#fm-base)" />
-
-      {/* natural areas — muted deep green */}
-      <path d="M0 470 Q120 420 210 470 T450 540 Q560 590 480 620 L0 620 Z" fill="#243F33" opacity="0.5" />
-      <path d="M640 80 q80 30 110 90 q30 60 70 70 l0 -240 -180 0 Z" fill="#243F33" opacity="0.34" />
-      <ellipse cx="150" cy="180" rx="90" ry="52" fill="#2E4437" opacity="0.3" />
-
-      {/* secondary road lattice — champagne hairlines */}
-      <g stroke="#D8AE62" strokeOpacity="0.22" strokeWidth="2" fill="none">
-        <path d="M60 620 Q160 480 260 430 T520 330" />
-        <path d="M200 620 Q300 500 420 460 T700 380" />
-        <path d="M0 320 Q140 330 260 300 T520 220" />
-        <path d="M540 620 Q560 480 640 400" />
-        <path d="M340 620 Q380 540 470 500" />
-      </g>
-
-      {/* M-9 Main Super Highway — glowing gold artery */}
-      <path d="M-20 260 Q220 190 430 150 T840 60" stroke="#F29A3F" strokeWidth="16" fill="none" opacity="0.35" filter="url(#fm-glow)" />
-      <path d="M-20 260 Q220 190 430 150 T840 60" stroke="#F29A3F" strokeWidth="7" fill="none" />
-      <path d="M-20 260 Q220 190 430 150 T840 60" stroke="#FFD9A0" strokeWidth="1.6" strokeDasharray="14 12" fill="none" opacity="0.8" />
-
-      {/* connector from the highway down to the tower */}
-      <path d="M436 149 Q430 240 418 302" stroke="#D8AE62" strokeWidth="4" fill="none" strokeLinecap="round" />
-
-      {/* labels — placed to match the real relationships */}
-      <g fill="#FFF4E5" fontFamily="var(--font-body), sans-serif">
-        <text x="500" y="112" fontSize="13" letterSpacing="3" transform="rotate(-9 500 112)" opacity="0.9">
-          MAIN SUPER HIGHWAY · M-9
-        </text>
-        <text x="72" y="252" fontSize="11" letterSpacing="2" opacity="0.65">
-          TOWARD KARACHI
-        </text>
-        <text x="545" y="420" fontSize="15" letterSpacing="3.5" opacity="0.85">
-          DHA CITY
-        </text>
-        <text x="545" y="440" fontSize="11" letterSpacing="2.5" opacity="0.6">
-          KARACHI
-        </text>
-      </g>
-
-      {/* Shaukat Khanum Hospital — alongside the highway */}
-      <g>
-        <circle cx="238" cy="196" r="11" fill="#B84E2F" stroke="#D8AE62" strokeWidth="1.6" />
-        <path d="M238 191v10M233 196h10" stroke="#FFF4E5" strokeWidth="2.4" strokeLinecap="round" />
-        <text x="256" y="192" fontSize="12" fill="#FFF4E5" opacity="0.9" fontFamily="var(--font-body), sans-serif">
-          Shaukat Khanum
-        </text>
-        <text x="256" y="207" fontSize="12" fill="#FFF4E5" opacity="0.9" fontFamily="var(--font-body), sans-serif">
-          Hospital
-        </text>
-      </g>
-
-      {/* Foakh Tower pin */}
-      <g transform="translate(396 258)">
-        <ellipse cx="22" cy="60" rx="16" ry="5" fill="#150A06" opacity="0.45" />
-        <path
-          d="M22 2C11 2 3 10.4 3 20.8 3 34 22 56 22 56s19-22 19-35.2C41 10.4 33 2 22 2Z"
-          fill="#E7653E"
-          stroke="#D8AE62"
-          strokeWidth="2.4"
-        />
-        <circle cx="22" cy="20.5" r="8.2" fill="#291A16" />
-        <path d="M18 24v-6.5l4-2.6 4 2.6V24h-2.6v-3.4h-2.8V24Z" fill="#FFF4E5" />
-      </g>
-      <g transform="translate(354 326)">
-        <rect width="128" height="26" rx="13" fill="#FFF4E5" stroke="#D8AE62" />
-        <text x="64" y="17" fontSize="11" letterSpacing="2" textAnchor="middle" fill="#291A16" fontWeight="600" fontFamily="var(--font-body), sans-serif">
-          FOAKH TOWER
-        </text>
-      </g>
-
-      {/* honesty note */}
-      <text x="72" y="600" fontSize="10.5" letterSpacing="1.5" fill="#FFF4E5" opacity="0.55" fontFamily="var(--font-body), sans-serif">
-        ILLUSTRATIVE MAP — OPEN GOOGLE MAPS FOR PRECISE NAVIGATION
-      </text>
-    </svg>
   );
 }

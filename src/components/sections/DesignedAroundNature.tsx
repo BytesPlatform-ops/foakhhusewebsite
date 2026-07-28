@@ -56,9 +56,10 @@ export default function DesignedAroundNature() {
 
   const l4Opacity = useTransform(p, [0.6, 0.68, 1], [0.14, 1, 1]);
   const l4Y = useTransform(p, [0.68, 0.9], ["0vh", "-2vh"]);
-  // foreground slice of the dominant word passing IN FRONT of Frame Two
+  // foreground slice of the dominant word passing IN FRONT of Frame Two —
+  // it rides the SAME vertical path as the base word so the two copies
+  // stay perfectly registered (no doubled letters).
   const sliceOpacity = useTransform(p, [0.72, 0.8], [0, 1]);
-  const sliceY = useTransform(p, [0.72, 0.92], ["1.5vh", "-0.5vh"]);
 
   /* ================= Frame One — the interrupting aperture ============ */
   // Opens horizontally from centre; then shrinks and travels upper-left.
@@ -107,7 +108,7 @@ export default function DesignedAroundNature() {
 
   /* ================= labels + copy + progress ========================= */
   const labelsOpacity = useTransform(p, [0.7, 0.8], [0, 1]);
-  const copyOpacity = useTransform(p, [0.3, 0.42, 0.84, 0.92], [0, 0.35, 0.35, 1]);
+  const copyOpacity = useTransform(p, [0.7, 0.8], [0, 1]);
   const ctaOpacity = useTransform(p, [0.88, 0.96], [0, 1]);
   const progressX = useTransform(p, [0, 1], [0, 1]);
 
@@ -171,7 +172,7 @@ export default function DesignedAroundNature() {
           style={{
             color: INK,
             opacity: sliceOpacity,
-            y: sliceY,
+            y: l4Y,
             clipPath: "inset(0 0 0 62%)",
           }}
         >
@@ -239,7 +240,7 @@ export default function DesignedAroundNature() {
         </motion.div>
 
         {/* ---------------- supporting copy + CTA ------------------------ */}
-        <motion.div className="absolute right-[6%] bottom-[7%] z-40 max-w-xs rounded-md border border-[#241B17]/10 bg-[#EFE3D0]/92 p-5 text-left shadow-[0_18px_44px_-28px_rgba(36,27,23,0.45)] backdrop-blur-sm lg:max-w-sm" style={{ opacity: copyOpacity }}>
+        <motion.div className="absolute right-[6%] bottom-[7%] z-40 max-w-xs rounded-md border border-[#241B17]/10 bg-[#FFF8EF]/95 p-5 text-left shadow-[0_18px_44px_-28px_rgba(36,27,23,0.45)] backdrop-blur-sm lg:max-w-sm" style={{ opacity: copyOpacity }}>
           <p className="font-display text-xl leading-snug font-medium text-[#241B17] md:text-2xl">
             A building that works with its environment.
           </p>

@@ -238,7 +238,7 @@ function JourneyPanel({
         {/* giant stage word — behind the frames, crossing their top edge */}
         <motion.p
           aria-hidden="true"
-          className="font-display absolute -top-[0.5em] left-[22%] z-0 leading-none font-medium whitespace-nowrap"
+          className="font-display absolute -top-[1em] left-[6%] z-0 leading-none font-medium whitespace-nowrap"
           style={{ color: INK, opacity: wordOp, fontSize: "clamp(2.4rem,5.8vw,5.2rem)" }}
         >
           {panel.word}

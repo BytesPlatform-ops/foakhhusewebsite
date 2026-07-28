@@ -54,10 +54,20 @@ export default function ProjectGlance() {
   /* ---- THE THRESHOLD (0.55 -> 0.92): the window contracts ------------- */
   // The frame itself tightens into a portal while the image inside keeps
   // pushing deeper — window and content move against each other.
+  // Two phases, both quicker than before: a fast contraction to the
+  // portal, then the portal seals completely — the photograph vanishes
+  // into the elevation drawing.
   const clip = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - 0.55) / 0.37, 0), 1);
-    const e = 1 - Math.pow(1 - t, 3); // ease-out
-    return `inset(${(e * 27).toFixed(2)}% ${(e * 31).toFixed(2)}% ${(e * 23).toFixed(2)}% ${(e * 31).toFixed(2)}% round ${(e * 14).toFixed(1)}px)`;
+    const a = Math.min(Math.max((v - 0.55) / 0.17, 0), 1);
+    const ea = 1 - Math.pow(1 - a, 3);
+    const b = Math.min(Math.max((v - 0.74) / 0.16, 0), 1);
+    const eb = b * b * (3 - 2 * b);
+    const top = ea * 27 + eb * 23;
+    const right = ea * 31 + eb * 19;
+    const bottom = ea * 23 + eb * 27;
+    const left = ea * 31 + eb * 19;
+    const r = ea * 14 * (1 - b);
+    return `inset(${top.toFixed(2)}% ${right.toFixed(2)}% ${bottom.toFixed(2)}% ${left.toFixed(2)}% round ${r.toFixed(1)}px)`;
   });
 
   /* ---- text: reveals on approach, dissolves at the crossing ----------- */
@@ -65,8 +75,8 @@ export default function ProjectGlance() {
   const textBlur = useTransform(p, [0.05, 0.4], ["blur(5px)", "blur(0px)"]);
   const textY = useTransform(p, [0.05, 0.45], [16, 0]);
   /* stage 2: restrained caption on the stone, beneath the portal */
-  const innerOpacity = useTransform(p, [0.72, 0.88], [0, 1]);
-  const innerY = useTransform(p, [0.72, 0.88], [14, 0]);
+  const innerOpacity = useTransform(p, [0.7, 0.84], [0, 1]);
+  const innerY = useTransform(p, [0.7, 0.84], [14, 0]);
 
   if (reduced) return <StaticFrame />;
 

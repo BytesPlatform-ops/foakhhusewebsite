@@ -244,49 +244,53 @@ function JourneyPanel({
           {panel.word}
         </motion.p>
 
-        {/* frame pair — primary + small offset companion, real imagery */}
-        <div className="relative z-10 flex items-start gap-[1.2vw]">
-          <Frame
-            src={panel.src}
-            alt={panel.alt}
-            objectPosition={panel.objectPosition}
-            sizes="24vw"
-            className="h-[32svh] w-[23vw] min-w-56"
-          />
-          <Frame
-            src={panel.srcSmall}
-            alt={panel.altSmall}
-            sizes="10vw"
-            className="mt-[17svh] h-[14svh] w-[9.5vw] min-w-28"
-          />
-        </div>
+        {/* frame pair LEFT + reading card RIGHT — the text rides the
+            panel's trailing side, so it stays on screen while the panel
+            is focal instead of clipping at the viewport edge */}
+        <div className="relative z-10 flex items-center gap-[1.6vw]">
+          <div className="flex items-start gap-[1.2vw]">
+            <Frame
+              src={panel.src}
+              alt={panel.alt}
+              objectPosition={panel.objectPosition}
+              sizes="24vw"
+              className="h-[32svh] w-[21vw] min-w-52"
+            />
+            <Frame
+              src={panel.srcSmall}
+              alt={panel.altSmall}
+              sizes="10vw"
+              className="mt-[16svh] h-[13svh] w-[8.5vw] min-w-24"
+            />
+          </div>
 
-        {/* stage number + feature title + caption; final panel adds CTA */}
-        <div className="mt-4 max-w-72">
-          <p className="flex items-baseline gap-2">
-            <span className="text-[0.62rem] font-semibold tabular-nums" style={{ color: "#C75B3B" }}>
-              0{index + 1}
-            </span>
-            <span className="font-display text-[1.05rem] leading-snug font-medium" style={{ color: INK }}>
-              {panel.title}
-            </span>
-          </p>
-          <p className="mt-1.5 text-[0.78rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.7)" }}>
-            {panel.caption}
-          </p>
-          {isLast && (
-            <motion.div className="mt-4" style={{ opacity: ctaOp }}>
-              <p className="font-display text-lg leading-snug italic" style={{ color: "#943F2D" }}>
-                From natural force to everyday comfort.
-              </p>
-              <a
-                href="#wind"
-                className="mt-4 inline-block rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#211A17]"
-              >
-                Explore Renewable Systems
-              </a>
-            </motion.div>
-          )}
+          {/* stage number + feature title + caption; final panel adds CTA */}
+          <div className="w-[21rem] max-w-[24vw] min-w-64 rounded-[14px] border border-[#D8B36A]/50 bg-[#FFF8EF]/90 p-5 shadow-[0_20px_44px_-26px_rgba(148,63,45,0.4)] backdrop-blur-[2px]">
+            <p className="flex items-baseline gap-2.5">
+              <span className="text-[0.72rem] font-bold tabular-nums" style={{ color: "#C75B3B" }}>
+                0{index + 1}
+              </span>
+              <span className="font-display text-[1.35rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
+                {panel.title}
+              </span>
+            </p>
+            <p className="mt-2.5 text-[0.9rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.82)" }}>
+              {panel.caption}
+            </p>
+            {isLast && (
+              <motion.div className="mt-4" style={{ opacity: ctaOp }}>
+                <p className="font-display text-lg leading-snug italic" style={{ color: "#C75B3B" }}>
+                  From natural force to everyday comfort.
+                </p>
+                <a
+                  href="#wind"
+                  className="mt-4 inline-block rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#211A17]"
+                >
+                  Explore Renewable Systems
+                </a>
+              </motion.div>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>

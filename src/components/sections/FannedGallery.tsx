@@ -73,7 +73,7 @@ export default function FannedGallery() {
       className="grain blend-top relative overflow-hidden py-(--spacing-section) transition-colors duration-[900ms]"
       style={
         {
-          "--blend-from": "#a06a44",
+          "--blend-from": "#F5E9DA",
           backgroundColor: card.tint,
         } as React.CSSProperties
       }

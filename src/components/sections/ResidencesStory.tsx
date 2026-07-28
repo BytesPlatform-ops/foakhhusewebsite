@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -11,89 +11,31 @@ import {
 } from "framer-motion";
 
 /**
- * 03 — The Residences: "Homes made for real life."
+ * 03 — The Residences: the statement stage.
  *
- * Redesigned from the SVG plate scroll-story into one image-led editorial
- * spread (Ironhill's layered-card feeling, translated to our clay/ivory
- * identity — not its system): serif heading upper-left, a staggered
- * collage of four angled image cards centre (one primary, three
- * secondary at varying depth and scale), and the four residence
- * qualities as a quiet reading column on the right.
+ * Structure follows the supplied agency reference (translated to our
+ * clay/ivory identity, not its colours or copy): one flat saturated
+ * ground, a portrait video card dead-centre, and a single giant serif
+ * headline split into two halves that flank it — left half and right
+ * half sliding in from opposite edges while rising from the lower third
+ * to centre, passing BEHIND the media card. A small featured card holds
+ * the lower-right corner and arrives last.
  *
- * Motion is calm: cards rise and settle with a stagger on entry, drift
- * on micro-parallax at slightly different rates while the section passes,
- * and lift a breath on hover. Nothing flips, nothing loops.
+ * The four residence qualities follow as a quiet four-column strip on
+ * the same ground — no overlapping collage, nothing grouped.
+ *
+ * Native scroll pin, spring-driven progress (ScrollTimeline stale-range
+ * guard), transform/opacity only. Reduced motion renders the settled
+ * frame with the poster still and no autoplaying video.
  */
 
-const INK = "#241B17";
 const IVORY = "#F7F0E8";
-
-interface ResidenceCard {
-  src: string;
-  alt: string;
-  label: string;
-  line: string;
-  /** collage placement (desktop) */
-  className: string;
-  rotate: number;
-  z: number;
-  /** parallax rate multiplier */
-  drift: number;
-  objectPosition?: string;
-}
-
-const CARDS: ResidenceCard[] = [
-  {
-    src: "/route-corridor.jpg",
-    alt: "Warm interior corridor with soft linear light and a resident walking toward the window",
-    label: "01 — Living Spaces",
-    line: "Daylight crossing the floor.",
-    className: "left-[6%] top-[4%] w-[46%] aspect-[4/5] z-20",
-    rotate: -2.2,
-    z: 20,
-    drift: 1,
-    objectPosition: "50% 42%",
-  },
-  {
-    src: "/env-air.jpg",
-    alt: "Sunlit terracotta opening with fabric moving in the airflow",
-    label: "02 — Private Balconies",
-    line: "Quieter outdoor moments.",
-    className: "left-[44%] top-[-2%] w-[34%] aspect-[4/3] z-30",
-    rotate: 2.6,
-    z: 30,
-    drift: 1.5,
-    objectPosition: "60% 40%",
-  },
-  {
-    src: "/building-approach.jpg",
-    alt: "The residence facade at dusk, windows warm against the evening",
-    label: "03 — Natural Light",
-    line: "Orientation shaped by the sun.",
-    className: "left-[54%] top-[46%] w-[36%] aspect-[4/3] z-10",
-    rotate: -1.6,
-    z: 10,
-    drift: 0.6,
-    objectPosition: "50% 26%",
-  },
-  {
-    src: "/route-comfort.jpg",
-    alt: "Residents greeting in the warm sheltered court",
-    label: "04 — Everyday Comfort",
-    line: "Space that holds real life.",
-    className: "left-[16%] top-[58%] w-[30%] aspect-[5/4] z-30",
-    rotate: 1.8,
-    z: 30,
-    drift: 1.2,
-    objectPosition: "50% 38%",
-  },
-];
 
 const QUALITIES = [
   {
     num: "01",
     title: "Living Spaces",
-    copy: "Generous, well-proportioned rooms where daylight crosses the floor — spaces designed to hold real family life.",
+    copy: "Generous, well-proportioned rooms where daylight crosses the floor — designed to hold real family life.",
   },
   {
     num: "02",
@@ -108,7 +50,7 @@ const QUALITIES = [
   {
     num: "04",
     title: "Everyday Comfort",
-    copy: "Layouts are shaped for practical living — not just visual appeal — with space that feels flexible, usable and refined.",
+    copy: "Layouts shaped for practical living — not just visual appeal — with space that feels flexible, usable and refined.",
   },
 ];
 
@@ -118,17 +60,23 @@ export default function ResidencesStory() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   });
   const p = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.4 });
 
-  /* micro-parallax rates, one per card */
-  const drifts = [
-    useTransform(p, [0, 1], ["2.5svh", "-2.5svh"]),
-    useTransform(p, [0, 1], ["4svh", "-4svh"]),
-    useTransform(p, [0, 1], ["1.5svh", "-1.5svh"]),
-    useTransform(p, [0, 1], ["3svh", "-3svh"]),
-  ];
+  /* the two headline halves cross in from opposite edges and rise */
+  const leftX = useTransform(p, [0, 0.55, 1], ["-16vw", "0vw", "1.5vw"]);
+  const rightX = useTransform(p, [0, 0.55, 1], ["16vw", "0vw", "-1.5vw"]);
+  const textY = useTransform(p, [0, 0.55], ["17svh", "0svh"]);
+  const textOpacity = useTransform(p, [0, 0.18], [0.4, 1]);
+
+  /* the media card settles and breathes */
+  const mediaScale = useTransform(p, [0, 0.5], [0.93, 1]);
+  const mediaY = useTransform(p, [0, 1], ["4svh", "-3svh"]);
+
+  /* the featured corner card arrives once the headline has landed */
+  const cardOpacity = useTransform(p, [0.6, 0.78], [0, 1]);
+  const cardY = useTransform(p, [0.6, 0.78], [28, 0]);
 
   return (
     <section
@@ -136,151 +84,231 @@ export default function ResidencesStory() {
       ref={sectionRef}
       data-section="residences"
       aria-labelledby="residences-heading"
-      className="mineral-clay grain blend-top relative overflow-hidden py-(--spacing-section)"
+      className="mineral-clay grain blend-top relative"
       style={{ "--blend-from": "#202522" } as React.CSSProperties}
     >
-      {/* soft champagne breath behind the collage */}
-      <div
-        aria-hidden="true"
-        className="absolute top-[18%] left-[26%] h-[55%] w-[44%] rounded-full opacity-30 blur-3xl"
-        style={{ background: "radial-gradient(closest-side, rgb(198 164 107 / 0.5), transparent 72%)" }}
-      />
+      {/* ------------------------------------------------ pinned stage -- */}
+      <div className="relative hidden lg:block lg:h-[240svh]">
+        <div className="sticky top-0 h-svh overflow-hidden">
+          {/* eyebrow — quiet, upper-left, always present */}
+          <p
+            className="absolute top-[7%] left-[6%] z-30 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
+            style={{ color: "rgba(247,240,232,0.75)" }}
+          >
+            03 — The Residences
+          </p>
 
-      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
-        {/* ---------------- heading ---------------- */}
-        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#F3E7D8" }}>
+          {/* the split headline — BEHIND the media card */}
+          <motion.div
+            aria-hidden="true"
+            className="absolute inset-x-0 top-1/2 z-10"
+            style={reduced ? undefined : { y: textY, opacity: textOpacity }}
+          >
+            <motion.p
+              className="font-display absolute left-[3.5%] whitespace-nowrap uppercase"
+              style={{
+                color: IVORY,
+                fontSize: "clamp(3.4rem,6.4vw,7rem)",
+                lineHeight: 1,
+                letterSpacing: "-0.01em",
+                fontWeight: 600,
+                y: "-50%",
+                ...(reduced ? {} : { x: leftX }),
+              }}
+            >
+              Homes made
+            </motion.p>
+            <motion.p
+              className="font-display absolute right-[3.5%] whitespace-nowrap uppercase"
+              style={{
+                color: "rgba(247,240,232,0.62)",
+                fontSize: "clamp(3.4rem,6.4vw,7rem)",
+                lineHeight: 1,
+                letterSpacing: "-0.01em",
+                fontWeight: 600,
+                y: "-50%",
+                ...(reduced ? {} : { x: rightX }),
+              }}
+            >
+              for real life.
+            </motion.p>
+          </motion.div>
+
+          {/* accessible heading for the split display text */}
+          <h2 id="residences-heading" className="sr-only">
+            Homes made for real life.
+          </h2>
+
+          {/* the portrait media card — centre, above the headline */}
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <motion.div
+              className="relative w-[clamp(300px,25vw,400px)] overflow-hidden rounded-xl shadow-[0_50px_100px_-40px_rgba(26,16,11,0.7)]"
+              style={reduced ? undefined : { scale: mediaScale, y: mediaY }}
+            >
+              <StageMedia reduced={!!reduced} />
+            </motion.div>
+          </div>
+
+          {/* featured corner card — the reference's "case of the month" */}
+          <motion.aside
+            className="absolute right-[4%] bottom-[6%] z-30 w-[19.5rem] overflow-hidden rounded-2xl bg-[#294338] p-3 shadow-[0_34px_70px_-30px_rgba(20,26,22,0.8)]"
+            style={reduced ? undefined : { opacity: cardOpacity, y: cardY }}
+          >
+            <div className="flex gap-3">
+              <div className="relative w-[7.5rem] shrink-0 overflow-hidden rounded-lg">
+                <Image
+                  src="/route-comfort.jpg"
+                  alt="Residents in the warm sheltered court"
+                  fill
+                  sizes="120px"
+                  className="object-cover"
+                  style={{ objectPosition: "50% 38%" }}
+                />
+              </div>
+              <div className="flex flex-col py-1 pr-1">
+                <p className="text-[0.58rem] tracking-[0.22em] uppercase" style={{ color: "rgba(247,240,232,0.6)" }}>
+                  Now in development
+                </p>
+                <p className="font-display mt-1.5 text-[1.05rem] leading-[1.15] font-medium" style={{ color: IVORY }}>
+                  84 residences.
+                  <br />
+                  Two blocks.
+                </p>
+                <a
+                  href="#enquire"
+                  className="mt-auto inline-block w-fit rounded-full bg-[#C6A46B] px-4 py-2 text-[0.7rem] font-semibold text-[#1D1714] transition-colors hover:bg-[#D6B87E]"
+                >
+                  Register interest
+                </a>
+              </div>
+            </div>
+          </motion.aside>
+        </div>
+      </div>
+
+      {/* -------------------------------------------- mobile / reduced -- */}
+      <div className="px-(--spacing-gutter) pt-24 pb-4 lg:hidden">
+        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "rgba(247,240,232,0.75)" }}>
           03 — The Residences
         </p>
-        <h2
-          id="residences-heading"
-          className="font-display mt-5 max-w-[13ch] leading-[1.04] font-medium text-balance"
-          style={{ color: IVORY, fontSize: "clamp(2.4rem,4.8vw,4.4rem)" }}
+        <p
+          className="font-display mt-5 uppercase"
+          style={{ color: IVORY, fontSize: "clamp(2.3rem,9.5vw,3.6rem)", lineHeight: 1.02, fontWeight: 600 }}
+          aria-hidden="true"
         >
-          Homes made for real life.
-        </h2>
-        <p className="mt-5 max-w-md text-[0.95rem] leading-[1.6]" style={{ color: "rgba(247,240,232,0.8)" }}>
-          Generous, well-proportioned rooms shaped by daylight, airflow and practical family
-          use.
+          Homes made
+          <br />
+          <span style={{ color: "rgba(247,240,232,0.62)" }}>for real life.</span>
         </p>
-
-        {/* ---------------- collage + qualities ---------------- */}
-        <div className="mt-14 grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-8">
-          {/* the layered card collage */}
-          <div className="relative hidden aspect-[13/9] lg:block">
-            {CARDS.map((card, i) => (
-              <motion.figure
-                key={card.label}
-                className={`group absolute ${card.className}`}
-                initial={reduced ? undefined : { opacity: 0, y: 34, rotate: 0 }}
-                whileInView={{ opacity: 1, y: 0, rotate: card.rotate }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.85, delay: i * 0.14, ease: [0.22, 1, 0.36, 1] }}
-                style={reduced ? { rotate: card.rotate } : { y: drifts[i] }}
-              >
-                <div className="overflow-hidden rounded-[10px] border border-[#F7F0E8]/20 bg-[#F7F0E8] p-1.5 shadow-[0_34px_70px_-34px_rgba(26,16,11,0.65)] transition-transform duration-500 ease-[var(--ease-out-quint)] group-hover:-translate-y-1.5">
-                  <div className={`relative w-full overflow-hidden rounded-[6px] ${card.className.includes("4/5") ? "aspect-[4/5]" : card.className.includes("5/4") ? "aspect-[5/4]" : "aspect-[4/3]"}`}>
-                      <Image
-                        src={card.src}
-                        alt={card.alt}
-                        fill
-                        sizes="40vw"
-                        className="object-cover"
-                        style={{ objectPosition: card.objectPosition }}
-                      />
-                      {/* warm grade */}
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-0"
-                        style={{
-                          background:
-                            "linear-gradient(170deg, rgb(198 164 107 / 0.08) 0%, transparent 35%, rgb(36 27 23 / 0.18) 100%)",
-                        }}
-                      />
-                  </div>
-                  <figcaption className="flex items-baseline justify-between px-2.5 pt-2 pb-1">
-                    <span className="text-[0.56rem] font-semibold tracking-[0.22em] uppercase" style={{ color: INK }}>
-                      {card.label}
-                    </span>
-                    <span className="font-display hidden text-[0.78rem] italic sm:block" style={{ color: "rgba(36,27,23,0.65)" }}>
-                      {card.line}
-                    </span>
-                  </figcaption>
-                </div>
-              </motion.figure>
-            ))}
-          </div>
-
-          {/* mobile: primary card + two-up secondaries */}
-          <div className="space-y-4 lg:hidden">
-            {CARDS.slice(0, 1).map((card) => (
-              <MobileCard key={card.label} card={card} tall />
-            ))}
-            <div className="grid grid-cols-2 gap-4">
-              {CARDS.slice(1, 3).map((card) => (
-                <MobileCard key={card.label} card={card} />
-              ))}
-            </div>
-            <MobileCard card={CARDS[3]} />
-          </div>
-
-          {/* the qualities reading column */}
-          <div className="lg:pt-6">
-            <ol className="space-y-7">
-              {QUALITIES.map((q, i) => (
-                <motion.li
-                  key={q.num}
-                  initial={reduced ? undefined : { opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{ duration: 0.6, delay: 0.3 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <p className="flex items-baseline gap-3">
-                    <span className="text-[0.68rem] font-semibold tabular-nums" style={{ color: "#F3E7D8" }}>
-                      {q.num}
-                    </span>
-                    <span className="font-display text-[1.15rem] font-medium" style={{ color: IVORY }}>
-                      {q.title}
-                    </span>
-                  </p>
-                  <p className="mt-1.5 pl-8 text-[0.8rem] leading-[1.6]" style={{ color: "rgba(247,240,232,0.72)" }}>
-                    {q.copy}
-                  </p>
-                </motion.li>
-              ))}
-            </ol>
-            <div className="mt-9 border-t pt-5" style={{ borderColor: "rgba(247,240,232,0.2)" }}>
-              <p className="text-[0.62rem] leading-relaxed tracking-[0.14em] uppercase" style={{ color: "rgba(247,240,232,0.55)" }}>
-                Interior imagery shown conceptually — final finishes subject to approved
-                specifications
-              </p>
-            </div>
-          </div>
+        <div className="relative mx-auto mt-10 w-full max-w-sm overflow-hidden rounded-xl shadow-[0_40px_80px_-40px_rgba(26,16,11,0.7)]">
+          <StageMedia reduced={!!reduced} />
         </div>
+      </div>
+
+      {/* ------------------------------------------- qualities strip ---- */}
+      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-6 pb-(--spacing-section) lg:pt-0">
+        <div className="grid gap-x-8 gap-y-9 border-t pt-12 sm:grid-cols-2 lg:-mt-2 lg:grid-cols-4" style={{ borderColor: "rgba(247,240,232,0.22)" }}>
+          {QUALITIES.map((q, i) => (
+            <motion.div
+              key={q.num}
+              initial={reduced ? undefined : { opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="text-[0.68rem] font-semibold tabular-nums" style={{ color: "rgba(247,240,232,0.65)" }}>
+                {q.num}
+              </p>
+              <p className="font-display mt-2 text-[1.15rem] font-medium" style={{ color: IVORY }}>
+                {q.title}
+              </p>
+              <p className="mt-2 text-[0.8rem] leading-[1.65]" style={{ color: "rgba(247,240,232,0.72)" }}>
+                {q.copy}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+        <p className="mt-10 text-[0.62rem] leading-relaxed tracking-[0.14em] uppercase" style={{ color: "rgba(247,240,232,0.55)" }}>
+          Imagery shown conceptually — final finishes subject to approved specifications
+        </p>
       </div>
     </section>
   );
 }
 
-/* -------------------------------------------------------------- mobile -- */
+/* ------------------------------------------------------------- media -- */
 
-function MobileCard({ card, tall = false }: { card: ResidenceCard; tall?: boolean }) {
-  return (
-    <figure className="overflow-hidden rounded-[10px] border border-[#F7F0E8]/20 bg-[#F7F0E8] p-1.5 shadow-[0_24px_50px_-28px_rgba(26,16,11,0.6)]">
-      <div className={`relative overflow-hidden rounded-[6px] ${tall ? "aspect-[4/3]" : "aspect-square"}`}>
+/**
+ * The portrait card: the project film cropped to portrait, with the
+ * reference's pause control (WCAG pausable motion). Reduced motion — and
+ * any playback failure — hold the poster still.
+ */
+function StageMedia({ reduced }: { reduced: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [paused, setPaused] = useState(false);
+
+  if (reduced) {
+    return (
+      <div className="relative aspect-[3/4.2] w-full">
         <Image
-          src={card.src}
-          alt={card.alt}
+          src="/hero-poster.jpg"
+          alt="Evening view of the Wind Corridor Residences"
           fill
-          sizes="(min-width:640px) 50vw, 100vw"
+          sizes="(min-width:1024px) 25vw, 100vw"
           className="object-cover"
-          style={{ objectPosition: card.objectPosition }}
         />
       </div>
-      <figcaption className="px-2 pt-2 pb-1">
-        <span className="text-[0.56rem] font-semibold tracking-[0.2em] uppercase" style={{ color: INK }}>
-          {card.label}
-        </span>
-      </figcaption>
-    </figure>
+    );
+  }
+
+  return (
+    <div className="relative aspect-[3/4.2] w-full bg-[#1D1714]">
+      <video
+        ref={videoRef}
+        className="absolute inset-0 h-full w-full object-cover"
+        src="/hero.mp4"
+        poster="/hero-poster.jpg"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-label="Film of the Wind Corridor Residences and its surroundings"
+      />
+      {/* gentle grade so the card reads warm on the clay ground */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(178deg, rgb(198 164 107 / 0.06) 0%, transparent 30%, rgb(29 23 20 / 0.22) 100%)",
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => {
+          const v = videoRef.current;
+          if (!v) return;
+          if (v.paused) {
+            v.play().catch(() => undefined);
+            setPaused(false);
+          } else {
+            v.pause();
+            setPaused(true);
+          }
+        }}
+        aria-label={paused ? "Play film" : "Pause film"}
+        className="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-[#F7F0E8] text-[#1D1714] transition-transform hover:scale-105"
+      >
+        {paused ? (
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M2.5 1.5v9l8-4.5z" fill="currentColor" />
+          </svg>
+        ) : (
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor" />
+          </svg>
+        )}
+      </button>
+    </div>
   );
 }

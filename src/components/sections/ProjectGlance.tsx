@@ -86,12 +86,14 @@ export default function ProjectGlance() {
             covered while the scene is full-bleed, revealed as the window
             contracts around the portal. */}
         <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
-          <div className="relative h-[68svh] w-[84vw] max-w-6xl opacity-35">
+          {/* Sized so the two drawn blocks clear the portal's edges — the
+              height is the constraint for object-contain at this aspect. */}
+          <div className="relative h-[92svh] w-screen max-w-none opacity-40">
             <Image
               src="/building-outline-lines.png"
               alt=""
               fill
-              sizes="84vw"
+              sizes="100vw"
               className="object-contain"
             />
           </div>

@@ -172,7 +172,7 @@ export default function ResidencesStory() {
   const leftX = useTransform(p, [0, 0.18, 1], ["-16vw", "0vw", "-1.8vw"]);
   const rightX = useTransform(p, [0, 0.18, 1], ["16vw", "0vw", "1.8vw"]);
   const textY = useTransform(p, [0, 0.18, 0.26, 0.95], ["15svh", "0svh", "0svh", "7svh"]);
-  const textOpacity = useTransform(p, [0, 0.12, 0.24, 0.36], [0.4, 1, 1, 0.16]);
+  const textOpacity = useTransform(p, [0, 0.12, 0.24, 0.36], [0.4, 1, 1, 0.11]);
 
   /* the featured corner card arrives as the deck completes */
   const cardOpacity = useTransform(p, [0.88, 0.97], [0, 1]);
@@ -217,7 +217,7 @@ export default function ResidencesStory() {
               className="font-display absolute left-[3.5%] whitespace-nowrap uppercase"
               style={{
                 color: "#EFD5A3",
-                fontSize: "clamp(2.9rem,4.9vw,5.6rem)",
+                fontSize: "clamp(3.4rem,6.2vw,7.2rem)",
                 lineHeight: 1,
                 letterSpacing: "-0.01em",
                 fontWeight: 600,
@@ -231,7 +231,7 @@ export default function ResidencesStory() {
               className="font-display absolute right-[3.5%] whitespace-nowrap uppercase"
               style={{
                 color: "rgba(224,193,148,0.72)",
-                fontSize: "clamp(2.9rem,4.9vw,5.6rem)",
+                fontSize: "clamp(3.4rem,6.2vw,7.2rem)",
                 lineHeight: 1,
                 letterSpacing: "-0.01em",
                 fontWeight: 600,
@@ -337,15 +337,13 @@ export default function ResidencesStory() {
                   style={{ objectPosition: d.objectPosition }}
                 />
               </figure>
-              <div className="mt-4 flex items-baseline gap-3">
-                <span className="text-[0.68rem] font-semibold tabular-nums" style={{ color: "#F0B269" }}>
-                  {d.quality!.num}
-                </span>
-                <span className="font-display text-[1.2rem] font-medium" style={{ color: IVORY }}>
-                  {d.quality!.title}
-                </span>
-              </div>
-              <p className="mt-1.5 pl-8 text-[0.82rem] leading-[1.65]" style={{ color: "rgba(247,240,232,0.75)" }}>
+              <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] uppercase tabular-nums" style={{ color: "#F0B269" }}>
+                {d.quality!.num} — {d.quality!.title}
+              </p>
+              <p className="font-display mt-2 leading-[1.08]" style={{ color: "#F2E7D8", fontSize: "1.7rem", fontWeight: 500 }}>
+                {d.quality!.title}
+              </p>
+              <p className="mt-3 text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
                 {d.quality!.copy}
               </p>
             </div>
@@ -481,27 +479,38 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-30">
       {/* heading — left gutter */}
       <motion.div
-        className="absolute top-1/2 left-[6%] w-[21vw] max-w-[21rem]"
+        className="absolute top-1/2 left-[6%] w-[24vw] max-w-[380px]"
         style={{ opacity, x: headX, y: "-50%" }}
       >
-        <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#F0B269" }}>
-          {q.num}
+        <p
+          className="text-[0.82rem] font-semibold tracking-[0.26em] uppercase tabular-nums"
+          style={{ color: "#F0B269" }}
+        >
+          {q.num} — {q.title}
         </p>
         <p
-          className="font-display mt-2 leading-[1.08] font-medium"
-          style={{ color: IVORY, fontSize: "clamp(1.7rem,2.3vw,2.5rem)" }}
+          className="font-display mt-4 leading-[1.05]"
+          style={{
+            color: "#F2E7D8",
+            fontSize: "clamp(2.6rem,4.5vw,4.9rem)",
+            fontWeight: 500,
+            letterSpacing: "-0.015em",
+          }}
         >
           {q.title}
         </p>
-        <span className="mt-4 block h-px w-12" style={{ background: "rgba(240,178,105,0.65)" }} />
+        <span className="mt-5 block h-px w-9" style={{ background: "rgba(240,178,105,0.4)" }} />
       </motion.div>
 
-      {/* copy — right gutter */}
+      {/* copy — right gutter, drawn toward the image */}
       <motion.div
-        className="absolute top-1/2 right-[6%] w-[19vw] max-w-[19rem]"
+        className="absolute top-1/2 right-[7%] w-[22vw] max-w-[380px]"
         style={{ opacity, x: copyX, y: "-50%" }}
       >
-        <p className="text-[0.92rem] leading-[1.7]" style={{ color: "rgba(248,236,218,0.9)" }}>
+        <p
+          className="leading-[1.6]"
+          style={{ color: "rgba(250,243,232,0.93)", fontSize: "clamp(1.15rem,1.25vw,1.375rem)" }}
+        >
           {q.copy}
         </p>
       </motion.div>

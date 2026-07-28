@@ -8,21 +8,25 @@ import {
   useScroll,
   useSpring,
   useTransform,
+  type MotionValue,
 } from "framer-motion";
 
 /**
- * 03 — The Residences: the statement stage.
+ * 03 — The Residences: the statement stage with a rising card deck.
  *
  * Structure follows the supplied agency reference (translated to our
- * clay/ivory identity, not its colours or copy): one flat saturated
- * ground, a portrait video card dead-centre, and a single giant serif
- * headline split into two halves that flank it — left half and right
- * half sliding in from opposite edges while rising from the lower third
- * to centre, passing BEHIND the media card. A small featured card holds
- * the lower-right corner and arrives last.
+ * clay/ivory identity): one flat saturated ground and a giant serif
+ * headline split into two halves flanking centre stage. Over the pinned
+ * scroll a deck of media cards rises from the bottom edge one after
+ * another — the film first, then image cards — each travelling up to
+ * centre and settling OVER the previous one with a different width,
+ * aspect and corner radius, so the boundary of the centre frame keeps
+ * changing. While the cards travel up, the headline drifts gently the
+ * opposite way. Covered cards scale back and dim a breath, giving the
+ * stack depth. A small featured card takes the lower-right corner as
+ * the deck completes.
  *
- * The four residence qualities follow as a quiet four-column strip on
- * the same ground — no overlapping collage, nothing grouped.
+ * The four residence qualities follow as a quiet four-column strip.
  *
  * Native scroll pin, spring-driven progress (ScrollTimeline stale-range
  * guard), transform/opacity only. Reduced motion renders the settled
@@ -30,6 +34,92 @@ import {
  */
 
 const IVORY = "#F7F0E8";
+const INK = "#1D1714";
+
+interface DeckSpec {
+  kind: "film" | "image";
+  src: string;
+  alt: string;
+  label: string;
+  /** progress window over which the card rises to centre */
+  rise: [number, number];
+  /** progress window over which the NEXT card covers this one (dim/retreat) */
+  cover: [number, number] | null;
+  fromY: string;
+  width: string;
+  aspect: string;
+  radius: string;
+  rotate: number;
+  chipSide: "left" | "right";
+  z: number;
+  objectPosition?: string;
+}
+
+const DECK: DeckSpec[] = [
+  {
+    kind: "film",
+    src: "/hero.mp4",
+    alt: "Film of the Wind Corridor Residences and its surroundings",
+    label: "The corridor film",
+    rise: [0.02, 0.26],
+    cover: [0.3, 0.48],
+    fromY: "62svh",
+    width: "clamp(280px,20vw,350px)",
+    aspect: "3 / 4.2",
+    radius: "12px",
+    rotate: 0,
+    chipSide: "right",
+    z: 20,
+  },
+  {
+    kind: "image",
+    src: "/route-corridor.jpg",
+    alt: "Warm interior corridor with soft linear light",
+    label: "01 — Living spaces",
+    rise: [0.3, 0.48],
+    cover: [0.52, 0.7],
+    fromY: "118svh",
+    width: "clamp(320px,24vw,420px)",
+    aspect: "4 / 5",
+    radius: "22px",
+    rotate: -2,
+    chipSide: "left",
+    z: 21,
+    objectPosition: "50% 42%",
+  },
+  {
+    kind: "image",
+    src: "/env-air.jpg",
+    alt: "Sunlit terracotta opening with fabric moving in the airflow",
+    label: "02 — Private balconies",
+    rise: [0.52, 0.7],
+    cover: [0.74, 0.92],
+    fromY: "118svh",
+    width: "clamp(360px,28vw,500px)",
+    aspect: "4 / 3",
+    radius: "8px",
+    rotate: 2.2,
+    chipSide: "right",
+    z: 22,
+    objectPosition: "60% 40%",
+  },
+  {
+    kind: "image",
+    src: "/building-approach.jpg",
+    alt: "The residence facade at dusk, windows warm against the evening",
+    label: "03 — Natural light",
+    rise: [0.74, 0.92],
+    cover: null,
+    fromY: "118svh",
+    width: "clamp(300px,22vw,390px)",
+    aspect: "1 / 1",
+    radius: "26px",
+    rotate: -1.4,
+    chipSide: "left",
+    z: 23,
+    objectPosition: "50% 30%",
+  },
+];
 
 const QUALITIES = [
   {
@@ -64,19 +154,17 @@ export default function ResidencesStory() {
   });
   const p = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.4 });
 
-  /* the two headline halves cross in from opposite edges and rise */
-  const leftX = useTransform(p, [0, 0.55, 1], ["-16vw", "0vw", "1.5vw"]);
-  const rightX = useTransform(p, [0, 0.55, 1], ["16vw", "0vw", "-1.5vw"]);
-  const textY = useTransform(p, [0, 0.55], ["17svh", "0svh"]);
-  const textOpacity = useTransform(p, [0, 0.18], [0.4, 1]);
+  /* the two headline halves cross in from the edges, then drift apart
+     slightly — the opposite way to the rising cards */
+  const leftX = useTransform(p, [0, 0.26, 1], ["-16vw", "0vw", "-1.8vw"]);
+  const rightX = useTransform(p, [0, 0.26, 1], ["16vw", "0vw", "1.8vw"]);
+  /* rise to centre with the first card, then sink against the deck */
+  const textY = useTransform(p, [0, 0.26, 0.34, 0.95], ["15svh", "0svh", "0svh", "7svh"]);
+  const textOpacity = useTransform(p, [0, 0.16], [0.4, 1]);
 
-  /* the media card settles and breathes */
-  const mediaScale = useTransform(p, [0, 0.5], [0.93, 1]);
-  const mediaY = useTransform(p, [0, 1], ["4svh", "-3svh"]);
-
-  /* the featured corner card arrives once the headline has landed */
-  const cardOpacity = useTransform(p, [0.6, 0.78], [0, 1]);
-  const cardY = useTransform(p, [0.6, 0.78], [28, 0]);
+  /* the featured corner card arrives as the deck completes */
+  const cardOpacity = useTransform(p, [0.86, 0.97], [0, 1]);
+  const cardY = useTransform(p, [0.86, 0.97], [28, 0]);
 
   return (
     <section
@@ -88,7 +176,7 @@ export default function ResidencesStory() {
       style={{ "--blend-from": "#202522" } as React.CSSProperties}
     >
       {/* ------------------------------------------------ pinned stage -- */}
-      <div className="relative hidden lg:block lg:h-[240svh]">
+      <div className="relative hidden lg:block lg:h-[340svh]">
         <div className="sticky top-0 h-svh overflow-hidden">
           {/* eyebrow — quiet, upper-left, always present */}
           <p
@@ -98,7 +186,7 @@ export default function ResidencesStory() {
             03 — The Residences
           </p>
 
-          {/* the split headline — BEHIND the media card */}
+          {/* the split headline — BEHIND the deck */}
           <motion.div
             aria-hidden="true"
             className="absolute inset-x-0 top-1/2 z-10"
@@ -139,15 +227,10 @@ export default function ResidencesStory() {
             Homes made for real life.
           </h2>
 
-          {/* the portrait media card — centre, above the headline */}
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
-            <motion.div
-              className="relative w-[clamp(280px,20vw,350px)] overflow-hidden rounded-xl shadow-[0_50px_100px_-40px_rgba(26,16,11,0.7)]"
-              style={reduced ? undefined : { scale: mediaScale, y: mediaY }}
-            >
-              <StageMedia reduced={!!reduced} />
-            </motion.div>
-          </div>
+          {/* the rising deck — each card travels up and covers the last */}
+          {(reduced ? DECK.slice(0, 1) : DECK).map((spec) => (
+            <DeckCard key={spec.label} spec={spec} p={p} reduced={!!reduced} />
+          ))}
 
           {/* featured corner card — the reference's "case of the month" */}
           <motion.aside
@@ -201,7 +284,28 @@ export default function ResidencesStory() {
           <span style={{ color: "rgba(247,240,232,0.62)" }}>for real life.</span>
         </p>
         <div className="relative mx-auto mt-10 w-full max-w-sm overflow-hidden rounded-xl shadow-[0_40px_80px_-40px_rgba(26,16,11,0.7)]">
-          <StageMedia reduced={!!reduced} />
+          <FilmMedia reduced={!!reduced} />
+        </div>
+        {/* the deck's image cards, stacked simply */}
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          {DECK.filter((d) => d.kind === "image").map((d) => (
+            <figure
+              key={d.label}
+              className="relative aspect-square overflow-hidden rounded-lg first:col-span-2 first:aspect-[16/10]"
+            >
+              <Image
+                src={d.src}
+                alt={d.alt}
+                fill
+                sizes="(min-width:640px) 50vw, 100vw"
+                className="object-cover"
+                style={{ objectPosition: d.objectPosition }}
+              />
+              <figcaption className="absolute bottom-2 left-2 rounded-full bg-[#F7F0E8]/92 px-3 py-1 text-[0.55rem] font-semibold tracking-[0.18em] uppercase" style={{ color: INK }}>
+                {d.label}
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </div>
 
@@ -236,20 +340,102 @@ export default function ResidencesStory() {
   );
 }
 
+/* -------------------------------------------------------------- deck -- */
+
+function DeckCard({
+  spec,
+  p,
+  reduced,
+}: {
+  spec: DeckSpec;
+  p: MotionValue<number>;
+  reduced: boolean;
+}) {
+  const [s, e] = spec.rise;
+  const cover = spec.cover;
+
+  /* rise from below the fold to centre; eased by the shared spring */
+  const y = useTransform(p, [s, e], [spec.fromY, "0svh"]);
+  /* arrive a touch small, settle, then retreat a breath when covered */
+  const scale = useTransform(
+    p,
+    cover ? [s, e, cover[0], cover[1]] : [s, e],
+    cover ? [0.97, 1, 1, 0.955] : [0.97, 1]
+  );
+  const rotate = useTransform(p, [s, e], [spec.rotate * 2.2, spec.rotate]);
+  /* covered cards dim so the incoming boundary reads clearly */
+  const dim = useTransform(p, cover ? [cover[0], cover[1]] : [0, 1], cover ? [0, 0.28] : [0, 0]);
+
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 flex items-center justify-center"
+      style={{ zIndex: spec.z }}
+    >
+      <motion.figure
+        className="pointer-events-auto relative overflow-hidden shadow-[0_50px_100px_-40px_rgba(26,16,11,0.7)]"
+        style={{
+          width: spec.width,
+          aspectRatio: spec.aspect,
+          borderRadius: spec.radius,
+          backgroundColor: INK,
+          ...(reduced ? {} : { y, scale, rotate }),
+        }}
+      >
+        {spec.kind === "film" ? (
+          <FilmMedia reduced={reduced} fill />
+        ) : (
+          <Image
+            src={spec.src}
+            alt={spec.alt}
+            fill
+            sizes="30vw"
+            className="object-cover"
+            style={{ objectPosition: spec.objectPosition }}
+          />
+        )}
+        {/* warm grade */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(178deg, rgb(198 164 107 / 0.06) 0%, transparent 30%, rgb(29 23 20 / 0.2) 100%)",
+          }}
+        />
+        {/* cover dim */}
+        <motion.span
+          aria-hidden="true"
+          className="absolute inset-0 bg-[#1D1714]"
+          style={{ opacity: reduced ? 0 : dim }}
+        />
+        {/* label chip — alternating sides, the "text other side" beat */}
+        <figcaption
+          className={`absolute bottom-3.5 rounded-full bg-[#F7F0E8]/92 px-3.5 py-1.5 text-[0.55rem] font-semibold tracking-[0.18em] uppercase backdrop-blur-sm ${
+            spec.chipSide === "left" ? "left-3.5" : "right-3.5"
+          }`}
+          style={{ color: INK }}
+        >
+          {spec.label}
+        </figcaption>
+      </motion.figure>
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------- media -- */
 
 /**
- * The portrait card: the project film cropped to portrait, with the
- * reference's pause control (WCAG pausable motion). Reduced motion — and
- * any playback failure — hold the poster still.
+ * The film: cropped portrait, with the reference's pause control (WCAG
+ * pausable motion). Reduced motion — and any playback failure — hold
+ * the poster still.
  */
-function StageMedia({ reduced }: { reduced: boolean }) {
+function FilmMedia({ reduced, fill = false }: { reduced: boolean; fill?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [paused, setPaused] = useState(false);
 
   if (reduced) {
     return (
-      <div className="relative aspect-[3/4.2] w-full">
+      <div className={fill ? "absolute inset-0" : "relative aspect-[3/4.2] w-full"}>
         <Image
           src="/hero-poster.jpg"
           alt="Evening view of the Wind Corridor Residences"
@@ -262,7 +448,7 @@ function StageMedia({ reduced }: { reduced: boolean }) {
   }
 
   return (
-    <div className="relative aspect-[3/4.2] w-full bg-[#1D1714]">
+    <div className={`${fill ? "absolute inset-0" : "relative aspect-[3/4.2] w-full"} bg-[#1D1714]`}>
       <video
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
@@ -273,15 +459,6 @@ function StageMedia({ reduced }: { reduced: boolean }) {
         loop
         playsInline
         aria-label="Film of the Wind Corridor Residences and its surroundings"
-      />
-      {/* gentle grade so the card reads warm on the clay ground */}
-      <span
-        aria-hidden="true"
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(178deg, rgb(198 164 107 / 0.06) 0%, transparent 30%, rgb(29 23 20 / 0.22) 100%)",
-        }}
       />
       <button
         type="button"
@@ -297,7 +474,7 @@ function StageMedia({ reduced }: { reduced: boolean }) {
           }
         }}
         aria-label={paused ? "Play film" : "Pause film"}
-        className="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-[#F7F0E8] text-[#1D1714] transition-transform hover:scale-105"
+        className="absolute bottom-3.5 left-3.5 flex h-10 w-10 items-center justify-center rounded-full bg-[#F7F0E8] text-[#1D1714] transition-transform hover:scale-105"
       >
         {paused ? (
           <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">

@@ -31,7 +31,7 @@ function LocationPill() {
         <circle cx="12" cy="10" r="2.6" />
       </svg>
       <span className="text-[0.62rem] font-semibold tracking-[0.3em] text-[#FFF4E5] uppercase">
-        Location
+        04 — Location &amp; Connectivity
       </span>
     </span>
   );
@@ -71,10 +71,10 @@ function PanelHeader() {
         <LocationPill />
         <div className="text-right">
           <p className="text-[0.7rem] font-semibold tracking-[0.26em] text-[#FFF4E5] uppercase">
-            Foakh Tower
+            The Wind Corridor Residences
           </p>
           <p className="mt-1 text-[0.66rem] tracking-[0.18em] text-[#FFF4E5]/70 uppercase">
-            Near DHA, Karachi
+            DHA View City · Karachi
           </p>
         </div>
       </div>
@@ -91,9 +91,13 @@ function PanelHeader() {
         <span className="h-px w-14 bg-[#D8AE62]" />
         <span className="h-1.5 w-1.5 rotate-45 bg-[#D8AE62]" />
       </div>
-      <p className="mt-6 max-w-lg text-[0.98rem] leading-[1.7] text-[#FFF4E5]/88">
-        A premium residential setting in Karachi with convenient access to DHA, healthcare,
-        education, shopping and major road networks.
+      <p className="mt-6 max-w-lg text-[1.02rem] leading-[1.7] text-[#FFF4E5]/92">
+        A convenient address close to healthcare, shopping, education and major road links.
+      </p>
+      <p className="mt-4 max-w-lg text-[0.92rem] leading-[1.7] text-[#FFF4E5]/78">
+        Located in DHA View City, Karachi, The Wind Corridor Residences places residents
+        within convenient reach of important everyday destinations while maintaining a
+        peaceful residential setting.
       </p>
     </>
   );
@@ -143,7 +147,7 @@ export default function FoakhLocationSection() {
             <div className="relative">
               <PanelHeader />
               <div className="mt-10">
-                <NearbyLocationGrid />
+                <NearbyLocationGrid onPanel />
               </div>
             </div>
           </motion.div>

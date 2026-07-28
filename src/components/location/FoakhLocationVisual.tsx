@@ -11,10 +11,10 @@ export default function FoakhLocationVisual() {
       <div className="grid items-center gap-2 p-7 sm:grid-cols-[minmax(0,0.9fr)_1.1fr] sm:p-8">
         <figcaption>
           <p className="text-[0.72rem] font-semibold tracking-[0.3em] text-[#291A16] uppercase">
-            Foakh Tower
+            The Wind Corridor Residences
           </p>
           <p className="mt-1.5 text-[0.68rem] tracking-[0.22em] text-[#291A16]/60 uppercase">
-            Near DHA · Karachi
+            DHA View City · Karachi
           </p>
           <span className="mt-4 block h-px w-10 bg-[#D8AE62]" />
           <p className="font-display mt-4 text-[1.05rem] leading-snug text-[#7E2F22] italic">
@@ -33,7 +33,7 @@ export default function FoakhLocationVisual() {
         <div className="relative aspect-[4/3] w-full">
           <Image
             src="/building-outline-lines.png"
-            alt="Architectural line drawing of the Foakh Tower blocks"
+            alt="Architectural line drawing of the two residential blocks"
             fill
             sizes="(min-width:1024px) 24vw, 60vw"
             className="object-contain"

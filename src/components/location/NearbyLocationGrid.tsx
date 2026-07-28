@@ -8,12 +8,26 @@ import { motion, useReducedMotion } from "framer-motion";
  */
 
 const ITEMS: { icon: keyof typeof ICONS; label: string; sub: string }[] = [
-  { icon: "arch", label: "Near DHA", sub: "Established neighbourhood context" },
-  { icon: "cross", label: "Near Shaukat Khanum Hospital", sub: "Healthcare within reach" },
-  { icon: "road", label: "Major road networks", sub: "Direct highway connection" },
-  { icon: "cap", label: "Schools nearby", sub: "Education within the area" },
-  { icon: "bag", label: "Shopping nearby", sub: "Daily essentials close at hand" },
-  { icon: "route", label: "Karachi connectivity", sub: "Convenient city access" },
+  {
+    icon: "cross",
+    label: "Shaukat Khanum Hospital",
+    sub: "Convenient access to one of Pakistan's leading healthcare institutions",
+  },
+  {
+    icon: "bag",
+    label: "Mega Imtiaz Store",
+    sub: "Everyday shopping and household essentials within easy reach",
+  },
+  {
+    icon: "cap",
+    label: "Schools & Education",
+    sub: "Well connected to educational facilities for children and families",
+  },
+  {
+    icon: "road",
+    label: "Major Road Networks",
+    sub: "Smooth access to surrounding communities and key areas of the city",
+  },
 ];
 
 const ICONS = {
@@ -37,9 +51,10 @@ const ICONS = {
   ),
 };
 
-export default function NearbyLocationGrid() {
+export default function NearbyLocationGrid({ onPanel = false }: { onPanel?: boolean }) {
   const reduced = useReducedMotion();
   return (
+    <div>
     <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {ITEMS.map((item, i) => (
         <motion.li
@@ -78,5 +93,12 @@ export default function NearbyLocationGrid() {
         </motion.li>
       ))}
     </ul>
+    <p
+      className="mt-6 text-[0.68rem] font-semibold tracking-[0.28em] uppercase"
+      style={{ color: onPanel ? "rgba(255,244,229,0.85)" : "#943F2D" }}
+    >
+      Everything you need, within reach.
+    </p>
+    </div>
   );
 }

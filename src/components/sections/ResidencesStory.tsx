@@ -12,26 +12,66 @@ import {
 } from "framer-motion";
 
 /**
- * 03 — The Residences: the statement stage with a rising card deck.
+ * 03 — Residences & Lifestyle: two connected subsections.
  *
- * One flat clay ground. The split serif headline flanks centre stage
- * while the film card rises from the bottom edge; then four image
- * cards follow it up one per scroll beat, each settling OVER the
- * previous with a different width, aspect and corner radius — the
- * centre boundary keeps changing. As the quality beats begin the big
- * headline recedes to a faint backdrop, and each card brings its own
- * reading pair: number + title arriving from the LEFT gutter, the
- * copy paragraph from the RIGHT — swapped out as the next card covers.
- * Covered cards scale back and dim so the stack reads with depth. The
- * featured corner card lands last.
+ * 03A — LIFESTYLE & AMENITIES: "Everyday comfort, elevated." One
+ * dominant lifestyle image beside eight editorial amenity panels
+ * (premium cards, not icon chips), soft scroll reveals.
+ *
+ * 03B — APARTMENTS & INTERIORS: the statement stage with the rising
+ * card deck — kept, extended from four to SIX residence qualities
+ * (Spacious / Functional / Elegant / Comfort Focused / Private
+ * Balconies / Limited Community). The film card rises first, then each
+ * quality card covers the last with a changing boundary while its
+ * reading pair (heading left, copy right) swaps in. The split backdrop
+ * headline "HOMES MADE / FOR REAL LIFE" recedes once the beats begin.
  *
  * Native scroll pin, spring-driven progress (ScrollTimeline stale-range
- * guard), transform/opacity only. Reduced motion renders a settled
- * frame; mobile stacks card + text pairs.
+ * guard), transform/opacity only. Reduced motion renders settled
+ * frames; mobile stacks everything readably.
  */
 
 const IVORY = "#F7F0E8";
 const INK = "#1D1714";
+
+/* ------------------------------------------------ 03A — amenities ---- */
+
+const AMENITIES = [
+  {
+    title: "Swimming Pool",
+    copy: "A relaxing recreation space designed for residents and families.",
+  },
+  {
+    title: "High-Speed Elevators",
+    copy: "Efficient vertical movement throughout the development.",
+  },
+  {
+    title: "Ventilated Elevator Lobbies",
+    copy: "Wind-catcher airflow is directed towards common circulation spaces for added comfort.",
+  },
+  {
+    title: "Dedicated Parking",
+    copy: "Secure and organised parking for residents.",
+  },
+  {
+    title: "Family Recreation Areas",
+    copy: "Welcoming spaces for relaxation and social interaction.",
+  },
+  {
+    title: "24/7 Security",
+    copy: "Controlled access and continuous monitoring for peace of mind.",
+  },
+  {
+    title: "Modern Architecture",
+    copy: "A contemporary design balancing elegance, function and environmental responsibility.",
+  },
+  {
+    title: "Reliable Water System",
+    copy: "A planned treatment solution supporting clean and dependable water availability.",
+  },
+];
+
+/* ------------------------------------------- 03B — the quality deck -- */
 
 interface Quality {
   num: string;
@@ -43,9 +83,7 @@ interface DeckSpec {
   kind: "film" | "image";
   src: string;
   alt: string;
-  /** progress window over which the card rises to centre */
   rise: [number, number];
-  /** progress window over which the NEXT card covers this one */
   cover: [number, number] | null;
   fromY: string;
   width: string;
@@ -54,7 +92,6 @@ interface DeckSpec {
   rotate: number;
   z: number;
   quality: Quality | null;
-  /** ambient stage glow while this card holds centre */
   accent: string;
   objectPosition?: string;
 }
@@ -64,8 +101,8 @@ const DECK: DeckSpec[] = [
     kind: "film",
     src: "/hero.mp4",
     alt: "Film of the Wind Corridor Residences and its surroundings",
-    rise: [0.02, 0.18],
-    cover: [0.22, 0.34],
+    rise: [0.02, 0.12],
+    cover: [0.15, 0.23],
     fromY: "62svh",
     width: "clamp(280px,20vw,350px)",
     aspect: "3 / 4.2",
@@ -77,106 +114,144 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/route-corridor.jpg",
-    alt: "Warm interior corridor with soft linear light",
-    rise: [0.22, 0.34],
-    cover: [0.4, 0.52],
+    src: "/hero-poster.jpg",
+    alt: "The generous scale of the development in the evening light",
+    rise: [0.15, 0.23],
+    cover: [0.27, 0.35],
     fromY: "118svh",
-    width: "clamp(320px,24vw,420px)",
-    aspect: "4 / 5",
+    width: "clamp(340px,26vw,460px)",
+    aspect: "4 / 3",
     radius: "22px",
     rotate: -2,
     z: 21,
     quality: {
       num: "01",
-      title: "Living Spaces",
-      copy: "Generous, well-proportioned rooms where daylight crosses the floor — designed to hold real family life.",
+      title: "Spacious",
+      copy: "Generously planned living, dining and bedroom areas.",
     },
     accent: "213 155 84",
-    objectPosition: "50% 42%",
   },
   {
     kind: "image",
-    src: "/env-air.jpg",
-    alt: "Sunlit terracotta opening with fabric moving in the airflow",
-    rise: [0.4, 0.52],
-    cover: [0.58, 0.7],
+    src: "/route-exterior.jpg",
+    alt: "The organised rooftop systems above the development at first light",
+    rise: [0.27, 0.35],
+    cover: [0.39, 0.47],
     fromY: "118svh",
-    width: "clamp(360px,28vw,500px)",
-    aspect: "4 / 3",
-    radius: "8px",
-    rotate: 2.2,
+    width: "clamp(320px,24vw,420px)",
+    aspect: "4 / 5",
+    radius: "10px",
+    rotate: 1.8,
     z: 22,
     quality: {
       num: "02",
-      title: "Private Balconies",
-      copy: "Residences open outward with quieter outdoor moments, private views and a stronger sense of personal space.",
+      title: "Functional",
+      copy: "Practical layouts designed around daily family routines.",
     },
     accent: "135 147 131",
-    objectPosition: "60% 40%",
   },
   {
     kind: "image",
     src: "/building-approach.jpg",
-    alt: "The residence facade at dusk, windows warm against the evening",
-    rise: [0.58, 0.7],
-    cover: [0.76, 0.88],
+    alt: "The refined facade of the residences at dusk",
+    rise: [0.39, 0.47],
+    cover: [0.51, 0.59],
     fromY: "118svh",
-    width: "clamp(300px,22vw,390px)",
-    aspect: "1 / 1",
+    width: "clamp(360px,28vw,500px)",
+    aspect: "16 / 11",
     radius: "26px",
     rotate: -1.4,
     z: 23,
     quality: {
       num: "03",
-      title: "Natural Light",
-      copy: "Thoughtful orientation helps sunlight move through the home, supporting warmth, calm and everyday comfort.",
+      title: "Elegant",
+      copy: "Contemporary finishes and refined interior details.",
     },
-    accent: "111 155 152",
+    accent: "213 155 84",
     objectPosition: "50% 30%",
   },
   {
     kind: "image",
-    src: "/route-comfort.jpg",
-    alt: "Residents greeting in the warm sheltered court",
-    rise: [0.76, 0.88],
-    cover: null,
+    src: "/route-corridor.jpg",
+    alt: "Daylight filling the warm interior spaces",
+    rise: [0.51, 0.59],
+    cover: [0.63, 0.71],
     fromY: "118svh",
-    width: "clamp(340px,26vw,460px)",
-    aspect: "5 / 4",
+    width: "clamp(300px,22vw,390px)",
+    aspect: "3 / 4",
     radius: "16px",
-    rotate: 1.6,
+    rotate: 2.2,
     z: 24,
     quality: {
       num: "04",
-      title: "Everyday Comfort",
-      copy: "Layouts shaped for practical living — not just visual appeal — with space that feels flexible, usable and refined.",
+      title: "Comfort Focused",
+      copy: "Planning that supports light, airflow and year-round usability.",
+    },
+    accent: "111 155 152",
+    objectPosition: "50% 42%",
+  },
+  {
+    kind: "image",
+    src: "/env-air.jpg",
+    alt: "A private balcony opening with fabric moving in the airflow",
+    rise: [0.63, 0.71],
+    cover: [0.75, 0.83],
+    fromY: "118svh",
+    width: "clamp(340px,26vw,460px)",
+    aspect: "4 / 3",
+    radius: "8px",
+    rotate: -1.8,
+    z: 25,
+    quality: {
+      num: "05",
+      title: "Private Balconies",
+      copy: "Personal outdoor space for relaxation and views.",
     },
     accent: "213 155 84",
-    objectPosition: "50% 38%",
+    objectPosition: "60% 40%",
+  },
+  {
+    kind: "image",
+    src: "/env-context.jpg",
+    alt: "The two-block development within its wider green landscape",
+    rise: [0.75, 0.83],
+    cover: null,
+    fromY: "118svh",
+    width: "clamp(320px,24vw,430px)",
+    aspect: "1 / 1",
+    radius: "24px",
+    rotate: 1.4,
+    z: 26,
+    quality: {
+      num: "06",
+      title: "Limited Community",
+      copy: "Only 84 residences across two distinguished blocks.",
+    },
+    accent: "198 164 107",
   },
 ];
 
 export default function ResidencesStory() {
   const sectionRef = useRef<HTMLElement>(null);
+  const deckRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: deckRef,
     offset: ["start start", "end end"],
   });
   const p = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.4 });
 
   /* the two headline halves cross in from the edges, then recede to a
      faint backdrop once the quality beats begin */
-  const leftX = useTransform(p, [0, 0.18, 1], ["-16vw", "0vw", "-1.8vw"]);
-  const rightX = useTransform(p, [0, 0.18, 1], ["16vw", "0vw", "1.8vw"]);
-  const textY = useTransform(p, [0, 0.18, 0.26, 0.95], ["15svh", "0svh", "0svh", "7svh"]);
-  const textOpacity = useTransform(p, [0, 0.12, 0.24, 0.36], [0.4, 1, 1, 0.11]);
+  const leftX = useTransform(p, [0, 0.12, 1], ["-16vw", "0vw", "-1.8vw"]);
+  const rightX = useTransform(p, [0, 0.12, 1], ["16vw", "0vw", "1.8vw"]);
+  const textY = useTransform(p, [0, 0.12, 0.18, 0.95], ["15svh", "0svh", "0svh", "7svh"]);
+  const textOpacity = useTransform(p, [0, 0.08, 0.16, 0.26], [0.4, 1, 1, 0.11]);
 
   /* the featured corner card arrives as the deck completes */
-  const cardOpacity = useTransform(p, [0.88, 0.97], [0, 1]);
-  const cardY = useTransform(p, [0.88, 0.97], [28, 0]);
+  const cardOpacity = useTransform(p, [0.85, 0.95], [0, 1]);
+  const cardY = useTransform(p, [0.85, 0.95], [28, 0]);
 
   return (
     <section
@@ -197,16 +272,43 @@ export default function ResidencesStory() {
         } as React.CSSProperties
       }
     >
-      {/* ------------------------------------------------ pinned stage -- */}
-      <div className="relative hidden lg:block lg:h-[420svh]">
-        <div className="sticky top-0 h-svh overflow-hidden">
-          {/* eyebrow — quiet, upper-left, always present */}
-          <p
-            className="absolute top-[7%] left-[6%] z-30 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
-            style={{ color: "#943F2D" }}
-          >
-            03 — The Residences
+      {/* ==================== 03A — LIFESTYLE & AMENITIES ============== */}
+      <Amenities reduced={!!reduced} />
+
+      {/* ---- Apartments & Interiors — intro copy before the deck ----- */}
+      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pb-16 lg:pb-20">
+        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#F0B269" }}>
+          Apartments &amp; Interiors
+        </p>
+        <p
+          className="font-display mt-4 max-w-[26ch] leading-[1.15]"
+          style={{ color: IVORY, fontSize: "clamp(1.9rem,2.6vw,2.8rem)", fontWeight: 500 }}
+        >
+          Spacious, functional and elegant apartments planned around the needs of modern
+          families.
+        </p>
+        <div className="mt-6 grid gap-5 lg:grid-cols-2 lg:gap-10">
+          <p className="max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
+            Every apartment is designed to balance comfort, practicality and visual
+            refinement. Generous living spaces, functional kitchens, comfortable bedrooms,
+            private balconies and carefully selected finishes create a welcoming home
+            environment.
           </p>
+          <p className="max-w-[62ch] text-[0.92rem] leading-[1.7]" style={{ color: "rgba(250,243,232,0.72)" }}>
+            The wind-catcher system primarily supports the corridor and shared-area
+            ventilation network. Apartment comfort is further supported through thoughtful
+            planning, practical layouts and controlled natural ventilation according to the
+            final architectural and mechanical design.
+          </p>
+        </div>
+      </div>
+
+      {/* ==================== 03B — the quality deck =================== */}
+      <div ref={deckRef} className="relative hidden lg:block lg:h-[600svh]">
+        <div className="sticky top-0 h-svh overflow-hidden">
+          {/* per-beat ambient glow — the stage light shifts with each card */}
+          {!reduced &&
+            DECK.map((spec) => <AccentGlow key={`glow-${spec.src}`} spec={spec} p={p} />)}
 
           {/* the split headline — BEHIND the deck */}
           <motion.div
@@ -256,10 +358,6 @@ export default function ResidencesStory() {
             ))}
           </ul>
 
-          {/* per-beat ambient glow — the stage light shifts with each card */}
-          {!reduced &&
-            DECK.map((spec) => <AccentGlow key={`glow-${spec.src}`} spec={spec} p={p} />)}
-
           {/* the rising deck — each card travels up and covers the last */}
           {(reduced ? DECK.slice(0, 1) : DECK).map((spec) => (
             <DeckCard key={spec.src} spec={spec} p={p} reduced={!!reduced} />
@@ -271,7 +369,7 @@ export default function ResidencesStory() {
               <QualityAside key={spec.quality!.num} spec={spec} p={p} />
             ))}
 
-          {/* featured corner card — the reference's "case of the month" */}
+          {/* featured corner card */}
           <motion.aside
             className="absolute right-[4%] bottom-[6%] z-40 w-[19.5rem] overflow-hidden rounded-2xl bg-[#294338] p-3 shadow-[0_34px_70px_-30px_rgba(20,26,22,0.8)]"
             style={reduced ? undefined : { opacity: cardOpacity, y: cardY }}
@@ -308,12 +406,9 @@ export default function ResidencesStory() {
       </div>
 
       {/* -------------------------------------------- mobile / reduced -- */}
-      <div className="px-(--spacing-gutter) pt-24 lg:hidden">
-        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
-          03 — The Residences
-        </p>
+      <div className="px-(--spacing-gutter) pb-4 lg:hidden">
         <p
-          className="font-display mt-5 uppercase"
+          className="font-display uppercase"
           style={{ color: "#EFD5A3", fontSize: "clamp(2.3rem,9.5vw,3.6rem)", lineHeight: 1.02, fontWeight: 600 }}
           aria-hidden="true"
         >
@@ -362,7 +457,81 @@ export default function ResidencesStory() {
   );
 }
 
-/* -------------------------------------------------------------- deck -- */
+/* ======================================================== amenities == */
+
+function Amenities({ reduced }: { reduced: boolean }) {
+  const rise = (delay = 0) =>
+    reduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 22 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.25 },
+          transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
+        };
+
+  return (
+    <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-16 lg:pt-32 lg:pb-20">
+      <motion.p {...rise(0)} className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
+        03 — Residences &amp; Lifestyle
+      </motion.p>
+      <motion.h3
+        {...rise(0.05)}
+        className="font-display mt-5 max-w-[16ch] leading-[1.06] text-balance"
+        style={{ color: IVORY, fontSize: "clamp(2.4rem,3.8vw,3.9rem)", fontWeight: 500 }}
+      >
+        Everyday comfort, elevated.
+      </motion.h3>
+      <motion.p {...rise(0.1)} className="mt-5 max-w-xl text-[1.02rem] leading-[1.7]" style={{ color: "rgba(250,243,232,0.88)" }}>
+        Thoughtfully selected amenities for convenience, security and refined family living.
+      </motion.p>
+
+      <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.15fr] lg:gap-12">
+        {/* dominant lifestyle image */}
+        <motion.figure
+          {...rise(0.12)}
+          className="relative min-h-[320px] overflow-hidden rounded-[22px] border border-[#F7F0E8]/25 shadow-[0_40px_80px_-38px_rgba(26,16,11,0.7)] lg:min-h-0"
+        >
+          <Image
+            src="/route-comfort.jpg"
+            alt="Residents meeting in the warm sheltered court of the development"
+            fill
+            sizes="(min-width:1024px) 42vw, 92vw"
+            className="object-cover"
+            style={{ objectPosition: "50% 38%" }}
+          />
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-[#1D1714]/60 to-transparent"
+          />
+          <figcaption className="absolute bottom-4 left-5 text-[0.6rem] font-semibold tracking-[0.26em] text-[#FFF8EF]/90 uppercase">
+            Life at the corridor
+          </figcaption>
+        </motion.figure>
+
+        {/* eight editorial amenity panels */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          {AMENITIES.map((a, i) => (
+            <motion.article
+              key={a.title}
+              {...rise(0.14 + i * 0.05)}
+              className="rounded-[16px] border border-[#F7F0E8]/25 bg-[#FFF8EF]/95 p-5 shadow-[0_18px_38px_-24px_rgba(26,16,11,0.5)]"
+            >
+              <p className="font-display text-[1.02rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
+                {a.title}
+              </p>
+              <p className="mt-2 text-[0.82rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.72)" }}>
+                {a.copy}
+              </p>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================ deck == */
 
 /** A soft colour wash that breathes in while its card holds centre. */
 function AccentGlow({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
@@ -397,16 +566,13 @@ function DeckCard({
   const [s, e] = spec.rise;
   const cover = spec.cover;
 
-  /* rise from below the fold to centre; eased by the shared spring */
   const y = useTransform(p, [s, e], [spec.fromY, "0svh"]);
-  /* arrive a touch small, settle, then retreat a breath when covered */
   const scale = useTransform(
     p,
     cover ? [s, e, cover[0], cover[1]] : [s, e],
     cover ? [0.97, 1, 1, 0.955] : [0.97, 1]
   );
   const rotate = useTransform(p, [s, e], [spec.rotate * 2.2, spec.rotate]);
-  /* covered cards dim so the incoming boundary reads clearly */
   const dim = useTransform(p, cover ? [cover[0], cover[1]] : [0, 1], cover ? [0, 0.28] : [0, 0]);
 
   return (
@@ -436,7 +602,6 @@ function DeckCard({
             style={{ objectPosition: spec.objectPosition }}
           />
         )}
-        {/* warm grade */}
         <span
           aria-hidden="true"
           className="absolute inset-0"
@@ -445,7 +610,6 @@ function DeckCard({
               "linear-gradient(178deg, rgb(198 164 107 / 0.06) 0%, transparent 30%, rgb(29 23 20 / 0.2) 100%)",
           }}
         />
-        {/* cover dim */}
         <motion.span
           aria-hidden="true"
           className="absolute inset-0 bg-[#1D1714]"
@@ -458,10 +622,6 @@ function DeckCard({
 
 /* --------------------------------------------------- reading pair ----- */
 
-/**
- * Each card's quality: number + title from the left gutter, copy from
- * the right — in as the card settles, out as the next card covers it.
- */
 function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
   const q = spec.quality!;
   const [s, e] = spec.rise;
@@ -470,7 +630,7 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
 
   const opacity = useTransform(
     p,
-    cover ? [mid, e, cover[0], cover[0] + 0.07] : [mid, e],
+    cover ? [mid, e, cover[0], cover[0] + 0.05] : [mid, e],
     cover ? [0, 1, 1, 0] : [0, 1]
   );
   const headX = useTransform(p, [mid, e], [-36, 0]);
@@ -493,7 +653,7 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
           className="font-display mt-4 leading-[1.05]"
           style={{
             color: "#F2E7D8",
-            fontSize: "clamp(2.6rem,4.5vw,4.9rem)",
+            fontSize: "clamp(2.4rem,4vw,4.4rem)",
             fontWeight: 500,
             letterSpacing: "-0.015em",
           }}
@@ -521,10 +681,6 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
 
 /* ------------------------------------------------------------- media -- */
 
-/**
- * The film: cropped portrait, with the pause control (WCAG pausable
- * motion). Reduced motion — and any playback failure — hold the poster.
- */
 function FilmMedia({ reduced, fill = false }: { reduced: boolean; fill?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [paused, setPaused] = useState(false);

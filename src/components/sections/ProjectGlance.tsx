@@ -26,18 +26,41 @@ import {
  */
 
 const COPY = {
-  eyebrow: "01 · The project at a glance",
-  headline: "Limited in number. Considered in every detail.",
-  body: "Two distinguished residential blocks bring together thoughtful layouts, modern architecture and a more private community of only 84 apartments.",
+  eyebrow: "01 — The Project",
+  headline: "Designed around nature.",
+  body: "A distinctive residential concept created for comfort, efficiency and future-ready living.",
   caption: "Umer Block · Abdullah Block — 12 storeys · 84 residences",
 };
 
+const HIGHLIGHTS = [
+  {
+    title: "Limited Residences",
+    copy: "Only 84 apartments for a more private and exclusive community.",
+  },
+  {
+    title: "Modern Family Living",
+    copy: "Well-planned layouts shaped around comfort, functionality and everyday needs.",
+  },
+  {
+    title: "Renewable Energy",
+    copy: "Wind turbines and solar panels planned to support cleaner electricity generation.",
+  },
+  {
+    title: "Innovative Ventilation",
+    copy: "A purpose-built wind catcher distributes captured air through the building corridors.",
+  },
+];
+
+const SAVINGS_NOTE =
+  "The stated savings are projected targets and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.";
+
 export default function ProjectGlance() {
   const sectionRef = useRef<HTMLElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: pinRef,
     offset: ["start start", "end end"],
   });
   const p = useSpring(scrollYProgress, { stiffness: 100, damping: 26, mass: 0.4 });
@@ -86,8 +109,9 @@ export default function ProjectGlance() {
       ref={sectionRef}
       data-section="glance"
       aria-labelledby="glance-heading"
-      className="relative h-[230svh] lg:h-[290svh]"
+      className="relative"
     >
+      <div ref={pinRef} className="relative h-[230svh] lg:h-[290svh]">
       {/* Stage ground is the page's stone — when the window contracts, the
           portal sits on the same surface the next section begins from, so
           the two stages and the following section read as one passage. */}
@@ -163,7 +187,76 @@ export default function ProjectGlance() {
           </a>
         </motion.div>
       </div>
+      </div>
+
+      {/* ------- the project introduction — extends the chapter ------- */}
+      <ProjectIntroduction />
     </section>
+  );
+}
+
+/** The approved project introduction: body copy, highlights, closing. */
+function ProjectIntroduction() {
+  return (
+    <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-4 pb-24 lg:pb-28">
+      <div className="grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+        {/* editorial body copy */}
+        <div>
+          <p className="max-w-[62ch] text-[1.05rem] leading-[1.75] text-[#211A17]/85">
+            The Wind Corridor Residences is an exclusive 12-storey development in DHA View
+            City, Karachi, featuring Umer Block and Abdullah Block. With only 84 carefully
+            planned apartments, the project offers privacy, spacious living and a modern
+            architectural identity.
+          </p>
+          <p className="mt-5 max-w-[62ch] text-[1.05rem] leading-[1.75] text-[#211A17]/78">
+            The project has been designed to utilise natural resources for better everyday
+            living. Its renewable-energy strategy combines wind turbines and solar panels to
+            support electricity generation, while the building&rsquo;s dedicated wind-catcher
+            system captures high-velocity air and directs it into the internal corridor
+            network.
+          </p>
+          <p className="mt-5 max-w-[62ch] text-[1.05rem] leading-[1.75] text-[#211A17]/78">
+            This innovative approach is intended to improve natural ventilation, reduce heat
+            buildup and lower dependence on conventional cooling and grid electricity. Based
+            on final engineering performance, residents may benefit from electricity-bill
+            savings of up to 60%.
+          </p>
+          <p className="mt-3 max-w-[62ch] border-l-2 border-[#E5AD42]/60 pl-3.5 text-[0.72rem] leading-[1.6] text-[#211A17]/55">
+            {SAVINGS_NOTE}
+          </p>
+        </div>
+
+        {/* four project highlights */}
+        <div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {HIGHLIGHTS.map((h, i) => (
+              <motion.article
+                key={h.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="rounded-[16px] border border-[#D8B36A]/45 bg-[#FFF8EF]/92 p-5 shadow-[0_18px_38px_-24px_rgba(148,63,45,0.35)]"
+              >
+                <p className="font-display text-[1.08rem] leading-snug font-medium text-[#943F2D]">
+                  {h.title}
+                </p>
+                <p className="mt-2 text-[0.85rem] leading-[1.65] text-[#211A17]/72">{h.copy}</p>
+              </motion.article>
+            ))}
+          </div>
+          <p className="mt-8 text-[0.72rem] font-semibold tracking-[0.28em] text-[#943F2D] uppercase">
+            The future of responsible urban living starts here.
+          </p>
+          <a
+            href="#residences"
+            className="mt-5 inline-block rounded-lg border border-[#943F2D]/50 px-6 py-3 text-sm font-medium text-[#211A17] transition-colors hover:bg-[#943F2D] hover:text-[#FFF8EF]"
+          >
+            Explore the Residences
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -201,6 +294,9 @@ function StaticFrame() {
         <p className="mt-8 text-[0.65rem] tracking-[0.26em] text-[#F7F0E8]/75 uppercase">
           {COPY.caption}
         </p>
+      </div>
+      <div className="relative bg-[#F6EBDD]">
+        <ProjectIntroduction />
       </div>
     </section>
   );

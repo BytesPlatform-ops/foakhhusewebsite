@@ -12,7 +12,7 @@ import {
 } from "framer-motion";
 
 /**
- * 03 — Natural Systems: the calm diagonal editorial journey — kept —
+ * 02 — Natural Systems: the calm diagonal editorial journey — kept —
  * with the content upgraded in place. Each of the four self-contained
  * panels now tells one REAL stage of the technical concept: a giant
  * stage word (CAPTURE / CHANNEL / POWER / COMFORT, matching the rail),
@@ -44,7 +44,7 @@ const PANELS: Panel[] = [
     word: "CAPTURE",
     title: "Natural Air Capture",
     caption:
-      "High-velocity natural wind is intended to be captured through a dedicated wind-catching system at the crown of the building.",
+      "High-velocity natural airflow reaches and enters the dedicated wind catcher.",
     src: "/env-air.jpg",
     alt: "High natural airflow moving through the sunlit terracotta opening of the wind catcher",
     srcSmall: "/env-context.jpg",
@@ -55,7 +55,7 @@ const PANELS: Panel[] = [
     word: "CHANNEL",
     title: "Corridor Distribution",
     caption:
-      "Captured air is guided through internal corridors, elevator lobbies and shared circulation zones.",
+      "Captured air is guided through corridors, lobbies and shared circulation spaces.",
     src: "/route-corridor.jpg",
     alt: "Air guided along the warm interior corridor toward the light",
     srcSmall: "/route-exterior.jpg",
@@ -66,7 +66,7 @@ const PANELS: Panel[] = [
     word: "POWER",
     title: "Renewable Energy Support",
     caption:
-      "Rooftop wind turbines and solar panels are planned to support cleaner electricity generation for selected building requirements.",
+      "Wind turbines and solar panels are planned to support cleaner electricity generation.",
     src: "/route-solar.jpg",
     alt: "Low-angle rooftop solar panels within the terracotta architecture",
     srcSmall: "/env-solar.jpg",
@@ -76,7 +76,7 @@ const PANELS: Panel[] = [
     word: "COMFORT.",
     title: "Everyday Comfort",
     caption:
-      "Together, these systems are intended to improve ventilation, reduce heat buildup and support more comfortable daily living.",
+      "Improved airflow and environmental planning support fresher and more comfortable shared spaces.",
     src: "/route-comfort.jpg",
     alt: "Residents greeting in the warm sheltered court",
     srcSmall: "/hero-poster.jpg",
@@ -141,7 +141,7 @@ export default function SnakeRoute() {
         <div className="grain absolute inset-0" aria-hidden="true" />
 
         <p className="absolute top-[5%] left-[8%] z-40 text-[0.62rem] font-medium tracking-[0.3em] text-[#943F2D] uppercase lg:left-[7.5rem]">
-          03 — Natural Systems
+          02 — Natural Systems
         </p>
         <h2 id="route-heading" className="sr-only">
           A building that works with its environment — from natural force to everyday comfort
@@ -394,7 +394,7 @@ function StaticSpread() {
       <MineralGround />
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         <p className="text-[0.62rem] font-medium tracking-[0.3em] text-[#943F2D] uppercase">
-          03 — Natural Systems
+          02 — Natural Systems
         </p>
         <h2
           id="route-heading"

@@ -11,7 +11,7 @@ import {
 } from "framer-motion";
 
 /**
- * 02 — Project Vision: "THE BUILDING BREATHES."
+ * 01 — Project Vision: "THE BUILDING BREATHES."
  *
  * An editorial sticky composition translating MONOLOG (oversized serif
  * interrupted by a small central frame, active/muted words, text passing
@@ -128,7 +128,7 @@ export default function DesignedAroundNature() {
 
         {/* eyebrow */}
         <p className="absolute top-[5%] left-[5%] z-40 text-[0.62rem] font-medium tracking-[0.3em] text-[#9A5D43] uppercase">
-          02 — Project Vision
+          01 — Project Vision
         </p>
 
         {/* accessible heading for the whole composition */}
@@ -333,7 +333,7 @@ function StaticSpread() {
       </div>
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         <p className="text-[0.62rem] font-medium tracking-[0.3em] text-[#9A5D43] uppercase">
-          02 — Project Vision
+          01 — Project Vision
         </p>
         <h2
           id="nature-heading"

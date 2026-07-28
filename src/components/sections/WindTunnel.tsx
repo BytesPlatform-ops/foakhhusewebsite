@@ -50,7 +50,8 @@ interface StoryCard {
   heading: React.ReactNode;
   body: string;
   secondary?: string;
-  extra: string;
+  extra?: string;
+  points?: { t: string; d: string }[];
   note: string;
   spec?: string;
   media: "solar" | "systems" | "water";
@@ -60,54 +61,70 @@ interface StoryCard {
 const CARDS: StoryCard[] = [
   {
     num: "01",
-    label: "Renewable Support",
+    label: "Main Advantages",
     heading: (
       <>
-        POWER
-        <span className="block font-sans text-[0.42em] font-semibold tracking-[0.3em] uppercase">
-          Shaped by
-        </span>
-        MOVEMENT.
+        A smarter way
+        <span className="block">to live.</span>
       </>
     ),
-    body: "Wind turbines are planned to convert available wind into renewable electricity for selected building requirements.",
-    extra: "Designed to reduce dependency on conventional power sources and support long-term operational efficiency.",
-    note: "Planned renewable-support system, subject to final engineering and approved specifications.",
-    spec: "Wind · Solar · Airflow · Support",
-    media: "solar",
+    body: "Natural airflow, renewable power and thoughtful planning come together in one landmark development.",
+    points: [
+      { t: "Naturally Cooler Environment", d: "Captured wind is circulated through the corridor network to help reduce heat buildup in common areas." },
+      { t: "Up to 60% Bill Reduction", d: "Wind and solar energy are intended to reduce conventional electricity use, subject to final engineering performance." },
+      { t: "Wind-Generated Power", d: "Integrated wind turbines convert available wind into renewable electricity for selected building requirements." },
+      { t: "Solar Energy Support", d: "Solar panels complement the wind-energy system to maximise the use of natural resources." },
+      { t: "Clean Water Planning", d: "A planned water-treatment and desalination solution supports a dependable water supply." },
+      { t: "Long-Term Value", d: "Limited inventory, a distinctive sustainability concept and a growing location strengthen the project's long-term potential." },
+    ],
+    note: "The stated savings are projected targets and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.",
+    spec: "Wind · Solar · Airflow · Water",
+    media: "systems",
     accent: C.teal,
   },
   {
     num: "02",
-    label: "Systems in Concert",
+    label: "Wind-Catcher Concept",
     heading: (
       <>
-        Wind and sunlight,
-        <span className="block">working together.</span>
+        The heart of the
+        <span className="block">wind corridor.</span>
       </>
     ),
-    body: "Solar panels are planned to complement the wind-energy system, increasing the use of available natural resources and supporting cleaner electricity generation.",
+    body: "The defining feature of the project is its dedicated wind catcher. Rather than relying on balconies or windows to collect air, the wind catcher is positioned and engineered to intercept high-velocity natural wind from the surrounding environment.",
     secondary:
-      "Every system in harmony — comfort is shaped not by one feature, but by how airflow, energy, water and architecture work together.",
-    extra: "Integrated planning helps improve everyday comfort while making the development more resource-conscious.",
-    note: "Rooftop panel arrangement shown conceptually — the project uses building-scale solar, not a solar farm.",
-    media: "systems",
+      "The captured air is then directed into the building's central corridor system, where it circulates through corridors, elevator lobbies and shared circulation areas — a controlled movement of air intended to create a fresher, cooler and more comfortable internal environment.",
+    points: [
+      { t: "Dedicated Wind Catcher", d: "The primary structure that captures and channels high-velocity natural air." },
+      { t: "Central Corridor Distribution", d: "Captured air is guided through the internal corridor network." },
+      { t: "Cooler Shared Areas", d: "Continuous airflow helps reduce trapped heat in corridors and elevator lobbies." },
+      { t: "Reduced Cooling Demand", d: "Improved natural ventilation may lower dependence on mechanical cooling in common spaces." },
+    ],
+    note: "The project aims to become an epicentre of wind circulation through an architectural approach presented as a first-of-its-kind residential concept in Pakistan, subject to final technical validation and project certification.",
+    media: "solar",
     accent: C.amber,
   },
   {
     num: "03",
-    label: "Water Systems",
+    label: "Sustainability",
     heading: (
       <>
-        Water,
-        <span className="block">planned responsibly.</span>
+        Powered by
+        <span className="block">natural resources.</span>
       </>
     ),
-    body: "Treatment and desalination planning support a cleaner, more dependable water system for the whole development.",
+    body: "The Wind Corridor Residences has been conceived to make meaningful use of available natural resources. Wind turbines and solar panels are planned to generate renewable electricity, while the dedicated wind-catcher system channels natural air through the building's internal corridor network.",
     secondary:
-      "From natural force to everyday comfort — airflow, energy and water planning come together as one carefully considered residential environment.",
-    extra: "Planned water resilience supports day-to-day reliability for residents and strengthens long-term building performance.",
-    note: "Water-system strategy shown conceptually and subject to final engineering, environmental review and approved specifications.",
+      "Together, these systems are intended to reduce dependence on conventional electricity, improve comfort in shared areas and support potential electricity-bill savings of up to 60%, subject to final design, testing and operating conditions.",
+    points: [
+      { t: "Wind Energy", d: "Turbines planned to convert natural wind into usable electricity." },
+      { t: "Solar Energy", d: "Solar panels planned to supplement renewable power generation." },
+      { t: "Natural Air Circulation", d: "A wind catcher directs high-velocity air through central corridors and common spaces." },
+      { t: "Responsible Water Use", d: "Treatment and desalination planning support dependable water management." },
+      { t: "Lower Environmental Impact", d: "Reduced reliance on conventional energy sources." },
+      { t: "Future-Ready Design", d: "An innovative concept created for responsible urban living in Pakistan." },
+    ],
+    note: "The stated savings are projected targets and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.",
     media: "water",
     accent: C.teal,
   },
@@ -167,7 +184,7 @@ export default function WindTunnel() {
             className="absolute top-[6%] left-[8%] z-40 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
             style={{ color: C.champagne }}
           >
-            04 — Renewable &amp; Resource Systems
+            02 — Natural Systems · In Depth
           </p>
 
           {/* compact progress — bottom left */}
@@ -194,13 +211,13 @@ export default function WindTunnel() {
               style={{ opacity: introOp }}
             >
               <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: C.champagne }}>
-                Three systems · One environment
+                Advantages · Wind catcher · Sustainability
               </p>
               <p
                 className="font-display mt-6 leading-[1.05] font-medium"
                 style={{ color: C.ivory, fontSize: "clamp(2.6rem,3.4vw,3.6rem)" }}
               >
-                Power, sunlight and water — planned as one.
+                The systems behind the corridor, in depth.
               </p>
               <p className="mt-6 inline-flex items-center gap-2 text-[0.65rem] tracking-[0.22em] uppercase" style={{ color: C.muted }}>
                 Scroll <span aria-hidden="true">→</span>
@@ -222,11 +239,12 @@ export default function WindTunnel() {
                 className="font-display mt-7 max-w-[16ch] leading-[1.08] font-medium"
                 style={{ color: C.ivory, fontSize: "clamp(2.4rem,3.2vw,3.4rem)" }}
               >
-                A building that works with its environment.
+                One carefully considered environment.
               </p>
               <p className="mt-5 max-w-md text-[0.95rem] leading-[1.6]" style={{ color: C.body }}>
-                The Wind Corridor Residences brings natural airflow, renewable-energy planning
-                and modern family living into one carefully considered development.
+                Every system described here is planned and engineered as part of a single
+                residential concept — subject to final engineering, approvals and
+                specifications.
               </p>
             </motion.div>
           </motion.div>
@@ -308,22 +326,24 @@ function StoryPanel({
               {card.secondary}
             </p>
           )}
-          <p className="mt-3 text-[0.78rem] leading-[1.6]" style={{ color: C.sage }}>
-            {card.extra}
-          </p>
-          {/* Card 02 carries the savings claim + its inseparable footnote */}
-          {index === 1 && (
-            <div className="mt-5 border-l pl-3.5" style={{ borderColor: `${C.amber}66` }}>
-              <p className="font-display text-[1.15rem] leading-snug" style={{ color: C.ivory }}>
-                Potential electricity-bill savings of up to 60%
-                <span aria-hidden="true">*</span>
-              </p>
-              <p className="mt-2 text-[0.62rem] leading-relaxed" style={{ color: C.muted }}>
-                <span aria-hidden="true">*</span>Projected savings may vary according to wind
-                conditions, solar output, occupancy, appliance usage, tariff changes and final
-                system specifications.
-              </p>
-            </div>
+          {card.extra && (
+            <p className="mt-3 text-[0.78rem] leading-[1.6]" style={{ color: C.sage }}>
+              {card.extra}
+            </p>
+          )}
+          {card.points && (
+            <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: "rgba(216,179,106,0.4)" }}>
+              {card.points.map((pt) => (
+                <li key={pt.t}>
+                  <p className="text-[0.78rem] font-semibold" style={{ color: C.ivory }}>
+                    {pt.t}
+                  </p>
+                  <p className="text-[0.74rem] leading-[1.55]" style={{ color: C.body }}>
+                    {pt.d}
+                  </p>
+                </li>
+              ))}
+            </ul>
           )}
           <p className="mt-5 text-[0.6rem] leading-relaxed tracking-[0.12em] uppercase" style={{ color: C.muted }}>
             {card.note}
@@ -446,17 +466,17 @@ function StackedStory({ embedded = false }: { embedded?: boolean }) {
   const body = (
     <div className="relative mx-auto max-w-2xl px-6 py-20">
       <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: C.champagne }}>
-        04 — Renewable &amp; Resource Systems
+        02 — Natural Systems · In Depth
       </p>
       <p
         className="font-display mt-5 leading-[1.08] font-medium"
         style={{ color: C.ivory, fontSize: "clamp(2.2rem,7vw,3rem)" }}
       >
-        Power, sunlight and water — planned as one.
+        The systems behind the corridor, in depth.
       </p>
 
       <div className="mt-12 space-y-16">
-        {CARDS.map((card, i) => (
+        {CARDS.map((card) => (
           <article key={card.num} aria-label={`${card.num} — ${card.label}`}>
             <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: C.champagne }}>
               {card.num} <span style={{ color: C.muted }}>/ 03</span>
@@ -476,20 +496,24 @@ function StackedStory({ embedded = false }: { embedded?: boolean }) {
             <p className="mt-3 text-[0.9rem] leading-[1.6]" style={{ color: C.body }}>
               {card.body}
             </p>
-            <p className="mt-2 text-[0.8rem] leading-[1.6]" style={{ color: C.sage }}>
-              {card.extra}
-            </p>
-            {i === 1 && (
-              <div className="mt-4 border-l pl-3.5" style={{ borderColor: `${C.amber}66` }}>
-                <p className="font-display text-[1.1rem]" style={{ color: C.ivory }}>
-                  Potential electricity-bill savings of up to 60%<span aria-hidden="true">*</span>
-                </p>
-                <p className="mt-2 text-[0.62rem] leading-relaxed" style={{ color: C.muted }}>
-                  <span aria-hidden="true">*</span>Projected savings may vary according to wind
-                  conditions, solar output, occupancy, appliance usage, tariff changes and final
-                  system specifications.
-                </p>
-              </div>
+            {card.secondary && (
+              <p className="mt-2 text-[0.85rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.6)" }}>
+                {card.secondary}
+              </p>
+            )}
+            {card.points && (
+              <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: "rgba(216,179,106,0.4)" }}>
+                {card.points.map((pt) => (
+                  <li key={pt.t}>
+                    <p className="text-[0.82rem] font-semibold" style={{ color: C.ivory }}>
+                      {pt.t}
+                    </p>
+                    <p className="text-[0.78rem] leading-[1.55]" style={{ color: C.body }}>
+                      {pt.d}
+                    </p>
+                  </li>
+                ))}
+              </ul>
             )}
             <p className="mt-4 text-[0.6rem] leading-relaxed tracking-[0.12em] uppercase" style={{ color: C.muted }}>
               {card.note}
@@ -501,11 +525,11 @@ function StackedStory({ embedded = false }: { embedded?: boolean }) {
       <div className="mt-16">
         <span className="block h-px w-16" style={{ background: `${C.champagne}66` }} />
         <p className="font-display mt-6 leading-[1.1] font-medium" style={{ color: C.ivory, fontSize: "1.5rem" }}>
-          A building that works with its environment.
+          One carefully considered environment.
         </p>
         <p className="mt-3 text-[0.85rem] leading-[1.6]" style={{ color: C.body }}>
-          The Wind Corridor Residences brings natural airflow, renewable-energy planning and
-          modern family living into one carefully considered development.
+          Every system described here is planned and engineered as part of a single
+          residential concept — subject to final engineering, approvals and specifications.
         </p>
       </div>
     </div>

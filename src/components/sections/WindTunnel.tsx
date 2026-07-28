@@ -44,10 +44,10 @@ const C = {
 };
 
 const RAIL = [
-  { label: "Wind", range: [0.03, 0.2] as const },
-  { label: "Solar", range: [0.2, 0.48] as const },
-  { label: "Airflow", range: [0.48, 0.76] as const },
-  { label: "Support", range: [0.76, 1.01] as const },
+  { label: "Wind", range: [0.0, 0.22] as const },
+  { label: "Solar", range: [0.22, 0.48] as const },
+  { label: "Airflow", range: [0.48, 0.73] as const },
+  { label: "Support", range: [0.73, 1.01] as const },
 ];
 
 export default function WindTunnel() {
@@ -62,57 +62,63 @@ export default function WindTunnel() {
   });
   const p = useSpring(scrollYProgress, { stiffness: 105, damping: 30, mass: 0.4 });
 
-  /* -------- track travel: finite, holds the finale ------------------- */
-  const trackX = useTransform(p, [0.03, 0.9], ["0vw", "-320vw"]);
+  /* -------- track travel: STEPS with dwells, not a linear glide.
+     Each scene composes fully in the viewport (slight drift while
+     dwelling keeps it alive), transits are brief. ---------------------- */
+  const trackX = useTransform(
+    p,
+    [0, 0.05, 0.16, 0.24, 0.42, 0.5, 0.66, 0.76, 0.9],
+    ["0vw", "-2vw", "-7vw", "-102vw", "-112vw", "-212vw", "-222vw", "-318vw", "-320vw"],
+  );
 
   /* -------- scene 1: typographic activation -------------------------- */
-  const powerOp = useTransform(p, [0, 0.16, 0.24], [1, 1, 0.12]);
-  const shapedOp = useTransform(p, [0, 0.1, 0.16, 0.24], [0.15, 0.15, 1, 0.12]);
+  const powerOp = useTransform(p, [0, 0.14, 0.22], [1, 1, 0.12]);
+  const shapedOp = useTransform(p, [0, 0.07, 0.12, 0.22], [0.15, 0.15, 1, 0.12]);
 
   /* -------- S2 solar field: opens from a centre slit where the
               viewport actually is during 20-48% ----------------------- */
   const fieldClip = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - 0.16) / 0.18, 0), 1);
+    const t = Math.min(Math.max((v - 0.22) / 0.13, 0), 1);
     const e = 1 - Math.pow(1 - t, 3);
     return `inset(${6 - e * 6}% ${46 - e * 46}% ${6 - e * 6}% ${46 - e * 46}%)`;
   });
-  const apInnerScale = useTransform(p, [0.16, 0.4], [1.3, 1.04]);
+  const apInnerScale = useTransform(p, [0.22, 0.4], [1.3, 1.04]);
   const apInnerX = useTransform(p, [0.2, 0.48], ["0%", "-4%"]);
-  const apBright = useTransform(p, [0.16, 0.34], [0.62, 1]);
+  const apBright = useTransform(p, [0.22, 0.34], [0.62, 1]);
 
   /* -------- solar activation choreography ---------------------------- */
-  const goldSweep = useTransform(p, [0.22, 0.42], ["-30%", "130%"]);
-  const goldOp = useTransform(p, [0.22, 0.26, 0.4, 0.44], [0, 0.75, 0.75, 0]);
-  const amberOp = useTransform(p, [0.3, 0.44], [0, 0.5]);
-  const nodeStagger = [0.3, 0.33, 0.36, 0.39, 0.42];
-  const waveDraw = useTransform(p, [0.34, 0.5], [0, 1]);
-  const waveOp = useTransform(p, [0.34, 0.38, 0.52, 0.56], [0, 0.9, 0.9, 0.35]);
-  const waveNodeDist = useTransform(p, [0.36, 0.52], [0, 1]);
+  const goldSweep = useTransform(p, [0.27, 0.4], ["-30%", "130%"]);
+  const goldOp = useTransform(p, [0.27, 0.3, 0.38, 0.42], [0, 0.75, 0.75, 0]);
+  const amberOp = useTransform(p, [0.3, 0.42], [0, 0.5]);
+  const nodeStagger = [0.3, 0.325, 0.35, 0.375, 0.4];
+  const waveDraw = useTransform(p, [0.32, 0.44], [0, 1]);
+  const waveOp = useTransform(p, [0.32, 0.36, 0.46, 0.5], [0, 0.9, 0.9, 0.35]);
+  const waveNodeDist = useTransform(p, [0.34, 0.46], [0, 1]);
   const waveNodePct = useTransform(waveNodeDist, (v) => `${v * 100}%`);
-  const waveNodeOp = useTransform(p, [0.36, 0.4, 0.5, 0.54], [0, 1, 1, 0]);
-  const reflectX = useTransform(p, [0.4, 0.48], ["0%", "-500%"]);
-  const reflectOp = useTransform(p, [0.4, 0.43, 0.46, 0.48], [0, 0.55, 0.55, 0]);
+  const waveNodeOp = useTransform(p, [0.34, 0.38, 0.44, 0.48], [0, 1, 1, 0]);
+  const reflectX = useTransform(p, [0.37, 0.44], ["0%", "-500%"]);
+  const reflectOp = useTransform(p, [0.37, 0.4, 0.43, 0.45], [0, 0.55, 0.55, 0]);
 
   const apBrightFilter = useTransform(apBright, (b) => `brightness(${b})`);
 
   /* -------- scene 3 labels ------------------------------------------- */
-  const archOp = useTransform(p, [0.46, 0.54], [0, 1]);
-  const capOp = useTransform(p, [0.52, 0.56, 0.72, 0.76], [0.25, 1, 1, 0.25]);
-  const chanOp = useTransform(p, [0.58, 0.62, 0.74, 0.78], [0.25, 1, 1, 0.25]);
-  const circOp = useTransform(p, [0.64, 0.68, 0.78, 0.82], [0.25, 1, 1, 0.4]);
+  const archOp = useTransform(p, [0.46, 0.53], [0, 1]);
+  const capOp = useTransform(p, [0.5, 0.54, 0.68, 0.72], [0.25, 1, 1, 0.25]);
+  const chanOp = useTransform(p, [0.55, 0.59, 0.7, 0.74], [0.25, 1, 1, 0.25]);
+  const circOp = useTransform(p, [0.6, 0.64, 0.72, 0.76], [0.25, 1, 1, 0.4]);
 
   /* -------- kite: conceptual, S2 -> S3 only --------------------------- */
-  const kiteT = useTransform(p, [0.42, 0.62], [0, 1]);
+  const kiteT = useTransform(p, [0.44, 0.62], [0, 1]);
   const kiteX = useTransform(kiteT, (t) => 150 + t * 130); // vw on track
   const kiteY = useTransform(kiteT, (t) => 16 + Math.sin(t * Math.PI * 1.5) * 7); // svh
   const kiteXvw = useTransform(kiteX, (v) => `${v}vw`);
   const kiteYvh = useTransform(kiteY, (v) => `${v}svh`);
-  const kiteOp = useTransform(p, [0.42, 0.46, 0.6, 0.65], [0, 0.9, 0.9, 0]);
+  const kiteOp = useTransform(p, [0.44, 0.48, 0.6, 0.65], [0, 0.9, 0.9, 0]);
   const kiteRot = useTransform(kiteT, [0, 0.5, 1], [-18, -8, -14]);
 
   /* -------- scene 4 ---------------------------------------------------*/
-  const moveOp = useTransform(p, [0.78, 0.86, 1], [0.14, 1, 1]);
-  const finalCopyOp = useTransform(p, [0.8, 0.88], [0, 1]);
+  const moveOp = useTransform(p, [0.76, 0.84, 1], [0.14, 1, 1]);
+  const finalCopyOp = useTransform(p, [0.78, 0.86], [0, 1]);
 
   /* -------- the energy route across the whole track ------------------ */
   const routeDraw = useTransform(p, [0.04, 0.86], [0, 1]);
@@ -335,7 +341,7 @@ export default function WindTunnel() {
           <div className="absolute top-0 left-[100vw] h-full w-[115vw]">
             <p
               aria-hidden="true"
-              className="absolute top-[40svh] left-[1.5vw] text-[0.6rem] font-medium tracking-[0.3em] uppercase"
+              className="absolute top-[40svh] left-[3.5vw] text-[0.6rem] font-medium tracking-[0.3em] uppercase"
               style={{ color: C.champagne, writingMode: "vertical-rl", rotate: "180deg" }}
             >
               Solar support
@@ -466,7 +472,7 @@ export default function WindTunnel() {
 /* ------------------------------------------------------------- pieces --- */
 
 function SolarNode({ at, i, progress }: { at: number; i: number; progress: MotionValue<number> }) {
-  const op = useTransform(progress, [at, at + 0.03, 0.52, 0.56], [0, 1, 1, 0.45]);
+  const op = useTransform(progress, [at, at + 0.03, 0.46, 0.5], [0, 1, 1, 0.45]);
   const positions = [
     { left: "22%", top: "30%" },
     { left: "40%", top: "56%" },

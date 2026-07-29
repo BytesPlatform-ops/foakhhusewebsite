@@ -186,7 +186,7 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f1InnerScale, y: f1InnerY }}>
             <Image
-              src="/env-air.jpg"
+              src="/buildingtop.jpg"
               alt="Natural airflow drawn through a terracotta opening of the development"
               fill
               sizes="44vw"
@@ -204,7 +204,7 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f2InnerScale }}>
             <Image
-              src="/env-context.jpg"
+              src="/foakhshaukat.jpg"
               alt="The two-block development within its green landscape at dawn"
               fill
               sizes="40vw"
@@ -222,7 +222,7 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f3InnerScale }}>
             <Image
-              src="/env-solar.jpg"
+              src="/buildingfront.jpg"
               alt="Rooftop solar panels catching first light"
               fill
               sizes="20vw"
@@ -343,9 +343,9 @@ function StaticSpread() {
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { src: "/env-air.jpg", alt: "Natural airflow drawn through a terracotta opening", label: "Natural airflow" },
-            { src: "/env-context.jpg", alt: "The development within its landscape at dawn", label: "Renewable energy" },
-            { src: "/env-solar.jpg", alt: "Rooftop solar panels catching first light", label: "Modern family living" },
+            { src: "/buildingtop.jpg", alt: "The rooftop wind catcher, kite and turbines above the terracotta crown", label: "Natural airflow" },
+            { src: "/foakhshaukat.jpg", alt: "The development within its landscape at dusk", label: "Renewable energy" },
+            { src: "/buildingfront.jpg", alt: "The two residential blocks in the evening light", label: "Modern family living" },
           ].map((f) => (
             <figure key={f.src} className="relative">
               <div className="relative aspect-[4/3] overflow-hidden rounded-md">

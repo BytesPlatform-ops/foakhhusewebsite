@@ -78,8 +78,8 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/hero-poster.jpg",
-    alt: "The generous scale of the development in the evening light",
+    src: "/drawingroomfoakh.jpg",
+    alt: "The generous living and dining space filled with evening light",
     rise: [0.15, 0.23],
     cover: [0.27, 0.35],
     fromY: "118svh",
@@ -97,8 +97,8 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/route-exterior.jpg",
-    alt: "The organised rooftop systems above the development at first light",
+    src: "/kitchen.jpg",
+    alt: "The functional family kitchen in warm terracotta and stone",
     rise: [0.27, 0.35],
     cover: [0.39, 0.47],
     fromY: "118svh",
@@ -116,8 +116,8 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/building-approach.jpg",
-    alt: "The refined facade of the residences at dusk",
+    src: "/bed.jpg",
+    alt: "A refined bedroom with contemporary finishes and soft evening light",
     rise: [0.39, 0.47],
     cover: [0.51, 0.59],
     fromY: "118svh",
@@ -132,12 +132,12 @@ const DECK: DeckSpec[] = [
       copy: "Contemporary finishes and refined interior details.",
     },
     accent: "213 155 84",
-    objectPosition: "50% 30%",
+    objectPosition: "50% 40%",
   },
   {
     kind: "image",
-    src: "/route-corridor.jpg",
-    alt: "Daylight filling the warm interior spaces",
+    src: "/family.jpg",
+    alt: "Daylight filling the open family living space",
     rise: [0.51, 0.59],
     cover: [0.63, 0.71],
     fromY: "118svh",
@@ -152,12 +152,12 @@ const DECK: DeckSpec[] = [
       copy: "Planning that supports light, airflow and year-round usability.",
     },
     accent: "111 155 152",
-    objectPosition: "50% 42%",
+    objectPosition: "50% 50%",
   },
   {
     kind: "image",
-    src: "/env-air.jpg",
-    alt: "A private balcony opening with fabric moving in the airflow",
+    src: "/balconyfoakh.jpg",
+    alt: "A private balcony with seating above the green landscape",
     rise: [0.63, 0.71],
     cover: [0.75, 0.83],
     fromY: "118svh",
@@ -172,12 +172,12 @@ const DECK: DeckSpec[] = [
       copy: "Personal outdoor space for relaxation and views.",
     },
     accent: "213 155 84",
-    objectPosition: "60% 40%",
+    objectPosition: "50% 55%",
   },
   {
     kind: "image",
-    src: "/env-context.jpg",
-    alt: "The two-block development within its wider green landscape",
+    src: "/buildingfront.jpg",
+    alt: "The two distinguished blocks of the limited community at dusk",
     rise: [0.75, 0.83],
     cover: null,
     fromY: "118svh",
@@ -341,8 +341,8 @@ export default function ResidencesStory() {
             <div className="flex gap-3">
               <div className="relative w-[7.5rem] shrink-0 overflow-hidden rounded-lg">
                 <Image
-                  src="/env-solar.jpg"
-                  alt="Solar panels catching the late sun on the roof terrace"
+                  src="/buildingtop.jpg"
+                  alt="The rooftop systems catching the late sun"
                   fill
                   sizes="120px"
                   className="object-cover"

@@ -125,7 +125,7 @@ export default function ProjectGlance() {
               style={{ scale, y: imgY, rotateX, transformOrigin: "50% 74%" }}
             >
               <Image
-                src="/building-approach.jpg"
+                src="/buildingfront.jpg"
                 alt=""
                 fill
                 priority={false}
@@ -433,7 +433,7 @@ function StaticFrame() {
       className="relative flex min-h-svh items-center overflow-hidden bg-[#1D1714]"
     >
       <Image
-        src="/building-approach.jpg"
+        src="/buildingfront.jpg"
         alt=""
         fill
         sizes="100vw"

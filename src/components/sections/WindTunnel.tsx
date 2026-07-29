@@ -366,11 +366,11 @@ function StoryPanel({
 
 function CardMedia({ media, accent }: { media: StoryCard["media"]; accent: string }) {
   if (media === "water") return <WaterPanel />;
-  const src = media === "solar" ? "/route-solar.jpg" : "/route-exterior.jpg";
+  const src = media === "solar" ? "/buildingtop.jpg" : "/foakhshaukat.jpg";
   const alt =
     media === "solar"
-      ? "Low-angle rooftop solar panels within the terracotta architecture, wind line reflected across the cells"
-      : "Rooftop energy systems above the development — solar array, wind equipment and landscape at first light";
+      ? "The dedicated wind catcher, kite system, turbines and solar panels on the rooftop crown"
+      : "The development at dusk with wind turbines on the horizon and the landmark surroundings";
   return (
     <>
       <Image src={src} alt={alt} fill sizes="46vw" className="object-cover" style={{ objectPosition: "55% 45%" }} />

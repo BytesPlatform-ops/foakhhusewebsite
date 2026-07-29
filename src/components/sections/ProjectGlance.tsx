@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -195,67 +195,230 @@ export default function ProjectGlance() {
   );
 }
 
-/** The approved project introduction: body copy, highlights, closing. */
-function ProjectIntroduction() {
-  return (
-    <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-4 pb-24 lg:pb-28">
-      <div className="grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-        {/* editorial body copy */}
-        <div>
-          <p className="max-w-[62ch] text-[1.05rem] leading-[1.75] text-[#211A17]/85">
-            The Wind Corridor Residences is an exclusive 12-storey development in DHA View
-            City, Karachi, featuring Umer Block and Abdullah Block. With only 84 carefully
-            planned apartments, the project offers privacy, spacious living and a modern
-            architectural identity.
-          </p>
-          <p className="mt-5 max-w-[62ch] text-[1.05rem] leading-[1.75] text-[#211A17]/78">
-            The project has been designed to utilise natural resources for better everyday
-            living. Its renewable-energy strategy combines wind turbines and solar panels to
-            support electricity generation, while the building&rsquo;s dedicated wind-catcher
-            system captures high-velocity air and directs it into the internal corridor
-            network.
-          </p>
-          <p className="mt-5 max-w-[62ch] text-[1.05rem] leading-[1.75] text-[#211A17]/78">
-            This innovative approach is intended to improve natural ventilation, reduce heat
-            buildup and lower dependence on conventional cooling and grid electricity. Based
-            on final engineering performance, residents may benefit from electricity-bill
-            savings of up to 60%.
-          </p>
-          <p className="mt-3 max-w-[62ch] border-l-2 border-[#E5AD42]/60 pl-3.5 text-[0.72rem] leading-[1.6] text-[#211A17]/55">
-            {SAVINGS_NOTE}
-          </p>
-        </div>
+/**
+ * The project introduction as a contained architectural BLUEPRINT SHEET:
+ * a warm-ivory presentation sheet (max 1380px, clear margins) carrying
+ * the approved two-block elevation drawing, fine grid, dimension marks
+ * and ALL of the approved copy inside the sheet composition. On scroll
+ * the sheet starts slightly tilted (rotateZ/rotateX, scaled, lowered)
+ * and straightens like a drawing being aligned on a desk — spring
+ * smoothed, no bounce. Mobile drops the 3D tilt to a small rotateZ and
+ * flows the content vertically. Reduced motion renders it settled.
+ */
 
-        {/* four project highlights */}
-        <div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {HIGHLIGHTS.map((h, i) => (
-              <motion.article
-                key={h.title}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="rounded-[16px] border border-[#D8B36A]/45 bg-[#FFF8EF]/92 p-5 shadow-[0_18px_38px_-24px_rgba(148,63,45,0.35)]"
-              >
-                <p className="font-display text-[1.08rem] leading-snug font-medium text-[#943F2D]">
-                  {h.title}
-                </p>
-                <p className="mt-2 text-[0.85rem] leading-[1.65] text-[#211A17]/72">{h.copy}</p>
-              </motion.article>
-            ))}
-          </div>
-          <p className="mt-8 text-[0.72rem] font-semibold tracking-[0.28em] text-[#943F2D] uppercase">
-            The future of responsible urban living starts here.
-          </p>
-          <a
-            href="#residences"
-            className="mt-5 inline-block rounded-lg border border-[#943F2D]/50 px-6 py-3 text-sm font-medium text-[#211A17] transition-colors hover:bg-[#943F2D] hover:text-[#FFF8EF]"
+const mqSubscribe = (cb: () => void) => {
+  const m = window.matchMedia("(min-width: 1024px)");
+  m.addEventListener("change", cb);
+  return () => m.removeEventListener("change", cb);
+};
+const mqRead = () => window.matchMedia("(min-width: 1024px)").matches;
+
+function ProjectIntroduction() {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const isDesktop = useSyncExternalStore(mqSubscribe, mqRead, () => true);
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start 0.22"],
+  });
+  const p = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.4 });
+
+  const rotateZ = useTransform(p, [0, 0.72], isDesktop ? [-4, 0] : [-1.5, 0]);
+  const rotateX = useTransform(p, [0, 0.72], isDesktop ? [5, 0] : [0, 0]);
+  const scale = useTransform(p, [0, 0.72], [0.93, 1]);
+  const y = useTransform(p, [0, 0.72], [70, 0]);
+  const drawOpacity = useTransform(p, [0, 0.65], [0.28, 0.55]);
+  const contentOpacity = useTransform(p, [0.1, 0.6], [0.25, 1]);
+
+  const rise = (delay = 0) =>
+    reduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 16 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.3 },
+          transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as const },
+        };
+
+  return (
+    <div ref={ref} className="relative overflow-hidden bg-[#F6EBDD] py-20 lg:py-24">
+      {/* quiet ground outside the sheet — soft glow only, no drawing */}
+      <div
+        aria-hidden="true"
+        className="absolute top-[10%] left-1/2 h-[70%] w-[70%] -translate-x-1/2 rounded-full opacity-50 blur-3xl"
+        style={{ background: "radial-gradient(closest-side, rgb(199 91 59 / 0.14), transparent 70%)" }}
+      />
+
+      {/* the sheet — tilted, then aligned */}
+      <motion.div
+        className="relative mx-auto w-[92vw] max-w-[1380px] lg:w-[82vw]"
+        style={
+          reduced
+            ? undefined
+            : { rotateZ, rotateX, scale, y, transformPerspective: 1200, transformOrigin: "50% 20%" }
+        }
+      >
+        <div
+          className="grain relative overflow-hidden rounded-[8px] border p-6 sm:p-9 lg:p-12"
+          style={{
+            background: "#F7ECDE",
+            borderColor: "rgba(155,82,55,0.34)",
+            boxShadow:
+              "0 60px 100px -44px rgba(90,45,25,0.45), 0 22px 44px -24px rgba(90,45,25,0.28)",
+          }}
+        >
+          {/* fine drafting grid */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(0deg, rgba(217,133,105,0.09) 0 1px, transparent 1px 46px)," +
+                "repeating-linear-gradient(90deg, rgba(217,133,105,0.09) 0 1px, transparent 1px 46px)",
+            }}
+          />
+          {/* ruler ticks along the top edge */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-2"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(90deg, rgba(155,82,55,0.35) 0 1px, transparent 1px 23px)",
+            }}
+          />
+
+          {/* the approved two-block elevation, inside the sheet */}
+          <motion.div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-[3%] top-[7%] bottom-[5%]"
+            style={{ opacity: reduced ? 0.52 : drawOpacity }}
           >
-            Explore the Residences
-          </a>
+            <Image
+              src="/building-outline-lines.png"
+              alt=""
+              fill
+              sizes="82vw"
+              className="object-contain"
+            />
+          </motion.div>
+
+          {/* dimension line + technical annotations */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-[8%] top-[4.5%] hidden items-center gap-2 lg:flex">
+            <span className="h-px flex-1" style={{ background: "rgba(155,82,55,0.4)" }} />
+            <span className="text-[0.55rem] tracking-[0.24em] whitespace-nowrap uppercase" style={{ color: "rgba(142,67,47,0.75)" }}>
+              Umer Block · Abdullah Block — 12 storeys
+            </span>
+            <span className="h-px flex-1" style={{ background: "rgba(155,82,55,0.4)" }} />
+          </div>
+          <p
+            aria-hidden="true"
+            className="pointer-events-none absolute right-4 bottom-3 text-[0.52rem] tracking-[0.22em] uppercase lg:right-6 lg:bottom-4"
+            style={{ color: "rgba(142,67,47,0.6)" }}
+          >
+            WCR · Sheet 01 — Project Introduction · Not to scale
+          </p>
+
+          {/* ---------------- content, attached to the sheet ---------- */}
+          <motion.div className="relative" style={reduced ? undefined : { opacity: contentOpacity }}>
+            {/* top-left: eyebrow / heading / lead */}
+            <motion.div {...rise(0)} className="max-w-xl">
+              <p className="text-[0.65rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#C78C49" }}>
+                01 — The Project
+              </p>
+              <h3
+                className="font-display mt-3 leading-[1.05] uppercase"
+                style={{ color: "#8E432F", fontSize: "clamp(2rem,3.4vw,3.4rem)", fontWeight: 600 }}
+              >
+                Designed around nature
+              </h3>
+              <p className="mt-4 text-[1.05rem] leading-[1.6]" style={{ color: "#2B211D" }}>
+                A distinctive residential concept created for comfort, efficiency and
+                future-ready living.
+              </p>
+            </motion.div>
+
+            <div className="mt-9 grid gap-9 lg:mt-10 lg:grid-cols-[1.04fr_1fr] lg:gap-12">
+              {/* left/centre: the introduction, on a readability wash */}
+              <motion.div
+                {...rise(0.08)}
+                className="rounded-md p-4 sm:p-5"
+                style={{
+                  background: "rgba(247,236,222,0.82)",
+                  boxShadow: "0 0 34px 22px rgba(247,236,222,0.82)",
+                }}
+              >
+                <p className="max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
+                  The Wind Corridor Residences is an exclusive 12-storey development in DHA View
+                  City, Karachi, featuring Umer Block and Abdullah Block. With only 84 carefully
+                  planned apartments, the project offers privacy, spacious living and a modern
+                  architectural identity.
+                </p>
+                <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
+                  The project has been designed to utilise natural resources for better everyday
+                  living. Its renewable-energy strategy combines wind turbines and solar panels
+                  to support electricity generation, while the building&rsquo;s dedicated
+                  wind-catcher system captures high-velocity air and directs it into the internal
+                  corridor network.
+                </p>
+                <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
+                  This innovative approach is intended to improve natural ventilation, reduce
+                  heat buildup and lower dependence on conventional cooling and grid electricity.
+                  Based on final engineering performance, residents may benefit from
+                  electricity-bill savings of up to 60%.
+                </p>
+                <p
+                  className="mt-4 max-w-[62ch] border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"
+                  style={{ color: "rgba(81,68,61,0.85)", borderColor: "rgba(199,140,73,0.6)" }}
+                >
+                  {SAVINGS_NOTE}
+                </p>
+              </motion.div>
+
+              {/* right: 2×2 feature panels */}
+              <div className="grid content-start gap-4 sm:grid-cols-2">
+                {HIGHLIGHTS.map((h, i) => (
+                  <motion.article
+                    key={h.title}
+                    {...rise(0.16 + i * 0.09)}
+                    className="rounded-[12px] border p-5"
+                    style={{
+                      background: "rgba(255,249,240,0.88)",
+                      borderColor: "rgba(155,82,55,0.25)",
+                      boxShadow: "0 14px 30px -20px rgba(90,45,25,0.35)",
+                    }}
+                  >
+                    <p className="font-display text-[1.05rem] leading-snug font-medium" style={{ color: "#8E432F" }}>
+                      {h.title}
+                    </p>
+                    <p className="mt-2 text-[0.85rem] leading-[1.6]" style={{ color: "#51443D" }}>
+                      {h.copy}
+                    </p>
+                  </motion.article>
+                ))}
+              </div>
+            </div>
+
+            {/* bottom: closing statement + CTA */}
+            <motion.div
+              {...rise(0.5)}
+              className="mt-10 flex flex-col items-start gap-5 border-t pt-6 sm:flex-row sm:items-center sm:justify-between"
+              style={{ borderColor: "rgba(155,82,55,0.28)" }}
+            >
+              <p className="text-[0.74rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#8E432F" }}>
+                The future of responsible urban living starts here.
+              </p>
+              <a
+                href="#residences"
+                className="inline-block shrink-0 rounded-lg px-6 py-3 text-sm font-semibold transition-colors"
+                style={{ background: "#8E432F", color: "#FFF8EF" }}
+              >
+                Explore the Residences
+              </a>
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

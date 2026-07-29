@@ -242,7 +242,7 @@ export default function DesignedAroundNature() {
         {/* ---------------- supporting copy + CTA ------------------------ */}
         <motion.div className="absolute right-[6%] bottom-[7%] z-40 max-w-xs rounded-md border border-[#241B17]/10 bg-[#FFF8EF]/95 p-5 text-left shadow-[0_18px_44px_-28px_rgba(36,27,23,0.45)] backdrop-blur-sm lg:max-w-sm" style={{ opacity: copyOpacity }}>
           <p className="font-display text-xl leading-snug font-medium text-[#241B17] md:text-2xl">
-            A building that works with its environment.
+            Nature, engineered for modern living.
           </p>
           <p className="mt-3 text-[0.82rem] leading-relaxed text-[#241B17]/75 md:text-[0.9rem]">
             The Wind Corridor Residences brings natural airflow, renewable-energy planning and

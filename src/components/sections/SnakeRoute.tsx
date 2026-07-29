@@ -144,7 +144,7 @@ export default function SnakeRoute() {
           02 — Natural Systems
         </p>
         <h2 id="route-heading" className="sr-only">
-          A building that works with its environment — from natural force to everyday comfort
+          The wind-catcher concept — from natural force to everyday comfort
         </h2>
 
         {/* heading + intro — present at the start, gone as the journey moves */}
@@ -154,14 +154,11 @@ export default function SnakeRoute() {
           style={{ opacity: introOp, y: introY }}
         >
           <p
-            className="font-display leading-[1.1] text-balance"
-            style={{ color: INK, fontSize: "clamp(1.9rem,2.4vw,2.6rem)", fontWeight: 500 }}
+            className="font-display leading-[1.18] text-balance"
+            style={{ color: INK, fontSize: "clamp(1.7rem,2.1vw,2.3rem)", fontWeight: 500 }}
           >
-            A building that works with its environment.
-          </p>
-          <p className="mt-3 ml-auto max-w-sm text-[0.85rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.7)" }}>
-            Natural airflow, renewable-energy planning and modern family living, brought into
-            one carefully considered development.
+            A purpose-built system designed to capture high-velocity air and guide it
+            through the building.
           </p>
         </motion.div>
 
@@ -400,11 +397,11 @@ function StaticSpread() {
           id="route-heading"
           className="font-display mt-6 max-w-[15ch] text-[clamp(2.4rem,6vw,5.4rem)] leading-[1.02] font-medium text-[#211A17]"
         >
-          A building that works with its environment.
+          The wind-catcher concept.
         </h2>
-        <p className="mt-5 max-w-md text-[0.9rem] leading-relaxed text-[#211A17]/75">
-          Natural airflow, renewable-energy planning and modern family living, brought into one
-          carefully considered development.
+        <p className="mt-5 max-w-md text-[0.95rem] leading-relaxed text-[#211A17]/75">
+          A purpose-built system designed to capture high-velocity air and guide it through
+          the building.
         </p>
         <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
           {PANELS.map((panel, i) => (

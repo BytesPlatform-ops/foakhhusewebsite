@@ -48,6 +48,7 @@ interface StoryCard {
   num: string;
   label: string;
   heading: React.ReactNode;
+  lead?: string;
   body: string;
   secondary?: string;
   extra?: string;
@@ -91,6 +92,7 @@ const CARDS: StoryCard[] = [
         <span className="block">wind corridor.</span>
       </>
     ),
+    lead: "A purpose-built system designed to capture high-velocity air and guide it through the building.",
     body: "The defining feature of the project is its dedicated wind catcher. Rather than relying on balconies or windows to collect air, the wind catcher is positioned and engineered to intercept high-velocity natural wind from the surrounding environment.",
     secondary:
       "The captured air is then directed into the building's central corridor system, where it circulates through corridors, elevator lobbies and shared circulation areas — a controlled movement of air intended to create a fresher, cooler and more comfortable internal environment.",
@@ -113,6 +115,7 @@ const CARDS: StoryCard[] = [
         <span className="block">natural resources.</span>
       </>
     ),
+    lead: "A forward-looking residential development where wind, sunlight and intelligent design work together.",
     body: "The Wind Corridor Residences has been conceived to make meaningful use of available natural resources. Wind turbines and solar panels are planned to generate renewable electricity, while the dedicated wind-catcher system channels natural air through the building's internal corridor network.",
     secondary:
       "Together, these systems are intended to reduce dependence on conventional electricity, improve comfort in shared areas and support potential electricity-bill savings of up to 60%, subject to final design, testing and operating conditions.",
@@ -301,6 +304,11 @@ function StoryPanel({
           >
             {card.heading}
           </p>
+          {card.lead && (
+            <p className="font-display mt-4 text-[0.98rem] leading-snug italic" style={{ color: C.sage }}>
+              {card.lead}
+            </p>
+          )}
           {card.spec && (
             <p className="mt-7 text-[0.58rem] tracking-[0.24em] uppercase" style={{ color: C.muted }}>
               {card.spec}
@@ -493,6 +501,11 @@ function StackedStory({ embedded = false }: { embedded?: boolean }) {
             >
               {card.heading}
             </p>
+            {card.lead && (
+              <p className="font-display mt-3 text-[0.95rem] leading-snug italic" style={{ color: C.sage }}>
+                {card.lead}
+              </p>
+            )}
             <p className="mt-3 text-[0.9rem] leading-[1.6]" style={{ color: C.body }}>
               {card.body}
             </p>

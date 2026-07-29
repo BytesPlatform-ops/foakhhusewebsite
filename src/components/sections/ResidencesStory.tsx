@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import AmenitiesShowcase from "./AmenitiesShowcase";
 import {
@@ -62,9 +62,9 @@ interface DeckSpec {
 
 const DECK: DeckSpec[] = [
   {
-    kind: "film",
-    src: "/hero.mp4",
-    alt: "Film of the Wind Corridor Residences and its surroundings",
+    kind: "image",
+    src: "/lobby.jpg",
+    alt: "Residents at ease together in the warm family lounge of the residences",
     rise: [0.02, 0.12],
     cover: [0.15, 0.23],
     fromY: "62svh",
@@ -75,6 +75,7 @@ const DECK: DeckSpec[] = [
     z: 20,
     quality: null,
     accent: "198 164 107",
+    objectPosition: "38% 50%",
   },
   {
     kind: "image",
@@ -380,9 +381,16 @@ export default function ResidencesStory() {
           <br />
           <span style={{ color: "rgba(224,193,148,0.72)" }}>for real life.</span>
         </p>
-        <div className="relative mx-auto mt-10 w-full max-w-sm overflow-hidden rounded-xl shadow-[0_40px_80px_-40px_rgba(26,16,11,0.7)]">
-          <FilmMedia reduced={!!reduced} />
-        </div>
+        <figure className="relative mx-auto mt-10 aspect-[3/4] w-full max-w-sm overflow-hidden rounded-xl shadow-[0_40px_80px_-40px_rgba(26,16,11,0.7)]">
+          <Image
+            src="/lobby.jpg"
+            alt="Residents at ease together in the warm family lounge of the residences"
+            fill
+            sizes="(min-width:640px) 60vw, 100vw"
+            className="object-cover"
+            style={{ objectPosition: "38% 50%" }}
+          />
+        </figure>
         {/* each image card followed by its quality pair */}
         <div className="mt-10 space-y-10">
           {DECK.filter((d) => d.quality).map((d) => (
@@ -480,18 +488,14 @@ function DeckCard({
           ...(reduced ? {} : { y, scale, rotate }),
         }}
       >
-        {spec.kind === "film" ? (
-          <FilmMedia reduced={reduced} fill />
-        ) : (
-          <Image
-            src={spec.src}
-            alt={spec.alt}
-            fill
-            sizes="30vw"
-            className="object-cover"
-            style={{ objectPosition: spec.objectPosition }}
-          />
-        )}
+        <Image
+          src={spec.src}
+          alt={spec.alt}
+          fill
+          sizes="30vw"
+          className="object-cover"
+          style={{ objectPosition: spec.objectPosition }}
+        />
         <span
           aria-hidden="true"
           className="absolute inset-0"
@@ -565,69 +569,6 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
           {q.copy}
         </p>
       </motion.div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------- media -- */
-
-function FilmMedia({ reduced, fill = false }: { reduced: boolean; fill?: boolean }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [paused, setPaused] = useState(false);
-
-  if (reduced) {
-    return (
-      <div className={fill ? "absolute inset-0" : "relative aspect-[3/4.2] w-full"}>
-        <Image
-          src="/hero-poster.jpg"
-          alt="Evening view of the Wind Corridor Residences"
-          fill
-          sizes="(min-width:1024px) 25vw, 100vw"
-          className="object-cover"
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div className={`${fill ? "absolute inset-0" : "relative aspect-[3/4.2] w-full"} bg-[#1D1714]`}>
-      <video
-        ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover"
-        src="/hero.mp4"
-        poster="/hero-poster.jpg"
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-label="Film of the Wind Corridor Residences and its surroundings"
-      />
-      <button
-        type="button"
-        onClick={() => {
-          const v = videoRef.current;
-          if (!v) return;
-          if (v.paused) {
-            v.play().catch(() => undefined);
-            setPaused(false);
-          } else {
-            v.pause();
-            setPaused(true);
-          }
-        }}
-        aria-label={paused ? "Play film" : "Pause film"}
-        className="absolute bottom-3.5 left-3.5 flex h-10 w-10 items-center justify-center rounded-full bg-[#F7F0E8] text-[#1D1714] transition-transform hover:scale-105"
-      >
-        {paused ? (
-          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-            <path d="M2.5 1.5v9l8-4.5z" fill="currentColor" />
-          </svg>
-        ) : (
-          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-            <path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z" fill="currentColor" />
-          </svg>
-        )}
-      </button>
     </div>
   );
 }

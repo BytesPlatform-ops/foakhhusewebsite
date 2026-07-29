@@ -85,9 +85,8 @@ const AMENITIES: Amenity[] = [
     num: "06",
     title: "24/7 Security",
     copy: "Controlled access and continuous monitoring for peace of mind.",
-    src: "/recepton.jpg",
-    alt: "The staffed reception desk controlling access to the residences",
-    pos: "80% 45%",
+    src: "/foakhsecurity.jpg",
+    alt: "The staffed security gate with controlled turnstile access at the residence entrance",
   },
   {
     num: "07",

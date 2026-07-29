@@ -102,6 +102,13 @@ const ITEMS: GalleryItem[] = [
     aspect: "aspect-[16/10]",
   },
   {
+    src: "/foakhsecurity.jpg",
+    alt: "The staffed security gate welcoming a family through controlled access",
+    category: "Amenities",
+    title: "The guarded entrance",
+    aspect: "aspect-[4/3]",
+  },
+  {
     src: "/hero-poster.jpg",
     alt: "Evening elevation of the Wind Corridor Residences",
     category: "Architecture",

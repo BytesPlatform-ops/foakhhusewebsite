@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import AmenitiesShowcase from "./AmenitiesShowcase";
 import {
   motion,
   useReducedMotion,
@@ -33,43 +34,6 @@ import {
 
 const IVORY = "#F7F0E8";
 const INK = "#1D1714";
-
-/* ------------------------------------------------ 03A — amenities ---- */
-
-const AMENITIES = [
-  {
-    title: "Swimming Pool",
-    copy: "A relaxing recreation space designed for residents and families.",
-  },
-  {
-    title: "High-Speed Elevators",
-    copy: "Efficient vertical movement throughout the development.",
-  },
-  {
-    title: "Ventilated Elevator Lobbies",
-    copy: "Wind-catcher airflow is directed towards common circulation spaces for added comfort.",
-  },
-  {
-    title: "Dedicated Parking",
-    copy: "Secure and organised parking for residents.",
-  },
-  {
-    title: "Family Recreation Areas",
-    copy: "Welcoming spaces for relaxation and social interaction.",
-  },
-  {
-    title: "24/7 Security",
-    copy: "Controlled access and continuous monitoring for peace of mind.",
-  },
-  {
-    title: "Modern Architecture",
-    copy: "A contemporary design balancing elegance, function and environmental responsibility.",
-  },
-  {
-    title: "Reliable Water System",
-    copy: "A planned treatment solution supporting clean and dependable water availability.",
-  },
-];
 
 /* ------------------------------------------- 03B — the quality deck -- */
 
@@ -273,7 +237,7 @@ export default function ResidencesStory() {
       }
     >
       {/* ==================== 03A — LIFESTYLE & AMENITIES ============== */}
-      <Amenities reduced={!!reduced} />
+      <AmenitiesShowcase />
 
       {/* ---- Apartments & Interiors — intro copy before the deck ----- */}
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pb-16 lg:pb-20">
@@ -454,80 +418,6 @@ export default function ResidencesStory() {
         </p>
       </div>
     </section>
-  );
-}
-
-/* ======================================================== amenities == */
-
-function Amenities({ reduced }: { reduced: boolean }) {
-  const rise = (delay = 0) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 22 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, amount: 0.25 },
-          transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
-        };
-
-  return (
-    <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-16 lg:pt-32 lg:pb-20">
-      <motion.p {...rise(0)} className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
-        03 — Residences &amp; Lifestyle
-      </motion.p>
-      <motion.h3
-        {...rise(0.05)}
-        className="font-display mt-5 max-w-[16ch] leading-[1.06] text-balance"
-        style={{ color: IVORY, fontSize: "clamp(2.4rem,3.8vw,3.9rem)", fontWeight: 500 }}
-      >
-        Everyday comfort, elevated.
-      </motion.h3>
-      <motion.p {...rise(0.1)} className="mt-5 max-w-xl text-[1.02rem] leading-[1.7]" style={{ color: "rgba(250,243,232,0.88)" }}>
-        Thoughtfully selected amenities for convenience, security and refined family living.
-      </motion.p>
-
-      <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.15fr] lg:gap-12">
-        {/* dominant lifestyle image */}
-        <motion.figure
-          {...rise(0.12)}
-          className="relative min-h-[320px] overflow-hidden rounded-[22px] border border-[#F7F0E8]/25 shadow-[0_40px_80px_-38px_rgba(26,16,11,0.7)] lg:min-h-0"
-        >
-          <Image
-            src="/route-comfort.jpg"
-            alt="Residents meeting in the warm sheltered court of the development"
-            fill
-            sizes="(min-width:1024px) 42vw, 92vw"
-            className="object-cover"
-            style={{ objectPosition: "50% 38%" }}
-          />
-          <span
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-[#1D1714]/60 to-transparent"
-          />
-          <figcaption className="absolute bottom-4 left-5 text-[0.6rem] font-semibold tracking-[0.26em] text-[#FFF8EF]/90 uppercase">
-            Life at the corridor
-          </figcaption>
-        </motion.figure>
-
-        {/* eight editorial amenity panels */}
-        <div className="grid gap-4 sm:grid-cols-2">
-          {AMENITIES.map((a, i) => (
-            <motion.article
-              key={a.title}
-              {...rise(0.14 + i * 0.05)}
-              className="rounded-[16px] border border-[#F7F0E8]/25 bg-[#FFF8EF]/95 p-5 shadow-[0_18px_38px_-24px_rgba(26,16,11,0.5)]"
-            >
-              <p className="font-display text-[1.02rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
-                {a.title}
-              </p>
-              <p className="mt-2 text-[0.82rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.72)" }}>
-                {a.copy}
-              </p>
-            </motion.article>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
 

@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   motion,
+  useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -60,12 +61,12 @@ const STAGES: Stage[] = [
     copy: "A dedicated architectural system designed to capture high-velocity natural air and guide it through internal circulation spaces.",
     items: [{ t: "Natural Air Capture" }, { t: "Corridor Distribution" }, { t: "Cooler Shared Areas" }],
     at: [0.05, 0.1, 0.26, 0.31],
-    card: "left-[6%] top-[44%] lg:left-[7%] lg:top-[46%]",
+    card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[46%]",
     frame: {
       src: "/buildingtop.jpg",
       alt: "The wind catcher, kite and turbines at the crown",
       pos: "60% 30%",
-      className: "left-[44%] top-[17%] w-[15rem] rotate-[1.6deg]",
+      className: "left-[46%] top-[14%] w-[15rem] rotate-[1.6deg]",
     },
   },
   {
@@ -78,12 +79,12 @@ const STAGES: Stage[] = [
       { t: "Kite Energy", d: "Airborne tethered wings capture stronger high-altitude winds for ground-based generation." },
     ],
     at: [0.31, 0.36, 0.55, 0.6],
-    card: "left-[6%] top-[24%] lg:left-[30%] lg:top-[30%]",
+    card: "left-[6%] top-[24%] lg:left-[33%] lg:top-[32%]",
     frame: {
       src: "/foakhshaukat.jpg",
       alt: "The development with the regional wind farm on the horizon",
       pos: "72% 45%",
-      className: "left-[7%] top-[58%] w-[17rem] -rotate-[1.8deg]",
+      className: "left-[9%] top-[57%] w-[17rem] -rotate-[1.8deg]",
     },
   },
   {
@@ -95,12 +96,12 @@ const STAGES: Stage[] = [
       { t: "Atmospheric Water Generation", d: "Thin Air technology extracts water from atmospheric air." },
     ],
     at: [0.6, 0.65, 0.82, 0.87],
-    card: "left-[6%] top-[30%] lg:left-[44%] lg:top-[28%]",
+    card: "left-[6%] top-[28%] lg:left-[58%] lg:top-[42%]",
     frame: {
       src: "/buildingfront.jpg",
       alt: "The landscaped water-feature courtyard at dusk",
       pos: "50% 84%",
-      className: "left-[16%] top-[58%] w-[16rem] rotate-[1.4deg]",
+      className: "left-[32%] top-[62%] w-[16rem] rotate-[1.4deg]",
     },
   },
 ];
@@ -122,11 +123,24 @@ export default function SnakeRoute() {
   });
   const p = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.35 });
 
-  /* the real building drifts down — rooftop to entrance, scrubbed slow */
-  const buildingY = useTransform(p, (v) => {
-    const a = Math.min(Math.max((v - 0.02) / 0.9, 0), 1);
+  /* the real building fills the screen and drifts down — rooftop to
+     entrance; travel measured from the rendered image height */
+  const bRef = useRef<HTMLDivElement>(null);
+  const travel = useMotionValue(0);
+  useEffect(() => {
+    const measure = () => {
+      const el = bRef.current;
+      if (!el) return;
+      travel.set(Math.min(0, window.innerHeight - el.offsetHeight));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [travel]);
+  const buildingY = useTransform([p, travel] as const, ([v, t]) => {
+    const a = Math.min(Math.max(((v as number) - 0.02) / 0.9, 0), 1);
     const e = a * a * (3 - 2 * a);
-    return `${-e * 52}svh`;
+    return e * (t as number);
   });
 
   const headOp = useTransform(p, [0, 0.24, 0.31], [1, 1, 0]);
@@ -146,10 +160,11 @@ export default function SnakeRoute() {
       className="relative h-[320svh] lg:h-[360svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden">
-        {/* ------------- the real building, parallax layer ------------- */}
+        {/* ------------- the real building, fullscreen parallax -------- */}
         <motion.div
-          className="absolute top-0 right-[-20vw] will-change-transform sm:right-[-8vw] lg:right-[2vw]"
-          style={{ y: buildingY, height: "152svh", aspectRatio: `${B_ASPECT}` }}
+          ref={bRef}
+          className="absolute top-0 left-1/2 w-[178vw] -translate-x-1/2 will-change-transform sm:w-[120vw] lg:w-screen"
+          style={{ y: buildingY, aspectRatio: `${B_ASPECT}` }}
         >
           <Image
             src="/buildingtall.jpg"
@@ -159,14 +174,14 @@ export default function SnakeRoute() {
             sizes="(min-width:1024px) 46vw, 90vw"
             className="object-cover"
           />
-          {/* blend the photograph into the canvas — left and top edges */}
+          {/* readability scrim — quiet, photographic */}
           <span
             aria-hidden="true"
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(90deg, #F6EBDD 0%, rgba(246,235,221,0) 15%)," +
-                "linear-gradient(180deg, #F6EBDD 0%, rgba(246,235,221,0) 9%, rgba(246,235,221,0) 93%, #F6EBDD 100%)",
+                "linear-gradient(90deg, rgba(26,15,10,0.42) 0%, rgba(26,15,10,0.14) 34%, rgba(26,15,10,0) 55%)," +
+                "linear-gradient(180deg, rgba(26,15,10,0.18) 0%, transparent 18%, transparent 82%, rgba(26,15,10,0.3) 100%)",
             }}
           />
           {/* airflow whisper toward the crown — stage A only */}
@@ -193,28 +208,28 @@ export default function SnakeRoute() {
           className="absolute top-[8%] left-[6%] z-30 max-w-xl lg:top-[11%] lg:left-[7%]"
           style={{ opacity: headOp, y: headY }}
         >
-          <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
+          <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#EFD5A3", textShadow: "0 1px 12px rgba(20,10,6,0.7)" }}>
             02 — Natural Systems
           </p>
           <h2
             id="route-heading"
             className="font-display mt-4 leading-[1.06] text-balance"
-            style={{ color: INK, fontSize: "clamp(2.3rem,3.8vw,3.9rem)", fontWeight: 500 }}
+            style={{ color: "#FFF8EF", fontSize: "clamp(2.3rem,3.8vw,3.9rem)", fontWeight: 500, textShadow: "0 2px 26px rgba(20,10,6,0.75)" }}
           >
             Nature, engineered for better living.
           </h2>
-          <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
+          <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(255,248,239,0.92)", textShadow: "0 1px 16px rgba(20,10,6,0.8)" }}>
             A connected set of natural-resource systems designed to support airflow, renewable
             power and resilient water planning throughout the development.
           </p>
-          <p className="mt-5 inline-flex items-center gap-2 text-[0.6rem] tracking-[0.24em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+          <p className="mt-5 inline-flex items-center gap-2 text-[0.6rem] tracking-[0.24em] uppercase" style={{ color: "rgba(255,248,239,0.75)" }}>
             Scroll <span aria-hidden="true">↓</span>
           </p>
         </motion.div>
 
         {/* ------------- the diagonal stage pieces -------------------- */}
-        {STAGES.map((st, i) => (
-          <StagePieces key={st.eyebrow} st={st} p={p} flip={i % 2 === 1} />
+        {STAGES.map((st) => (
+          <StagePieces key={st.eyebrow} st={st} p={p} />
         ))}
 
         {/* ------------- stage rail — bottom left --------------------- */}
@@ -227,7 +242,7 @@ export default function SnakeRoute() {
         {/* ------------- arrival ---------------------------------------- */}
         <motion.p
           className="font-display absolute bottom-[10%] left-[6%] z-30 max-w-sm text-[1.35rem] leading-snug italic lg:left-[7%]"
-          style={{ opacity: endOp, y: endY, color: "#943F2D" }}
+          style={{ opacity: endOp, y: endY, color: "#FFF8EF", textShadow: "0 2px 18px rgba(20,10,6,0.75)" }}
         >
           From natural systems to everyday comfort.
         </motion.p>
@@ -238,10 +253,11 @@ export default function SnakeRoute() {
 
 /* --------------------------------------------------- stage pieces ---- */
 
-function StagePieces({ st, p, flip }: { st: Stage; p: MotionValue<number>; flip: boolean }) {
+function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: boolean }) {
   const opacity = useTransform(p, st.at, [0, 1, 1, 0]);
-  const x = useTransform(p, [st.at[0], st.at[1]], flip ? [18, 0] : [-18, 0]);
-  const y = useTransform(p, [st.at[0], st.at[1]], [10, 0]);
+  /* the pieces travel the diagonal: in from upper-left, out lower-right */
+  const x = useTransform(p, [st.at[0], st.at[1], st.at[2], st.at[3]], [-26, 0, 0, 20]);
+  const y = useTransform(p, [st.at[0], st.at[1], st.at[2], st.at[3]], [-18, 0, 0, 14]);
   const scale = useTransform(p, [st.at[0], st.at[1]], [0.985, 1]);
   return (
     <>
@@ -313,7 +329,7 @@ function RailMark({
   return (
     <motion.span
       className="text-[0.6rem] font-semibold tracking-[0.26em] uppercase"
-      style={{ opacity, color: "#943F2D" }}
+      style={{ opacity, color: "#EFD5A3", textShadow: "0 1px 10px rgba(20,10,6,0.7)" }}
     >
       {label}
     </motion.span>

@@ -4,7 +4,6 @@ import ElevationBackdrop from "@/components/shared/ElevationBackdrop";
 import ProjectGlance from "@/components/sections/ProjectGlance";
 import DesignedAroundNature from "@/components/sections/DesignedAroundNature";
 import SnakeRoute from "@/components/sections/SnakeRoute";
-import WindTunnel from "@/components/sections/WindTunnel";
 import ResidencesStory from "@/components/sections/ResidencesStory";
 import FoakhLocationSection from "@/components/location/FoakhLocationSection";
 import GallerySection from "@/components/gallery/GallerySection";
@@ -27,7 +26,6 @@ export default function HomePage() {
           <DesignedAroundNature />
           <SnakeRoute />
         </ElevationBackdrop>
-        <WindTunnel />
         <ResidencesStory />
         <FoakhLocationSection />
         <GallerySection />

@@ -38,7 +38,7 @@ const CHAPTERS: Chapter[] = [
 /** section ids that roll up into each chapter for the scroll-spy */
 const SPY_TARGETS: Record<string, string[]> = {
   "#glance": ["glance", "nature"],
-  "#route": ["route", "wind", "solar", "harmony", "water"],
+  "#route": ["route"],
   "#residences": ["residences"],
   "#location": ["location", "gallery", "enquire"],
 };

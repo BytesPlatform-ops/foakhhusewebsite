@@ -1,118 +1,118 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   motion,
+  useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
+  type MotionValue,
 } from "framer-motion";
 
 /**
- * 01 — Project Vision: "THE BUILDING BREATHES."
+ * 01 — Project Vision: THE FAÇADE DESCENT.
  *
- * An editorial sticky composition translating MONOLOG (oversized serif
- * interrupted by a small central frame, active/muted words, text passing
- * around imagery) and Collab Capitolium (cream canvas, framed
- * architectural imagery repositioning diagonally, frames opening and
- * closing like architectural apertures) into an original Wind Corridor
- * spread.
+ * A vertical scroll-driven architectural experience over the approved
+ * buildingfront render — the real FOAKH Wind Corridor Enclave façade,
+ * untouched: exact terracotta tone, balcony rhythm, window proportions.
  *
- * Every frame has TWO independent layers: the OUTER aperture (width /
- * height / x / y / clip-path) and the INNER media (scale, position,
- * overlay). Openings are aperture animations — never a bare image scale.
- * Choreography travels upper-left -> centre -> lower-right per the
- * supplied sketch. Media are graded stills from the client's film.
+ * A ~280svh section pins a 100svh stage. The render is blown up to a
+ * façade close-up (240vw desktop / 520vw mobile) and translated
+ * upward as the user scrolls, reading as a camera travelling DOWN the
+ * façade from the upper floors toward the entrance. In the final
+ * stage the layer scales about its bottom edge, revealing the lower
+ * façade, landscaped frontage and entrance as a contained, rounded
+ * editorial frame on the site canvas.
  *
- * Five states across a 250svh section; native scroll; settles into a
- * readable spread before unpinning.
+ * Along the descent, selected apartment windows warm on — irregular
+ * offsets, one-way, screen-blended glows anchored in façade
+ * percentages so they ride the transform. Two whisper-thin airflow
+ * lines appear near balconies for a few moments only, scroll-linked.
+ * Editorial text stays minimal: heading at the top of the descent,
+ * two small statements en route, a closing line + CTA at the reveal —
+ * all small chips that never cover key architecture.
+ *
+ * Everything animates via transform/opacity on one composited layer
+ * (60fps); travel distances are measured into MotionValues so the
+ * maths stays correct across viewports. Reduced motion renders the
+ * settled full-elevation frame.
  */
 
-const INK = "#241B17";
+const ASPECT = 1238 / 2200;
+const IVORY = "#FFF8EF";
+
+/* selected windows that warm on — % of the façade layer, irregular order */
+const LIGHTS: { x: number; y: number; at: number }[] = [
+  { x: 23.0, y: 36.0, at: 0.13 },
+  { x: 63.5, y: 34.5, at: 0.17 },
+  { x: 30.5, y: 44.0, at: 0.22 },
+  { x: 70.5, y: 42.5, at: 0.27 },
+  { x: 26.0, y: 53.5, at: 0.32 },
+  { x: 66.5, y: 51.5, at: 0.36 },
+  { x: 20.5, y: 61.0, at: 0.41 },
+  { x: 73.5, y: 59.5, at: 0.45 },
+  { x: 29.5, y: 66.5, at: 0.50 },
+  { x: 62.5, y: 68.0, at: 0.55 },
+];
 
 export default function DesignedAroundNature() {
   const sectionRef = useRef<HTMLElement>(null);
+  const layerRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
-  const p = useSpring(scrollYProgress, { stiffness: 115, damping: 28, mass: 0.35 });
+  const p = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.35 });
 
-  /* ================= typography choreography ========================== */
-  // Active window per line; muted otherwise. Diagonal drift overall.
-  const l1Opacity = useTransform(p, [0, 0.18, 0.3], [1, 1, 0.16]);
-  const l1X = useTransform(p, [0.18, 0.45], ["0vw", "-4vw"]);
-  const l1Y = useTransform(p, [0.18, 0.45], ["0vh", "-3vh"]);
+  /* measured descent range + final fit scale — MotionValues, no state */
+  const travel = useMotionValue(0);
+  const endScale = useMotionValue(0.4);
+  const lift = useMotionValue(0);
+  useEffect(() => {
+    const measure = () => {
+      const el = layerRef.current;
+      if (!el) return;
+      const layerH = el.offsetWidth * ASPECT;
+      const vh = window.innerHeight;
+      travel.set(Math.min(0, vh - layerH));
+      endScale.set(Math.min(1, (0.82 * vh) / layerH));
+      lift.set(-(0.16 * vh));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [travel, endScale, lift]);
 
-  const l2Opacity = useTransform(p, [0.12, 0.18, 0.42, 0.52], [0.16, 1, 1, 0.16]);
-  const l2X = useTransform(p, [0.42, 0.68], ["0vw", "-3vw"]);
-
-  const l3Opacity = useTransform(p, [0.36, 0.42, 0.68, 0.76], [0.16, 1, 1, 0.16]);
-  const l3X = useTransform(p, [0.42, 0.68], ["0vw", "2.5vw"]);
-
-  const l4Opacity = useTransform(p, [0.6, 0.68, 1], [0.14, 1, 1]);
-  const l4Y = useTransform(p, [0.68, 0.9], ["0vh", "-2vh"]);
-  // foreground slice of the dominant word passing IN FRONT of Frame Two —
-  // it rides the SAME vertical path as the base word so the two copies
-  // stay perfectly registered (no doubled letters).
-  const sliceOpacity = useTransform(p, [0.72, 0.8], [0, 1]);
-
-  /* ================= Frame One — the interrupting aperture ============ */
-  // Opens horizontally from centre; then shrinks and travels upper-left.
-  const f1W = useTransform(p, [0, 0.18, 0.42, 0.68], ["13vw", "13vw", "44vw", "22vw"]);
-  const f1H = useTransform(p, [0, 0.18, 0.42, 0.68], ["31vh", "31vh", "54vh", "28vh"]);
-  const f1X = useTransform(p, [0.42, 0.68], ["0vw", "-30vw"]);
-  const f1Y = useTransform(p, [0.42, 0.68], ["0vh", "-22vh"]);
-  const f1Clip = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - 0.18) / 0.16, 0), 1);
-    const e = 1 - Math.pow(1 - t, 3);
-    const inset = 38 - e * 38; // 38% -> 0%
-    return `inset(0% ${inset}% 0% ${inset}% round 6px)`;
+  /* the descent: eased travel down the façade, then the bottom-anchored
+     zoom-out that reveals frontage and entrance */
+  const y = useTransform([p, travel, lift] as const, ([v, t, l]) => {
+    const a = Math.min(Math.max(((v as number) - 0.04) / 0.68, 0), 1);
+    const ea = a * a * (3 - 2 * a); // smoothstep — no parallax tricks
+    const b = Math.min(Math.max(((v as number) - 0.76) / 0.2, 0), 1);
+    const eb = 1 - Math.pow(1 - b, 3);
+    return ea * (t as number) + eb * (l as number);
   });
-  const f1InnerScale = useTransform(p, [0.18, 0.42, 0.68], [1.4, 1.08, 1.16]);
-  const f1InnerY = useTransform(p, [0.42, 0.68], ["0%", "-6%"]);
-  const f1Shade = useTransform(p, [0.18, 0.42], [0.34, 0.12]);
-
-  /* ================= Frame Two — the environment opens ================ */
-  // Opens vertically from the bottom (lower-right), becomes dominant,
-  // then tightens slightly as Frame Three reveals.
-  const f2Opacity = useTransform(p, [0.42, 0.46], [0, 1]);
-  const f2W = useTransform(p, [0.45, 0.68, 0.86], ["34vw", "38vw", "36vw"]);
-  const f2H = useTransform(p, [0.45, 0.68, 0.86], ["44vh", "50vh", "42vh"]);
-  const f2X = useTransform(p, [0.68, 0.9], ["0vw", "-4vw"]);
-  const f2Y = useTransform(p, [0.68, 0.9], ["0vh", "-10vh"]);
-  const f2Clip = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - 0.45) / 0.17, 0), 1);
-    const e = 1 - Math.pow(1 - t, 3);
-    const bottomIn = 88 - e * 88; // slit -> open (from bottom)
-    // gentle later tightening at the sides
-    const t2 = Math.min(Math.max((v - 0.68) / 0.18, 0), 1);
-    const side = t2 * 4;
-    return `inset(${bottomIn}% ${side}% 0% ${side}% round 6px)`;
+  const scale = useTransform([p, endScale] as const, ([v, s]) => {
+    const b = Math.min(Math.max(((v as number) - 0.76) / 0.2, 0), 1);
+    const e = 1 - Math.pow(1 - b, 3);
+    return 1 - (1 - (s as number)) * e;
   });
-  const f2InnerScale = useTransform(p, [0.45, 0.68, 1], [1.22, 1.05, 1.09]);
-  const f2Shade = useTransform(p, [0.45, 0.62], [0.3, 0.1]);
+  const radius = useTransform(p, [0.78, 0.96], [0, 26]);
 
-  /* ================= Frame Three — the compact system detail ========== */
-  const f3Opacity = useTransform(p, [0.68, 0.72], [0, 1]);
-  const f3Clip = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - 0.68) / 0.14, 0), 1);
-    const e = 1 - Math.pow(1 - t, 3);
-    return `inset(${50 - e * 50}% 0% 0% ${50 - e * 50}% round 6px)`; // diagonal
-  });
-  const f3InnerScale = useTransform(p, [0.68, 0.86], [1.25, 1.05]);
+  /* editorial beats */
+  const headOp = useTransform(p, [0, 0.16, 0.26], [1, 1, 0]);
+  const headY = useTransform(p, [0.16, 0.26], [0, -18]);
+  const s1Op = useTransform(p, [0.3, 0.36, 0.52, 0.58], [0, 1, 1, 0]);
+  const s2Op = useTransform(p, [0.56, 0.62, 0.74, 0.79], [0, 1, 1, 0]);
+  const endOp = useTransform(p, [0.86, 0.94], [0, 1]);
+  const endY = useTransform(p, [0.86, 0.94], [16, 0]);
 
-  /* ================= labels + copy + progress ========================= */
-  const labelsOpacity = useTransform(p, [0.7, 0.8], [0, 1]);
-  const copyOpacity = useTransform(p, [0.7, 0.8], [0, 1]);
-  const ctaOpacity = useTransform(p, [0.88, 0.96], [0, 1]);
-  const progressX = useTransform(p, [0, 1], [0, 1]);
-
-  if (reduced) return <StaticSpread />;
+  if (reduced) return <StaticVision />;
 
   return (
     <section
@@ -120,253 +120,206 @@ export default function DesignedAroundNature() {
       ref={sectionRef}
       data-section="nature"
       aria-labelledby="nature-heading"
-      className="relative h-[220svh] lg:h-[250svh]"
+      className="relative h-[240svh] lg:h-[280svh]"
     >
-      <div className="sticky top-0 h-svh overflow-hidden">
-        <MineralMarks />
-        <div className="grain absolute inset-0" aria-hidden="true" />
-
-        {/* eyebrow */}
-        <p className="absolute top-[5%] left-[5%] z-40 text-[0.62rem] font-medium tracking-[0.3em] text-[#9A5D43] uppercase">
-          01 — Project Vision
-        </p>
-
-        {/* accessible heading for the whole composition */}
-        <h2 id="nature-heading" className="sr-only">
-          A building that works with its environment
-        </h2>
-
-        {/* ---------------- oversized heading, four fragments ------------ */}
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute top-[11%] left-[6%] z-10 text-[clamp(2.4rem,6.6vw,6rem)] leading-none font-medium"
-          style={{ color: INK, opacity: l1Opacity, x: l1X, y: l1Y }}
-        >
-          A BUILDING
-        </motion.p>
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute top-[24%] left-[6%] z-10 text-[clamp(2.4rem,6.6vw,6rem)] leading-none font-medium"
-          style={{ color: INK, opacity: l2Opacity, x: l2X }}
-        >
-          THAT WORKS
-        </motion.p>
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute top-[46%] right-[8%] z-10 text-right text-[clamp(2.4rem,6.6vw,6rem)] leading-none font-medium"
-          style={{ color: INK, opacity: l3Opacity, x: l3X }}
-        >
-          WITH ITS
-        </motion.p>
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute bottom-[26%] left-[6%] z-10 text-[clamp(2.4rem,6.6vw,6rem)] leading-none font-medium"
-          style={{ color: INK, opacity: l4Opacity, y: l4Y }}
-        >
-          ENVIRONMENT.
-        </motion.p>
-        {/* foreground slice of the dominant word, in front of Frame Two */}
-        <motion.p
-          aria-hidden="true"
-          className="font-display absolute bottom-[26%] left-[6%] z-30 text-[clamp(2.4rem,6.6vw,6rem)] leading-none font-medium"
+      <div className="sticky top-0 h-svh overflow-hidden bg-[#F6EBDD]">
+        {/* ---------------- the façade layer — one composited transform */}
+        <motion.div
+          ref={layerRef}
+          className="absolute top-0 left-1/2 w-[520vw] overflow-hidden will-change-transform lg:w-[240vw]"
           style={{
-            color: INK,
-            opacity: sliceOpacity,
-            y: l4Y,
-            clipPath: "inset(0 0 0 62%)",
+            x: "-50%",
+            y,
+            scale,
+            borderRadius: radius,
+            transformOrigin: "50% 100%",
+            aspectRatio: "2200 / 1238",
+            boxShadow: "0 60px 120px -50px rgba(70,32,16,0.5)",
           }}
         >
-          ENVIRONMENT.
+          <Image
+            src="/buildingfront.jpg"
+            alt="The terracotta façade of the two residential blocks, from the upper floors down to the landscaped entrance"
+            fill
+            priority
+            quality={90}
+            sizes="100vw"
+            className="object-cover"
+          />
+
+          {/* selected windows warming on — irregular, one-way, subtle */}
+          {LIGHTS.map((l) => (
+            <WindowGlow key={`${l.x}-${l.y}`} p={p} {...l} />
+          ))}
+
+          {/* airflow whispers near balconies — a few moments only */}
+          <AirflowLines p={p} />
+        </motion.div>
+
+        {/* ---------------- editorial beats — small, never covering ---- */}
+        <motion.div
+          className="absolute top-[9%] left-[6%] z-30 max-w-md lg:top-[11%] lg:left-[7%]"
+          style={{ opacity: headOp, y: headY }}
+        >
+          <p className="text-[0.62rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#EFD5A3", textShadow: "0 1px 14px rgba(28,17,12,0.6)" }}>
+            01 — Project Vision
+          </p>
+          <h2
+            id="nature-heading"
+            className="font-display mt-3 leading-[1.07] text-balance"
+            style={{
+              color: IVORY,
+              fontSize: "clamp(2rem,3.6vw,3.6rem)",
+              fontWeight: 500,
+              textShadow: "0 2px 28px rgba(28,17,12,0.65)",
+            }}
+          >
+            Designed around how you live.
+          </h2>
+          <p
+            className="mt-3 max-w-sm text-[0.95rem] leading-[1.6]"
+            style={{ color: "rgba(255,248,239,0.92)", textShadow: "0 1px 18px rgba(28,17,12,0.7)" }}
+          >
+            Architecture that responds to air, light, energy and everyday comfort.
+          </p>
+          <p className="mt-5 inline-flex items-center gap-2 text-[0.6rem] tracking-[0.24em] uppercase" style={{ color: "rgba(255,248,239,0.75)" }}>
+            Scroll to descend <span aria-hidden="true">↓</span>
+          </p>
+        </motion.div>
+
+        <motion.p
+          className="absolute top-[56%] left-[6%] z-30 max-w-[15rem] rounded-lg bg-[#1C110C]/55 px-4 py-3 text-[0.85rem] leading-[1.55] backdrop-blur-[2px] lg:left-[7%]"
+          style={{ opacity: s1Op, color: "rgba(255,248,239,0.95)" }}
+        >
+          Air is captured at the crown and guided down through the building&rsquo;s corridors.
         </motion.p>
 
-        {/* ---------------- Frame One: interrupting aperture ------------- */}
-        <motion.figure
-          className="absolute top-[20%] left-1/2 z-20 -translate-x-1/2"
-          style={{ width: f1W, height: f1H, x: f1X, y: f1Y, clipPath: f1Clip }}
+        <motion.p
+          className="absolute top-[38%] right-[6%] z-30 max-w-[15rem] rounded-lg bg-[#1C110C]/55 px-4 py-3 text-right text-[0.85rem] leading-[1.55] backdrop-blur-[2px] lg:right-[7%]"
+          style={{ opacity: s2Op, color: "rgba(255,248,239,0.95)" }}
         >
-          <motion.div className="absolute inset-0" style={{ scale: f1InnerScale, y: f1InnerY }}>
-            <Image
-              src="/buildingtop.jpg"
-              alt="Natural airflow drawn through a terracotta opening of the development"
-              fill
-              sizes="44vw"
-              className="object-cover"
-              style={{ objectPosition: "62% 45%" }}
-            />
-          </motion.div>
-          <motion.span aria-hidden="true" className="absolute inset-0 bg-[#241B17]" style={{ opacity: f1Shade }} />
-        </motion.figure>
+          Private balconies set the rhythm of the façade — shade, air and outlook for every home.
+        </motion.p>
 
-        {/* ---------------- Frame Two: environment context --------------- */}
-        <motion.figure
-          className="absolute right-[7%] bottom-[13%] z-20"
-          style={{ width: f2W, height: f2H, x: f2X, y: f2Y, clipPath: f2Clip, opacity: f2Opacity }}
+        {/* final reveal caption + CTA */}
+        <motion.div
+          className="absolute inset-x-0 bottom-[3%] z-30 flex flex-col items-center gap-3 px-6 text-center"
+          style={{ opacity: endOp, y: endY }}
         >
-          <motion.div className="absolute inset-0" style={{ scale: f2InnerScale }}>
-            <Image
-              src="/foakhshaukat.jpg"
-              alt="The two-block development within its green landscape at dawn"
-              fill
-              sizes="40vw"
-              className="object-cover"
-              style={{ objectPosition: "58% 40%" }}
-            />
-          </motion.div>
-          <motion.span aria-hidden="true" className="absolute inset-0 bg-[#241B17]" style={{ opacity: f2Shade }} />
-        </motion.figure>
-
-        {/* ---------------- Frame Three: compact solar detail ------------ */}
-        <motion.figure
-          className="absolute top-[12%] right-[5%] z-20 h-[24vh] w-[17vw] min-w-40"
-          style={{ clipPath: f3Clip, opacity: f3Opacity }}
-        >
-          <motion.div className="absolute inset-0" style={{ scale: f3InnerScale }}>
-            <Image
-              src="/buildingfront.jpg"
-              alt="Rooftop solar panels catching first light"
-              fill
-              sizes="20vw"
-              className="object-cover"
-              style={{ objectPosition: "50% 55%" }}
-            />
-          </motion.div>
-        </motion.figure>
-
-        {/* ---------------- system labels with hairlines ------------------ */}
-        <motion.div className="pointer-events-none absolute inset-0 z-30" style={{ opacity: labelsOpacity }}>
-          <SystemLabel text="Natural airflow" x="26%" y="34%" lineTo="left" />
-          <SystemLabel text="Renewable energy" x="71%" y="40%" lineTo="right" />
-          <SystemLabel text="Modern family living" x="10%" y="80%" lineTo="left" />
-        </motion.div>
-
-        {/* ---------------- supporting copy + CTA ------------------------ */}
-        <motion.div className="absolute right-[6%] bottom-[7%] z-40 max-w-xs rounded-md border border-[#241B17]/10 bg-[#FFF8EF]/95 p-5 text-left shadow-[0_18px_44px_-28px_rgba(36,27,23,0.45)] backdrop-blur-sm lg:max-w-sm" style={{ opacity: copyOpacity }}>
-          <p className="font-display text-xl leading-snug font-medium text-[#241B17] md:text-2xl">
-            Nature, engineered for modern living.
+          <p className="text-[0.62rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "#943F2D" }}>
+            Landscaped frontage · Secure entrance · DHA View City, Karachi
           </p>
-          <p className="mt-3 text-[0.82rem] leading-relaxed text-[#241B17]/75 md:text-[0.9rem]">
-            The Wind Corridor Residences brings natural airflow, renewable-energy planning and
-            modern family living into one carefully considered development.
-          </p>
-          <motion.a
+          <a
             href="#route"
-            style={{ opacity: ctaOpacity }}
-            className="pointer-events-auto mt-5 inline-block rounded-lg border border-[#9A5D43]/50 px-5 py-2.5 text-sm font-medium text-[#241B17] transition-colors hover:bg-[#9A5D43] hover:text-[#F7F0E8]"
+            className="rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#211A17]"
           >
             Explore the Project
-          </motion.a>
+          </a>
         </motion.div>
-
-        {/* ---------------- chapter progress ------------------------------ */}
-        <div className="absolute bottom-[5%] left-1/2 z-40 hidden -translate-x-1/2 items-center gap-3 lg:flex">
-          <span className="text-[0.6rem] tracking-[0.24em] text-[#241B17]/50">02</span>
-          <span className="relative h-px w-28 bg-[#241B17]/15">
-            <motion.span
-              className="absolute inset-y-0 left-0 w-full origin-left bg-[#9A5D43]"
-              style={{ scaleX: progressX }}
-            />
-          </span>
-        </div>
       </div>
     </section>
   );
 }
 
-/* ------------------------------------------------------------- helpers -- */
+/* ----------------------------------------------------- window glow --- */
 
-/** Fine label + hairline connecting toward its frame — never a card. */
-function SystemLabel({
-  text,
-  x,
-  y,
-  lineTo,
-}: {
-  text: string;
-  x: string;
-  y: string;
-  lineTo: "left" | "right";
-}) {
+function WindowGlow({ p, x, y, at }: { p: MotionValue<number>; x: number; y: number; at: number }) {
+  /* warm-on during the descent; hands off to the render's own lit
+     windows as the wide reveal begins */
+  const opacity = useTransform(p, [at, at + 0.09, 0.76, 0.85], [0, 0.85, 0.85, 0]);
   return (
-    <span
-      className={`absolute flex items-center gap-2.5 ${lineTo === "right" ? "flex-row-reverse" : ""}`}
-      style={{ left: x, top: y }}
-    >
-      <span className="h-px w-12 bg-[#241B17]/40" />
-      <span className="text-[0.6rem] font-medium tracking-[0.24em] whitespace-nowrap text-[#241B17]/80 uppercase">
-        {text}
-      </span>
-    </span>
+    <motion.span
+      aria-hidden="true"
+      className="absolute"
+      style={{
+        left: `${x}%`,
+        top: `${y}%`,
+        width: "1.7%",
+        height: "3%",
+        opacity,
+        borderRadius: "18%",
+        background:
+          "radial-gradient(ellipse at center, rgba(255,222,150,0.95) 0%, rgba(246,212,138,0.45) 55%, transparent 80%)",
+        mixBlendMode: "screen",
+        filter: "blur(1px)",
+      }}
+    />
   );
 }
 
-/** Whisper-subtle mineral marks on the cream canvas (Capitolium ground). */
-function MineralMarks() {
+/* ---------------------------------------------------- airflow lines -- */
+
+function AirflowLines({ p }: { p: MotionValue<number> }) {
+  const o1 = useTransform(p, [0.16, 0.21, 0.28, 0.33], [0, 0.35, 0.35, 0]);
+  const o2 = useTransform(p, [0.44, 0.49, 0.56, 0.61], [0, 0.35, 0.35, 0]);
+  const d1 = useTransform(p, [0.16, 0.33], [0, -14]);
+  const d2 = useTransform(p, [0.44, 0.61], [0, -14]);
   return (
-    <svg aria-hidden="true" className="absolute inset-0 h-full w-full opacity-[0.05]">
-      <filter id="nm-marks">
-        <feTurbulence type="fractalNoise" baseFrequency="0.004 0.006" numOctaves="2" seed="14" />
-        <feColorMatrix values="0 0 0 0 0.35  0 0 0 0 0.24  0 0 0 0 0.16  0 0 0 -1.1 1.05" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#nm-marks)" />
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      viewBox="0 0 100 56.3"
+      preserveAspectRatio="none"
+    >
+      <motion.path
+        d="M 19.5 21.5 C 24 20.7, 28.5 22, 33 21.2 M 21 23.8 C 25 23.2, 29 24.1, 32.5 23.5"
+        fill="none"
+        stroke="#8FB8B2"
+        strokeWidth="0.13"
+        strokeLinecap="round"
+        strokeDasharray="1.1 1.7"
+        style={{ opacity: o1, strokeDashoffset: d1 }}
+      />
+      <motion.path
+        d="M 62 40 C 66 39.3, 70 40.4, 74.5 39.8 M 63.5 42.3 C 67 41.7, 70.5 42.6, 74 42.1"
+        fill="none"
+        stroke="#8FB8B2"
+        strokeWidth="0.13"
+        strokeLinecap="round"
+        strokeDasharray="1.1 1.7"
+        style={{ opacity: o2, strokeDashoffset: d2 }}
+      />
     </svg>
   );
 }
 
-/** Reduced motion: the final composed spread, static and readable. */
-function StaticSpread() {
+/* --------------------------------------------------- reduced motion -- */
+
+function StaticVision() {
   return (
     <section
       id="nature"
       data-section="nature"
       aria-labelledby="nature-heading"
-      className="relative overflow-hidden bg-[#EFE3D0] py-24"
+      className="relative bg-[#F6EBDD] py-24"
     >
-      <MineralMarks />
-      <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center opacity-40">
-        <Image
-          src="/building-outline-lines.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-contain"
-        />
-      </div>
-      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
-        <p className="text-[0.62rem] font-medium tracking-[0.3em] text-[#9A5D43] uppercase">
+      <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
+        <p className="text-[0.62rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
           01 — Project Vision
         </p>
         <h2
           id="nature-heading"
-          className="font-display mt-6 max-w-[14ch] text-[clamp(2.4rem,6vw,5.4rem)] leading-[1.02] font-medium text-[#241B17]"
+          className="font-display mt-4 max-w-[16ch] leading-[1.07]"
+          style={{ color: "#211A17", fontSize: "clamp(2.2rem,4vw,3.8rem)", fontWeight: 500 }}
         >
-          A building that works with its environment.
+          Designed around how you live.
         </h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {[
-            { src: "/buildingtop.jpg", alt: "The rooftop wind catcher, kite and turbines above the terracotta crown", label: "Natural airflow" },
-            { src: "/foakhshaukat.jpg", alt: "The development within its landscape at dusk", label: "Renewable energy" },
-            { src: "/buildingfront.jpg", alt: "The two residential blocks in the evening light", label: "Modern family living" },
-          ].map((f) => (
-            <figure key={f.src} className="relative">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-md">
-                <Image src={f.src} alt={f.alt} fill sizes="33vw" className="object-cover" />
-              </div>
-              <figcaption className="mt-2 text-[0.6rem] tracking-[0.24em] text-[#241B17]/70 uppercase">
-                {f.label}
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-        <p className="mt-8 max-w-md text-[0.9rem] leading-relaxed text-[#241B17]/75">
-          The Wind Corridor Residences brings natural airflow, renewable-energy planning and
-          modern family living into one carefully considered development.
+        <p className="mt-4 max-w-lg text-[1rem] leading-[1.65] text-[#211A17]/75">
+          Architecture that responds to air, light, energy and everyday comfort.
         </p>
-        <a
-          href="#route"
-          className="mt-6 inline-block rounded-lg border border-[#9A5D43]/50 px-5 py-2.5 text-sm font-medium text-[#241B17] transition-colors hover:bg-[#9A5D43] hover:text-[#F7F0E8]"
-        >
-          Explore the Project
-        </a>
+        <figure className="relative mt-10 overflow-hidden rounded-[24px] shadow-[0_50px_100px_-46px_rgba(70,32,16,0.5)]">
+          <Image
+            src="/buildingfront.jpg"
+            alt="The terracotta façade of the two residential blocks, from the upper floors down to the landscaped entrance"
+            width={2200}
+            height={1238}
+            sizes="92vw"
+            className="h-auto w-full"
+          />
+        </figure>
+        <p className="mt-6 text-[0.62rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "#943F2D" }}>
+          Landscaped frontage · Secure entrance · DHA View City, Karachi
+        </p>
       </div>
     </section>
   );

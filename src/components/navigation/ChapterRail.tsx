@@ -21,16 +21,21 @@ interface Chapter {
   colour: string;
 }
 
-/** Inactive cards sit in light, friendly tints from the site's palette; the active card jumps to the bold accent so it always reads as distinct. */
+/**
+ * Inactive cards sit in a single cohesive tint family — same lightness and
+ * saturation across all four hues (Apple Notes–folder style), so the set
+ * reads as one considered palette rather than four unrelated pastels.
+ * The active card jumps to the bold brand accent so it always stays distinct.
+ */
 const ACCENT = "#C75B3B";
-const TEXT_INACTIVE = "#2A1F19";
+const TEXT_INACTIVE = "#241B17";
 const TEXT_ACTIVE = "#FFF8EF";
 
 const CHAPTERS: Chapter[] = [
-  { number: "01", title: "The Project", href: "#glance", colour: "#F1D6CE" },
-  { number: "02", title: "Natural Systems", href: "#route", colour: "#D7E2DC" },
-  { number: "03", title: "Residences & Lifestyle", href: "#residences", colour: "#EFD5A3" },
-  { number: "04", title: "Location & Gallery", href: "#location", colour: "#C9E0E0" },
+  { number: "01", title: "The Project", href: "#glance", colour: "#EFD1C8" },
+  { number: "02", title: "Natural Systems", href: "#route", colour: "#D1E6DB" },
+  { number: "03", title: "Residences & Lifestyle", href: "#residences", colour: "#EFE2C8" },
+  { number: "04", title: "Location & Gallery", href: "#location", colour: "#CBDEEB" },
 ];
 
 /** Darken a hex colour by a factor (0–1) for hover states, keeping each chapter's own hue. */

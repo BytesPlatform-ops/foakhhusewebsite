@@ -431,6 +431,7 @@ export default function ResidencesStory() {
 interface CatPanelData {
   num: string;
   label: string;
+  mark: string;
   heading: React.ReactNode;
   lead: string;
   body: string;
@@ -446,6 +447,7 @@ const CAT_PANELS: CatPanelData[] = [
   {
     num: "01",
     label: "Classic",
+    mark: "CLASSIC",
     heading: (
       <>
         Comfortable living,
@@ -465,6 +467,7 @@ const CAT_PANELS: CatPanelData[] = [
   {
     num: "02",
     label: "Elegant",
+    mark: "ELEGANT",
     heading: (
       <>
         A more refined
@@ -485,6 +488,7 @@ const CAT_PANELS: CatPanelData[] = [
   {
     num: "03",
     label: "Sonder Class · Serviced",
+    mark: "SONDER",
     heading: (
       <>
         Ready-to-live
@@ -504,6 +508,7 @@ const CAT_PANELS: CatPanelData[] = [
   {
     num: "04",
     label: "Duplex Penthouses",
+    mark: "DUPLEX",
     heading: (
       <>
         Living above
@@ -663,6 +668,14 @@ function CategoryPanel({
         style={{ left: `${left}vw`, opacity: op }}
         aria-label={`${c.num} — ${c.label}`}
       >
+        {/* giant house-type watermark behind the finale */}
+        <span
+          aria-hidden="true"
+          className="font-display pointer-events-none absolute bottom-[4%] left-[3%] leading-none font-semibold whitespace-nowrap uppercase"
+          style={{ color: "rgba(239,213,163,0.07)", fontSize: "13vw", letterSpacing: "-0.01em" }}
+        >
+          {c.mark}
+        </span>
         <div className="grid w-full grid-cols-[21%_1fr_25%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
           {/* LEFT — the exclusive marker */}
           <motion.div style={{ x: textX }}>
@@ -674,7 +687,7 @@ function CategoryPanel({
             </p>
             <p
               className="font-display mt-6 leading-[1.04] font-medium"
-              style={{ color: "#FFF8EF", fontSize: "clamp(2rem,2.7vw,2.9rem)" }}
+              style={{ color: "#FFF8EF", fontSize: "clamp(2.5rem,3.4vw,3.7rem)" }}
             >
               {c.heading}
             </p>
@@ -750,9 +763,17 @@ function CategoryPanel({
       style={{ left: `${left}vw`, opacity: op }}
       aria-label={`${c.num} — ${c.label}`}
     >
-      <div className="grid w-full grid-cols-[19%_1fr_24%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
+      {/* giant house-type watermark behind the panel */}
+      <span
+        aria-hidden="true"
+        className="font-display pointer-events-none absolute bottom-[4%] left-[3%] leading-none font-semibold whitespace-nowrap uppercase"
+        style={{ color: "rgba(148,63,45,0.06)", fontSize: "13vw", letterSpacing: "-0.01em" }}
+      >
+        {c.mark}
+      </span>
+      <div className="grid w-full grid-cols-[23%_1fr_22%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
         {/* LEFT — marker + serif heading + italic lead */}
-        <motion.div style={{ x: textX }}>
+        <motion.div className="relative z-20" style={{ x: textX }}>
           <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#A9803C" }}>
             {c.num}
           </p>
@@ -761,7 +782,7 @@ function CategoryPanel({
           </p>
           <p
             className="font-display mt-6 leading-[1.04] font-medium"
-            style={{ color: "#943F2D", fontSize: "clamp(1.9rem,2.5vw,2.7rem)" }}
+            style={{ color: "#943F2D", fontSize: "clamp(2.2rem,2.9vw,3.1rem)" }}
           >
             {c.heading}
           </p>

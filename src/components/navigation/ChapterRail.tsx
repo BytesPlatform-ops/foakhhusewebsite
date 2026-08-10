@@ -18,22 +18,29 @@ interface Chapter {
   number: string;
   title: string;
   href: string;
-  /** soft tint while inactive — dark ink text */
-  tint: string;
-  /** strong colour only while active */
-  active: string;
-  /** text colour on the ACTIVE surface */
-  activeText: string;
+  colour: string;
 }
 
-const INK = "#211A17";
+/** Inactive cards sit in light, friendly tints from the site's palette; the active card jumps to the bold accent so it always reads as distinct. */
+const ACCENT = "#C75B3B";
+const TEXT_INACTIVE = "#2A1F19";
+const TEXT_ACTIVE = "#FFF8EF";
 
 const CHAPTERS: Chapter[] = [
-  { number: "01", title: "The Project", href: "#glance", tint: "#EBC6B6", active: "#C75B3B", activeText: "#FFF8EF" },
-  { number: "02", title: "Natural Systems", href: "#route", tint: "#CAD5C3", active: "#659B98", activeText: "#FFF8EF" },
-  { number: "03", title: "Residences & Lifestyle", href: "#residences", tint: "#F1C1B0", active: "#E87957", activeText: "#FFF8EF" },
-  { number: "04", title: "Location & Gallery", href: "#location", tint: "#EAD9B4", active: "#E5AD42", activeText: "#211A17" },
+  { number: "01", title: "The Project", href: "#glance", colour: "#F1D6CE" },
+  { number: "02", title: "Natural Systems", href: "#route", colour: "#D7E2DC" },
+  { number: "03", title: "Residences & Lifestyle", href: "#residences", colour: "#EFD5A3" },
+  { number: "04", title: "Location & Gallery", href: "#location", colour: "#C9E0E0" },
 ];
+
+/** Darken a hex colour by a factor (0–1) for hover states, keeping each chapter's own hue. */
+function darken(hex: string, factor: number) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.round(((n >> 16) & 255) * factor);
+  const g = Math.round(((n >> 8) & 255) * factor);
+  const b = Math.round((n & 255) * factor);
+  return `rgb(${r}, ${g}, ${b})`;
+}
 
 /** section ids that roll up into each chapter for the scroll-spy */
 const SPY_TARGETS: Record<string, string[]> = {
@@ -111,19 +118,29 @@ function ChapterCard({
       href={chapter.href}
       onClick={onNavigate}
       aria-current={isActive ? "location" : undefined}
-      className="group relative flex w-full flex-col justify-between rounded-[13px] p-3.5 transition-[transform,box-shadow,height] duration-200 ease-out hover:scale-[1.01] hover:shadow-[0_6px_18px_-8px_rgb(17_17_17/0.45)]"
+      className={`group relative flex flex-col justify-between rounded-[13px] p-3.5 transition-[transform,box-shadow,height,width,background-color,color] duration-200 ease-out hover:z-10 hover:scale-[1.05] hover:shadow-[0_10px_28px_-10px_rgb(0_0_0/0.6)] ${
+        isActive ? "w-full shadow-[0_8px_24px_-10px_rgb(0_0_0/0.55)]" : "w-[92%] hover:w-full"
+      }`}
       style={{
-        backgroundColor: isActive ? chapter.active : chapter.tint,
+        backgroundColor: isActive ? ACCENT : chapter.colour,
         height: tall
           ? `clamp(104px, ${isActive ? "15vh" : "14vh"}, ${isActive ? "140px" : "132px"})`
           : "96px",
         boxShadow: isActive ? "inset 0 0 0 2px rgb(255 248 239 / 0.5)" : undefined,
-        color: isActive ? chapter.activeText : INK,
-        transitionProperty: "transform, box-shadow, height, background-color, color",
+        color: isActive ? TEXT_ACTIVE : TEXT_INACTIVE,
+        transitionProperty: "transform, box-shadow, height, width, background-color, color",
+      }}
+      onMouseEnter={(e) => {
+        if (!isActive) e.currentTarget.style.backgroundColor = darken(chapter.colour, 0.82);
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) e.currentTarget.style.backgroundColor = chapter.colour;
       }}
     >
       <span className="flex items-start justify-between">
-        <span className="text-[0.7rem] font-bold">{chapter.number}</span>
+        <span className="text-[0.7rem] font-bold" style={{ color: isActive ? TEXT_ACTIVE : ACCENT }}>
+          {chapter.number}
+        </span>
         <span
           aria-hidden="true"
           className="text-base leading-none font-bold transition-transform duration-200 group-hover:translate-x-[2.5px] group-hover:-translate-y-[2.5px]"
@@ -148,12 +165,14 @@ function RailActions({ onNavigate }: { onNavigate?: () => void }) {
       >
         Register Interest
       </a>
-      <span
-        className="flex h-[46px] w-full items-center justify-center gap-2 rounded-[11px] bg-[#211A17] text-[0.8rem] font-bold text-white/85"
-        title="Available once the final brochure is approved"
+      <a
+        href="/FWCE.pdf"
+        download
+        onClick={onNavigate}
+        className="flex h-[46px] w-full items-center justify-center gap-2 rounded-[11px] bg-[#211A17] text-[0.8rem] font-bold text-white/85 transition-transform duration-200 hover:scale-[1.01]"
       >
         Download Brochure <span aria-hidden="true">↓</span>
-      </span>
+      </a>
     </div>
   );
 }

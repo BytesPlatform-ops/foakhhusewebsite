@@ -44,6 +44,14 @@ const CARD_STYLE: React.CSSProperties = {
   boxShadow: "0 18px 50px rgba(68, 39, 25, 0.08)",
 };
 
+interface StageFrame {
+  src: string;
+  alt: string;
+  label: string;
+  pos?: string;
+  className: string;
+}
+
 interface Stage {
   eyebrow: string;
   heading: string;
@@ -51,7 +59,7 @@ interface Stage {
   items: { t: string; d?: string }[];
   at: [number, number, number, number];
   card: string;
-  frame: { src: string; alt: string; pos?: string; className: string };
+  frames: StageFrame[];
 }
 
 const STAGES: Stage[] = [
@@ -62,12 +70,22 @@ const STAGES: Stage[] = [
     items: [{ t: "Natural Air Capture" }, { t: "Corridor Distribution" }, { t: "Cooler Shared Areas" }],
     at: [0.05, 0.1, 0.26, 0.31],
     card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[46%]",
-    frame: {
-      src: "/buildingtop.jpg",
-      alt: "The wind catcher, kite and turbines at the crown",
-      pos: "60% 30%",
-      className: "left-[46%] top-[14%] w-[15rem] rotate-[1.6deg]",
-    },
+    frames: [
+      {
+        src: "/buildingtop.jpg",
+        alt: "The wind catcher and kite system at the crown",
+        label: "Natural Air Capture",
+        pos: "60% 22%",
+        className: "left-[44%] top-[11%] w-[19rem] rotate-[1.6deg]",
+      },
+      {
+        src: "/aislefoakh.jpg",
+        alt: "Captured air guided along the ventilated corridor",
+        label: "Corridor Distribution",
+        pos: "50% 45%",
+        className: "left-[40%] top-[56%] w-[16rem] -rotate-[1.8deg]",
+      },
+    ],
   },
   {
     eyebrow: "B — Renewable Energy",
@@ -79,13 +97,30 @@ const STAGES: Stage[] = [
       { t: "Kite Energy", d: "Airborne tethered wings capture stronger high-altitude winds for ground-based generation." },
     ],
     at: [0.31, 0.36, 0.55, 0.6],
-    card: "left-[6%] top-[24%] lg:left-[33%] lg:top-[32%]",
-    frame: {
-      src: "/foakhshaukat.jpg",
-      alt: "The development with the regional wind farm on the horizon",
-      pos: "72% 45%",
-      className: "left-[9%] top-[57%] w-[17rem] -rotate-[1.8deg]",
-    },
+    card: "left-[6%] top-[24%] lg:left-[34%] lg:top-[30%]",
+    frames: [
+      {
+        src: "/foakhshaukat.jpg",
+        alt: "The regional wind farm on the horizon beyond the development",
+        label: "Wind Turbines",
+        pos: "80% 42%",
+        className: "left-[6%] top-[13%] w-[18rem] -rotate-[1.8deg]",
+      },
+      {
+        src: "/buildingtop.jpg",
+        alt: "The rooftop solar array within the terracotta crown",
+        label: "Solar Energy",
+        pos: "10% 44%",
+        className: "left-[7%] top-[57%] w-[17rem] rotate-[1.4deg]",
+      },
+      {
+        src: "/buildingtop.jpg",
+        alt: "The tethered kite-energy wing above the roof",
+        label: "Kite Energy",
+        pos: "63% 6%",
+        className: "left-[66%] top-[13%] w-[15rem] rotate-[2deg]",
+      },
+    ],
   },
   {
     eyebrow: "C — Water Systems",
@@ -96,13 +131,23 @@ const STAGES: Stage[] = [
       { t: "Atmospheric Water Generation", d: "Thin Air technology extracts water from atmospheric air." },
     ],
     at: [0.6, 0.65, 0.82, 0.87],
-    card: "left-[6%] top-[28%] lg:left-[58%] lg:top-[42%]",
-    frame: {
-      src: "/buildingfront.jpg",
-      alt: "The landscaped water-feature courtyard at dusk",
-      pos: "50% 84%",
-      className: "left-[32%] top-[62%] w-[16rem] rotate-[1.4deg]",
-    },
+    card: "left-[6%] top-[28%] lg:left-[56%] lg:top-[40%]",
+    frames: [
+      {
+        src: "/buildingfront.jpg",
+        alt: "The landscaped water-feature courtyard at dusk",
+        label: "Water in the Landscape",
+        pos: "50% 84%",
+        className: "left-[26%] top-[13%] w-[18rem] rotate-[1.6deg]",
+      },
+      {
+        src: "/kitchen.jpg",
+        alt: "Dependable domestic water in the family kitchen",
+        label: "Dependable Supply",
+        pos: "50% 50%",
+        className: "left-[24%] top-[58%] w-[17rem] -rotate-[1.6deg]",
+      },
+    ],
   },
 ];
 
@@ -122,6 +167,9 @@ export default function SnakeRoute() {
     offset: ["start start", "end end"],
   });
   const p = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.35 });
+  /* the building glides on a much softer spring — it visibly trails the
+     scroll and keeps settling after the page stops */
+  const pb = useSpring(scrollYProgress, { stiffness: 42, damping: 19, mass: 0.9 });
 
   /* the real building fills the screen and drifts down — rooftop to
      entrance; travel measured from the rendered image height */
@@ -137,7 +185,7 @@ export default function SnakeRoute() {
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
   }, [travel]);
-  const buildingY = useTransform([p, travel] as const, ([v, t]) => {
+  const buildingY = useTransform([pb, travel] as const, ([v, t]) => {
     const a = Math.min(Math.max(((v as number) - 0.02) / 0.9, 0), 1);
     const e = a * a * (3 - 2 * a);
     return e * (t as number);
@@ -227,6 +275,9 @@ export default function SnakeRoute() {
           </p>
         </motion.div>
 
+        {/* ------------- the constant journey line --------------------- */}
+        <ConnectorLine p={p} />
+
         {/* ------------- the diagonal stage pieces -------------------- */}
         {STAGES.map((st) => (
           <StagePieces key={st.eyebrow} st={st} p={p} />
@@ -263,16 +314,16 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
     <>
       {/* the printed editorial note */}
       <motion.div
-        className={`absolute z-30 w-[min(88vw,21.5rem)] p-6 lg:p-7 ${st.card}`}
+        className={`absolute z-30 w-[min(92vw,28rem)] p-7 lg:p-8 ${st.card}`}
         style={{ opacity, x, y, scale, ...CARD_STYLE }}
       >
         <p className="text-[0.6rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#B95334" }}>
           {st.eyebrow}
         </p>
-        <p className="font-display mt-2.5 leading-[1.12] font-medium" style={{ color: "#7C3428", fontSize: "clamp(1.35rem,1.7vw,1.7rem)" }}>
+        <p className="font-display mt-2.5 leading-[1.12] font-medium" style={{ color: "#7C3428", fontSize: "clamp(1.6rem,2.2vw,2.2rem)" }}>
           {st.heading}
         </p>
-        <p className="mt-3 text-[0.85rem] leading-[1.6]" style={{ color: "rgba(42,30,26,0.75)" }}>
+        <p className="mt-3.5 text-[0.92rem] leading-[1.65]" style={{ color: "rgba(42,30,26,0.75)" }}>
           {st.copy}
         </p>
         <div className="mt-4">
@@ -282,11 +333,11 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
               className={j > 0 ? "mt-3 border-t pt-3" : ""}
               style={j > 0 ? { borderColor: "rgba(170,95,61,0.16)" } : undefined}
             >
-              <p className="text-[0.8rem] font-semibold" style={{ color: INK }}>
+              <p className="text-[0.88rem] font-semibold" style={{ color: INK }}>
                 {item.t}
               </p>
               {item.d && (
-                <p className="mt-0.5 text-[0.76rem] leading-[1.55]" style={{ color: "rgba(42,30,26,0.64)" }}>
+                <p className="mt-1 text-[0.82rem] leading-[1.6]" style={{ color: "rgba(42,30,26,0.64)" }}>
                   {item.d}
                 </p>
               )}
@@ -295,23 +346,54 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
         </div>
       </motion.div>
 
-      {/* the companion still — diagonal counterweight */}
-      <motion.figure
-        className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1 shadow-[0_24px_48px_-28px_rgba(68,39,25,0.4)] lg:block ${st.frame.className}`}
-        style={{ opacity, scale }}
-      >
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
-          <Image
-            src={st.frame.src}
-            alt={st.frame.alt}
-            fill
-            sizes="18rem"
-            className="object-cover"
-            style={{ objectPosition: st.frame.pos }}
-          />
-        </div>
-      </motion.figure>
+      {/* the companion stills — one per point, scattered but visible */}
+      {st.frames.map((f) => (
+        <motion.figure
+          key={f.label}
+          className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1 shadow-[0_24px_48px_-28px_rgba(20,10,6,0.55)] lg:block ${f.className}`}
+          style={{ opacity, scale }}
+        >
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
+            <Image
+              src={f.src}
+              alt={f.alt}
+              fill
+              sizes="20rem"
+              className="object-cover"
+              style={{ objectPosition: f.pos }}
+            />
+          </div>
+          <figcaption className="px-2 pt-1.5 pb-1 text-center text-[0.55rem] font-bold tracking-[0.2em] uppercase" style={{ color: "#943F2D" }}>
+            {f.label}
+          </figcaption>
+        </motion.figure>
+      ))}
     </>
+  );
+}
+
+/** one continuous line linking the stages — draws with the scroll */
+function ConnectorLine({ p }: { p: MotionValue<number> }) {
+  const pathLength = useTransform(p, [0.06, 0.88], [0, 1]);
+  const opacity = useTransform(p, [0.04, 0.1, 0.9, 0.97], [0, 0.55, 0.55, 0]);
+  return (
+    <motion.svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 z-[15] hidden h-full w-full lg:block"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      style={{ opacity }}
+    >
+      <motion.path
+        d="M 12 38 C 22 46, 26 56, 34 52 S 44 34, 52 36 S 62 52, 68 56 S 82 66, 88 78"
+        fill="none"
+        stroke="#EFD5A3"
+        strokeWidth="0.22"
+        strokeLinecap="round"
+        strokeDasharray="0.8 1.4"
+        style={{ pathLength }}
+      />
+    </motion.svg>
   );
 }
 

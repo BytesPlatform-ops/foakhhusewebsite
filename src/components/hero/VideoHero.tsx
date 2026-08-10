@@ -89,12 +89,13 @@ export default function VideoHero() {
           >
             Explore the Residences
           </a>
-          <span
-            className="hidden rounded-lg border border-[#F7F0E8]/18 px-6 py-3 text-sm text-[#F7F0E8]/50 sm:inline"
-            title="Available once the final brochure is approved"
+          <a
+            href="/FWCE.pdf"
+            download
+            className="hidden rounded-lg border border-[#F7F0E8]/35 px-6 py-3 text-sm font-medium text-[#F7F0E8] backdrop-blur-sm transition-colors hover:bg-[#1D1714]/40 sm:inline"
           >
-            Brochure — soon
-          </span>
+            Download Brochure
+          </a>
         </div>
 
         {/* compact facts rail */}

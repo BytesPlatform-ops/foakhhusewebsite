@@ -13,49 +13,42 @@ import {
 } from "framer-motion";
 
 /**
- * 01 — Project Vision: THE FAÇADE DESCENT.
+ * 01 — Project Vision: THE LIVING FAÇADE.
  *
- * A vertical scroll-driven architectural experience over the approved
- * buildingfront render — the real FOAKH Wind Corridor Enclave façade,
- * untouched: exact terracotta tone, balcony rhythm, window proportions.
+ * A 3D close-up of ONE FOAKH building façade — the approved
+ * single-building render (buildingtop: real balcony depth, exact
+ * terracotta, the actual window rhythm), mounted on a CSS-perspective
+ * wall plane. The plane leans away from the viewer (static rotateY,
+ * a whisper of scroll-linked rotateX drift) so the surface reads as a
+ * real vertical structure you are standing close to — not a flat
+ * pasted image, and no WebGL.
  *
- * A ~280svh section pins a 100svh stage. The render is blown up to a
- * façade close-up (240vw desktop / 520vw mobile) and translated
- * upward as the user scrolls, reading as a camera travelling DOWN the
- * façade from the upper floors toward the entrance. In the final
- * stage the layer scales about its bottom edge, revealing the lower
- * façade, landscaped frontage and entrance as a contained, rounded
- * editorial frame on the site canvas.
+ * A ~280svh section pins a 100svh stage; scroll translates the wall
+ * upward along its plane, reading as a camera descending the façade.
+ * Selected windows warm on softly and irregularly (screen-blended
+ * glows anchored in façade percentages, so they inherit the 3D
+ * transform), and two whisper-thin airflow lines appear briefly near
+ * the balconies. Editorial content holds the upper-left exactly as
+ * before: label, heading, support line, scroll cue. A single quiet
+ * caption + CTA close the descent.
  *
- * Along the descent, selected apartment windows warm on — irregular
- * offsets, one-way, screen-blended glows anchored in façade
- * percentages so they ride the transform. Two whisper-thin airflow
- * lines appear near balconies for a few moments only, scroll-linked.
- * Editorial text stays minimal: heading at the top of the descent,
- * two small statements en route, a closing line + CTA at the reveal —
- * all small chips that never cover key architecture.
- *
- * Everything animates via transform/opacity on one composited layer
- * (60fps); travel distances are measured into MotionValues so the
- * maths stays correct across viewports. Reduced motion renders the
- * settled full-elevation frame.
+ * One composited 3D transform + opacity children — 60fps, lightweight.
+ * Reduced motion renders the settled framed façade.
  */
 
 const ASPECT = 1238 / 2200;
 const IVORY = "#FFF8EF";
 
-/* selected windows that warm on — % of the façade layer, irregular order */
+/* interior light reaching the balcony glass — strips along the glass
+   bands of the façade, warming on in irregular order */
 const LIGHTS: { x: number; y: number; at: number }[] = [
-  { x: 23.0, y: 36.0, at: 0.13 },
-  { x: 63.5, y: 34.5, at: 0.17 },
-  { x: 30.5, y: 44.0, at: 0.22 },
-  { x: 70.5, y: 42.5, at: 0.27 },
-  { x: 26.0, y: 53.5, at: 0.32 },
-  { x: 66.5, y: 51.5, at: 0.36 },
-  { x: 20.5, y: 61.0, at: 0.41 },
-  { x: 73.5, y: 59.5, at: 0.45 },
-  { x: 29.5, y: 66.5, at: 0.50 },
-  { x: 62.5, y: 68.0, at: 0.55 },
+  { x: 12, y: 63.2, at: 0.16 },
+  { x: 30, y: 63.8, at: 0.24 },
+  { x: 47, y: 63.4, at: 0.32 },
+  { x: 20, y: 73.6, at: 0.4 },
+  { x: 39, y: 74.1, at: 0.48 },
+  { x: 55, y: 73.7, at: 0.56 },
+  { x: 83, y: 63.0, at: 0.62 },
 ];
 
 export default function DesignedAroundNature() {
@@ -69,48 +62,41 @@ export default function DesignedAroundNature() {
   });
   const p = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.35 });
 
-  /* measured descent range + final fit scale — MotionValues, no state */
-  const travel = useMotionValue(0);
-  const endScale = useMotionValue(0.4);
-  const lift = useMotionValue(0);
+  /* measured descent range — MotionValues, no state. The journey
+     starts below the sky band (facade in frame from the first pixel)
+     and overshoots both edges so the leaned plane never exposes them. */
+  const yStart = useMotionValue(0);
+  const yEnd = useMotionValue(0);
   useEffect(() => {
     const measure = () => {
       const el = layerRef.current;
       if (!el) return;
       const layerH = el.offsetWidth * ASPECT;
       const vh = window.innerHeight;
-      travel.set(Math.min(0, vh - layerH));
-      endScale.set(Math.min(1, (0.82 * vh) / layerH));
-      lift.set(-(0.16 * vh));
+      yStart.set(-(0.17 * layerH));
+      yEnd.set(Math.min(0, vh - layerH + 90));
     };
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [travel, endScale, lift]);
+  }, [yStart, yEnd]);
 
-  /* the descent: eased travel down the façade, then the bottom-anchored
-     zoom-out that reveals frontage and entrance */
-  const y = useTransform([p, travel, lift] as const, ([v, t, l]) => {
-    const a = Math.min(Math.max(((v as number) - 0.04) / 0.68, 0), 1);
-    const ea = a * a * (3 - 2 * a); // smoothstep — no parallax tricks
-    const b = Math.min(Math.max(((v as number) - 0.76) / 0.2, 0), 1);
-    const eb = 1 - Math.pow(1 - b, 3);
-    return ea * (t as number) + eb * (l as number);
+  /* the descent along the wall plane */
+  const y = useTransform([p, yStart, yEnd] as const, ([v, a0, a1]) => {
+    const a = Math.min(Math.max(((v as number) - 0.04) / 0.78, 0), 1);
+    const e = a * a * (3 - 2 * a); // smoothstep
+    return (a0 as number) + e * ((a1 as number) - (a0 as number));
   });
-  const scale = useTransform([p, endScale] as const, ([v, s]) => {
-    const b = Math.min(Math.max(((v as number) - 0.76) / 0.2, 0), 1);
-    const e = 1 - Math.pow(1 - b, 3);
-    return 1 - (1 - (s as number)) * e;
-  });
-  const radius = useTransform(p, [0.78, 0.96], [0, 26]);
+  /* camera tilt drifts as you descend — the 3D read, kept subtle */
+  const rotateX = useTransform(p, [0, 0.9], [2, -2]);
 
   /* editorial beats */
-  const headOp = useTransform(p, [0, 0.16, 0.26], [1, 1, 0]);
-  const headY = useTransform(p, [0.16, 0.26], [0, -18]);
-  const s1Op = useTransform(p, [0.3, 0.36, 0.52, 0.58], [0, 1, 1, 0]);
-  const s2Op = useTransform(p, [0.56, 0.62, 0.74, 0.79], [0, 1, 1, 0]);
-  const endOp = useTransform(p, [0.86, 0.94], [0, 1]);
-  const endY = useTransform(p, [0.86, 0.94], [16, 0]);
+  const headOp = useTransform(p, [0, 0.18, 0.3], [1, 1, 0]);
+  const headY = useTransform(p, [0.18, 0.3], [0, -18]);
+  const s1Op = useTransform(p, [0.32, 0.38, 0.54, 0.6], [0, 1, 1, 0]);
+  const s2Op = useTransform(p, [0.58, 0.64, 0.76, 0.81], [0, 1, 1, 0]);
+  const endOp = useTransform(p, [0.87, 0.95], [0, 1]);
+  const endY = useTransform(p, [0.87, 0.95], [16, 0]);
 
   if (reduced) return <StaticVision />;
 
@@ -122,46 +108,68 @@ export default function DesignedAroundNature() {
       aria-labelledby="nature-heading"
       className="relative h-[240svh] lg:h-[280svh]"
     >
-      <div className="sticky top-0 h-svh overflow-hidden bg-[#F6EBDD]">
-        {/* ---------------- the façade layer — one composited transform */}
-        <motion.div
-          ref={layerRef}
-          className="absolute top-0 left-1/2 w-[520vw] overflow-hidden will-change-transform lg:w-[240vw]"
+      <div className="sticky top-0 h-svh overflow-hidden bg-[#241B22]">
+        {/* blue-hour ground behind the plane's leaned edges */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
           style={{
-            x: "-50%",
-            y,
-            scale,
-            borderRadius: radius,
-            transformOrigin: "50% 100%",
-            aspectRatio: "2200 / 1238",
-            boxShadow: "0 60px 120px -50px rgba(70,32,16,0.5)",
+            background:
+              "linear-gradient(180deg, #2A2436 0%, #4A3336 46%, #6B4234 78%, #2E1E18 100%)",
           }}
-        >
-          <Image
-            src="/buildingfront.jpg"
-            alt="The terracotta façade of the two residential blocks, from the upper floors down to the landscaped entrance"
-            fill
-            priority
-            quality={90}
-            sizes="100vw"
-            className="object-cover"
-          />
+        />
 
-          {/* selected windows warming on — irregular, one-way, subtle */}
-          {LIGHTS.map((l) => (
-            <WindowGlow key={`${l.x}-${l.y}`} p={p} {...l} />
-          ))}
+        {/* ---------------- the 3D wall plane ------------------------- */}
+        <div className="absolute inset-0" style={{ perspective: "1250px", perspectiveOrigin: "50% 45%" }}>
+          <motion.div
+            ref={layerRef}
+            className="absolute top-0 left-1/2 w-[560vw] overflow-hidden will-change-transform lg:w-[250vw]"
+            style={{
+              x: "-50%",
+              y,
+              rotateX,
+              rotateY: -9,
+              transformOrigin: "50% 50%",
+              aspectRatio: "2200 / 1238",
+              boxShadow: "0 80px 140px -60px rgba(20,12,10,0.7)",
+            }}
+          >
+            <Image
+              src="/buildingtop.jpg"
+              alt="Close view down the terracotta façade of a Wind Corridor block — balconies, window bays and the rooftop systems above"
+              fill
+              priority
+              quality={90}
+              sizes="100vw"
+              className="object-cover"
+            />
 
-          {/* airflow whispers near balconies — a few moments only */}
-          <AirflowLines p={p} />
-        </motion.div>
+            {/* blue-hour grade: cool sky above, quiet vignette below */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(42,46,74,0.3) 0%, transparent 34%, transparent 62%, rgba(28,17,12,0.34) 100%)",
+              }}
+            />
 
-        {/* ---------------- editorial beats — small, never covering ---- */}
+            {/* selected windows warming on — realistic, one-way, soft */}
+            {LIGHTS.map((l) => (
+              <WindowGlow key={`${l.x}-${l.y}`} p={p} {...l} />
+            ))}
+
+            {/* airflow whispers near the balconies — brief moments only */}
+            <AirflowLines p={p} />
+          </motion.div>
+        </div>
+
+        {/* ---------------- editorial content — upper-left, unchanged -- */}
         <motion.div
           className="absolute top-[9%] left-[6%] z-30 max-w-md lg:top-[11%] lg:left-[7%]"
           style={{ opacity: headOp, y: headY }}
         >
-          <p className="text-[0.62rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#EFD5A3", textShadow: "0 1px 14px rgba(28,17,12,0.6)" }}>
+          <p className="text-[0.62rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#EFD5A3", textShadow: "0 1px 14px rgba(20,12,10,0.7)" }}>
             01 — Project Vision
           </p>
           <h2
@@ -171,14 +179,14 @@ export default function DesignedAroundNature() {
               color: IVORY,
               fontSize: "clamp(2rem,3.6vw,3.6rem)",
               fontWeight: 500,
-              textShadow: "0 2px 28px rgba(28,17,12,0.65)",
+              textShadow: "0 2px 30px rgba(20,12,10,0.75)",
             }}
           >
             Designed around how you live.
           </h2>
           <p
             className="mt-3 max-w-sm text-[0.95rem] leading-[1.6]"
-            style={{ color: "rgba(255,248,239,0.92)", textShadow: "0 1px 18px rgba(28,17,12,0.7)" }}
+            style={{ color: "rgba(255,248,239,0.92)", textShadow: "0 1px 18px rgba(20,12,10,0.8)" }}
           >
             Architecture that responds to air, light, energy and everyday comfort.
           </p>
@@ -188,30 +196,33 @@ export default function DesignedAroundNature() {
         </motion.div>
 
         <motion.p
-          className="absolute top-[56%] left-[6%] z-30 max-w-[15rem] rounded-lg bg-[#1C110C]/55 px-4 py-3 text-[0.85rem] leading-[1.55] backdrop-blur-[2px] lg:left-[7%]"
+          className="absolute top-[58%] left-[6%] z-30 max-w-[15rem] rounded-lg bg-[#160E0A]/60 px-4 py-3 text-[0.85rem] leading-[1.55] backdrop-blur-[2px] lg:left-[7%]"
           style={{ opacity: s1Op, color: "rgba(255,248,239,0.95)" }}
         >
           Air is captured at the crown and guided down through the building&rsquo;s corridors.
         </motion.p>
 
         <motion.p
-          className="absolute top-[38%] right-[6%] z-30 max-w-[15rem] rounded-lg bg-[#1C110C]/55 px-4 py-3 text-right text-[0.85rem] leading-[1.55] backdrop-blur-[2px] lg:right-[7%]"
+          className="absolute top-[36%] right-[6%] z-30 max-w-[15rem] rounded-lg bg-[#160E0A]/60 px-4 py-3 text-right text-[0.85rem] leading-[1.55] backdrop-blur-[2px] lg:right-[7%]"
           style={{ opacity: s2Op, color: "rgba(255,248,239,0.95)" }}
         >
           Private balconies set the rhythm of the façade — shade, air and outlook for every home.
         </motion.p>
 
-        {/* final reveal caption + CTA */}
+        {/* closing beat — quiet caption + CTA */}
         <motion.div
-          className="absolute inset-x-0 bottom-[3%] z-30 flex flex-col items-center gap-3 px-6 text-center"
+          className="absolute inset-x-0 bottom-[6%] z-30 flex flex-col items-center gap-3 px-6 text-center"
           style={{ opacity: endOp, y: endY }}
         >
-          <p className="text-[0.62rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "#943F2D" }}>
-            Landscaped frontage · Secure entrance · DHA View City, Karachi
+          <p
+            className="rounded-full bg-[#160E0A]/60 px-5 py-2 text-[0.62rem] font-semibold tracking-[0.26em] uppercase backdrop-blur-[2px]"
+            style={{ color: "rgba(255,248,239,0.92)" }}
+          >
+            The living façade · DHA View City, Karachi
           </p>
           <a
             href="#route"
-            className="rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#211A17]"
+            className="rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#C75B3B]"
           >
             Explore the Project
           </a>
@@ -224,9 +235,8 @@ export default function DesignedAroundNature() {
 /* ----------------------------------------------------- window glow --- */
 
 function WindowGlow({ p, x, y, at }: { p: MotionValue<number>; x: number; y: number; at: number }) {
-  /* warm-on during the descent; hands off to the render's own lit
-     windows as the wide reveal begins */
-  const opacity = useTransform(p, [at, at + 0.09, 0.76, 0.85], [0, 0.85, 0.85, 0]);
+  /* one-way warm-on: rises over a slow beat, then stays lit */
+  const opacity = useTransform(p, [at, at + 0.1], [0, 0.6]);
   return (
     <motion.span
       aria-hidden="true"
@@ -234,14 +244,14 @@ function WindowGlow({ p, x, y, at }: { p: MotionValue<number>; x: number; y: num
       style={{
         left: `${x}%`,
         top: `${y}%`,
-        width: "1.7%",
-        height: "3%",
+        width: "7%",
+        height: "2.2%",
         opacity,
-        borderRadius: "18%",
+        borderRadius: "40%",
         background:
-          "radial-gradient(ellipse at center, rgba(255,222,150,0.95) 0%, rgba(246,212,138,0.45) 55%, transparent 80%)",
+          "radial-gradient(ellipse at center, rgba(255,214,146,0.75) 0%, rgba(246,212,138,0.3) 55%, transparent 80%)",
         mixBlendMode: "screen",
-        filter: "blur(1px)",
+        filter: "blur(4px)",
       }}
     />
   );
@@ -250,10 +260,10 @@ function WindowGlow({ p, x, y, at }: { p: MotionValue<number>; x: number; y: num
 /* ---------------------------------------------------- airflow lines -- */
 
 function AirflowLines({ p }: { p: MotionValue<number> }) {
-  const o1 = useTransform(p, [0.16, 0.21, 0.28, 0.33], [0, 0.35, 0.35, 0]);
-  const o2 = useTransform(p, [0.44, 0.49, 0.56, 0.61], [0, 0.35, 0.35, 0]);
-  const d1 = useTransform(p, [0.16, 0.33], [0, -14]);
-  const d2 = useTransform(p, [0.44, 0.61], [0, -14]);
+  const o1 = useTransform(p, [0.18, 0.23, 0.3, 0.35], [0, 0.32, 0.32, 0]);
+  const o2 = useTransform(p, [0.46, 0.51, 0.58, 0.63], [0, 0.32, 0.32, 0]);
+  const d1 = useTransform(p, [0.18, 0.35], [0, -14]);
+  const d2 = useTransform(p, [0.46, 0.63], [0, -14]);
   return (
     <svg
       aria-hidden="true"
@@ -262,7 +272,7 @@ function AirflowLines({ p }: { p: MotionValue<number> }) {
       preserveAspectRatio="none"
     >
       <motion.path
-        d="M 19.5 21.5 C 24 20.7, 28.5 22, 33 21.2 M 21 23.8 C 25 23.2, 29 24.1, 32.5 23.5"
+        d="M 20 47 C 25 46.2, 30 47.4, 35.5 46.6 M 21.5 49.2 C 26 48.6, 30.5 49.4, 34.5 48.9"
         fill="none"
         stroke="#8FB8B2"
         strokeWidth="0.13"
@@ -271,7 +281,7 @@ function AirflowLines({ p }: { p: MotionValue<number> }) {
         style={{ opacity: o1, strokeDashoffset: d1 }}
       />
       <motion.path
-        d="M 62 40 C 66 39.3, 70 40.4, 74.5 39.8 M 63.5 42.3 C 67 41.7, 70.5 42.6, 74 42.1"
+        d="M 62 44.5 C 66.5 43.8, 71 44.9, 75.5 44.2 M 63.5 46.7 C 67.5 46.1, 71.5 47, 75 46.5"
         fill="none"
         stroke="#8FB8B2"
         strokeWidth="0.13"
@@ -309,8 +319,8 @@ function StaticVision() {
         </p>
         <figure className="relative mt-10 overflow-hidden rounded-[24px] shadow-[0_50px_100px_-46px_rgba(70,32,16,0.5)]">
           <Image
-            src="/buildingfront.jpg"
-            alt="The terracotta façade of the two residential blocks, from the upper floors down to the landscaped entrance"
+            src="/buildingtop.jpg"
+            alt="Close view down the terracotta façade of a Wind Corridor block — balconies, window bays and the rooftop systems above"
             width={2200}
             height={1238}
             sizes="92vw"
@@ -318,7 +328,7 @@ function StaticVision() {
           />
         </figure>
         <p className="mt-6 text-[0.62rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "#943F2D" }}>
-          Landscaped frontage · Secure entrance · DHA View City, Karachi
+          The living façade · DHA View City, Karachi
         </p>
       </div>
     </section>

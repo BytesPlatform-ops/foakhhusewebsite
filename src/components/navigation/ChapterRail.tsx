@@ -84,12 +84,12 @@ function Wordmark({ big = false }: { big?: boolean }) {
           big ? "text-4xl" : "text-[1.7rem]"
         }`}
       >
-        wind
+        foakh
         <br />
-        corridor.
+        wind corridor.
       </span>
       <span className="mt-1.5 block text-[0.55rem] font-medium tracking-[0.18em] text-[#211A17]/70 uppercase">
-        Unique residences · Karachi
+        Wind Corridor Enclave · Karachi
       </span>
     </span>
   );
@@ -177,7 +177,7 @@ export default function ChapterRail() {
         aria-label="Chapters"
         className="fixed inset-y-0 left-0 z-(--z-rail) hidden w-[200px] flex-col bg-[#F6EBDD] px-4 py-5 lg:flex"
       >
-        <a href="#hero" className="mb-5 block w-[82%]" aria-label="The Wind Corridor Residences — top">
+        <a href="#hero" className="mb-5 block w-[82%]" aria-label="Foakh Wind Corridor Enclave — top">
           <Wordmark />
         </a>
 
@@ -196,9 +196,9 @@ export default function ChapterRail() {
 
       {/* ---------------- Mobile header + full-screen menu ---------------- */}
       <header className="fixed inset-x-0 top-0 z-(--z-header) flex items-center justify-between bg-[#F6EBDD] px-4 py-2.5 lg:hidden">
-        <a href="#hero" aria-label="The Wind Corridor Residences — top">
+        <a href="#hero" aria-label="Foakh Wind Corridor Enclave — top">
           <span className="font-display text-xl leading-none font-bold tracking-[-0.01em] text-[#C75B3B]">
-            wind corridor.
+            foakh wind corridor.
           </span>
         </a>
         <div className="flex items-center gap-2">

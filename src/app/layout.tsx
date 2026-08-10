@@ -18,9 +18,9 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "The Wind Corridor Residences — Where Nature Powers Modern Living",
+  title: "Foakh Wind Corridor Enclave — Where Nature Powers Modern Living",
   description:
-    "A 12-storey residential development in DHA View City, Karachi. Two blocks, 84 apartments, shaped around natural airflow and renewable-energy planning.",
+    "Foakh Wind Corridor Enclave — a 12-storey residential development in DHA City, Karachi. Two blocks, 160 apartments and eight duplex penthouses, shaped around natural airflow, renewable energy and resilient water planning.",
 };
 
 export default function RootLayout({

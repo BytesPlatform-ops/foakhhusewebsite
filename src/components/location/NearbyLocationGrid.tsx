@@ -10,23 +10,28 @@ import { motion, useReducedMotion } from "framer-motion";
 const ITEMS: { icon: keyof typeof ICONS; label: string; sub: string }[] = [
   {
     icon: "cross",
-    label: "Shaukat Khanum Hospital",
-    sub: "Convenient access to one of Pakistan's leading healthcare institutions",
+    label: "Healthcare",
+    sub: "Shaukat Khanum Hospital — important healthcare access close to home",
   },
   {
     icon: "bag",
-    label: "Mega Imtiaz Store",
-    sub: "Everyday shopping and household essentials within easy reach",
+    label: "Shopping",
+    sub: "Convenient access to shopping and everyday essentials",
   },
   {
     icon: "cap",
-    label: "Schools & Education",
-    sub: "Well connected to educational facilities for children and families",
+    label: "Education",
+    sub: "Connectivity to schools and educational facilities for families",
   },
   {
     icon: "road",
-    label: "Major Road Networks",
-    sub: "Smooth access to surrounding communities and key areas of the city",
+    label: "Major Roads",
+    sub: "Access to surrounding communities and key transport routes",
+  },
+  {
+    icon: "route",
+    label: "Commercial Areas",
+    sub: "Everyday services and commercial destinations within the wider location",
   },
 ];
 

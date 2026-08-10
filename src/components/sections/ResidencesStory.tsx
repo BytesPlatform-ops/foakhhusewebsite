@@ -92,7 +92,7 @@ const DECK: DeckSpec[] = [
     quality: {
       num: "01",
       title: "Spacious",
-      copy: "Generously planned living, dining and bedroom areas.",
+      copy: "Generously planned living, dining and bedroom spaces.",
     },
     accent: "213 155 84",
   },
@@ -111,7 +111,7 @@ const DECK: DeckSpec[] = [
     quality: {
       num: "02",
       title: "Functional",
-      copy: "Practical layouts designed around daily family routines.",
+      copy: "Practical layouts created around everyday family routines.",
     },
     accent: "135 147 131",
   },
@@ -130,7 +130,7 @@ const DECK: DeckSpec[] = [
     quality: {
       num: "03",
       title: "Elegant",
-      copy: "Contemporary finishes and refined interior details.",
+      copy: "Thoughtful finishes and contemporary interior detailing.",
     },
     accent: "213 155 84",
     objectPosition: "50% 40%",
@@ -150,7 +150,7 @@ const DECK: DeckSpec[] = [
     quality: {
       num: "04",
       title: "Comfort Focused",
-      copy: "Planning that supports light, airflow and year-round usability.",
+      copy: "Planning designed around light, usability and comfortable everyday living.",
     },
     accent: "111 155 152",
     objectPosition: "50% 50%",
@@ -170,7 +170,7 @@ const DECK: DeckSpec[] = [
     quality: {
       num: "05",
       title: "Private Balconies",
-      copy: "Personal outdoor space for relaxation and views.",
+      copy: "Personal outdoor space for fresh air, relaxation and views.",
     },
     accent: "213 155 84",
     objectPosition: "50% 55%",
@@ -178,7 +178,7 @@ const DECK: DeckSpec[] = [
   {
     kind: "image",
     src: "/buildingfront.jpg",
-    alt: "The two distinguished blocks of the limited community at dusk",
+    alt: "The refined terracotta materials of the two blocks at dusk",
     rise: [0.75, 0.83],
     cover: null,
     fromY: "118svh",
@@ -189,8 +189,8 @@ const DECK: DeckSpec[] = [
     z: 26,
     quality: {
       num: "06",
-      title: "Limited Community",
-      copy: "Only 84 residences across two distinguished blocks.",
+      title: "Refined Materials",
+      copy: "Carefully selected finishes contribute to a lasting residential environment.",
     },
     accent: "198 164 107",
   },
@@ -237,8 +237,8 @@ export default function ResidencesStory() {
         } as React.CSSProperties
       }
     >
-      {/* ==================== 03A — LIFESTYLE & AMENITIES ============== */}
-      <AmenitiesShowcase />
+      {/* ==================== 03A — RESIDENCE CATEGORIES =============== */}
+      <ResidenceCategories reduced={!!reduced} />
 
       {/* ---- Apartments & Interiors — intro copy before the deck ----- */}
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pb-16 lg:pb-20">
@@ -249,23 +249,11 @@ export default function ResidencesStory() {
           className="font-display mt-4 max-w-[26ch] leading-[1.15]"
           style={{ color: IVORY, fontSize: "clamp(1.9rem,2.6vw,2.8rem)", fontWeight: 500 }}
         >
-          Spacious, functional and elegant apartments planned around the needs of modern
-          families.
+          Homes made for real life.
         </p>
-        <div className="mt-6 grid gap-5 lg:grid-cols-2 lg:gap-10">
-          <p className="max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
-            Every apartment is designed to balance comfort, practicality and visual
-            refinement. Generous living spaces, functional kitchens, comfortable bedrooms,
-            private balconies and carefully selected finishes create a welcoming home
-            environment.
-          </p>
-          <p className="max-w-[62ch] text-[0.92rem] leading-[1.7]" style={{ color: "rgba(250,243,232,0.72)" }}>
-            The wind-catcher system primarily supports the corridor and shared-area
-            ventilation network. Apartment comfort is further supported through thoughtful
-            planning, practical layouts and controlled natural ventilation according to the
-            final architectural and mechanical design.
-          </p>
-        </div>
+        <p className="mt-4 max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
+          Every residence is shaped around comfort, practicality and visual refinement.
+        </p>
       </div>
 
       {/* ==================== 03B — the quality deck =================== */}
@@ -354,9 +342,9 @@ export default function ResidencesStory() {
                   Now in development
                 </p>
                 <p className="font-display mt-1.5 text-[1.05rem] leading-[1.15] font-medium" style={{ color: IVORY }}>
-                  84 residences.
+                  160 apartments.
                   <br />
-                  Two blocks.
+                  8 penthouses.
                 </p>
                 <a
                   href="#enquire"
@@ -419,6 +407,9 @@ export default function ResidencesStory() {
         </div>
       </div>
 
+      {/* ==================== 03C — AMENITIES & LIFESTYLE ============== */}
+      <AmenitiesShowcase />
+
       {/* --------------------------------------- compliance note -------- */}
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-12 pb-10 lg:pt-0 lg:pb-12">
         <p className="text-[0.62rem] leading-relaxed tracking-[0.14em] uppercase" style={{ color: "rgba(247,240,232,0.55)" }}>
@@ -426,6 +417,141 @@ export default function ResidencesStory() {
         </p>
       </div>
     </section>
+  );
+}
+
+/* ================================================== categories ====== */
+
+const CATEGORIES = [
+  {
+    num: "01",
+    name: "Classic",
+    badge: null as string | null,
+    line: "Comfortable living, thoughtfully planned.",
+    copy: "Classic Apartments feature precisely planned architectural layouts created for comfortable, convenient and practical everyday living. Fine finishes, dependable workmanship and carefully selected materials create a welcoming environment for modern families.",
+    best: "Practical modern family living.",
+    src: "/family.jpg",
+    alt: "A family sharing a meal in a bright Classic apartment",
+  },
+  {
+    num: "02",
+    name: "Elegant",
+    badge: null as string | null,
+    line: "A more refined specification.",
+    copy: "Elegant Apartments include the fundamental qualities of the Classic category with an enhanced interior specification. Modern fixtures, carpet flooring, selected wallpapers, statement lighting and chandeliers, together with a solid-wood entrance door, create a more polished residential environment.",
+    best: "Residents seeking an upgraded interior experience.",
+    src: "/bed.jpg",
+    alt: "A refined Elegant-category bedroom in warm evening light",
+  },
+  {
+    num: "03",
+    name: "Sonder Class",
+    badge: "Serviced Apartments",
+    line: "Ready-to-live sophistication.",
+    copy: "Sonder Class represents Foakh's premium serviced-apartment category. Coordinated interiors, premium finishes, selected furnishings and resident-focused convenience combine to create an effortless and refined ready-to-live experience.",
+    best: "Elevated comfort, convenience and serviced living.",
+    src: "/drawingroomfoakh.jpg",
+    alt: "The coordinated interior of a Sonder Class serviced apartment",
+  },
+];
+
+function ResidenceCategories({ reduced }: { reduced: boolean }) {
+  const rise = (delay = 0) =>
+    reduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 22 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.2 },
+          transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
+        };
+
+  return (
+    <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-14 lg:pt-32 lg:pb-16">
+      <motion.p {...rise(0)} className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
+        03 — Residences
+      </motion.p>
+      <motion.h3
+        {...rise(0.05)}
+        className="font-display mt-5 max-w-[18ch] leading-[1.08] text-balance"
+        style={{ color: IVORY, fontSize: "clamp(2.3rem,3.6vw,3.8rem)", fontWeight: 500 }}
+      >
+        One exceptional address. Three distinctive categories.
+      </motion.h3>
+      <motion.p {...rise(0.1)} className="mt-5 max-w-2xl text-[1rem] leading-[1.7]" style={{ color: "rgba(250,243,232,0.88)" }}>
+        Designed around the needs of modern residents, the apartment collection at Foakh
+        Wind Corridor Enclave offers three carefully considered levels of finish, comfort
+        and convenience — from practical family living to serviced sophistication, each
+        reflecting thoughtful planning, quality materials and dependable craftsmanship.
+      </motion.p>
+
+      <div className="mt-10 grid gap-5 lg:grid-cols-3">
+        {CATEGORIES.map((c, i) => (
+          <motion.article
+            key={c.num}
+            {...rise(0.12 + i * 0.09)}
+            className="flex flex-col overflow-hidden rounded-[20px] border border-[#F7F0E8]/25 bg-[#FFF8EF]/95 shadow-[0_26px_54px_-30px_rgba(26,16,11,0.55)]"
+          >
+            <div className="relative aspect-[16/10]">
+              <Image src={c.src} alt={c.alt} fill sizes="(min-width:1024px) 30vw, 92vw" className="object-cover" />
+              {c.badge && (
+                <span className="absolute top-3 left-3 rounded-full bg-[#294A3E] px-3 py-1.5 text-[0.55rem] font-bold tracking-[0.2em] text-[#FFF8EF] uppercase">
+                  {c.badge}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-1 flex-col p-6">
+              <p className="text-[0.62rem] font-bold tracking-[0.24em] uppercase" style={{ color: "#C78C49" }}>
+                {c.num} — {c.name}
+              </p>
+              <p className="font-display mt-2 text-[1.35rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
+                {c.line}
+              </p>
+              <p className="mt-3 text-[0.85rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
+                {c.copy}
+              </p>
+              <p className="mt-auto border-t pt-3.5 text-[0.72rem] leading-snug" style={{ color: "#66544B", borderColor: "rgba(216,179,106,0.4)", marginTop: "auto", paddingTop: "0.875rem" }}>
+                <span className="font-semibold tracking-[0.14em] uppercase" style={{ color: "#943F2D" }}>Best for · </span>
+                {c.best}
+              </p>
+            </div>
+          </motion.article>
+        ))}
+      </div>
+
+      {/* duplex penthouses */}
+      <motion.aside
+        {...rise(0.2)}
+        className="relative mt-6 overflow-hidden rounded-[22px] border border-[#D8B36A]/50 shadow-[0_34px_70px_-34px_rgba(26,16,11,0.6)]"
+      >
+        <div className="absolute inset-0">
+          <Image src="/balconyfoakh.jpg" alt="" fill sizes="92vw" className="object-cover" style={{ objectPosition: "50% 45%" }} />
+          <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#1D1714]/85 via-[#1D1714]/55 to-[#1D1714]/15" />
+        </div>
+        <div className="relative flex flex-col gap-6 p-7 sm:flex-row sm:items-center sm:justify-between lg:p-9">
+          <div className="max-w-xl">
+            <p className="text-[0.62rem] font-bold tracking-[0.26em] uppercase" style={{ color: "#EFD5A3" }}>
+              Duplex Penthouses
+            </p>
+            <p className="font-display mt-2 text-[1.6rem] leading-snug font-medium" style={{ color: IVORY }}>
+              Living above the ordinary.
+            </p>
+            <p className="mt-2.5 text-[0.9rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
+              Eight exclusive duplex penthouses elevate the residential collection with
+              additional space, privacy and independent swimming pools.
+            </p>
+          </div>
+          <div className="shrink-0 text-left sm:text-right">
+            <p className="font-display leading-none font-semibold" style={{ color: "#EFD5A3", fontSize: "3.4rem" }}>
+              08
+            </p>
+            <p className="mt-1.5 text-[0.6rem] font-semibold tracking-[0.22em] uppercase" style={{ color: "rgba(250,243,232,0.85)" }}>
+              Exclusive Duplex Penthouses
+            </p>
+          </div>
+        </div>
+      </motion.aside>
+    </div>
   );
 }
 

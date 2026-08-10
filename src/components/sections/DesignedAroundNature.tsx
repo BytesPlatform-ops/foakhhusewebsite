@@ -51,6 +51,72 @@ const LIGHTS: { x: number; y: number; at: number }[] = [
   { x: 83, y: 63.0, at: 0.62 },
 ];
 
+interface Beat {
+  title: string;
+  line: string;
+  copy: string;
+  side: "left" | "right";
+  at: [number, number, number, number];
+  top: string;
+}
+
+const BEATS: Beat[] = [
+  {
+    title: "Air",
+    line: "A building designed to breathe.",
+    copy: "Natural wind is captured at the crown and channelled through the building to support a fresher internal environment.",
+    side: "left",
+    at: [0.24, 0.29, 0.38, 0.42],
+    top: "54%",
+  },
+  {
+    title: "Energy",
+    line: "Natural forces, intelligently used.",
+    copy: "Wind, sunlight and high-altitude airflow become part of an integrated renewable-energy strategy.",
+    side: "right",
+    at: [0.4, 0.45, 0.54, 0.58],
+    top: "34%",
+  },
+  {
+    title: "Water",
+    line: "Resilience built into everyday living.",
+    copy: "Desalination and atmospheric water-generation technologies support a diversified approach to domestic water availability.",
+    side: "left",
+    at: [0.56, 0.61, 0.7, 0.74],
+    top: "48%",
+  },
+  {
+    title: "Living",
+    line: "Designed beyond the systems.",
+    copy: "Private balconies, considered layouts and refined interiors turn engineering into everyday comfort.",
+    side: "right",
+    at: [0.72, 0.77, 0.84, 0.88],
+    top: "40%",
+  },
+];
+
+function FacadeBeat({ p, beat }: { p: MotionValue<number>; beat: Beat; index: number }) {
+  const opacity = useTransform(p, beat.at, [0, 1, 1, 0]);
+  return (
+    <motion.div
+      className={`absolute z-30 max-w-[16rem] rounded-lg bg-[#160E0A]/60 px-4 py-3 backdrop-blur-[2px] ${
+        beat.side === "left" ? "left-[6%] lg:left-[7%]" : "right-[6%] text-right lg:right-[7%]"
+      }`}
+      style={{ opacity, top: beat.top }}
+    >
+      <p className="text-[0.58rem] font-bold tracking-[0.28em] uppercase" style={{ color: "#EFD5A3" }}>
+        {beat.title}
+      </p>
+      <p className="font-display mt-1 text-[1.05rem] leading-snug" style={{ color: "#FFF8EF" }}>
+        {beat.line}
+      </p>
+      <p className="mt-1.5 text-[0.8rem] leading-[1.55]" style={{ color: "rgba(255,248,239,0.88)" }}>
+        {beat.copy}
+      </p>
+    </motion.div>
+  );
+}
+
 export default function DesignedAroundNature() {
   const sectionRef = useRef<HTMLElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
@@ -93,8 +159,6 @@ export default function DesignedAroundNature() {
   /* editorial beats */
   const headOp = useTransform(p, [0, 0.18, 0.3], [1, 1, 0]);
   const headY = useTransform(p, [0.18, 0.3], [0, -18]);
-  const s1Op = useTransform(p, [0.32, 0.38, 0.54, 0.6], [0, 1, 1, 0]);
-  const s2Op = useTransform(p, [0.58, 0.64, 0.76, 0.81], [0, 1, 1, 0]);
   const endOp = useTransform(p, [0.87, 0.95], [0, 1]);
   const endY = useTransform(p, [0.87, 0.95], [16, 0]);
 
@@ -188,38 +252,30 @@ export default function DesignedAroundNature() {
             className="mt-3 max-w-sm text-[0.95rem] leading-[1.6]"
             style={{ color: "rgba(255,248,239,0.92)", textShadow: "0 1px 18px rgba(20,12,10,0.8)" }}
           >
-            Architecture that responds to air, light, energy and everyday comfort.
+            Architecture that responds to air, energy, water and everyday comfort.
           </p>
           <p className="mt-5 inline-flex items-center gap-2 text-[0.6rem] tracking-[0.24em] uppercase" style={{ color: "rgba(255,248,239,0.75)" }}>
             Scroll to descend <span aria-hidden="true">↓</span>
           </p>
         </motion.div>
 
-        <motion.p
-          className="absolute top-[58%] left-[6%] z-30 max-w-[15rem] rounded-lg bg-[#160E0A]/60 px-4 py-3 text-[0.85rem] leading-[1.55] backdrop-blur-[2px] lg:left-[7%]"
-          style={{ opacity: s1Op, color: "rgba(255,248,239,0.95)" }}
-        >
-          Air is captured at the crown and guided down through the building&rsquo;s corridors.
-        </motion.p>
-
-        <motion.p
-          className="absolute top-[36%] right-[6%] z-30 max-w-[15rem] rounded-lg bg-[#160E0A]/60 px-4 py-3 text-right text-[0.85rem] leading-[1.55] backdrop-blur-[2px] lg:right-[7%]"
-          style={{ opacity: s2Op, color: "rgba(255,248,239,0.95)" }}
-        >
-          Private balconies set the rhythm of the façade — shade, air and outlook for every home.
-        </motion.p>
+        {BEATS.map((b, i) => (
+          <FacadeBeat key={b.title} p={p} beat={b} index={i} />
+        ))}
 
         {/* closing beat — quiet caption + CTA */}
         <motion.div
           className="absolute inset-x-0 bottom-[6%] z-30 flex flex-col items-center gap-3 px-6 text-center"
           style={{ opacity: endOp, y: endY }}
         >
-          <p
-            className="rounded-full bg-[#160E0A]/60 px-5 py-2 text-[0.62rem] font-semibold tracking-[0.26em] uppercase backdrop-blur-[2px]"
-            style={{ color: "rgba(255,248,239,0.92)" }}
-          >
-            The living façade · DHA View City, Karachi
-          </p>
+          <div className="rounded-xl bg-[#160E0A]/60 px-6 py-3 backdrop-blur-[2px]">
+            <p className="font-display text-[1.15rem] leading-snug" style={{ color: IVORY }}>
+              Foakh Wind Corridor Enclave
+            </p>
+            <p className="mt-1 text-[0.6rem] font-semibold tracking-[0.24em] uppercase" style={{ color: "rgba(255,248,239,0.85)" }}>
+              12 Storeys · 2 Blocks · 160 Apartments · 8 Duplex Penthouses
+            </p>
+          </div>
           <a
             href="#route"
             className="rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#C75B3B]"
@@ -315,7 +371,7 @@ function StaticVision() {
           Designed around how you live.
         </h2>
         <p className="mt-4 max-w-lg text-[1rem] leading-[1.65] text-[#211A17]/75">
-          Architecture that responds to air, light, energy and everyday comfort.
+          Architecture that responds to air, energy, water and everyday comfort.
         </p>
         <figure className="relative mt-10 overflow-hidden rounded-[24px] shadow-[0_50px_100px_-46px_rgba(70,32,16,0.5)]">
           <Image
@@ -328,7 +384,7 @@ function StaticVision() {
           />
         </figure>
         <p className="mt-6 text-[0.62rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "#943F2D" }}>
-          The living façade · DHA View City, Karachi
+          The living façade · DHA City, Karachi
         </p>
       </div>
     </section>

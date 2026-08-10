@@ -45,63 +45,71 @@ interface Amenity {
 const AMENITIES: Amenity[] = [
   {
     num: "01",
-    title: "Swimming Pool",
-    copy: "A relaxing recreation space designed for residents and families.",
+    title: "Indoor Swimming Pool",
+    copy: "A dedicated indoor environment for recreation and relaxation.",
     src: "/buildingfront.jpg",
     alt: "The landscaped water-feature courtyard between the two blocks at dusk",
     pos: "50% 82%",
   },
   {
     num: "02",
-    title: "High-Speed Elevators",
-    copy: "Efficient vertical movement throughout the development.",
+    title: "Lobby",
+    copy: "A welcoming arrival experience designed around comfort and everyday interaction.",
     src: "/lounge.jpg",
-    alt: "The grand elevator lobby with its warm stone and bronze elevator doors",
+    alt: "The welcoming arrival lobby in warm stone and timber",
   },
   {
     num: "03",
-    title: "Ventilated Elevator Lobbies",
-    copy: "Wind-catcher airflow is directed towards common circulation spaces for added comfort.",
-    src: "/aislefoakh.jpg",
-    alt: "The ventilated corridor beside the elevators, open to daylight and airflow",
-    pos: "50% 45%",
+    title: "Fully Equipped Fitness Centre",
+    copy: "A modern fitness environment supporting wellness and an active lifestyle.",
+    src: "/foakhgym.jpg",
+    alt: "Residents training in the fully equipped fitness centre",
   },
   {
     num: "04",
+    title: "High-Speed Elevators",
+    copy: "Advanced elevator systems designed for fast and convenient access throughout the development.",
+    src: "/aislefoakh.jpg",
+    alt: "The corridor beside the high-speed elevators",
+    pos: "18% 45%",
+  },
+  {
+    num: "05",
+    title: "24/7 Security",
+    copy: "Controlled access and continuous security supporting everyday peace of mind.",
+    src: "/foakhsecurity.jpg",
+    alt: "The staffed security gate with controlled turnstile access at the entrance",
+  },
+  {
+    num: "06",
+    title: "Community Hall",
+    copy: "A dedicated space for gatherings, celebrations and resident events.",
+    src: "/lobby.jpg",
+    alt: "Residents gathered in the shared community space",
+  },
+  {
+    num: "07",
+    title: "Concierge",
+    copy: "Resident-focused assistance adding another layer of everyday convenience.",
+    src: "/recepton.jpg",
+    alt: "The concierge desk assisting residents in the lobby",
+    pos: "80% 45%",
+  },
+  {
+    num: "08",
     title: "Dedicated Parking",
-    copy: "Secure and organised parking for residents.",
+    copy: "Organised parking with controlled resident entry and exit.",
     src: "/foakhshaukat.jpg",
     alt: "The secured development with its organised access road and parking",
     pos: "30% 78%",
   },
   {
-    num: "05",
-    title: "Family Recreation Areas",
-    copy: "Welcoming spaces for relaxation and social interaction.",
-    src: "/lobby.jpg",
-    alt: "Residents relaxing and socialising in the shared family lounge",
-  },
-  {
-    num: "06",
-    title: "24/7 Security",
-    copy: "Controlled access and continuous monitoring for peace of mind.",
-    src: "/foakhsecurity.jpg",
-    alt: "The staffed security gate with controlled turnstile access at the residence entrance",
-  },
-  {
-    num: "07",
+    num: "09",
     title: "Modern Architecture",
-    copy: "A contemporary design balancing elegance, function and environmental responsibility.",
+    copy: "A contemporary architectural identity balancing aesthetics, functionality and environmental thinking.",
     src: "/buildingtop.jpg",
     alt: "The contemporary terracotta crown with its rooftop systems",
     pos: "50% 55%",
-  },
-  {
-    num: "08",
-    title: "Reliable Water System",
-    copy: "A planned treatment solution supporting clean and dependable water availability.",
-    src: "/hero-poster.jpg",
-    alt: "The building's service systems glowing in the evening elevation",
   },
 ];
 
@@ -236,7 +244,7 @@ export default function AmenitiesShowcase() {
             }}
           >
             {/* left rail: 01–04 */}
-            <Rail items={AMENITIES.slice(0, 4)} offset={0} active={active} onSelect={jump} side="left" />
+            <Rail items={AMENITIES.slice(0, 5)} offset={0} active={active} onSelect={jump} side="left" />
 
             {/* centre media */}
             <div className="relative self-center overflow-hidden rounded-[24px] shadow-[0_44px_88px_-40px_rgba(26,16,11,0.65)] ring-1 ring-[#D8B36A]/55" style={{ height: "min(66svh, 720px)" }}>
@@ -270,7 +278,7 @@ export default function AmenitiesShowcase() {
               {/* progress: count + eight segments */}
               <div className="pointer-events-none absolute right-5 bottom-5 flex items-center gap-3">
                 <span className="text-[0.68rem] font-semibold tracking-[0.18em] tabular-nums" style={{ color: "#FFF8EF" }}>
-                  {a.num} / 08
+                  {a.num} / 09
                 </span>
                 <span className="flex items-center gap-1">
                   {AMENITIES.map((x, i) => (
@@ -307,7 +315,7 @@ export default function AmenitiesShowcase() {
             </div>
 
             {/* right rail: 05–08 */}
-            <Rail items={AMENITIES.slice(4)} offset={4} active={active} onSelect={jump} side="right" />
+            <Rail items={AMENITIES.slice(5)} offset={5} active={active} onSelect={jump} side="right" />
           </div>
         </div>
       </div>
@@ -329,7 +337,7 @@ export default function AmenitiesShowcase() {
               {a.num} — {a.title}
             </p>
             <p className="mt-1 text-[0.72rem]" style={{ color: "rgba(255,248,239,0.85)" }}>
-              {a.num} / 08
+              {a.num} / 09
             </p>
           </div>
         </div>
@@ -468,7 +476,7 @@ function Heading({ compact = false }: { compact?: boolean }) {
   return (
     <div>
       <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
-        03 — Residences &amp; Lifestyle
+        03 — Amenities &amp; Lifestyle
       </p>
       <h3
         className="font-display mt-3 leading-[1.06] text-balance"
@@ -478,7 +486,8 @@ function Heading({ compact = false }: { compact?: boolean }) {
       </h3>
       {!compact && (
         <p className="mt-3 max-w-xl text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.88)" }}>
-          Thoughtfully selected amenities for convenience, security and refined family living.
+          A carefully selected collection of amenities supports convenience, wellness,
+        security and family life.
         </p>
       )}
     </div>

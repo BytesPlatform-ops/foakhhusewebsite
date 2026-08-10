@@ -54,9 +54,9 @@ const ITEMS: GalleryItem[] = [
   },
   {
     src: "/balconyfoakh.jpg",
-    alt: "A private balcony overlooking the green landscape at sunset",
-    category: "Residences",
-    title: "A private balcony",
+    alt: "A private penthouse terrace overlooking the green landscape at sunset",
+    category: "Penthouses",
+    title: "Exclusive duplex living",
     aspect: "aspect-[16/10]",
   },
   {
@@ -70,7 +70,7 @@ const ITEMS: GalleryItem[] = [
     src: "/foakhshaukat.jpg",
     alt: "The development beneath the evening sky, Shaukat Khanum Hospital and wind turbines nearby",
     category: "Site context",
-    title: "The wider setting",
+    title: "Within the wind corridor",
     aspect: "aspect-[4/3]",
   },
   {
@@ -83,7 +83,7 @@ const ITEMS: GalleryItem[] = [
   {
     src: "/lounge.jpg",
     alt: "The grand elevator lobby in warm stone",
-    category: "Architecture",
+    category: "Amenities",
     title: "The arrival lobby",
     aspect: "aspect-[3/4]",
   },
@@ -110,7 +110,7 @@ const ITEMS: GalleryItem[] = [
   },
   {
     src: "/hero-poster.jpg",
-    alt: "Evening elevation of the Wind Corridor Residences",
+    alt: "Evening elevation of Foakh Wind Corridor Enclave",
     category: "Architecture",
     title: "Evening elevation",
     aspect: "aspect-[4/3]",
@@ -144,7 +144,7 @@ export default function GallerySection() {
         </ChapterHeading>
         <Lead>
           Explore the architecture, residences, rooftop systems and defining details of The
-          Wind Corridor Residences.
+          Wind Corridor Enclave.
         </Lead>
 
         {/* -------------------------- masonry -------------------------- */}

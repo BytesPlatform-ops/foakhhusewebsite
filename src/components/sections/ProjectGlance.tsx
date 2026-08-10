@@ -27,32 +27,40 @@ import {
 
 const COPY = {
   eyebrow: "01 — The Project",
-  headline: "Designed around nature.",
+  headline: "Designed around nature. Created around modern life.",
   body: "A distinctive residential concept created for comfort, efficiency and future-ready living.",
-  caption: "Umer Block · Abdullah Block — 12 storeys · 84 residences",
+  caption: "Umer Block · Abdullah Block — 12 storeys · 160 apartments · 8 duplex penthouses",
 };
 
 const HIGHLIGHTS = [
   {
-    title: "Limited Residences",
-    copy: "Only 84 apartments for a more private and exclusive community.",
+    title: "Limited Residential Community",
+    copy: "160 carefully planned apartments across two distinguished blocks.",
+  },
+  {
+    title: "Eight Duplex Penthouses",
+    copy: "Exclusive duplex residences with independent swimming pools.",
   },
   {
     title: "Modern Family Living",
-    copy: "Well-planned layouts shaped around comfort, functionality and everyday needs.",
+    copy: "Spacious layouts designed around comfort, functionality and everyday needs.",
   },
   {
     title: "Renewable Energy",
-    copy: "Wind turbines and solar panels planned to support cleaner electricity generation.",
+    copy: "Wind turbines, solar panels and kite energy planned as part of an integrated renewable-energy strategy.",
   },
   {
     title: "Innovative Ventilation",
-    copy: "A purpose-built wind catcher distributes captured air through the building corridors.",
+    copy: "A dedicated wind-catcher system designed to capture and channel natural airflow.",
+  },
+  {
+    title: "Strategic Location",
+    copy: "Located within Karachi's wind corridor, adjacent to Shaukat Khanum Hospital.",
   },
 ];
 
 const SAVINGS_NOTE =
-  "The stated savings are projected targets and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.";
+  "Projected savings are based on optimum engineering performance and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.";
 
 export default function ProjectGlance() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -349,23 +357,23 @@ function ProjectIntroduction() {
                 }}
               >
                 <p className="max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
-                  The Wind Corridor Residences is an exclusive 12-storey development in DHA View
-                  City, Karachi, featuring Umer Block and Abdullah Block. With only 84 carefully
-                  planned apartments, the project offers privacy, spacious living and a modern
-                  architectural identity.
+                  Foakh Wind Corridor Enclave is an exclusive 12-storey residential development
+                  in DHA City, Karachi, comprising Umer Block and Abdullah Block. With 160
+                  carefully planned apartments and eight duplex penthouses with independent
+                  swimming pools, the development brings together privacy, spacious living and
+                  a distinctive contemporary architectural identity.
                 </p>
                 <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
-                  The project has been designed to utilise natural resources for better everyday
-                  living. Its renewable-energy strategy combines wind turbines and solar panels
-                  to support electricity generation, while the building&rsquo;s dedicated
-                  wind-catcher system captures high-velocity air and directs it into the internal
-                  corridor network.
+                  The project has been conceived around the intelligent use of natural
+                  resources. Wind turbines, solar energy and kite energy form part of its
+                  renewable-energy strategy, while a dedicated wind-catcher system captures
+                  high-velocity natural air and directs it through the development.
                 </p>
                 <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
-                  This innovative approach is intended to improve natural ventilation, reduce
-                  heat buildup and lower dependence on conventional cooling and grid electricity.
-                  Based on final engineering performance, residents may benefit from
-                  electricity-bill savings of up to 60%.
+                  Together, these systems are intended to enhance natural ventilation, reduce
+                  heat buildup and lower dependence on conventional cooling and grid
+                  electricity. Based on optimum engineering performance, residents may benefit
+                  from electricity-bill savings of up to 75%.
                 </p>
                 <p
                   className="mt-4 max-w-[62ch] border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"

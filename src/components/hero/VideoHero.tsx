@@ -15,10 +15,10 @@ import { useReducedMotion } from "framer-motion";
  */
 
 const FACTS = [
-  { value: "12", label: "Storeys" },
-  { value: "02", label: "Blocks" },
-  { value: "84", label: "Apartments" },
-  { value: "DHA", label: "View City · Karachi" },
+  { value: "12", label: "Luxury Storeys" },
+  { value: "02", label: "Umer & Abdullah Blocks" },
+  { value: "160", label: "Exclusive Apartments" },
+  { value: "08", label: "Duplex Penthouses" },
 ];
 
 export default function VideoHero() {
@@ -66,14 +66,14 @@ export default function VideoHero() {
       {/* content */}
       <div className="relative z-10 mx-auto w-full max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-10 lg:pb-14">
         <p className="mb-4 text-[0.65rem] font-medium tracking-[0.3em] text-[#C6A46B] uppercase">
-          DHA View City · Karachi
+          DHA City · Karachi
         </p>
         <h1 className="font-display max-w-[14ch] text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[1.02] font-semibold tracking-[-0.01em] text-[#F7F0E8] text-balance">
           Where nature powers <em className="italic">modern living.</em>
         </h1>
         <p className="mt-5 max-w-md text-[0.85rem] leading-relaxed font-light text-[#F3E7D8]/85 md:text-[0.95rem]">
-          A future-focused residential development shaped around natural airflow,
-          renewable-energy planning and refined family living.
+          A future-focused residential development shaped around natural airflow, renewable
+          energy, resilient water planning and refined family living.
         </p>
 
         <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -120,6 +120,9 @@ export default function VideoHero() {
             </div>
           ))}
         </dl>
+        <p className="mt-3 max-w-md text-[0.7rem] tracking-[0.08em] text-[#F3E7D8]/70">
+          Eight exclusive duplex penthouses with independent swimming pools.
+        </p>
       </div>
     </section>
   );

@@ -119,20 +119,20 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
               )) as google.maps.MarkerLibrary;
               const pin = document.createElement("div");
               pin.innerHTML = `<img src="${buildPinSvg()}" width="44" height="58" alt="" style="filter:drop-shadow(0 8px 14px rgba(30,15,8,0.35))"/>
-                <div style="margin-top:2px;background:#FFF4E5;color:#291A16;font:600 10px/1 var(--font-body,sans-serif);letter-spacing:0.14em;padding:5px 9px;border-radius:999px;border:1px solid #D8AE62;text-align:center">THE WIND CORRIDOR RESIDENCES</div>`;
+                <div style="margin-top:2px;background:#FFF4E5;color:#291A16;font:600 10px/1 var(--font-body,sans-serif);letter-spacing:0.14em;padding:5px 9px;border-radius:999px;border:1px solid #D8AE62;text-align:center">FOAKH WIND CORRIDOR ENCLAVE</div>`;
               pin.style.display = "grid";
               pin.style.justifyItems = "center";
               new AdvancedMarkerElement({
                 map,
                 position: FOAKH_TOWER_LOCATION,
                 content: pin,
-                title: "The Wind Corridor Residences",
+                title: "Foakh Wind Corridor Enclave",
               });
             } else {
               new g.maps.Marker({
                 map,
                 position: FOAKH_TOWER_LOCATION,
-                title: "The Wind Corridor Residences",
+                title: "Foakh Wind Corridor Enclave",
                 icon: {
                   url: buildPinSvg(),
                   scaledSize: new g.maps.Size(44, 58),
@@ -166,14 +166,14 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
       <div
         ref={holderRef}
         className={showEmbed ? "hidden" : "absolute inset-0"}
-        aria-label="Map showing the location of The Wind Corridor Residences in DHA View City, Karachi"
+        aria-label="Map showing the location of Foakh Wind Corridor Enclave in DHA City, Karachi"
         role="application"
       />
 
       {/* keyless path: the real Google embed, colour-graded to brand */}
       {showEmbed && (
         <iframe
-          title="Google Map — The Wind Corridor Residences, DHA View City, Karachi"
+          title="Google Map — Foakh Wind Corridor Enclave, DHA City, Karachi"
           src={`https://maps.google.com/maps?q=${FOAKH_TOWER_LOCATION.lat},${FOAKH_TOWER_LOCATION.lng}&z=13&hl=en&output=embed`}
           className="absolute inset-0 h-full w-full border-0"
           style={{ filter: EMBED_GRADE }}
@@ -186,7 +186,7 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
       {/* brand chip — card furniture, not a geo label */}
       <div className="pointer-events-none absolute top-3.5 left-3.5 rounded-full border border-[#D8AE62] bg-[#FFF4E5]/95 px-3.5 py-1.5 shadow-sm">
         <p className="text-[0.6rem] font-bold tracking-[0.18em] text-[#291A16] uppercase">
-          The Wind Corridor Residences
+          Foakh Wind Corridor Enclave
         </p>
       </div>
 

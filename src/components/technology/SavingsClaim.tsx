@@ -1,7 +1,7 @@
 /**
  * COMPLIANCE PRIMITIVE — do not split.
  *
- * The "up to 60%" figure may never appear without its approved performance
+ * The "up to 75%" figure may never appear without its approved performance
  * qualification. The qualification is rendered as a sibling element inside
  * this component rather than passed in as a prop, so there is no way to
  * render the headline number without it. Anywhere the figure is needed,
@@ -17,7 +17,7 @@ export function SavingsClaim({ tone = "dark" }: { tone?: "dark" | "light" }) {
   return (
     <div>
       <p className={`font-display text-d3 font-semibold ${strong}`}>
-        Potential electricity-bill savings of up to 60%
+        Potential electricity-bill savings of up to 75%
         <span aria-hidden="true">*</span>
       </p>
       <p className={`mt-3 max-w-prose text-sm leading-relaxed ${muted}`}>

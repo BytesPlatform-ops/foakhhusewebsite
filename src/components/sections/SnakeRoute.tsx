@@ -42,46 +42,46 @@ interface Panel {
 const PANELS: Panel[] = [
   {
     word: "CAPTURE",
-    title: "Natural Air Capture",
+    title: "At the building crown",
     caption:
-      "High-velocity natural airflow reaches and enters the dedicated wind catcher.",
+      "High-velocity natural airflow reaches the dedicated wind-catcher structure at the building crown.",
     src: "/buildingtop.jpg",
-    alt: "The rooftop wind catcher with its kite system and turbines above the terracotta crown",
+    alt: "The dedicated wind-catcher structure, kite system and turbines at the building crown",
     srcSmall: "/buildingfront.jpg",
     altSmall: "The two blocks open to the prevailing wind",
     objectPosition: "60% 30%",
   },
   {
     word: "CHANNEL",
-    title: "Corridor Distribution",
+    title: "Into the building",
     caption:
-      "Captured air is guided through corridors, lobbies and shared circulation spaces.",
+      "Captured air is directed into the building and through its internal circulation environment.",
     src: "/aislefoakh.jpg",
-    alt: "Air guided along the warm ventilated corridor beside the elevators",
-    srcSmall: "/lounge.jpg",
-    altSmall: "The elevator lobby on the building's circulation spine",
+    alt: "Air directed along the ventilated internal circulation corridor",
+    srcSmall: "/balconyfoakh.jpg",
+    altSmall: "A balcony opening on the airflow path",
     objectPosition: "50% 45%",
   },
   {
-    word: "POWER",
-    title: "Renewable Energy Support",
+    word: "CIRCULATE",
+    title: "Through shared spaces",
     caption:
-      "Wind turbines and solar panels are planned to support cleaner electricity generation.",
-    src: "/foakhshaukat.jpg",
-    alt: "The development beneath the evening sky with wind turbines on the horizon",
-    srcSmall: "/buildingtop.jpg",
-    altSmall: "Rooftop solar panels and turbines on the crown",
-    objectPosition: "72% 45%",
+      "The airflow supports corridors, shared circulation spaces and internal common areas.",
+    src: "/lounge.jpg",
+    alt: "The elevator lobby and shared circulation spaces served by the airflow",
+    srcSmall: "/lobby.jpg",
+    altSmall: "Residents in the shared internal common areas",
+    objectPosition: "50% 45%",
   },
   {
     word: "COMFORT.",
-    title: "Everyday Comfort",
+    title: "A fresher environment",
     caption:
-      "Improved airflow and environmental planning support fresher and more comfortable shared spaces.",
-    src: "/lobby.jpg",
-    alt: "Residents relaxing together in the warm shared lounge",
-    srcSmall: "/balconyfoakh.jpg",
-    altSmall: "A private balcony over the green landscape",
+      "Continuous natural airflow is intended to reduce trapped heat and create a fresher internal environment.",
+    src: "/family.jpg",
+    alt: "A family at ease in a fresh, daylit interior",
+    srcSmall: "/drawingroomfoakh.jpg",
+    altSmall: "A calm living space in the evening light",
     objectPosition: "50% 45%",
   },
 ];
@@ -89,7 +89,7 @@ const PANELS: Panel[] = [
 const RAIL = [
   { label: "Capture", range: [0.04, 0.26] as const },
   { label: "Channel", range: [0.26, 0.5] as const },
-  { label: "Power", range: [0.5, 0.72] as const },
+  { label: "Circulate", range: [0.5, 0.72] as const },
   { label: "Comfort", range: [0.72, 1.01] as const },
 ];
 
@@ -142,10 +142,11 @@ export default function SnakeRoute() {
         <div className="grain absolute inset-0" aria-hidden="true" />
 
         <p className="absolute top-[5%] left-[8%] z-40 text-[0.62rem] font-medium tracking-[0.3em] text-[#943F2D] uppercase lg:left-[7.5rem]">
-          02 — Natural Systems
+          02 — Natural Systems · 01 / 06 Wind Catcher
         </p>
         <h2 id="route-heading" className="sr-only">
-          The wind-catcher concept — from natural force to everyday comfort
+          Nature, engineered for better living — the wind catcher, the heart of the wind
+          corridor
         </h2>
 
         {/* heading + intro — present at the start, gone as the journey moves */}
@@ -155,11 +156,20 @@ export default function SnakeRoute() {
           style={{ opacity: introOp, y: introY }}
         >
           <p
-            className="font-display leading-[1.18] text-balance"
-            style={{ color: INK, fontSize: "clamp(1.7rem,2.1vw,2.3rem)", fontWeight: 500 }}
+            className="font-display leading-[1.14] text-balance"
+            style={{ color: INK, fontSize: "clamp(1.7rem,2.2vw,2.4rem)", fontWeight: 500 }}
           >
-            A purpose-built system designed to capture high-velocity air and guide it
-            through the building.
+            Nature, engineered for better living.
+          </p>
+          <p className="mt-3 ml-auto max-w-sm text-[0.85rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.72)" }}>
+            Foakh brings multiple environmental systems together within one residential
+            concept rather than treating sustainability as a single feature — beginning with
+            the wind catcher, the heart of the wind corridor.
+          </p>
+          <p className="mt-3 ml-auto max-w-sm text-[0.78rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.6)" }}>
+            A wind catcher is a traditional architectural solution created to intercept
+            passing wind and guide it into a building — reimagined here around
+            Karachi&rsquo;s natural wind conditions.
           </p>
         </motion.div>
 
@@ -284,7 +294,7 @@ function JourneyPanel({
                   href="#wind"
                   className="mt-4 inline-block rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#211A17]"
                 >
-                  Explore Renewable Systems
+                  Continue — Kite Energy
                 </a>
               </motion.div>
             )}
@@ -392,17 +402,18 @@ function StaticSpread() {
       <MineralGround />
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         <p className="text-[0.62rem] font-medium tracking-[0.3em] text-[#943F2D] uppercase">
-          02 — Natural Systems
+          02 — Natural Systems · 01 / 06 Wind Catcher
         </p>
         <h2
           id="route-heading"
           className="font-display mt-6 max-w-[15ch] text-[clamp(2.4rem,6vw,5.4rem)] leading-[1.02] font-medium text-[#211A17]"
         >
-          The wind-catcher concept.
+          Nature, engineered for better living.
         </h2>
         <p className="mt-5 max-w-md text-[0.95rem] leading-relaxed text-[#211A17]/75">
-          A purpose-built system designed to capture high-velocity air and guide it through
-          the building.
+          The wind catcher — a traditional architectural solution reimagined around
+          Karachi&rsquo;s natural wind conditions — captures high-velocity air and guides it
+          through the building.
         </p>
         <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
           {PANELS.map((panel, i) => (
@@ -432,7 +443,7 @@ function StaticSpread() {
           href="#wind"
           className="mt-8 inline-block rounded-lg bg-[#943F2D] px-6 py-3 text-sm font-semibold text-[#FFF8EF] transition-colors hover:bg-[#211A17]"
         >
-          Explore Renewable Systems
+          Continue — Kite Energy
         </a>
       </div>
     </section>

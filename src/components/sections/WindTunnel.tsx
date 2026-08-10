@@ -55,81 +55,114 @@ interface StoryCard {
   points?: { t: string; d: string }[];
   note: string;
   spec?: string;
-  media: "solar" | "systems" | "water";
+  media: "image" | "water" | "air";
+  src?: string;
+  alt?: string;
+  pos?: string;
   accent: string;
 }
 
 const CARDS: StoryCard[] = [
   {
-    num: "01",
-    label: "Main Advantages",
+    num: "02 / 06",
+    label: "Kite Energy",
     heading: (
       <>
-        A smarter way
-        <span className="block">to live.</span>
+        Power from
+        <span className="block">higher winds.</span>
       </>
     ),
-    body: "Natural airflow, renewable power and thoughtful planning come together in one landmark development.",
-    points: [
-      { t: "Naturally Cooler Environment", d: "Captured wind is circulated through the corridor network to help reduce heat buildup in common areas." },
-      { t: "Up to 60% Bill Reduction", d: "Wind and solar energy are intended to reduce conventional electricity use, subject to final engineering performance." },
-      { t: "Wind-Generated Power", d: "Integrated wind turbines convert available wind into renewable electricity for selected building requirements." },
-      { t: "Solar Energy Support", d: "Solar panels complement the wind-energy system to maximise the use of natural resources." },
-      { t: "Clean Water Planning", d: "A planned water-treatment and desalination solution supports a dependable water supply." },
-      { t: "Long-Term Value", d: "Limited inventory, a distinctive sustainability concept and a growing location strengthen the project's long-term potential." },
-    ],
-    note: "The stated savings are projected targets and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.",
-    spec: "Wind · Solar · Airflow · Water",
-    media: "systems",
+    lead: "High-altitude wind. Ground-based generation. A new approach to renewable power.",
+    body: "Kite Energy uses airborne, tethered wings to reach stronger and more consistent high-altitude winds. Their aerodynamic force is transferred to ground-based generation equipment and converted into electricity.",
+    secondary:
+      "Foakh Wind Corridor Enclave incorporates this technology as part of its renewable-energy strategy, described in the brochure as the first deployment of its kind in Pakistan.",
+    note: "Patented technology — planned as part of the development's renewable-energy strategy, subject to final engineering and approvals.",
+    spec: "Patented Technology",
+    media: "image",
+    src: "/buildingtop.jpg",
+    alt: "The tethered kite-energy wing above the rooftop generation equipment",
+    pos: "62% 20%",
     accent: C.teal,
   },
   {
-    num: "02",
-    label: "Wind-Catcher Concept",
+    num: "03 / 06",
+    label: "Wind Energy",
     heading: (
       <>
-        The heart of the
+        Built within Karachi&rsquo;s
         <span className="block">wind corridor.</span>
       </>
     ),
-    lead: "A purpose-built system designed to capture high-velocity air and guide it through the building.",
-    body: "The defining feature of the project is its dedicated wind catcher. Rather than relying on balconies or windows to collect air, the wind catcher is positioned and engineered to intercept high-velocity natural wind from the surrounding environment.",
+    body: "Foakh Wind Corridor Enclave is strategically positioned within an area where wind power already forms part of the regional energy landscape.",
     secondary:
-      "The captured air is then directed into the building's central corridor system, where it circulates through corridors, elevator lobbies and shared circulation areas — a controlled movement of air intended to create a fresher, cooler and more comfortable internal environment.",
+      "The project will build on this natural resource by integrating wind turbines into its energy infrastructure to generate cleaner, renewable electricity for the development.",
     points: [
-      { t: "Dedicated Wind Catcher", d: "The primary structure that captures and channels high-velocity natural air." },
-      { t: "Central Corridor Distribution", d: "Captured air is guided through the internal corridor network." },
-      { t: "Cooler Shared Areas", d: "Continuous airflow helps reduce trapped heat in corridors and elevator lobbies." },
-      { t: "Reduced Cooling Demand", d: "Improved natural ventilation may lower dependence on mechanical cooling in common spaces." },
+      { t: "Wind-Generated Power", d: "Strong and consistent regional winds provide an opportunity for renewable electricity generation." },
     ],
-    note: "The project aims to become an epicentre of wind circulation through an architectural approach presented as a first-of-its-kind residential concept in Pakistan, subject to final technical validation and project certification.",
-    media: "solar",
+    note: "Wind-energy integration is planned and remains subject to final engineering and approved specifications.",
+    media: "image",
+    src: "/foakhshaukat.jpg",
+    alt: "The development beneath the evening sky with the regional wind farm on the horizon",
+    pos: "72% 45%",
+    accent: C.teal,
+  },
+  {
+    num: "04 / 06",
+    label: "Solar Energy",
+    heading: (
+      <>
+        Powered by the
+        <span className="block">Karachi sun.</span>
+      </>
+    ),
+    body: "Solar generation will complement the development's wind and kite-energy infrastructure, allowing Foakh to make greater use of the region's abundant sunlight.",
+    secondary:
+      "The system is intended to contribute clean renewable electricity throughout the development as part of a diversified energy strategy.",
+    extra: "One development. Multiple renewable sources — Wind · Kite · Solar.",
+    note: "Solar integration is planned and remains subject to final engineering and approved specifications.",
+    media: "image",
+    src: "/buildingtop.jpg",
+    alt: "The rooftop solar array within the terracotta crown",
+    pos: "12% 42%",
     accent: C.amber,
   },
   {
-    num: "03",
-    label: "Sustainability",
+    num: "05 / 06",
+    label: "Water Desalination",
     heading: (
       <>
-        Powered by
-        <span className="block">natural resources.</span>
+        A more dependable
+        <span className="block">approach to water.</span>
       </>
     ),
-    lead: "A forward-looking residential development where wind, sunlight and intelligent design work together.",
-    body: "The Wind Corridor Residences has been conceived to make meaningful use of available natural resources. Wind turbines and solar panels are planned to generate renewable electricity, while the dedicated wind-catcher system channels natural air through the building's internal corridor network.",
+    body: "Foakh Wind Corridor Enclave plans to integrate brackish-water desalination into its water network.",
     secondary:
-      "Together, these systems are intended to reduce dependence on conventional electricity, improve comfort in shared areas and support potential electricity-bill savings of up to 60%, subject to final design, testing and operating conditions.",
+      "The system primarily uses reverse osmosis (RO) to remove dissolved salts and convert brackish water into a more usable water source, forming part of the development's broader water strategy.",
     points: [
-      { t: "Wind Energy", d: "Turbines planned to convert natural wind into usable electricity." },
-      { t: "Solar Energy", d: "Solar panels planned to supplement renewable power generation." },
-      { t: "Natural Air Circulation", d: "A wind catcher directs high-velocity air through central corridors and common spaces." },
-      { t: "Responsible Water Use", d: "Treatment and desalination planning support dependable water management." },
-      { t: "Lower Environmental Impact", d: "Reduced reliance on conventional energy sources." },
-      { t: "Future-Ready Design", d: "An innovative concept created for responsible urban living in Pakistan." },
+      { t: "Reverse Osmosis Treatment", d: "Planned as an integral part of the development's water network." },
     ],
-    note: "The stated savings are projected targets and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.",
+    note: "Water-system strategy shown conceptually and subject to final engineering, environmental review and approved specifications.",
     media: "water",
     accent: C.teal,
+  },
+  {
+    num: "06 / 06",
+    label: "Atmospheric Water",
+    heading: (
+      <>
+        The future of water
+        <span className="block">is in the air.</span>
+      </>
+    ),
+    body: "Alongside desalination, Foakh plans to use Thin Air, a patented atmospheric-water technology that extracts water directly from atmospheric air.",
+    secondary:
+      "Together, desalination and atmospheric water generation create a diversified system intended to provide a more continuous and resilient domestic water source while reducing dependence on conventional supplies.",
+    points: [
+      { t: "Two Complementary Sources", d: "Water desalination + atmospheric water generation = a more resilient water system." },
+    ],
+    note: "Atmospheric water generation is planned and remains subject to final engineering and approved specifications.",
+    media: "air",
+    accent: C.sage,
   },
 ];
 
@@ -143,16 +176,18 @@ export default function WindTunnel() {
   });
   const p = useSpring(scrollYProgress, { stiffness: 100, damping: 28, mass: 0.4 });
 
-  const trackX = useTransform(p, [0.04, 0.9], ["0vw", "-300vw"]);
+  const trackX = useTransform(p, [0.04, 0.92], ["0vw", "-472vw"]);
 
   /* per-panel windows (focal points along the 300vw travel) */
-  const introOp = useTransform(p, [0, 0.08, 0.14], [1, 1, 0]);
-  const closeOp = useTransform(p, [0.8, 0.9], [0, 1]);
-  const closeY = useTransform(p, [0.8, 0.9], [18, 0]);
+  const introOp = useTransform(p, [0, 0.05, 0.1], [1, 1, 0]);
+  const closeOp = useTransform(p, [0.86, 0.94], [0, 1]);
+  const closeY = useTransform(p, [0.86, 0.94], [18, 0]);
   const progressLabel = [
-    useTransform(p, [0.08, 0.14, 0.3, 0.36], [0, 1, 1, 0]),
-    useTransform(p, [0.3, 0.36, 0.55, 0.61], [0, 1, 1, 0]),
-    useTransform(p, [0.55, 0.61, 0.82, 0.88], [0, 1, 1, 0]),
+    useTransform(p, [0.06, 0.1, 0.22, 0.26], [0, 1, 1, 0]),
+    useTransform(p, [0.22, 0.26, 0.38, 0.42], [0, 1, 1, 0]),
+    useTransform(p, [0.38, 0.42, 0.54, 0.58], [0, 1, 1, 0]),
+    useTransform(p, [0.54, 0.58, 0.7, 0.74], [0, 1, 1, 0]),
+    useTransform(p, [0.7, 0.74, 0.88, 0.92], [0, 1, 1, 0]),
   ];
 
   if (reduced) return <StackedStory />;
@@ -163,7 +198,7 @@ export default function WindTunnel() {
       ref={sectionRef}
       data-section="wind"
       aria-labelledby="wind-heading"
-      className="relative lg:h-[380svh]"
+      className="relative lg:h-[560svh]"
       style={{ background: C.bg }}
     >
       <h2 id="wind-heading" className="sr-only">
@@ -187,7 +222,7 @@ export default function WindTunnel() {
             className="absolute top-[6%] left-[8%] z-40 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
             style={{ color: C.champagne }}
           >
-            02 — Natural Systems · In Depth
+            02 — Natural Systems · 02–06 / 06
           </p>
 
           {/* compact progress — bottom left */}
@@ -198,23 +233,23 @@ export default function WindTunnel() {
                 className="text-[0.68rem] font-semibold tabular-nums"
                 style={{ color: C.champagne, opacity: progressLabel[i] }}
               >
-                {card.num} / 03
+                {card.num.split(" ")[0]} / 06
               </motion.span>
             ))}
             <span className="h-px w-12" style={{ background: `${C.champagne}45` }} />
             <span className="text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: C.muted }}>
-              Wind · Solar · Water
+              Kite · Wind · Solar · Water · Air
             </span>
           </div>
 
-          <motion.div className="absolute top-0 left-0 h-full w-[400vw]" style={{ x: trackX }}>
+          <motion.div className="absolute top-0 left-0 h-full w-[580vw]" style={{ x: trackX }}>
             {/* ---- intro anchor ---- */}
             <motion.div
               className="absolute top-0 left-[6vw] flex h-full w-[38vw] flex-col justify-center"
               style={{ opacity: introOp }}
             >
               <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: C.champagne }}>
-                Advantages · Wind catcher · Sustainability
+                Kite · Wind · Solar · Desalination · Atmospheric water
               </p>
               <p
                 className="font-display mt-6 leading-[1.05] font-medium"
@@ -229,25 +264,51 @@ export default function WindTunnel() {
 
             {/* ---- the three cards ---- */}
             {CARDS.map((card, i) => (
-              <StoryPanel key={card.num} card={card} index={i} progress={p} left={52 + i * 86} />
+              <StoryPanel key={card.num} card={card} index={i} progress={p} left={50 + i * 86} />
             ))}
 
             {/* ---- closing ---- */}
             <motion.div
-              className="absolute top-0 left-[314vw] flex h-full w-[58vw] flex-col justify-center"
+              className="absolute top-0 left-[486vw] flex h-full w-[72vw] flex-col justify-center"
               style={{ opacity: closeOp, y: closeY }}
             >
               <span className="h-px w-16" style={{ background: `${C.champagne}66` }} />
               <p
-                className="font-display mt-7 max-w-[16ch] leading-[1.08] font-medium"
-                style={{ color: C.ivory, fontSize: "clamp(2.4rem,3.2vw,3.4rem)" }}
+                className="font-display mt-7 max-w-[18ch] leading-[1.08] font-medium"
+                style={{ color: C.ivory, fontSize: "clamp(2.2rem,3vw,3.2rem)" }}
               >
-                One carefully considered environment.
+                A smarter way to live.
               </p>
-              <p className="mt-5 max-w-md text-[0.95rem] leading-[1.6]" style={{ color: C.body }}>
-                Every system described here is planned and engineered as part of a single
-                residential concept — subject to final engineering, approvals and
-                specifications.
+              <p className="mt-2 text-[0.62rem] font-semibold tracking-[0.26em] uppercase" style={{ color: C.champagne }}>
+                Wind · Kite · Solar · Airflow · Water
+              </p>
+              <p className="mt-4 max-w-md text-[0.92rem] leading-[1.6]" style={{ color: C.body }}>
+                Natural airflow, renewable power and resilient water planning come together
+                within one carefully considered residential environment.
+              </p>
+              <div className="mt-6 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-3.5">
+                {[
+                  { t: "Potential up to 75% bill savings", d: "Based on optimum engineering performance." },
+                  { t: "Natural ventilation", d: "The wind catcher supports internal airflow." },
+                  { t: "Wind-generated power", d: "Turbines convert regional wind into electricity." },
+                  { t: "Kite energy", d: "Tethered wings harness high-altitude wind." },
+                  { t: "Solar support", d: "Panels use Karachi's abundant sunlight." },
+                  { t: "Reliable water planning", d: "Desalination plus atmospheric generation." },
+                ].map((x) => (
+                  <div key={x.t}>
+                    <p className="text-[0.8rem] font-semibold" style={{ color: C.ivory }}>
+                      {x.t}
+                    </p>
+                    <p className="text-[0.72rem] leading-[1.5]" style={{ color: C.body }}>
+                      {x.d}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-5 max-w-xl text-[0.6rem] leading-relaxed tracking-[0.1em] uppercase" style={{ color: C.muted }}>
+                Projected savings are based on optimum engineering performance and may vary
+                according to wind conditions, solar output, occupancy, appliance usage,
+                tariff changes and final system specifications.
               </p>
             </motion.div>
           </motion.div>
@@ -271,8 +332,8 @@ function StoryPanel({
   left: number;
 }) {
   // focal windows along the travel
-  const focal = [0.19, 0.44, 0.68][index];
-  const win = 0.13;
+  const focal = [0.14, 0.3, 0.46, 0.62, 0.79][index];
+  const win = 0.09;
   const op = useTransform(
     progress,
     [focal - win, focal - win * 0.55, focal + win * 0.8, focal + win * 1.4],
@@ -321,7 +382,7 @@ function StoryPanel({
           className="relative -mt-[4svh] h-[62svh] overflow-hidden rounded-[10px] border border-[#D8B36A]/55 bg-[#FFF8EF] shadow-[0_36px_70px_-38px_rgba(148,63,45,0.4)]"
           style={{ scale: settle, y: mediaY }}
         >
-          <CardMedia media={card.media} accent={card.accent} />
+          <CardMedia card={card} />
         </motion.figure>
 
         {/* RIGHT — short copy + notes */}
@@ -364,16 +425,20 @@ function StoryPanel({
 
 /* ==================== media ==================== */
 
-function CardMedia({ media, accent }: { media: StoryCard["media"]; accent: string }) {
-  if (media === "water") return <WaterPanel />;
-  const src = media === "solar" ? "/buildingtop.jpg" : "/foakhshaukat.jpg";
-  const alt =
-    media === "solar"
-      ? "The dedicated wind catcher, kite system, turbines and solar panels on the rooftop crown"
-      : "The development at dusk with wind turbines on the horizon and the landmark surroundings";
+function CardMedia({ card }: { card: StoryCard }) {
+  if (card.media === "water") return <WaterPanel />;
+  if (card.media === "air") return <WaterPanel air />;
+  const accent = card.accent;
   return (
     <>
-      <Image src={src} alt={alt} fill sizes="46vw" className="object-cover" style={{ objectPosition: "55% 45%" }} />
+      <Image
+        src={card.src ?? "/buildingtop.jpg"}
+        alt={card.alt ?? ""}
+        fill
+        sizes="46vw"
+        className="object-cover"
+        style={{ objectPosition: card.pos ?? "50% 45%" }}
+      />
       {/* quiet grade + one accent hairline */}
       <span
         aria-hidden="true"
@@ -388,13 +453,17 @@ function CardMedia({ media, accent }: { media: StoryCard["media"]; accent: strin
   );
 }
 
-/** Original abstract water composition — architectural calm, no machinery. */
-function WaterPanel() {
+/** Original abstract water composition — architectural calm, no machinery.
+ *  The `air` variant lightens the field and lifts the droplet line upward
+ *  for the atmospheric-water story. */
+function WaterPanel({ air = false }: { air?: boolean }) {
   return (
     <div
       className="absolute inset-0"
       style={{
-        background: `linear-gradient(180deg, #24312f 0%, #2c403e 46%, #1c2a29 100%)`,
+        background: air
+          ? `linear-gradient(180deg, #33424b 0%, #3d5158 48%, #26333a 100%)`
+          : `linear-gradient(180deg, #24312f 0%, #2c403e 46%, #1c2a29 100%)`,
       }}
     >
       <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
@@ -474,7 +543,7 @@ function StackedStory({ embedded = false }: { embedded?: boolean }) {
   const body = (
     <div className="relative mx-auto max-w-2xl px-6 py-20">
       <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: C.champagne }}>
-        02 — Natural Systems · In Depth
+        02 — Natural Systems · 02–06 / 06
       </p>
       <p
         className="font-display mt-5 leading-[1.08] font-medium"
@@ -487,13 +556,13 @@ function StackedStory({ embedded = false }: { embedded?: boolean }) {
         {CARDS.map((card) => (
           <article key={card.num} aria-label={`${card.num} — ${card.label}`}>
             <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: C.champagne }}>
-              {card.num} <span style={{ color: C.muted }}>/ 03</span>
+              {card.num}
             </p>
             <p className="mt-1 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: C.muted }}>
               {card.label}
             </p>
             <div className="relative mt-4 aspect-[4/5] overflow-hidden rounded-[10px] sm:aspect-[4/3]">
-              <CardMedia media={card.media} accent={card.accent} />
+              <CardMedia card={card} />
             </div>
             <p
               className="font-display mt-5 leading-[1.05] font-medium"
@@ -538,11 +607,20 @@ function StackedStory({ embedded = false }: { embedded?: boolean }) {
       <div className="mt-16">
         <span className="block h-px w-16" style={{ background: `${C.champagne}66` }} />
         <p className="font-display mt-6 leading-[1.1] font-medium" style={{ color: C.ivory, fontSize: "1.5rem" }}>
-          One carefully considered environment.
+          A smarter way to live.
+        </p>
+        <p className="mt-1.5 text-[0.6rem] font-semibold tracking-[0.24em] uppercase" style={{ color: C.champagne }}>
+          Wind · Kite · Solar · Airflow · Water
         </p>
         <p className="mt-3 text-[0.85rem] leading-[1.6]" style={{ color: C.body }}>
-          Every system described here is planned and engineered as part of a single
-          residential concept — subject to final engineering, approvals and specifications.
+          Natural airflow, renewable power and resilient water planning come together within
+          one carefully considered residential environment — with potential electricity-bill
+          savings of up to 75% based on optimum engineering performance.
+        </p>
+        <p className="mt-3 text-[0.6rem] leading-relaxed tracking-[0.1em] uppercase" style={{ color: C.muted }}>
+          Projected savings are based on optimum engineering performance and may vary
+          according to wind conditions, solar output, occupancy, appliance usage, tariff
+          changes and final system specifications.
         </p>
       </div>
     </div>

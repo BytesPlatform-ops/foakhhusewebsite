@@ -20,7 +20,7 @@ export default function Footer() {
           <div>
             <p className="font-display text-ivory text-2xl font-bold">wind corridor.</p>
             <p className="mt-2 max-w-xs text-sm">
-              The Wind Corridor Residences — where nature powers modern living. DHA View City,
+              Foakh Wind Corridor Enclave — where nature powers modern living. DHA City,
               Karachi, Pakistan.
             </p>
           </div>
@@ -45,9 +45,10 @@ export default function Footer() {
             engineering, approvals and system specifications.
           </p>
           <p>
-            Potential electricity-bill savings of up to 60% are projections; savings may vary
-            according to wind conditions, solar output, occupancy, appliance usage, tariff
-            changes and final system specifications.
+            Potential electricity-bill savings of up to 75% are projections based on optimum
+            engineering performance; savings may vary according to wind conditions, solar
+            output, occupancy, appliance usage, tariff changes and final system
+            specifications.
           </p>
           <p>
             Architectural visuals on this site are schematic concepts derived from the physical
@@ -55,7 +56,7 @@ export default function Footer() {
             photography.
           </p>
           <p className="text-ivory/40 pt-2">
-            © {new Date().getFullYear()} The Wind Corridor Residences. All rights reserved.
+            © {new Date().getFullYear()} Foakh Wind Corridor Enclave. All rights reserved.
           </p>
         </div>
       </div>

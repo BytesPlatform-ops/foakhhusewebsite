@@ -17,12 +17,15 @@ import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
  */
 
 const VALUE_POINTS = [
-  "Only 84 residences",
-  "Two distinguished blocks",
-  "Modern family layouts",
-  "Renewable-energy planning",
-  "Distinctive wind-corridor concept",
-  "Connected location",
+  "160 Apartments",
+  "08 Duplex Penthouses",
+  "02 Distinguished Blocks",
+  "12 Luxury Storeys",
+  "Three Residential Categories",
+  "Renewable-Energy Planning",
+  "Wind-Catcher Architecture",
+  "Integrated Water Strategy",
+  "Connected Location",
 ];
 
 export default function FinalCTA() {
@@ -47,12 +50,13 @@ export default function FinalCTA() {
         >
         {/* ---- Long-term value ---- */}
         <Eyebrow num="06" tone="light">
-          Limited by design
+          Limited by Design
         </Eyebrow>
-        <ChapterHeading tone="light">A distinctive address with long-term potential.</ChapterHeading>
+        <ChapterHeading tone="light">A distinctive address with long-term appeal.</ChapterHeading>
         <Lead tone="light">
-          Limited inventory, a future-focused sustainability concept and a growing location
-          contribute to the project&rsquo;s long-term appeal.
+          Foakh Wind Corridor Enclave combines a limited residential collection, distinctive
+          architecture, multiple renewable-energy systems and a strategically positioned
+          Karachi location.
         </Lead>
         <ul className="mt-8 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-3 md:grid-cols-3">
           {VALUE_POINTS.map((p) => (
@@ -78,8 +82,10 @@ export default function FinalCTA() {
               Live where nature moves with you.
             </h3>
             <p className="text-ivory/70 mt-4 max-w-md text-pretty">
-              Register your interest in The Wind Corridor Residences and receive project
-              information, availability and the latest development updates.
+              Discover a residential development shaped around architecture, natural airflow,
+              renewable resources and modern family living. Register your interest in Foakh
+              Wind Corridor Enclave to receive project information, residential availability
+              and future development updates.
             </p>
 
             {/* Enquiry panel — real fields, honest delivery state */}

@@ -71,10 +71,10 @@ function PanelHeader() {
         <LocationPill />
         <div className="text-right">
           <p className="text-[0.7rem] font-semibold tracking-[0.26em] text-[#FFF4E5] uppercase">
-            The Wind Corridor Residences
+            Foakh Wind Corridor Enclave
           </p>
           <p className="mt-1 text-[0.66rem] tracking-[0.18em] text-[#FFF4E5]/70 uppercase">
-            DHA View City · Karachi
+            DHA City · Karachi
           </p>
         </div>
       </div>
@@ -95,9 +95,9 @@ function PanelHeader() {
         A convenient address close to healthcare, shopping, education and major road links.
       </p>
       <p className="mt-4 max-w-lg text-[0.92rem] leading-[1.7] text-[#FFF4E5]/78">
-        Located in DHA View City, Karachi, The Wind Corridor Residences places residents
-        within convenient reach of important everyday destinations while maintaining a
-        peaceful residential setting.
+        Foakh Wind Corridor Enclave is positioned within Karachi&rsquo;s wind corridor and
+        adjacent to Shaukat Khanum Hospital, combining environmental advantages with access
+        to an important emerging residential area.
       </p>
     </>
   );

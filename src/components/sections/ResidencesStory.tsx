@@ -421,141 +421,523 @@ export default function ResidencesStory() {
 }
 
 /* ================================================== categories ====== */
+/* The Residences showcase on the classic panel chassis: pinned cream
+   stage, horizontal track, each category a three-zone editorial panel
+   (serif column · framed media · reading column) with focal fades,
+   0.96->1 settle and counter-parallax. The Duplex Penthouses panel is
+   the finale — larger media, deep bronze-charcoal treatment, the 08
+   numeral and signature cues. Mobile and reduced motion stack. */
 
-const CATEGORIES = [
+interface CatPanelData {
+  num: string;
+  label: string;
+  heading: React.ReactNode;
+  lead: string;
+  body: string;
+  points: { t: string; d: string }[];
+  note: string;
+  src: string;
+  alt: string;
+  pos?: string;
+  duplex?: boolean;
+}
+
+const CAT_PANELS: CatPanelData[] = [
   {
     num: "01",
-    name: "Classic",
-    badge: null as string | null,
-    line: "Comfortable living, thoughtfully planned.",
-    copy: "Classic Apartments feature precisely planned architectural layouts created for comfortable, convenient and practical everyday living. Fine finishes, dependable workmanship and carefully selected materials create a welcoming environment for modern families.",
-    best: "Practical modern family living.",
+    label: "Classic",
+    heading: (
+      <>
+        Comfortable living,
+        <span className="block">thoughtfully planned.</span>
+      </>
+    ),
+    lead: "Precisely planned layouts created for practical everyday living.",
+    body: "Classic Apartments feature precisely planned architectural layouts created for comfortable, convenient and practical everyday living.",
+    points: [
+      { t: "Fine Finishes", d: "Dependable workmanship and carefully selected materials." },
+      { t: "Welcoming Environment", d: "A calm, practical home for modern families." },
+    ],
+    note: "Best for · practical modern family living.",
     src: "/family.jpg",
     alt: "A family sharing a meal in a bright Classic apartment",
   },
   {
     num: "02",
-    name: "Elegant",
-    badge: null as string | null,
-    line: "A more refined specification.",
-    copy: "Elegant Apartments include the fundamental qualities of the Classic category with an enhanced interior specification. Modern fixtures, carpet flooring, selected wallpapers, statement lighting and chandeliers, together with a solid-wood entrance door, create a more polished residential environment.",
-    best: "Residents seeking an upgraded interior experience.",
+    label: "Elegant",
+    heading: (
+      <>
+        A more refined
+        <span className="block">specification.</span>
+      </>
+    ),
+    lead: "The qualities of Classic, elevated by an enhanced interior.",
+    body: "Elegant Apartments include the fundamental qualities of the Classic category with an enhanced interior specification.",
+    points: [
+      { t: "Enhanced Interiors", d: "Modern fixtures, carpet flooring and selected wallpapers." },
+      { t: "Statement Details", d: "Feature lighting, chandeliers and a solid-wood entrance door." },
+    ],
+    note: "Best for · residents seeking an upgraded interior experience.",
     src: "/bed.jpg",
     alt: "A refined Elegant-category bedroom in warm evening light",
+    pos: "50% 45%",
   },
   {
     num: "03",
-    name: "Sonder Class",
-    badge: "Serviced Apartments",
-    line: "Ready-to-live sophistication.",
-    copy: "Sonder Class represents Foakh's premium serviced-apartment category. Coordinated interiors, premium finishes, selected furnishings and resident-focused convenience combine to create an effortless and refined ready-to-live experience.",
-    best: "Elevated comfort, convenience and serviced living.",
+    label: "Sonder Class · Serviced",
+    heading: (
+      <>
+        Ready-to-live
+        <span className="block">sophistication.</span>
+      </>
+    ),
+    lead: "Foakh's premium serviced-apartment category.",
+    body: "Coordinated interiors, premium finishes, selected furnishings and resident-focused convenience combine to create an effortless and refined ready-to-live experience.",
+    points: [
+      { t: "Coordinated Interiors", d: "Furnished and finished as one considered composition." },
+      { t: "Resident Services", d: "Everyday convenience built into the experience." },
+    ],
+    note: "Best for · elevated comfort, convenience and serviced living.",
     src: "/drawingroomfoakh.jpg",
     alt: "The coordinated interior of a Sonder Class serviced apartment",
+  },
+  {
+    num: "04",
+    label: "Duplex Penthouses",
+    heading: (
+      <>
+        Living above
+        <span className="block">the ordinary.</span>
+      </>
+    ),
+    lead: "The most exclusive residences in the collection.",
+    body: "Eight exclusive duplex penthouses elevate the residential collection with additional space, privacy and independent swimming pools.",
+    points: [
+      { t: "Private Pools", d: "An independent swimming pool with every penthouse." },
+      { t: "Elevated Privacy", d: "Duplex living at the crown of the building." },
+      { t: "Premium Outlook", d: "Signature residences with commanding views." },
+    ],
+    note: "Only 08 · signature duplex residences.",
+    src: "/balconyfoakh.jpg",
+    alt: "A private penthouse terrace at golden hour, high above the landscape",
+    pos: "50% 42%",
+    duplex: true,
   },
 ];
 
 function ResidenceCategories({ reduced }: { reduced: boolean }) {
-  const rise = (delay = 0) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 22 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, amount: 0.2 },
-          transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
-        };
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start start", "end end"],
+  });
+  const cp = useSpring(scrollYProgress, { stiffness: 100, damping: 28, mass: 0.4 });
+
+  const trackX = useTransform(cp, [0.04, 0.92], ["0vw", "-300vw"]);
+  const introOp = useTransform(cp, [0, 0.06, 0.11], [1, 1, 0]);
+  /* the finale takes over: cream stage crossfades to deep bronze-charcoal */
+  const duplexOp = useTransform(cp, [0.79, 0.89], [0, 1]);
+  const counter = [
+    useTransform(cp, [0.05, 0.11, 0.28, 0.33], [0, 1, 1, 0]),
+    useTransform(cp, [0.28, 0.33, 0.54, 0.59], [0, 1, 1, 0]),
+    useTransform(cp, [0.54, 0.59, 0.79, 0.84], [0, 1, 1, 0]),
+    useTransform(cp, [0.79, 0.84, 1, 1.01], [0, 1, 1, 1]),
+  ];
+
+  if (reduced) return <StackedCategories />;
 
   return (
-    <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-14 lg:pt-32 lg:pb-16">
-      <motion.p {...rise(0)} className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
-        03 — Residences
-      </motion.p>
-      <motion.h3
-        {...rise(0.05)}
-        className="font-display mt-5 max-w-[18ch] leading-[1.08] text-balance"
-        style={{ color: IVORY, fontSize: "clamp(2.3rem,3.6vw,3.8rem)", fontWeight: 500 }}
-      >
-        One exceptional address. Three distinctive categories.
-      </motion.h3>
-      <motion.p {...rise(0.1)} className="mt-5 max-w-2xl text-[1rem] leading-[1.7]" style={{ color: "rgba(250,243,232,0.88)" }}>
-        Designed around the needs of modern residents, the apartment collection at Foakh
-        Wind Corridor Enclave offers three carefully considered levels of finish, comfort
-        and convenience — from practical family living to serviced sophistication, each
-        reflecting thoughtful planning, quality materials and dependable craftsmanship.
-      </motion.p>
+    <div>
+      {/* ------------- desktop: pinned horizontal showcase ------------ */}
+      <div ref={wrapRef} className="relative hidden lg:block lg:h-[460svh]">
+        <div className="sticky top-0 h-svh overflow-hidden bg-[#F6EBDD]">
+          <div className="grain absolute inset-0" aria-hidden="true" />
+          {/* duplex theme layer */}
+          <motion.div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              opacity: duplexOp,
+              background:
+                "radial-gradient(70% 60% at 78% 88%, rgb(214 138 74 / 0.22) 0%, transparent 60%)," +
+                "radial-gradient(55% 45% at 18% 12%, rgb(120 60 30 / 0.25) 0%, transparent 65%)," +
+                "linear-gradient(165deg, #241410 0%, #1A0F0A 55%, #2A160E 100%)",
+            }}
+          />
 
-      <div className="mt-10 grid gap-5 lg:grid-cols-3">
-        {CATEGORIES.map((c, i) => (
-          <motion.article
-            key={c.num}
-            {...rise(0.12 + i * 0.09)}
-            className="flex flex-col overflow-hidden rounded-[20px] border border-[#F7F0E8]/25 bg-[#FFF8EF]/95 shadow-[0_26px_54px_-30px_rgba(26,16,11,0.55)]"
+          <p
+            className="absolute top-[6%] left-[8%] z-40 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
+            style={{ color: "#A9803C" }}
           >
-            <div className="relative aspect-[16/10]">
-              <Image src={c.src} alt={c.alt} fill sizes="(min-width:1024px) 30vw, 92vw" className="object-cover" />
-              {c.badge && (
-                <span className="absolute top-3 left-3 rounded-full bg-[#294A3E] px-3 py-1.5 text-[0.55rem] font-bold tracking-[0.2em] text-[#FFF8EF] uppercase">
-                  {c.badge}
-                </span>
-              )}
-            </div>
-            <div className="flex flex-1 flex-col p-6">
-              <p className="text-[0.62rem] font-bold tracking-[0.24em] uppercase" style={{ color: "#C78C49" }}>
-                {c.num} — {c.name}
+            03 — Residences · The Collection
+          </p>
+
+          {/* compact progress — bottom left, the classic strip */}
+          <div className="absolute bottom-[6%] left-[8%] z-40 flex items-center gap-4">
+            {CAT_PANELS.map((c, i) => (
+              <motion.span
+                key={c.num}
+                className="text-[0.68rem] font-semibold tabular-nums"
+                style={{ color: "#A9803C", opacity: counter[i] }}
+              >
+                {c.num} / 04
+              </motion.span>
+            ))}
+            <span className="h-px w-12" style={{ background: "rgba(169,128,60,0.4)" }} />
+            <span className="relative text-[0.6rem] tracking-[0.26em] uppercase">
+              <span style={{ color: "rgba(33,26,23,0.5)" }}>Classic · Elegant · Sonder · Duplex</span>
+              <motion.span className="absolute inset-0" style={{ opacity: duplexOp, color: "rgba(255,248,239,0.75)" }}>
+                Classic · Elegant · Sonder · Duplex
+              </motion.span>
+            </span>
+          </div>
+
+          <motion.div className="absolute top-0 left-0 h-full w-[500vw]" style={{ x: trackX }}>
+            {/* ---- intro anchor ---- */}
+            <motion.div
+              className="absolute top-0 left-[6vw] flex h-full w-[38vw] flex-col justify-center"
+              style={{ opacity: introOp }}
+            >
+              <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#A9803C" }}>
+                Three categories · One finale
               </p>
-              <p className="font-display mt-2 text-[1.35rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
-                {c.line}
+              <p
+                className="font-display mt-6 leading-[1.05] font-medium"
+                style={{ color: "#943F2D", fontSize: "clamp(2.6rem,3.4vw,3.6rem)" }}
+              >
+                One exceptional address. Three distinctive categories.
               </p>
-              <p className="mt-3 text-[0.85rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
-                {c.copy}
+              <p className="mt-5 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
+                From practical family living to serviced sophistication — each category
+                reflects thoughtful planning, quality materials and dependable craftsmanship.
               </p>
-              <p className="mt-auto border-t pt-3.5 text-[0.72rem] leading-snug" style={{ color: "#66544B", borderColor: "rgba(216,179,106,0.4)", marginTop: "auto", paddingTop: "0.875rem" }}>
-                <span className="font-semibold tracking-[0.14em] uppercase" style={{ color: "#943F2D" }}>Best for · </span>
-                {c.best}
+              <p className="mt-6 inline-flex items-center gap-2 text-[0.65rem] tracking-[0.22em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+                Scroll <span aria-hidden="true">→</span>
               </p>
-            </div>
-          </motion.article>
-        ))}
+            </motion.div>
+
+            {CAT_PANELS.map((c, i) => (
+              <CategoryPanel key={c.num} c={c} index={i} progress={cp} left={48 + i * 86} />
+            ))}
+          </motion.div>
+        </div>
       </div>
 
-      {/* duplex penthouses */}
-      <motion.aside
-        {...rise(0.2)}
-        className="relative mt-6 overflow-hidden rounded-[22px] border border-[#D8B36A]/50 shadow-[0_34px_70px_-34px_rgba(26,16,11,0.6)]"
-      >
-        <div className="absolute inset-0">
-          <Image src="/balconyfoakh.jpg" alt="" fill sizes="92vw" className="object-cover" style={{ objectPosition: "50% 45%" }} />
-          <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#1D1714]/85 via-[#1D1714]/55 to-[#1D1714]/15" />
-        </div>
-        <div className="relative flex flex-col gap-6 p-7 sm:flex-row sm:items-center sm:justify-between lg:p-9">
-          <div className="max-w-xl">
-            <p className="text-[0.62rem] font-bold tracking-[0.26em] uppercase" style={{ color: "#EFD5A3" }}>
-              Duplex Penthouses
-            </p>
-            <p className="font-display mt-2 text-[1.6rem] leading-snug font-medium" style={{ color: IVORY }}>
-              Living above the ordinary.
-            </p>
-            <p className="mt-2.5 text-[0.9rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
-              Eight exclusive duplex penthouses elevate the residential collection with
-              additional space, privacy and independent swimming pools.
-            </p>
-          </div>
-          <div className="shrink-0 text-left sm:text-right">
-            <p className="font-display leading-none font-semibold" style={{ color: "#EFD5A3", fontSize: "3.4rem" }}>
-              08
-            </p>
-            <p className="mt-1.5 text-[0.6rem] font-semibold tracking-[0.22em] uppercase" style={{ color: "rgba(250,243,232,0.85)" }}>
-              Exclusive Duplex Penthouses
-            </p>
-          </div>
-        </div>
-      </motion.aside>
+      {/* ------------- mobile: stacked story -------------------------- */}
+      <div className="lg:hidden">
+        <StackedCategories embedded />
+      </div>
     </div>
   );
 }
 
-/* ============================================================ deck == */
+/** classic three-zone panel: serif column · framed media · reading column */
+function CategoryPanel({
+  c,
+  index,
+  progress,
+  left,
+}: {
+  c: CatPanelData;
+  index: number;
+  progress: MotionValue<number>;
+  left: number;
+}) {
+  const focal = [0.16, 0.42, 0.67, 0.9][index];
+  const win = 0.12;
+  const op = useTransform(
+    progress,
+    [focal - win, focal - win * 0.55, focal + win * 0.8, focal + win * 1.4],
+    [0, 1, 1, 0.12]
+  );
+  const settle = useTransform(progress, [focal - win, focal], [0.96, 1]);
+  const mediaY = useTransform(progress, [focal - win, focal + win], ["2.5svh", "-2.5svh"]);
+  const textX = useTransform(progress, [focal - win, focal + win], ["1.5vw", "-1vw"]);
+  const textX2 = useTransform(textX, (v) => `calc(${v} * -0.7)`);
+  const dup = !!c.duplex;
+
+  if (dup) {
+    return (
+      <motion.article
+        className="absolute top-0 flex h-full w-[80vw] items-center"
+        style={{ left: `${left}vw`, opacity: op }}
+        aria-label={`${c.num} — ${c.label}`}
+      >
+        <div className="grid w-full grid-cols-[21%_1fr_25%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
+          {/* LEFT — the exclusive marker */}
+          <motion.div style={{ x: textX }}>
+            <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#EFD5A3" }}>
+              {c.num}
+            </p>
+            <p className="mt-1.5 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(255,248,239,0.6)" }}>
+              {c.label}
+            </p>
+            <p
+              className="font-display mt-6 leading-[1.04] font-medium"
+              style={{ color: "#FFF8EF", fontSize: "clamp(2rem,2.7vw,2.9rem)" }}
+            >
+              {c.heading}
+            </p>
+            <p className="font-display mt-4 text-[0.98rem] leading-snug italic" style={{ color: "#EFD5A3" }}>
+              {c.lead}
+            </p>
+            <p className="font-display mt-7 leading-none font-semibold" style={{ color: "#C78C49", fontSize: "4.2rem" }}>
+              08
+            </p>
+            <p className="mt-1.5 max-w-[10rem] text-[0.56rem] font-semibold tracking-[0.2em] uppercase" style={{ color: "rgba(255,248,239,0.7)" }}>
+              Exclusive Duplex Penthouses
+            </p>
+          </motion.div>
+
+          {/* CENTRE — the penthouse collage */}
+          <motion.div className="relative -mt-[3svh] h-[68svh]" style={{ scale: settle, y: mediaY }}>
+            {/* main terrace */}
+            <figure className="absolute top-0 left-0 h-[74%] w-[78%] overflow-hidden rounded-[14px] border border-[#D8B36A]/75 bg-[#140B07] p-1.5 shadow-[0_44px_88px_-36px_rgba(0,0,0,0.8)]">
+              <div className="relative h-full w-full overflow-hidden rounded-[9px]">
+                <Image src="/balconyfoakh.jpg" alt="A private penthouse terrace at golden hour" fill sizes="34vw" className="object-cover" style={{ objectPosition: "50% 42%" }} />
+                <span aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(200deg, transparent 45%, rgb(14 8 5 / 0.55) 100%)" }} />
+                <span className="absolute bottom-4 left-5 text-[0.58rem] font-bold tracking-[0.28em] uppercase" style={{ color: "#EFD5A3" }}>
+                  The grand finale
+                </span>
+              </div>
+            </figure>
+            {/* duplex bedroom */}
+            <figure className="absolute top-[8%] right-0 h-[38%] w-[34%] rotate-[1.6deg] overflow-hidden rounded-[12px] border border-[#D8B36A]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
+              <div className="relative h-full w-full overflow-hidden rounded-[8px]">
+                <Image src="/bed.jpg" alt="A penthouse bedroom in soft evening light" fill sizes="16vw" className="object-cover" style={{ objectPosition: "50% 45%" }} />
+              </div>
+            </figure>
+            {/* duplex lounge */}
+            <figure className="absolute bottom-0 right-[10%] h-[36%] w-[42%] -rotate-[1.4deg] overflow-hidden rounded-[12px] border border-[#D8B36A]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
+              <div className="relative h-full w-full overflow-hidden rounded-[8px]">
+                <Image src="/drawingroomfoakh.jpg" alt="The double-height penthouse lounge" fill sizes="20vw" className="object-cover" />
+              </div>
+            </figure>
+          </motion.div>
+
+          {/* RIGHT — reading column + the single enquiry CTA */}
+          <motion.div style={{ x: textX2 }}>
+            <p className="text-[0.88rem] leading-[1.6]" style={{ color: "rgba(255,248,239,0.9)" }}>
+              {c.body}
+            </p>
+            <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
+              {c.points.map((pt) => (
+                <li key={pt.t}>
+                  <p className="text-[0.78rem] font-semibold" style={{ color: "#EFD5A3" }}>
+                    {pt.t}
+                  </p>
+                  <p className="text-[0.74rem] leading-[1.55]" style={{ color: "rgba(255,248,239,0.65)" }}>
+                    {pt.d}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <a
+              href="#enquire"
+              className="mt-6 inline-block rounded-lg bg-[#C78C49] px-6 py-3 text-sm font-semibold text-[#1A0F0A] transition-colors hover:bg-[#EFD5A3]"
+            >
+              Enquire About Penthouses
+            </a>
+          </motion.div>
+        </div>
+      </motion.article>
+    );
+  }
+
+  return (
+    <motion.article
+      className="absolute top-0 flex h-full w-[80vw] items-center"
+      style={{ left: `${left}vw`, opacity: op }}
+      aria-label={`${c.num} — ${c.label}`}
+    >
+      <div className="grid w-full grid-cols-[19%_1fr_24%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
+        {/* LEFT — marker + serif heading + italic lead */}
+        <motion.div style={{ x: textX }}>
+          <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#A9803C" }}>
+            {c.num}
+          </p>
+          <p className="mt-1.5 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+            {c.label}
+          </p>
+          <p
+            className="font-display mt-6 leading-[1.04] font-medium"
+            style={{ color: "#943F2D", fontSize: "clamp(1.9rem,2.5vw,2.7rem)" }}
+          >
+            {c.heading}
+          </p>
+          <p className="font-display mt-4 text-[0.98rem] leading-snug italic" style={{ color: "#6E8163" }}>
+            {c.lead}
+          </p>
+          {dup && (
+            <p className="font-display mt-6 leading-none font-semibold" style={{ color: "#C78C49", fontSize: "3.6rem" }}>
+              08
+            </p>
+          )}
+        </motion.div>
+
+        {/* CENTRE — the dominant framed media */}
+        <motion.figure
+          className={`relative overflow-hidden rounded-[14px] border bg-[#FFF8EF] p-1.5 ${
+            dup
+              ? "-mt-[2svh] h-[68svh] border-[#D8B36A]/80 shadow-[0_50px_100px_-40px_rgba(20,10,5,0.75)]"
+              : "-mt-[4svh] h-[62svh] border-[#D8B36A]/55 shadow-[0_36px_70px_-38px_rgba(148,63,45,0.4)]"
+          }`}
+          style={{ scale: settle, y: mediaY }}
+        >
+          <div className="relative h-full w-full overflow-hidden rounded-[9px]">
+            <Image
+              src={c.src}
+              alt={c.alt}
+              fill
+              sizes="46vw"
+              className="object-cover"
+              style={{ objectPosition: c.pos ?? "50% 50%" }}
+            />
+            {dup ? (
+              <>
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(70% 55% at 18% 96%, rgb(255 176 96 / 0.32) 0%, transparent 60%)," +
+                      "linear-gradient(200deg, rgb(20 11 7 / 0.12) 0%, rgb(20 11 7 / 0.3) 55%, rgb(14 8 5 / 0.78) 100%)",
+                  }}
+                />
+                <span className="absolute bottom-5 left-6 text-[0.6rem] font-bold tracking-[0.3em] uppercase" style={{ color: "#EFD5A3" }}>
+                  The grand finale
+                </span>
+                <span className="absolute right-6 bottom-5 flex gap-2">
+                  {["Private Pools", "Signature Residences"].map((cue) => (
+                    <span
+                      key={cue}
+                      className="rounded-full border border-[#EFD5A3]/50 bg-[#140B07]/45 px-3 py-1.5 text-[0.55rem] font-semibold tracking-[0.16em] uppercase backdrop-blur-[2px]"
+                      style={{ color: "rgba(255,248,239,0.92)" }}
+                    >
+                      {cue}
+                    </span>
+                  ))}
+                </span>
+              </>
+            ) : (
+              <span
+                aria-hidden="true"
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(165deg, rgb(229 173 66 / 0.08) 0%, transparent 38%, rgb(33 26 23 / 0.18) 100%)",
+                }}
+              />
+            )}
+          </div>
+        </motion.figure>
+
+        {/* RIGHT — reading column */}
+        <motion.div style={{ x: textX2 }}>
+          <p className="text-[0.88rem] leading-[1.6]" style={{ color: dup ? "#211A17" : "rgba(33,26,23,0.78)" }}>
+            {c.body}
+          </p>
+          <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
+            {c.points.map((pt) => (
+              <li key={pt.t}>
+                <p className="text-[0.78rem] font-semibold" style={{ color: "#943F2D" }}>
+                  {pt.t}
+                </p>
+                <p className="text-[0.74rem] leading-[1.55]" style={{ color: "rgba(33,26,23,0.65)" }}>
+                  {pt.d}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 text-[0.6rem] leading-relaxed tracking-[0.14em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+            {c.note}
+          </p>
+        </motion.div>
+      </div>
+    </motion.article>
+  );
+}
+
+/** stacked story — mobile and reduced motion */
+function StackedCategories({ embedded = false }: { embedded?: boolean }) {
+  const body = (
+    <div className="relative mx-auto max-w-2xl px-6 py-20">
+      <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#A9803C" }}>
+        03 — Residences · The Collection
+      </p>
+      <p
+        className="font-display mt-5 leading-[1.08] font-medium"
+        style={{ color: "#943F2D", fontSize: "clamp(2.2rem,7vw,3rem)" }}
+      >
+        One exceptional address. Three distinctive categories.
+      </p>
+      <div className="mt-12 space-y-16">
+        {CAT_PANELS.map((c) => (
+          <article key={c.num} aria-label={`${c.num} — ${c.label}`}>
+            <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#A9803C" }}>
+              {c.num} <span style={{ color: "rgba(33,26,23,0.45)" }}>/ 04</span>
+            </p>
+            <p className="mt-1 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+              {c.label}
+            </p>
+            <div className="relative mt-4 aspect-[4/3] overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1">
+              <div className="relative h-full w-full overflow-hidden rounded-[8px]">
+                <Image src={c.src} alt={c.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: c.pos ?? "50% 50%" }} />
+                {c.duplex && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0"
+                    style={{ background: "linear-gradient(200deg, transparent 40%, rgb(14 8 5 / 0.7) 100%)" }}
+                  />
+                )}
+              </div>
+            </div>
+            <p
+              className="font-display mt-5 leading-[1.05] font-medium"
+              style={{ color: "#943F2D", fontSize: "clamp(1.7rem,5.4vw,2.3rem)" }}
+            >
+              {c.heading}
+            </p>
+            <p className="font-display mt-2 text-[0.95rem] italic" style={{ color: "#6E8163" }}>
+              {c.lead}
+            </p>
+            <p className="mt-3 text-[0.9rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.75)" }}>
+              {c.body}
+            </p>
+            <ul className="mt-3 space-y-2 border-t pt-3" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
+              {c.points.map((pt) => (
+                <li key={pt.t}>
+                  <p className="text-[0.8rem] font-semibold" style={{ color: "#943F2D" }}>
+                    {pt.t}
+                  </p>
+                  <p className="text-[0.76rem] leading-[1.55]" style={{ color: "rgba(33,26,23,0.65)" }}>
+                    {pt.d}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-[0.6rem] tracking-[0.14em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+              {c.note}
+            </p>
+            {c.duplex && (
+              <a
+                href="#enquire"
+                className="mt-4 inline-block rounded-lg bg-[#C78C49] px-6 py-3 text-sm font-semibold text-[#1A0F0A]"
+              >
+                Enquire About Penthouses
+              </a>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (embedded) return <div className="bg-[#F6EBDD]">{body}</div>;
+  return <div className="bg-[#F6EBDD]">{body}</div>;
+}
+
+/* ============================================================ deck == *//* ============================================================ deck == *//* ============================================================ deck == */
 
 /** A soft colour wash that breathes in while its card holds centre. */
 function AccentGlow({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {

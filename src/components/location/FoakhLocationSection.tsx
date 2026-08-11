@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import FoakhMap, { FOAKH_MAPS_URL } from "./FoakhMap";
 import NearbyLocationGrid from "./NearbyLocationGrid";
 import FoakhLocationVisual from "./FoakhLocationVisual";
+import BuildIn from "@/components/shared/BuildIn";
 
 /**
  * 04 — Location: "Connected to what matters."
@@ -135,9 +136,9 @@ export default function FoakhLocationSection() {
         {/* ------------------------------------------------ desktop -- */}
         <div className="hidden gap-7 lg:grid lg:grid-cols-[57%_minmax(0,1fr)]">
           {/* left information panel */}
-          <motion.div
-            {...rise(0)}
-            className="relative overflow-hidden rounded-[30px] border border-[#D8AE62]/45 p-10 shadow-[0_40px_80px_-36px_rgba(90,35,18,0.55)] xl:p-12"
+          <BuildIn
+            amount={0.15}
+            className="overflow-hidden rounded-[30px] border border-[#D8AE62]/45 p-10 shadow-[0_40px_80px_-36px_rgba(90,35,18,0.55)] xl:p-12"
             style={PANEL_STYLE}
           >
             {/* faint approved tower drawing in the lower-right */}
@@ -150,12 +151,13 @@ export default function FoakhLocationSection() {
                 <NearbyLocationGrid onPanel />
               </div>
             </div>
-          </motion.div>
+          </BuildIn>
 
           {/* right column: map above the architectural visual */}
           <div className="flex min-w-0 flex-col gap-7">
-            <motion.div
-              {...rise(0.12)}
+            <BuildIn
+              delay={0.15}
+              amount={0.15}
               className="flex flex-1 flex-col overflow-hidden rounded-[28px] border border-[#D8AE62]/45 bg-[#291A16] shadow-[0_34px_70px_-32px_rgba(50,20,10,0.6)]"
             >
               <div className="min-h-[380px] flex-1">
@@ -164,10 +166,10 @@ export default function FoakhLocationSection() {
               <div className="flex items-center justify-between gap-3 border-t border-[#D8AE62]/25 p-4">
                 <DirectionButtons dark />
               </div>
-            </motion.div>
-            <motion.div {...rise(0.22)}>
+            </BuildIn>
+            <BuildIn delay={0.3} amount={0.15} className="rounded-[28px]">
               <FoakhLocationVisual />
-            </motion.div>
+            </BuildIn>
           </div>
         </div>
 

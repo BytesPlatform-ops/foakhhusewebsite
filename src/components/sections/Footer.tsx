@@ -25,10 +25,13 @@ export default function Footer() {
             </p>
           </div>
           <nav aria-label="Site index">
-            <ul className="grid grid-cols-2 gap-x-10 gap-y-2.5 sm:grid-cols-3">
+            <ul className="grid grid-cols-2 gap-x-10 gap-y-1 sm:grid-cols-3">
               {INDEX.map((i) => (
                 <li key={i.num}>
-                  <a href={i.href} className="hover:text-ivory text-sm transition-colors">
+                  <a
+                    href={i.href}
+                    className="hover:text-ivory inline-flex items-center py-2.5 text-sm transition-colors"
+                  >
                     <span className="text-champagne/70 mr-2 text-xs tabular-nums">{i.num}</span>
                     {i.label}
                   </a>
@@ -55,7 +58,7 @@ export default function Footer() {
             scale model. They are not survey drawings and not completed-construction
             photography.
           </p>
-          <p className="text-ivory/40 pt-2">
+          <p className="text-ivory/55 pt-2">
             © {new Date().getFullYear()} Foakh Wind Corridor Enclave. All rights reserved.
           </p>
         </div>

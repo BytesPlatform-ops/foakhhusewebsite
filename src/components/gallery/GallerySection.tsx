@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
 import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
 import GalleryLightbox from "./GalleryLightbox";
+import BuildIn from "@/components/shared/BuildIn";
 
 /**
  * 05 — Gallery: an image-led editorial masonry of the project's real
@@ -118,7 +118,6 @@ const ITEMS: GalleryItem[] = [
 ];
 
 export default function GallerySection() {
-  const reduced = useReducedMotion();
   const [open, setOpen] = useState<number | null>(null);
   const [direction, setDirection] = useState<1 | -1>(1);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -150,15 +149,11 @@ export default function GallerySection() {
         {/* -------------------------- masonry -------------------------- */}
         <div className="mt-14 columns-1 gap-5 sm:columns-2 lg:columns-3">
           {ITEMS.map((item, i) => (
-            <motion.div
+            <BuildIn
               key={item.src}
-              className="mb-5 break-inside-avoid"
-              initial={
-                reduced ? undefined : { opacity: 0, y: 24, rotate: i % 3 === 0 ? 0.7 : 0 }
-              }
-              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, delay: (i % 3) * 0.09 + (i % 2) * 0.04, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-5 break-inside-avoid rounded-[18px]"
+              delay={(i % 3) * 0.09 + (i % 2) * 0.04}
+              amount={0.2}
             >
               <button
                 type="button"
@@ -202,7 +197,7 @@ export default function GallerySection() {
                   </svg>
                 </span>
               </button>
-            </motion.div>
+            </BuildIn>
           ))}
         </div>
       </div>

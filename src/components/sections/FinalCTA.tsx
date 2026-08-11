@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
+import BuildIn from "@/components/shared/BuildIn";
 
 /**
  * 22 — Limited Community & Long-Term Value, closing into the Final CTA.
@@ -40,8 +41,8 @@ export default function FinalCTA() {
     >
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         {/* deep forest CONTAINED panel — the one deep surface on the page */}
-        <div
-          className="grain relative overflow-hidden rounded-[32px] border border-[#D8B36A]/40 p-8 shadow-[0_44px_90px_-40px_rgba(31,58,48,0.55)] sm:p-12 lg:p-14"
+        <BuildIn
+          amount={0.12} className="grain overflow-hidden rounded-[32px] border border-[#D8B36A]/40 p-8 shadow-[0_44px_90px_-40px_rgba(31,58,48,0.55)] sm:p-12 lg:p-14"
           style={{
             background:
               "radial-gradient(80% 55% at 88% 0%, rgb(101 155 152 / 0.28) 0%, transparent 55%)," +
@@ -66,7 +67,7 @@ export default function FinalCTA() {
             </li>
           ))}
         </ul>
-        <p className="text-ivory/45 mt-6 max-w-2xl text-xs leading-relaxed">
+        <p className="text-ivory/60 mt-6 max-w-2xl text-xs leading-relaxed">
           No returns, appreciation or rental yields are guaranteed. Project features described
           as planned remain subject to final engineering and approvals.
         </p>
@@ -103,7 +104,7 @@ export default function FinalCTA() {
                     id={f.id}
                     type={f.type}
                     autoComplete={f.auto}
-                    className="border-ivory/20 bg-charcoal/40 text-ivory placeholder:text-ivory/30 focus:border-cyan-optic w-full rounded-lg border px-3.5 py-2.5 text-sm transition-colors outline-none"
+                    className="border-ivory/20 bg-charcoal/40 text-ivory placeholder:text-ivory/30 focus:border-cyan-optic w-full rounded-lg border px-3.5 py-3 text-sm transition-colors outline-none"
                     placeholder={f.label}
                   />
                 </div>
@@ -117,14 +118,14 @@ export default function FinalCTA() {
               >
                 Register Interest
               </button>
-              <p className="text-ivory/45 text-[0.7rem] leading-relaxed">
+              <p className="text-ivory/60 text-[0.7rem] leading-relaxed">
                 Submissions activate once the sales inbox is confirmed — no enquiry is silently
                 dropped in the meantime.
               </p>
             </form>
           </div>
           </div>
-        </div>
+        </BuildIn>
       </div>
     </section>
   );

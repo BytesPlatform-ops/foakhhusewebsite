@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { CLAY_BG } from "@/components/shared/BuildIn";
 import {
   motion,
   useMotionValue,
@@ -306,6 +307,17 @@ export default function SnakeRoute() {
 
 function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: boolean }) {
   const opacity = useTransform(p, st.at, [0, 1, 1, 0]);
+  /* construction: rise in six clay courses, then the clay fires clean */
+  const clip = useTransform(p, (v) => {
+    const t = Math.min(Math.max((v - st.at[0]) / (st.at[1] - st.at[0]), 0), 1);
+    const c = Math.ceil(t * 6) / 6;
+    return `inset(${(1 - c) * 100}% 0% 0% 0%)`;
+  });
+  const clay = useTransform(
+    p,
+    [st.at[0] + (st.at[1] - st.at[0]) * 0.55, st.at[1] + 0.012],
+    [1, 0]
+  );
   /* the pieces travel the diagonal: in from upper-left, out lower-right */
   const x = useTransform(p, [st.at[0], st.at[1], st.at[2], st.at[3]], [-26, 0, 0, 20]);
   const y = useTransform(p, [st.at[0], st.at[1], st.at[2], st.at[3]], [-18, 0, 0, 14]);
@@ -314,9 +326,14 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
     <>
       {/* the printed editorial note */}
       <motion.div
-        className={`absolute z-30 w-[min(92vw,28rem)] p-7 lg:p-8 ${st.card}`}
-        style={{ opacity, x, y, scale, ...CARD_STYLE }}
+        className={`absolute z-30 w-[min(92vw,28rem)] overflow-hidden p-7 lg:p-8 ${st.card}`}
+        style={{ opacity, x, y, scale, clipPath: clip, ...CARD_STYLE }}
       >
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-50"
+          style={{ opacity: clay, background: CLAY_BG, borderRadius: "inherit" }}
+        />
         <p className="text-[0.6rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#B95334" }}>
           {st.eyebrow}
         </p>
@@ -351,8 +368,13 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
         <motion.figure
           key={f.label}
           className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1 shadow-[0_24px_48px_-28px_rgba(20,10,6,0.55)] lg:block ${f.className}`}
-          style={{ opacity, scale }}
+          style={{ opacity, scale, clipPath: clip }}
         >
+          <motion.span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-50"
+            style={{ opacity: clay, background: CLAY_BG, borderRadius: "inherit" }}
+          />
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
             <Image
               src={f.src}

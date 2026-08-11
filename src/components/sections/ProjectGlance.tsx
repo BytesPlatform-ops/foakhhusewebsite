@@ -2,6 +2,7 @@
 
 import { useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
+import BuildIn from "@/components/shared/BuildIn";
 import {
   motion,
   useReducedMotion,
@@ -386,9 +387,10 @@ function ProjectIntroduction() {
               {/* right: 2×2 feature panels */}
               <div className="grid content-start gap-4 sm:grid-cols-2">
                 {HIGHLIGHTS.map((h, i) => (
-                  <motion.article
+                  <BuildIn
                     key={h.title}
-                    {...rise(0.16 + i * 0.09)}
+                    delay={0.16 + i * 0.09}
+                    amount={0.3}
                     className="rounded-[12px] border p-5"
                     style={{
                       background: "rgba(255,249,240,0.88)",
@@ -402,7 +404,7 @@ function ProjectIntroduction() {
                     <p className="mt-2 text-[0.85rem] leading-[1.6]" style={{ color: "#51443D" }}>
                       {h.copy}
                     </p>
-                  </motion.article>
+                  </BuildIn>
                 ))}
               </div>
             </div>

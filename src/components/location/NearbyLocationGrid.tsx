@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import BuildIn from "@/components/shared/BuildIn";
 
 /**
  * The 2×3 nearby-connections grid for the Location panel.
@@ -57,17 +57,14 @@ const ICONS = {
 };
 
 export default function NearbyLocationGrid({ onPanel = false }: { onPanel?: boolean }) {
-  const reduced = useReducedMotion();
   return (
     <div>
     <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {ITEMS.map((item, i) => (
-        <motion.li
-          key={item.label}
-          initial={reduced ? undefined : { opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+        <li key={item.label}>
+        <BuildIn
+          delay={i * 0.09}
+          amount={0.35}
           className="flex items-center gap-3.5 rounded-[14px] border border-[#D8AE62]/35 bg-[#FFF4E5] p-3.5 shadow-[0_14px_28px_-18px_rgba(60,26,14,0.5)]"
         >
           <span
@@ -95,7 +92,8 @@ export default function NearbyLocationGrid({ onPanel = false }: { onPanel?: bool
               {item.sub}
             </span>
           </span>
-        </motion.li>
+        </BuildIn>
+        </li>
       ))}
     </ul>
     <p

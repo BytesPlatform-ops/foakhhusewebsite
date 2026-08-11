@@ -230,11 +230,11 @@ export default function ResidencesStory() {
         {
           "--blend-from": "#F5EDE3",
           background:
-            "radial-gradient(85% 60% at 74% 20%, rgb(255 138 97 / 0.62) 0%, transparent 58%)," +
-            "radial-gradient(62% 46% at 50% 52%, rgb(230 190 108 / 0.4) 0%, transparent 70%)," +
-            "radial-gradient(55% 45% at 82% 55%, rgb(255 244 229 / 0.18) 0%, transparent 72%)," +
-            "radial-gradient(70% 50% at 14% 84%, rgb(101 155 152 / 0.2) 0%, transparent 60%)," +
-            "linear-gradient(172deg, #94432F 0%, #B65438 34%, #CC4826 62%, #713427 100%)",
+            "radial-gradient(85% 60% at 74% 20%, rgb(215 139 112 / 0.34) 0%, transparent 58%)," +
+            "radial-gradient(62% 46% at 50% 52%, rgb(201 147 85 / 0.24) 0%, transparent 70%)," +
+            "radial-gradient(55% 45% at 82% 55%, rgb(245 237 227 / 0.1) 0%, transparent 72%)," +
+            "radial-gradient(70% 50% at 14% 84%, rgb(41 74 62 / 0.16) 0%, transparent 60%)," +
+            "linear-gradient(172deg, #94432F 0%, #B65438 34%, #A8492F 62%, #713427 100%)",
         } as React.CSSProperties
       }
     >
@@ -589,7 +589,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
             style={{
               clipPath: bloom,
               background:
-                "radial-gradient(150% 150% at 50% 100%, #F4703F 0%, #B65438 52%, #DE5931 100%)",
+                "radial-gradient(150% 150% at 50% 100%, #BC6543 0%, #B85F3E 48%, #A8532F 100%)",
             }}
           />
 

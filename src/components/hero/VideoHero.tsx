@@ -34,6 +34,21 @@ export default function VideoHero() {
   const reduced = useReducedMotion();
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(true);
+  const [showHint, setShowHint] = useState(false);
+  const hintShown = useRef(false);
+
+  /* draw attention to the audio control once, shortly after the film
+     starts — dismisses itself, or the moment the visitor acts on it */
+  useEffect(() => {
+    if (reduced || hintShown.current || !playing) return;
+    hintShown.current = true;
+    const showTimer = setTimeout(() => setShowHint(true), 1400);
+    const hideTimer = setTimeout(() => setShowHint(false), 7400);
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [reduced, playing]);
 
   /* the film keeps playing until the whole hero has scrolled past —
      not the instant it starts leaving the viewport */
@@ -69,7 +84,13 @@ export default function VideoHero() {
     } else {
       video.pause();
     }
+    if (!playing) setShowHint(false);
   }, [reduced, playing]);
+
+  const toggleAudio = () => {
+    setMuted((m) => !m);
+    setShowHint(false);
+  };
 
   return (
     <section
@@ -98,19 +119,53 @@ export default function VideoHero() {
       {!reduced && (
         <AnimatePresence>
           {playing && (
-            <motion.button
-              type="button"
-              onClick={() => setMuted((m) => !m)}
-              aria-label={muted ? "Unmute video" : "Mute video"}
-              aria-pressed={!muted}
+            <motion.div
               initial={{ opacity: 0, y: 8, scale: 0.92 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.92 }}
               transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.94 }}
-              className="fixed right-5 bottom-6 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-[#F5EDE3]/25 bg-[#2B211D]/55 text-[#F5EDE3] shadow-[0_10px_28px_-8px_rgba(0,0,0,0.55)] backdrop-blur-md transition-colors hover:bg-[#2B211D]/75 lg:right-8 lg:bottom-8"
+              className="fixed right-5 bottom-6 z-40 flex items-center gap-3 lg:right-8 lg:bottom-8"
             >
+              {/* attention bubble — appears once, points at the control */}
+              <AnimatePresence>
+                {showHint && (
+                  <motion.button
+                    type="button"
+                    onClick={toggleAudio}
+                    initial={{ opacity: 0, x: 8, scale: 0.94 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: 8, scale: 0.94 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="flex items-center gap-2 rounded-full border border-[#F5EDE3]/20 bg-[#2B211D]/80 py-2.5 pr-4 pl-4 text-[0.78rem] font-medium whitespace-nowrap text-[#F5EDE3] shadow-[0_10px_28px_-8px_rgba(0,0,0,0.55)] backdrop-blur-md transition-colors hover:bg-[#2B211D]/92"
+                  >
+                    Tap to hear the film
+                    <span aria-hidden="true" className="text-[#C99355]">
+                      →
+                    </span>
+                  </motion.button>
+                )}
+              </AnimatePresence>
+
+              <div className="relative flex h-12 w-12 items-center justify-center">
+                {/* pulse ring — a quiet sonar ping while the hint is up */}
+                {showHint && (
+                  <motion.span
+                    aria-hidden="true"
+                    className="absolute inset-0 rounded-full border border-[#C99355]/70"
+                    initial={{ opacity: 0.55, scale: 1 }}
+                    animate={{ opacity: 0, scale: 1.65 }}
+                    transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+                  />
+                )}
+                <motion.button
+                  type="button"
+                  onClick={toggleAudio}
+                  aria-label={muted ? "Unmute video" : "Mute video"}
+                  aria-pressed={!muted}
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.94 }}
+                  className="relative flex h-12 w-12 items-center justify-center rounded-full border border-[#F5EDE3]/25 bg-[#2B211D]/55 text-[#F5EDE3] shadow-[0_10px_28px_-8px_rgba(0,0,0,0.55)] backdrop-blur-md transition-colors hover:bg-[#2B211D]/75"
+                >
               <span className="sr-only">{muted ? "Unmute video" : "Mute video"}</span>
               {muted ? (
                 <svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true">
@@ -139,7 +194,9 @@ export default function VideoHero() {
                   />
                 </svg>
               )}
-            </motion.button>
+                </motion.button>
+              </div>
+            </motion.div>
           )}
         </AnimatePresence>
       )}

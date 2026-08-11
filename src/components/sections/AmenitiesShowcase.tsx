@@ -35,10 +35,11 @@ const IVORY = "#F5EDE3";
 /** The amenity theatre's own ground — the chapter's upper terracotta,
  *  isolated here so this block can be retuned without touching the
  *  section gradient behind the rest of the chapter. */
+/* the theatre sits on the residences section's own ground — it only adds
+   soft warmth on top, never a second opaque terracotta (that banded) */
 const AMENITIES_BG =
-  "radial-gradient(85% 60% at 74% 20%, rgb(255 138 97 / 0.62) 0%, transparent 58%)," +
-  "radial-gradient(62% 46% at 50% 52%, rgb(230 190 108 / 0.4) 0%, transparent 70%)," +
-  "linear-gradient(172deg, #94432F 0%, #B65438 62%, #B65438 100%)";
+  "radial-gradient(85% 60% at 74% 20%, rgb(215 139 112 / 0.2) 0%, transparent 58%)," +
+  "radial-gradient(62% 46% at 50% 52%, rgb(201 147 85 / 0.14) 0%, transparent 70%)";
 
 interface Amenity {
   num: string;
@@ -482,7 +483,7 @@ function Rail({
 function Heading({ compact = false }: { compact?: boolean }) {
   return (
     <div>
-      <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
+      <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#E8CFA4" }}>
         03 — Amenities &amp; Lifestyle
       </p>
       <h3

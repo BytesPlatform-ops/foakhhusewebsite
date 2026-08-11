@@ -32,6 +32,14 @@ import {
 
 const IVORY = "#F7F0E8";
 
+/** The amenity theatre's own ground — the chapter's upper terracotta,
+ *  isolated here so this block can be retuned without touching the
+ *  section gradient behind the rest of the chapter. */
+const AMENITIES_BG =
+  "radial-gradient(85% 60% at 74% 20%, rgb(255 138 97 / 0.62) 0%, transparent 58%)," +
+  "radial-gradient(62% 46% at 50% 52%, rgb(230 190 108 / 0.4) 0%, transparent 70%)," +
+  "linear-gradient(172deg, #C6431E 0%, #E85F34 62%, #D64E27 100%)";
+
 interface Amenity {
   num: string;
   title: string;
@@ -192,6 +200,7 @@ export default function AmenitiesShowcase() {
   /* ------------------------------------------------ reduced motion --- */
   if (reduced) {
     return (
+      <div className="relative" style={{ background: AMENITIES_BG }}>
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-16 lg:pt-32">
         <Heading />
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1.1fr]">
@@ -215,11 +224,12 @@ export default function AmenitiesShowcase() {
           </div>
         </div>
       </div>
+      </div>
     );
   }
 
   return (
-    <div>
+    <div className="relative" style={{ background: AMENITIES_BG }}>
       {/* ==================== desktop sticky theatre ================== */}
       <div ref={stageRef} className="relative hidden lg:block lg:h-[250svh]">
         <div className="sticky top-0 flex h-svh flex-col px-(--spacing-gutter) pt-14 pb-7">

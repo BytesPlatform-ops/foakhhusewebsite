@@ -240,20 +240,12 @@ export default function ResidencesStory() {
       {/* ==================== 03A — RESIDENCE CATEGORIES =============== */}
       <ResidenceCategories reduced={!!reduced} />
 
-      {/* ---- Apartments & Interiors — intro copy before the deck ----- */}
-      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pb-16 lg:pb-20">
-        {/* seam: the duplex finale above is a pinned dark stage that cuts
-            instantly to this section once its scroll track ends — a radial
-            wash anchored at the seam dissolves that cut outward into the
-            gradient below instead of leaving a hard edge or a solid bar */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[34vh] lg:h-[40vh]"
-          style={{
-            background:
-              "radial-gradient(60% 100% at 50% 0%, #1A0F0A 0%, rgba(26,15,10,0.55) 38%, transparent 72%)",
-          }}
-        />
+      {/* ---- Apartments & Interiors — intro copy before the deck -----
+           The stage above hands off already blooming orange, so this
+           block simply continues the section ground: no dark base, no
+           seam to mask. */}
+      <div className="relative">
+        <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-16 pb-16 lg:pt-20 lg:pb-20">
         <p className="relative text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
           Apartments &amp; Interiors
         </p>
@@ -266,6 +258,7 @@ export default function ResidencesStory() {
         <p className="relative mt-4 max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
           Every residence is shaped around comfort, practicality and visual refinement.
         </p>
+        </div>
       </div>
 
       {/* ==================== 03B — the quality deck =================== */}
@@ -559,11 +552,16 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
      near-black straight to red */
   const eyebrowOut = useTransform(cp, [0.9, 0.97], [1, 0]);
   const baseOp = useTransform(cp, [0.94, 0.995], [1, 0]);
-  const handoffOp = useTransform(cp, [0.965, 1], [1, 0.55]);
-  const handoffY = useTransform(cp, (v) => {
-    const t = Math.min(Math.max((v - 0.88) / 0.12, 0), 1);
-    const e = t * t * (3 - 2 * t);
-    return `${104 - e * 128}%`;
+  /* the section's orange takes the stage over as one circle blooming from
+     bottom-centre — eased long and soft (Apple's slow-out curve) so the
+     colour arrives rather than switches */
+  /* once the bloom has filled, it dissolves onto the section's own
+     ground so the pin releases with nothing to step across */
+  const bloomOp = useTransform(cp, [0.965, 1], [1, 0]);
+  const bloom = useTransform(cp, (v) => {
+    const t = Math.min(Math.max((v - 0.84) / 0.15, 0), 1);
+    const e = 1 - Math.pow(1 - t, 5);
+    return `circle(${(e * 158).toFixed(2)}% at 50% 100%)`;
   });
   const counter = [
     useTransform(cp, [0.05, 0.11, 0.28, 0.33], [0, 1, 1, 0]),
@@ -601,12 +599,12 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
           />
           <motion.div
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-[130%]"
+            className="absolute inset-0"
             style={{
-              y: handoffY,
-              opacity: handoffOp,
+              clipPath: bloom,
+              opacity: bloomOp,
               background:
-                "linear-gradient(180deg, rgba(199,91,59,0) 0%, rgba(199,91,59,0.55) 9%, #C75B3B 24%, #BE5433 60%, #B85030 100%)",
+                "radial-gradient(140% 140% at 50% 100%, #E85F34 0%, #C6431E 45%, #6E2911 100%)",
             }}
           />
 

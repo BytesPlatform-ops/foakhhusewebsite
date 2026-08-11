@@ -39,11 +39,32 @@ const ITEMS: GalleryItem[] = [
     aspect: "aspect-[4/4.4]",
   },
   {
+    src: "/foakhevening.png",
+    alt: "The two residential blocks glowing against a dramatic sunset sky",
+    category: "Architecture",
+    title: "Golden hour arrival",
+    aspect: "aspect-[4/5]",
+  },
+  {
+    src: "/foakhnight.png",
+    alt: "The two residential blocks illuminated at night beneath the kite energy line",
+    category: "Architecture",
+    title: "The towers after dark",
+    aspect: "aspect-[3/4]",
+  },
+  {
     src: "/buildingtop.jpg",
     alt: "The rooftop crown with wind catcher, kite system, turbines and solar panels",
     category: "Rooftop systems",
     title: "The working crown",
     aspect: "aspect-[4/3]",
+  },
+  {
+    src: "/kiteenergyimg.png",
+    alt: "A close view of the rooftop kite winch, wind turbines and solar panels at work",
+    category: "Rooftop systems",
+    title: "The kite winch at work",
+    aspect: "aspect-[4/5]",
   },
   {
     src: "/drawingroomfoakh.jpg",

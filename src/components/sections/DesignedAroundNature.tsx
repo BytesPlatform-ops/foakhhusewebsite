@@ -204,12 +204,12 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f2InnerScale }}>
             <Image
-              src="/foakhshaukat.jpg"
-              alt="The two-block development within its green landscape at dawn"
+              src="/waterdesalination.png"
+              alt="The integrated water treatment and desalination system running through the building"
               fill
               sizes="40vw"
               className="object-cover"
-              style={{ objectPosition: "58% 40%" }}
+              style={{ objectPosition: "50% 35%" }}
             />
           </motion.div>
           <motion.span aria-hidden="true" className="absolute inset-0 bg-[#241B17]" style={{ opacity: f2Shade }} />
@@ -222,12 +222,12 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f3InnerScale }}>
             <Image
-              src="/buildingfront.jpg"
-              alt="Rooftop solar panels catching first light"
+              src="/windenergy.png"
+              alt="Rooftop wind turbines, solar panels and the kite winch catching first light"
               fill
               sizes="20vw"
               className="object-cover"
-              style={{ objectPosition: "50% 55%" }}
+              style={{ objectPosition: "50% 45%" }}
             />
           </motion.div>
         </motion.figure>
@@ -343,8 +343,8 @@ function StaticSpread() {
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
             { src: "/buildingtop.jpg", alt: "The rooftop wind catcher, kite and turbines above the terracotta crown", label: "Natural airflow" },
-            { src: "/foakhshaukat.jpg", alt: "The development within its landscape at dusk", label: "Renewable energy" },
-            { src: "/buildingfront.jpg", alt: "The two residential blocks in the evening light", label: "Water systems" },
+            { src: "/windenergy.png", alt: "Rooftop wind turbines, solar panels and the kite winch at sunset", label: "Renewable energy" },
+            { src: "/waterdesalination.png", alt: "The integrated water treatment and desalination system running through the building", label: "Water systems" },
           ].map((f) => (
             <figure key={f.src} className="relative">
               <div className="relative aspect-[4/3] overflow-hidden rounded-md">

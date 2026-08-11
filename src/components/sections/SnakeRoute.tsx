@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { ClayFace } from "@/components/shared/BuildIn";
+import { ClayFace, CLAY_EDGE } from "@/components/shared/BuildIn";
 import {
   motion,
   useMotionValue,
@@ -14,7 +14,7 @@ import {
 } from "framer-motion";
 
 /**
- * 02 — Natural Systems: THE REAL BUILDING, MOVING BEHIND THE PAGE.
+ * 02 — Natural Systems: THE BUILDING CONSTRUCTS ITSELF.
  *
  * The approved FOAKH tower (a tall crown-to-gate crop of the master
  * elevation render) is the background layer: pinned for ~360svh, it
@@ -36,10 +36,30 @@ import {
  */
 
 const INK = "#211A17";
-const B_ASPECT = 720 / 1238;
+
+/* deterministic construction debris at the build line — SSR-safe */
+const SAND = [
+  { x: 14, w: 3, dx: 4, dur: 1.5, delay: 0 },
+  { x: 27, w: 2, dx: -3, dur: 1.9, delay: 0.4 },
+  { x: 41, w: 3, dx: 2, dur: 1.6, delay: 0.9 },
+  { x: 56, w: 2, dx: -5, dur: 2.1, delay: 0.2 },
+  { x: 68, w: 3, dx: 3, dur: 1.7, delay: 1.1 },
+  { x: 83, w: 2, dx: -2, dur: 2, delay: 0.6 },
+];
+const BRICKS = [
+  { x: 22, w: 11, dx: -6, rot: 26, dur: 2.4, delay: 0.3 },
+  { x: 49, w: 9, dx: 5, rot: -20, dur: 2.7, delay: 1.2 },
+  { x: 74, w: 12, dx: -4, rot: 18, dur: 2.5, delay: 0.8 },
+];
+const DUSTP = [
+  { x: 18, w: 78, dx: -6, dur: 2.6, delay: 0.2 },
+  { x: 46, w: 96, dx: 4, dur: 3, delay: 1 },
+  { x: 72, w: 72, dx: 6, dur: 2.8, delay: 1.7 },
+];
+const B_ASPECT = 1122 / 1402;
 
 const CARD_STYLE: React.CSSProperties = {
-  background: "rgba(248, 240, 229, 0.96)",
+  background: "rgba(248, 240, 229, 0.985)",
   border: "1px solid rgba(170, 95, 61, 0.18)",
   borderRadius: 16,
   boxShadow: "0 18px 50px rgba(68, 39, 25, 0.08)",
@@ -101,10 +121,10 @@ const STAGES: Stage[] = [
     card: "left-[6%] top-[24%] lg:left-[34%] lg:top-[30%]",
     frames: [
       {
-        src: "/foakhshaukat.jpg",
-        alt: "The regional wind farm on the horizon beyond the development",
+        src: "/windturbineimagefinal.png",
+        alt: "The rooftop wind turbines silhouetted against the sunset",
         label: "Wind Turbines",
-        pos: "80% 42%",
+        pos: "50% 30%",
         className: "left-[6%] top-[13%] w-[18rem] -rotate-[1.8deg]",
       },
       {
@@ -115,10 +135,10 @@ const STAGES: Stage[] = [
         className: "left-[7%] top-[57%] w-[17rem] rotate-[1.4deg]",
       },
       {
-        src: "/buildingtop.jpg",
-        alt: "The tethered kite-energy wing above the roof",
+        src: "/kiteenergyimg.png",
+        alt: "The tethered kite-energy wing above the roof, winch cable in view",
         label: "Kite Energy",
-        pos: "63% 6%",
+        pos: "63% 20%",
         className: "left-[66%] top-[13%] w-[15rem] rotate-[2deg]",
       },
     ],
@@ -135,17 +155,17 @@ const STAGES: Stage[] = [
     card: "left-[6%] top-[28%] lg:left-[56%] lg:top-[40%]",
     frames: [
       {
-        src: "/buildingfront.jpg",
-        alt: "The landscaped water-feature courtyard at dusk",
+        src: "/windcatcher.png",
+        alt: "The landscaped water-feature courtyard and arrival fountain",
         label: "Water in the Landscape",
-        pos: "50% 84%",
+        pos: "50% 78%",
         className: "left-[26%] top-[13%] w-[18rem] rotate-[1.6deg]",
       },
       {
-        src: "/kitchen.jpg",
-        alt: "Dependable domestic water in the family kitchen",
+        src: "/waterreliability.png",
+        alt: "The building's water treatment and reliability systems at work",
         label: "Dependable Supply",
-        pos: "50% 50%",
+        pos: "50% 70%",
         className: "left-[24%] top-[58%] w-[17rem] -rotate-[1.6deg]",
       },
     ],
@@ -186,11 +206,27 @@ export default function SnakeRoute() {
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
   }, [travel]);
+  /* a gentle settle only — the construction is the motion */
   const buildingY = useTransform([pb, travel] as const, ([v, t]) => {
     const a = Math.min(Math.max(((v as number) - 0.02) / 0.9, 0), 1);
     const e = a * a * (3 - 2 * a);
-    return e * (t as number);
+    return e * (t as number) * 0.16;
   });
+
+  /* the tower rises in twelve courses — one per storey — topping out
+     with the crown systems as the renewable-energy stage closes */
+  const built = useTransform(p, (v) => {
+    const t = Math.min(Math.max((v - 0.02) / 0.56, 0), 1);
+    const c = t * 12;
+    const laid = Math.floor(c) / 12;
+    const frac = c % 1;
+    if (frac <= 0.7) return laid;
+    const lift = (frac - 0.7) / 0.3;
+    return Math.min(1, laid + (lift * lift * (3 - 2 * lift)) / 12);
+  });
+  const builtClip = useTransform(built, (c) => `inset(${(1 - c) * 100}% 0% 0% 0%)`);
+  const buildLine = useTransform(built, (c) => `${(1 - c) * 100}%`);
+  const buildActive = useTransform(p, [0.02, 0.05, 0.55, 0.6], [0, 1, 1, 0]);
 
   const headOp = useTransform(p, [0, 0.24, 0.31], [1, 1, 0]);
   const headY = useTransform(p, [0.24, 0.31], [0, -14]);
@@ -208,70 +244,140 @@ export default function SnakeRoute() {
       aria-labelledby="route-heading"
       className="relative h-[320svh] lg:h-[360svh]"
     >
-      <div className="sticky top-0 h-svh overflow-hidden">
-        {/* ------------- the real building, fullscreen parallax -------- */}
-        <motion.div
-          ref={bRef}
-          className="absolute top-0 left-1/2 w-[178vw] -translate-x-1/2 will-change-transform sm:w-[120vw] lg:w-screen"
-          style={{ y: buildingY, aspectRatio: `${B_ASPECT}` }}
-        >
-          <Image
-            src="/buildingtall.jpg"
-            alt="The FOAKH tower from the wind-catcher crown down to the landscaped entrance"
-            fill
-            quality={90}
-            sizes="(min-width:1024px) 46vw, 90vw"
-            className="object-cover"
-          />
-          {/* readability scrim — quiet, photographic */}
-          <span
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(26,15,10,0.42) 0%, rgba(26,15,10,0.14) 34%, rgba(26,15,10,0) 55%)," +
-                "linear-gradient(180deg, rgba(26,15,10,0.18) 0%, transparent 18%, transparent 82%, rgba(26,15,10,0.3) 100%)",
-            }}
-          />
-          {/* airflow whisper toward the crown — stage A only */}
-          <motion.svg
-            aria-hidden="true"
-            className="pointer-events-none absolute top-[9%] left-[-6%] h-[14%] w-[70%]"
-            style={{ opacity: airOp }}
-            viewBox="0 0 100 30"
-            preserveAspectRatio="none"
+      <div className="sticky top-0 h-svh overflow-hidden bg-[#F6EBDD]">
+        {/* ------------- the building constructs itself ---------------- */}
+        <div className="absolute inset-0 flex items-end justify-center overflow-hidden">
+          <motion.div
+            ref={bRef}
+            className="relative will-change-transform"
+            style={{ y: buildingY, height: "112svh", aspectRatio: `${B_ASPECT}` }}
           >
-            <path
-              d="M 2 10 C 22 6, 44 12, 66 9 S 92 8, 98 11 M 4 22 C 24 18, 46 23, 68 19"
-              fill="none"
-              stroke="#78AAA5"
-              strokeWidth="0.5"
-              strokeLinecap="round"
-              strokeDasharray="2.6 3.6"
+            {/* the ghost — what is still to be built */}
+            <Image
+              src="/buildingpov.jpg"
+              alt=""
+              aria-hidden="true"
+              fill
+              quality={70}
+              sizes="(min-width:1024px) 62vw, 100vw"
+              className="object-contain opacity-[0.13] grayscale-[0.35]"
             />
-          </motion.svg>
-        </motion.div>
+
+            {/* the built structure — rises course by course with scroll */}
+            <motion.div className="absolute inset-0" style={{ clipPath: builtClip }}>
+              <Image
+                src="/buildingpov.jpg"
+                alt="The Foakh tower in section — rooftop kite, wind turbine and solar above the residences, amenity floors and entrance"
+                fill
+                quality={88}
+                sizes="(min-width:1024px) 62vw, 100vw"
+                className="object-contain"
+              />
+            </motion.div>
+
+            {/* the construction line: clay edge, sand, brick chips, dust */}
+            <motion.div
+              data-construction
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 h-0"
+              style={{ top: buildLine, opacity: buildActive }}
+            >
+              <span
+                className="absolute inset-x-[7%] -top-[3px] h-[6px] rounded-full"
+                style={{ background: CLAY_EDGE, filter: "blur(1px)" }}
+              />
+              {SAND.map((g, i) => (
+                <span
+                  key={`s${i}`}
+                  className="absolute block rounded-full"
+                  style={
+                    {
+                      left: `${g.x}%`,
+                      width: g.w,
+                      height: g.w,
+                      background: "#E0B183",
+                      "--dx": `${g.dx}px`,
+                      animation: `foakh-sand ${g.dur}s linear ${g.delay}s infinite`,
+                    } as React.CSSProperties
+                  }
+                />
+              ))}
+              {BRICKS.map((br, i) => (
+                <span
+                  key={`b${i}`}
+                  className="absolute block rounded-[1px]"
+                  style={
+                    {
+                      left: `${br.x}%`,
+                      width: br.w,
+                      height: br.w * 0.5,
+                      background: "linear-gradient(180deg, #C4653F, #8A3D2A)",
+                      "--dx": `${br.dx}px`,
+                      "--rot": `${br.rot}deg`,
+                      animation: `foakh-brick ${br.dur}s ease-in ${br.delay}s infinite`,
+                    } as React.CSSProperties
+                  }
+                />
+              ))}
+              {DUSTP.map((d, i) => (
+                <span
+                  key={`d${i}`}
+                  className="absolute block rounded-full blur-md"
+                  style={
+                    {
+                      left: `${d.x}%`,
+                      width: d.w,
+                      height: d.w * 0.5,
+                      background:
+                        "radial-gradient(ellipse at 50% 60%, rgba(226,186,142,0.7), transparent 72%)",
+                      "--dx": `${d.dx}px`,
+                      animation: `foakh-dust ${d.dur}s ease-out ${d.delay}s infinite`,
+                    } as React.CSSProperties
+                  }
+                />
+              ))}
+            </motion.div>
+
+            {/* airflow whisper toward the crown — stage A only */}
+            <motion.svg
+              aria-hidden="true"
+              className="pointer-events-none absolute top-[3%] left-[-10%] h-[12%] w-[64%]"
+              style={{ opacity: airOp }}
+              viewBox="0 0 100 30"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M 2 10 C 22 6, 44 12, 66 9 S 92 8, 98 11 M 4 22 C 24 18, 46 23, 68 19"
+                fill="none"
+                stroke="#78AAA5"
+                strokeWidth="0.5"
+                strokeLinecap="round"
+                strokeDasharray="2.6 3.6"
+              />
+            </motion.svg>
+          </motion.div>
+        </div>
 
         {/* ------------- heading — enters from the left --------------- */}
         <motion.div
           className="absolute top-[8%] left-[6%] z-30 max-w-xl lg:top-[11%] lg:left-[7%]"
           style={{ opacity: headOp, y: headY }}
         >
-          <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#EFD5A3", textShadow: "0 1px 12px rgba(20,10,6,0.7)" }}>
+          <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
             02 — Natural Systems
           </p>
           <h2
             id="route-heading"
             className="font-display mt-4 leading-[1.06] text-balance"
-            style={{ color: "#FFF8EF", fontSize: "clamp(2.3rem,3.8vw,3.9rem)", fontWeight: 500, textShadow: "0 2px 26px rgba(20,10,6,0.75)" }}
+            style={{ color: INK, fontSize: "clamp(2.3rem,3.8vw,3.9rem)", fontWeight: 500 }}
           >
             Nature, engineered for better living.
           </h2>
-          <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(255,248,239,0.92)", textShadow: "0 1px 16px rgba(20,10,6,0.8)" }}>
+          <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
             A connected set of natural-resource systems designed to support airflow, renewable
             power and resilient water planning throughout the development.
           </p>
-          <p className="mt-5 inline-flex items-center gap-2 text-[0.6rem] tracking-[0.24em] uppercase" style={{ color: "rgba(255,248,239,0.75)" }}>
+          <p className="mt-5 inline-flex items-center gap-2 text-[0.6rem] tracking-[0.24em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
             Scroll <span aria-hidden="true">↓</span>
           </p>
         </motion.div>
@@ -293,8 +399,8 @@ export default function SnakeRoute() {
 
         {/* ------------- arrival ---------------------------------------- */}
         <motion.p
-          className="font-display absolute bottom-[10%] left-[6%] z-30 max-w-sm text-[1.35rem] leading-snug italic lg:left-[7%]"
-          style={{ opacity: endOp, y: endY, color: "#FFF8EF", textShadow: "0 2px 18px rgba(20,10,6,0.75)" }}
+          className="font-display absolute bottom-[10%] left-[6%] z-30 max-w-[15rem] text-[1.35rem] leading-snug italic lg:left-[7%]"
+          style={{ opacity: endOp, y: endY, color: "#943F2D" }}
         >
           From natural systems to everyday comfort.
         </motion.p>
@@ -315,7 +421,7 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
   });
   const clay = useTransform(
     p,
-    [st.at[0] + (st.at[1] - st.at[0]) * 0.55, st.at[1] + 0.012],
+    [st.at[0] + (st.at[1] - st.at[0]) * 0.25, st.at[0] + (st.at[1] - st.at[0]) * 0.8],
     [1, 0]
   );
   /* the pieces travel the diagonal: in from upper-left, out lower-right */
@@ -339,10 +445,10 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
         <p className="text-[0.6rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#B95334" }}>
           {st.eyebrow}
         </p>
-        <p className="font-display mt-2.5 leading-[1.12] font-medium" style={{ color: "#7C3428", fontSize: "clamp(1.6rem,2.2vw,2.2rem)" }}>
+        <p className="font-display mt-2.5 leading-[1.12] font-medium" style={{ color: "#7C3428", fontSize: "clamp(1.75rem,2.4vw,2.5rem)" }}>
           {st.heading}
         </p>
-        <p className="mt-3.5 text-[0.92rem] leading-[1.65]" style={{ color: "rgba(42,30,26,0.75)" }}>
+        <p className="mt-4 text-[0.98rem] leading-[1.68]" style={{ color: "rgba(42,30,26,0.75)" }}>
           {st.copy}
         </p>
         <div className="mt-4">
@@ -352,7 +458,7 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
               className={j > 0 ? "mt-3 border-t pt-3" : ""}
               style={j > 0 ? { borderColor: "rgba(170,95,61,0.16)" } : undefined}
             >
-              <p className="text-[0.88rem] font-semibold" style={{ color: INK }}>
+              <p className="text-[0.92rem] font-semibold" style={{ color: INK }}>
                 {item.t}
               </p>
               {item.d && (
@@ -430,7 +536,7 @@ function RailMark({
   return (
     <motion.span
       className="text-[0.6rem] font-semibold tracking-[0.26em] uppercase"
-      style={{ opacity, color: "#EFD5A3", textShadow: "0 1px 10px rgba(20,10,6,0.7)" }}
+      style={{ opacity, color: "#943F2D" }}
     >
       {label}
     </motion.span>

@@ -229,11 +229,11 @@ export default function ResidencesStory() {
         {
           "--blend-from": "#F6EBDD",
           background:
-            "radial-gradient(85% 60% at 74% 20%, rgb(232 121 87 / 0.5) 0%, transparent 58%)," +
-            "radial-gradient(62% 46% at 50% 52%, rgb(216 179 106 / 0.32) 0%, transparent 70%)," +
-            "radial-gradient(55% 45% at 82% 55%, rgb(255 244 229 / 0.14) 0%, transparent 72%)," +
-            "radial-gradient(70% 50% at 14% 84%, rgb(101 155 152 / 0.16) 0%, transparent 60%)," +
-            "linear-gradient(172deg, #A8492E 0%, #C75B3B 34%, #B34F31 62%, #8A3B26 100%)",
+            "radial-gradient(85% 60% at 74% 20%, rgb(255 138 97 / 0.62) 0%, transparent 58%)," +
+            "radial-gradient(62% 46% at 50% 52%, rgb(230 190 108 / 0.4) 0%, transparent 70%)," +
+            "radial-gradient(55% 45% at 82% 55%, rgb(255 244 229 / 0.18) 0%, transparent 72%)," +
+            "radial-gradient(70% 50% at 14% 84%, rgb(101 155 152 / 0.2) 0%, transparent 60%)," +
+            "linear-gradient(172deg, #C6431E 0%, #E85F34 34%, #CC4826 62%, #6E2911 100%)",
         } as React.CSSProperties
       }
     >
@@ -242,7 +242,7 @@ export default function ResidencesStory() {
 
       {/* ---- Apartments & Interiors — intro copy before the deck ----- */}
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pb-16 lg:pb-20">
-        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#F0B269" }}>
+        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
           Apartments &amp; Interiors
         </p>
         <p
@@ -393,10 +393,10 @@ export default function ResidencesStory() {
                   style={{ objectPosition: d.objectPosition }}
                 />
               </figure>
-              <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] uppercase tabular-nums" style={{ color: "#F0B269" }}>
+              <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] uppercase tabular-nums" style={{ color: "#FFC178" }}>
                 {d.quality!.num} — {d.quality!.title}
               </p>
-              <p className="font-display mt-2 leading-[1.08]" style={{ color: "#F2E7D8", fontSize: "1.7rem", fontWeight: 500 }}>
+              <p className="font-display mt-2 leading-[1.08]" style={{ color: "#FFF8EF", fontSize: "1.7rem", fontWeight: 600 }}>
                 {d.quality!.title}
               </p>
               <p className="mt-3 text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
@@ -1118,16 +1118,16 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
       >
         <p
           className="text-[0.82rem] font-semibold tracking-[0.26em] uppercase tabular-nums"
-          style={{ color: "#F0B269" }}
+          style={{ color: "#FFC178" }}
         >
           {q.num} — {q.title}
         </p>
         <p
           className="font-display mt-4 leading-[1.05]"
           style={{
-            color: "#F2E7D8",
+            color: "#FFF8EF",
             fontSize: "clamp(2.4rem,4vw,4.4rem)",
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: "-0.015em",
           }}
         >

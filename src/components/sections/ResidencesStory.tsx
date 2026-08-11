@@ -242,13 +242,6 @@ export default function ResidencesStory() {
 
       {/* ---- Apartments & Interiors — intro copy before the deck ----- */}
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-20 pb-16 lg:pt-28 lg:pb-20">
-        {/* soft mask fading down from the dark duplex finale above, so the
-            hard seam between sections doesn't cut straight across the copy */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-16 lg:h-24"
-          style={{ background: "linear-gradient(to bottom, #1A0F0A 0%, transparent 100%)" }}
-        />
         <p className="relative text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
           Apartments &amp; Interiors
         </p>
@@ -548,7 +541,18 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   const trackX = useTransform(cp, [0.04, 0.92], ["0vw", "-300vw"]);
   const introOp = useTransform(cp, [0, 0.06, 0.11], [1, 1, 0]);
   /* the finale takes over: cream stage crossfades to deep bronze-charcoal */
-  const duplexOp = useTransform(cp, [0.79, 0.89], [0, 1]);
+  const duplexOp = useTransform(cp, [0.79, 0.89, 0.94, 0.995], [0, 1, 1, 0]);
+  /* the section's coral rises and fills the stage over the last stretch,
+     so the pin releases into the same colour instead of cutting from
+     near-black straight to red */
+  const eyebrowOut = useTransform(cp, [0.9, 0.97], [1, 0]);
+  const baseOp = useTransform(cp, [0.94, 0.995], [1, 0]);
+  const handoffOp = useTransform(cp, [0.965, 1], [1, 0.55]);
+  const handoffY = useTransform(cp, (v) => {
+    const t = Math.min(Math.max((v - 0.88) / 0.12, 0), 1);
+    const e = t * t * (3 - 2 * t);
+    return `${104 - e * 128}%`;
+  });
   const counter = [
     useTransform(cp, [0.05, 0.11, 0.28, 0.33], [0, 1, 1, 0]),
     useTransform(cp, [0.28, 0.33, 0.54, 0.59], [0, 1, 1, 0]),
@@ -562,8 +566,15 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
     <div>
       {/* ------------- desktop: pinned horizontal showcase ------------ */}
       <div ref={wrapRef} className="relative hidden lg:block lg:h-[460svh]">
-        <div className="sticky top-0 h-svh overflow-hidden bg-[#F6EBDD]">
+        <div className="sticky top-0 h-svh overflow-hidden">
+          <motion.div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[#F6EBDD]"
+            style={{ opacity: baseOp }}
+          />
           <div className="grain absolute inset-0" aria-hidden="true" />
+          {/* the coral handoff — fills upward, matching the section ground */}
+          {/* rendered after the theme layer below so it sits on top of it */}
           {/* duplex theme layer */}
           <motion.div
             aria-hidden="true"
@@ -576,13 +587,23 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
                 "linear-gradient(165deg, #241410 0%, #1A0F0A 55%, #2A160E 100%)",
             }}
           />
+          <motion.div
+            aria-hidden="true"
+            className="absolute inset-x-0 top-0 h-[130%]"
+            style={{
+              y: handoffY,
+              opacity: handoffOp,
+              background:
+                "linear-gradient(180deg, rgba(199,91,59,0) 0%, rgba(199,91,59,0.55) 9%, #C75B3B 24%, #BE5433 60%, #B85030 100%)",
+            }}
+          />
 
-          <p
+          <motion.p
             className="absolute top-[6%] left-[8%] z-40 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
-            style={{ color: "#A9803C" }}
+            style={{ color: "#A9803C", opacity: eyebrowOut }}
           >
             03 — Residences · The Collection
-          </p>
+          </motion.p>
 
           {/* compact progress — bottom left, the classic strip */}
           <div className="absolute bottom-[6%] left-[8%] z-40 flex items-center gap-4">

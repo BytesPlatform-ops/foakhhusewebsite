@@ -265,7 +265,7 @@ export default function SnakeRoute() {
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             ref={bRef}
-            className="absolute top-0 left-1/2 w-[230vw] -translate-x-1/2 will-change-transform sm:w-[150vw] lg:w-screen"
+            className="absolute top-0 left-1/2 w-[230vw] -translate-x-1/2 will-change-transform sm:w-[150vw] lg:w-full"
             style={{ y: buildingY, aspectRatio: `${FRAME_ASPECT}` }}
           >
             {/* the ghost — what is still to be built */}

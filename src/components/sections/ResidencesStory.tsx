@@ -534,31 +534,31 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   });
   const cp = useSpring(scrollYProgress, { stiffness: 100, damping: 28, mass: 0.4 });
 
-  const trackX = useTransform(cp, [0.04, 0.92], ["0vw", "-300vw"]);
-  const introOp = useTransform(cp, [0, 0.06, 0.11], [1, 1, 0]);
+  const trackX = useTransform(cp, [0.04, 0.71], ["0vw", "-300vw"]);
+  const introOp = useTransform(cp, [0, 0.05, 0.09], [1, 1, 0]);
   /* the finale takes over: cream stage crossfades to deep bronze-charcoal */
-  const duplexOp = useTransform(cp, [0.7, 0.79], [0, 1]);
+  const duplexOp = useTransform(cp, [0.56, 0.64], [0, 1]);
   /* the next section's orange rises over the duplex itself as you scroll
      toward it — one slow radial wave from bottom-centre that reaches full
      cover exactly as the pin hands over, so the colour change and the
      move to the next section are the same gesture */
   const bloom = useTransform(cp, (v) => {
-    const t = Math.min(Math.max((v - 0.88) / 0.12, 0), 1);
+    const t = Math.min(Math.max((v - 0.855) / 0.145, 0), 1);
     const e = t * t * t * (t * (t * 6 - 15) + 10);
     return `circle(${(e * 168).toFixed(2)}% at 50% 100%)`;
   });
   /* the section's coral rises and fills the stage over the last stretch,
      so the pin releases into the same colour instead of cutting from
      near-black straight to red */
-  const eyebrowOut = useTransform(cp, [0.9, 0.97], [1, 0]);
+  const eyebrowOut = useTransform(cp, [0.88, 0.96], [1, 0]);
   /* the section's orange takes the stage over as one circle blooming from
      bottom-centre — eased long and soft (Apple's slow-out curve) so the
      colour arrives rather than switches */
   const counter = [
-    useTransform(cp, [0.05, 0.11, 0.28, 0.33], [0, 1, 1, 0]),
-    useTransform(cp, [0.28, 0.33, 0.54, 0.59], [0, 1, 1, 0]),
-    useTransform(cp, [0.54, 0.59, 0.79, 0.84], [0, 1, 1, 0]),
-    useTransform(cp, [0.79, 0.84, 1, 1.01], [0, 1, 1, 1]),
+    useTransform(cp, [0.048, 0.093, 0.223, 0.261], [0, 1, 1, 0]),
+    useTransform(cp, [0.223, 0.261, 0.421, 0.459], [0, 1, 1, 0]),
+    useTransform(cp, [0.421, 0.459, 0.611, 0.649], [0, 1, 1, 0]),
+    useTransform(cp, [0.611, 0.649, 1, 1.01], [0, 1, 1, 1]),
   ];
 
   if (reduced) return <StackedCategories />;
@@ -566,7 +566,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   return (
     <div>
       {/* ------------- desktop: pinned horizontal showcase ------------ */}
-      <div ref={wrapRef} className="relative hidden lg:block lg:h-[540svh]">
+      <div ref={wrapRef} className="relative hidden lg:block lg:h-[700svh]">
         <div className="sticky top-0 h-svh overflow-hidden">
           <div aria-hidden="true" className="absolute inset-0 bg-[#F6EBDD]" />
           <div className="grain absolute inset-0" aria-hidden="true" />
@@ -671,12 +671,16 @@ function CategoryPanel({
   progress: MotionValue<number>;
   left: number;
 }) {
-  const focal = [0.16, 0.42, 0.67, 0.9][index];
-  const win = 0.12;
+  const focal = [0.13, 0.33, 0.52, 0.695][index];
+  const win = 0.091;
+  /* the finale holds full strength to the release — the colour changes
+     around it, the panel itself never dims */
   const op = useTransform(
     progress,
-    [focal - win, focal - win * 0.55, focal + win * 0.8, focal + win * 1.4],
-    [0, 1, 1, 0.12]
+    index === 3
+      ? [focal - win, focal - win * 0.55, 1.5, 1.6]
+      : [focal - win, focal - win * 0.55, focal + win * 0.8, focal + win * 1.4],
+    index === 3 ? [0, 1, 1, 1] : [0, 1, 1, 0.12]
   );
   const settle = useTransform(progress, [focal - win, focal], [0.96, 1]);
   const mediaY = useTransform(progress, [focal - win, focal + win], ["2.5svh", "-2.5svh"]);

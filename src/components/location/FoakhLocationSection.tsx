@@ -136,9 +136,8 @@ export default function FoakhLocationSection() {
         {/* ------------------------------------------------ desktop -- */}
         <div className="hidden gap-7 lg:grid lg:grid-cols-[57%_minmax(0,1fr)]">
           {/* left information panel */}
-          <BuildIn
-            amount={0.15}
-            className="overflow-hidden rounded-[30px] border border-[#D8AE62]/45 p-10 shadow-[0_40px_80px_-36px_rgba(90,35,18,0.55)] xl:p-12"
+          <div
+            className="relative overflow-hidden rounded-[30px] border border-[#D8AE62]/45 p-10 shadow-[0_40px_80px_-36px_rgba(90,35,18,0.55)] xl:p-12"
             style={PANEL_STYLE}
           >
             {/* faint approved tower drawing in the lower-right */}
@@ -151,7 +150,7 @@ export default function FoakhLocationSection() {
                 <NearbyLocationGrid onPanel />
               </div>
             </div>
-          </BuildIn>
+          </div>
 
           {/* right column: map above the architectural visual */}
           <div className="flex min-w-0 flex-col gap-7">

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { ClayFace, CLAY_BG, CLAY_EDGE } from "@/components/shared/BuildIn";
+import { ClayFace } from "@/components/shared/BuildIn";
 import {
   motion,
   useMotionValue,
@@ -37,28 +37,16 @@ import {
 
 const INK = "#211A17";
 
-/* deterministic construction debris at the build line — SSR-safe */
-const SAND = [
-  { x: 14, w: 3, dx: 4, dur: 1.5, delay: 0 },
-  { x: 27, w: 2, dx: -3, dur: 1.9, delay: 0.4 },
-  { x: 41, w: 3, dx: 2, dur: 1.6, delay: 0.9 },
-  { x: 56, w: 2, dx: -5, dur: 2.1, delay: 0.2 },
-  { x: 68, w: 3, dx: 3, dur: 1.7, delay: 1.1 },
-  { x: 83, w: 2, dx: -2, dur: 2, delay: 0.6 },
-];
-const BRICKS = [
-  { x: 22, w: 11, dx: -6, rot: 26, dur: 2.4, delay: 0.3 },
-  { x: 49, w: 9, dx: 5, rot: -20, dur: 2.7, delay: 1.2 },
-  { x: 74, w: 12, dx: -4, rot: 18, dur: 2.5, delay: 0.8 },
-];
-const DUSTP = [
-  { x: 18, w: 78, dx: -6, dur: 2.6, delay: 0.2 },
-  { x: 46, w: 96, dx: 4, dur: 3, delay: 1 },
-  { x: 72, w: 72, dx: 6, dur: 2.8, delay: 1.7 },
-];
 /* the layer runs taller than the render (1122x1402) so object-cover
    crops the render's own pale margins instead of glaring at the edges */
 const FRAME_ASPECT = 0.7;
+
+/* the heading is lit letter by letter as the façade rises behind it:
+   ink while the cream scrim is there, warm white once the terracotta
+   fills the frame */
+const HEADING_TEXT = "Nature, engineered for better living.";
+const LEAD_TEXT =
+  "A connected set of natural-resource systems designed to support airflow, renewable power and resilient water planning throughout the development.";
 
 const CARD_STYLE: React.CSSProperties = {
   background: "rgba(248, 240, 229, 0.985)",
@@ -215,9 +203,20 @@ export default function SnakeRoute() {
     return e * (t as number);
   });
 
-  const headOp = useTransform(p, [0, 0.24, 0.31], [1, 1, 0]);
-  const headY = useTransform(p, [0.24, 0.31], [0, -14]);
+  const headOp = useTransform(p, [0, 0.28, 0.35], [1, 1, 0]);
+  const headY = useTransform(p, [0.28, 0.35], [0, -14]);
   const airOp = useTransform(p, [0.05, 0.1, 0.24, 0.29], [0, 0.55, 0.55, 0]);
+  /* the eyebrow, lead and cue follow the letters from ink into warm
+     white as the façade takes over behind them */
+  /* the reading side deepens as the letters light, so the white always
+     has ground to sit on — the lights come up, the room goes dark */
+  const headWash = useTransform(p, [0.03, 0.19, 0.28, 0.35], [0, 1, 1, 0]);
+  const eyebrowColour = useTransform(p, [0.04, 0.18], ["#943F2D", "#EFD5A3"]);
+  const cueColour = useTransform(
+    p,
+    [0.14, 0.27],
+    ["rgba(33,26,23,0.5)", "rgba(255,248,239,0.75)"]
+  );
   const endOp = useTransform(p, [0.88, 0.95], [0, 1]);
   const endY = useTransform(p, [0.88, 0.95], [12, 0]);
 
@@ -268,28 +267,56 @@ export default function SnakeRoute() {
           </motion.div>
         </div>
 
+        {/* the wash the lit heading reads against */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-20"
+          style={{
+            opacity: headWash,
+            background:
+              "linear-gradient(112deg, rgba(28,13,7,0.88) 0%, rgba(28,13,7,0.62) 24%, rgba(28,13,7,0.18) 44%, rgba(28,13,7,0) 62%)",
+          }}
+        />
+
         {/* ------------- heading — enters from the left --------------- */}
         <motion.div
           className="absolute top-[8%] left-[6%] z-30 max-w-xl lg:top-[11%] lg:left-[7%]"
           style={{ opacity: headOp, y: headY }}
         >
-          <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
+          <motion.p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: eyebrowColour }}>
             02 — Natural Systems
-          </p>
+          </motion.p>
           <h2
             id="route-heading"
-            className="font-display mt-4 leading-[1.06] text-balance"
-            style={{ color: INK, fontSize: "clamp(2.3rem,3.8vw,3.9rem)", fontWeight: 500 }}
+            className="font-display mt-4 leading-[1.06]"
+            style={{ fontSize: "clamp(2.3rem,3.8vw,3.9rem)", fontWeight: 500 }}
           >
-            Nature, engineered for better living.
+            <span className="sr-only">{HEADING_TEXT}</span>
+            <LitText
+              p={p}
+              text={HEADING_TEXT}
+              start={0.04}
+              span={0.17}
+              win={0.045}
+              from={INK}
+              to="#FFF8EF"
+            />
           </h2>
-          <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
-            A connected set of natural-resource systems designed to support airflow, renewable
-            power and resilient water planning throughout the development.
+          <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65]">
+            <span className="sr-only">{LEAD_TEXT}</span>
+            <LitText
+              p={p}
+              text={LEAD_TEXT}
+              start={0.12}
+              span={0.14}
+              win={0.028}
+              from="rgba(33,26,23,0.72)"
+              to="rgba(255,248,239,0.92)"
+            />
           </p>
-          <p className="mt-5 inline-flex items-center gap-2 text-[0.6rem] tracking-[0.24em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+          <motion.p className="mt-5 inline-flex items-center gap-2 text-[0.6rem] tracking-[0.24em] uppercase" style={{ color: cueColour }}>
             Scroll <span aria-hidden="true">↓</span>
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* ------------- the constant journey line --------------------- */}
@@ -389,6 +416,76 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
   );
 }
 
+/** one letter, lit from ink to warm white at its own moment */
+function Letter({
+  p,
+  ch,
+  start,
+  win,
+  from,
+  to,
+}: {
+  p: MotionValue<number>;
+  ch: string;
+  start: number;
+  win: number;
+  from: string;
+  to: string;
+}) {
+  const colour = useTransform(p, [start, start + win], [from, to]);
+  return <motion.span style={{ color: colour }}>{ch}</motion.span>;
+}
+
+/**
+ * Text lit letter by letter across a scroll window. The heading leads;
+ * the supporting line follows on an offset, so the copy lights up a beat
+ * behind the headline rather than with it.
+ */
+function LitText({
+  p,
+  text,
+  start,
+  span,
+  win,
+  from,
+  to,
+}: {
+  p: MotionValue<number>;
+  text: string;
+  start: number;
+  span: number;
+  win: number;
+  from: string;
+  to: string;
+}) {
+  const words = text.split(" ");
+  const total = text.replace(/ /g, "").length;
+  const plan = words.reduce<{ word: string; from: number }[]>((acc, word) => {
+    const prev = acc[acc.length - 1];
+    return [...acc, { word, from: prev ? prev.from + prev.word.length : 0 }];
+  }, []);
+  return (
+    <span aria-hidden="true">
+      {plan.map(({ word, from: at }, w) => (
+        <span key={`${word}-${w}`} className="inline-block whitespace-nowrap">
+          {word.split("").map((ch, k) => (
+            <Letter
+              key={`${w}-${k}`}
+              p={p}
+              ch={ch}
+              start={start + ((at + k) / Math.max(1, total - 1)) * (span - win)}
+              win={win}
+              from={from}
+              to={to}
+            />
+          ))}
+          {w < plan.length - 1 && <span>&nbsp;</span>}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 /** a companion still that lays itself up in brick courses, slowly */
 function StageStill({
   p,
@@ -418,7 +515,9 @@ function StageStill({
     const e = laid + (lift * lift * (3 - 2 * lift)) / 9;
     return `inset(${(1 - Math.min(1, e)) * 100}% 0% 0% 0%)`;
   });
-  const clay = useTransform(p, [s0 + (s1 - s0) * 0.3, s1 - (s1 - s0) * 0.06], [1, 0]);
+  /* the brick courses lay all the way up before the clay fires clean —
+     the photo never shows through mid-build */
+  const clay = useTransform(p, [s0 + (s1 - s0) * 0.92, s1 + (s1 - s0) * 0.1], [1, 0]);
 
   return (
     <motion.figure

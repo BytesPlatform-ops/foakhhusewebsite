@@ -19,7 +19,7 @@ export default function HomePage() {
   return (
     <>
       <ChapterRail />
-      <div className="bg-[#F6EBDD] lg:pl-[200px]">
+      <div className="bg-[#F5EDE3] lg:pl-[200px]">
         <VideoHero />
         <ElevationBackdrop>
           <ProjectGlance />

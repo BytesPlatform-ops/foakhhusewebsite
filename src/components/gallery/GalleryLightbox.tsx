@@ -110,14 +110,14 @@ export default function GalleryLightbox({
 
           {/* caption — bottom left */}
           <div className="pointer-events-none absolute bottom-5 left-5 lg:bottom-8 lg:left-10">
-            <p className="text-[0.6rem] font-semibold tracking-[0.28em] text-[#D8B36A] uppercase">
+            <p className="text-[0.6rem] font-semibold tracking-[0.28em] text-[#C99355] uppercase">
               {item.category}
             </p>
-            <p className="font-display mt-1.5 text-[1.15rem] text-[#FFF8EF]">{item.title}</p>
+            <p className="font-display mt-1.5 text-[1.15rem] text-[#FAF6F0]">{item.title}</p>
           </div>
 
           {/* count — bottom right */}
-          <p className="pointer-events-none absolute right-5 bottom-5 text-[0.78rem] font-semibold tracking-[0.2em] text-[#FFF8EF]/80 tabular-nums lg:right-10 lg:bottom-8">
+          <p className="pointer-events-none absolute right-5 bottom-5 text-[0.78rem] font-semibold tracking-[0.2em] text-[#FAF6F0]/80 tabular-nums lg:right-10 lg:bottom-8">
             {String(index! + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
           </p>
 
@@ -128,7 +128,7 @@ export default function GalleryLightbox({
             type="button"
             onClick={onClose}
             aria-label="Close gallery"
-            className="absolute top-5 right-5 flex h-11 w-11 items-center justify-center rounded-full border border-[#FFF8EF]/30 text-[#FFF8EF] transition-colors hover:bg-[#FFF8EF]/10 lg:top-7 lg:right-10"
+            className="absolute top-5 right-5 flex h-11 w-11 items-center justify-center rounded-full border border-[#FAF6F0]/30 text-[#FAF6F0] transition-colors hover:bg-[#FAF6F0]/10 lg:top-7 lg:right-10"
           >
             <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true">
               <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -146,7 +146,7 @@ export default function GalleryLightbox({
                 step(dir);
               }}
               aria-label={dir === 1 ? "Next image" : "Previous image"}
-              className={`absolute top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#FFF8EF]/30 text-[#FFF8EF] transition-colors hover:bg-[#FFF8EF]/10 sm:flex ${
+              className={`absolute top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#FAF6F0]/30 text-[#FAF6F0] transition-colors hover:bg-[#FAF6F0]/10 sm:flex ${
                 dir === 1 ? "right-4 lg:right-8" : "left-4 lg:left-8"
               }`}
             >

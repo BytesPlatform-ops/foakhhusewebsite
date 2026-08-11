@@ -32,8 +32,8 @@ import {
  * frames; mobile stacks everything readably.
  */
 
-const IVORY = "#F7F0E8";
-const INK = "#1D1714";
+const IVORY = "#F5EDE3";
+const INK = "#2B211D";
 
 /* ------------------------------------------- 03B — the quality deck -- */
 
@@ -228,13 +228,13 @@ export default function ResidencesStory() {
       className="grain blend-top relative"
       style={
         {
-          "--blend-from": "#F6EBDD",
+          "--blend-from": "#F5EDE3",
           background:
             "radial-gradient(85% 60% at 74% 20%, rgb(255 138 97 / 0.62) 0%, transparent 58%)," +
             "radial-gradient(62% 46% at 50% 52%, rgb(230 190 108 / 0.4) 0%, transparent 70%)," +
             "radial-gradient(55% 45% at 82% 55%, rgb(255 244 229 / 0.18) 0%, transparent 72%)," +
             "radial-gradient(70% 50% at 14% 84%, rgb(101 155 152 / 0.2) 0%, transparent 60%)," +
-            "linear-gradient(172deg, #C6431E 0%, #E85F34 34%, #CC4826 62%, #6E2911 100%)",
+            "linear-gradient(172deg, #94432F 0%, #B65438 34%, #CC4826 62%, #713427 100%)",
         } as React.CSSProperties
       }
     >
@@ -244,7 +244,7 @@ export default function ResidencesStory() {
       {/* ---- Apartments & Interiors — the deck's introduction ------- */}
       <div className="relative">
         <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-16 pb-16 lg:pt-20 lg:pb-20">
-        <p className="relative text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
+        <p className="relative text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#E8CFA4" }}>
           Apartments &amp; Interiors
         </p>
         <p
@@ -275,7 +275,7 @@ export default function ResidencesStory() {
             <motion.p
               className="font-display absolute left-[3.5%] whitespace-nowrap uppercase"
               style={{
-                color: "#EFD5A3",
+                color: "#E8CFA4",
                 fontSize: "clamp(3.4rem,6.2vw,7.2rem)",
                 lineHeight: 1,
                 letterSpacing: "-0.01em",
@@ -327,7 +327,7 @@ export default function ResidencesStory() {
 
           {/* featured corner card */}
           <motion.aside
-            className="absolute right-[4%] bottom-[6%] z-40 w-[19.5rem] overflow-hidden rounded-2xl bg-[#294338] p-3 shadow-[0_34px_70px_-30px_rgba(20,26,22,0.8)]"
+            className="absolute right-[4%] bottom-[6%] z-40 w-[19.5rem] overflow-hidden rounded-2xl bg-[#294A3E] p-3 shadow-[0_34px_70px_-30px_rgba(20,26,22,0.8)]"
             style={reduced ? undefined : { opacity: cardOpacity, y: cardY }}
           >
             <div className="flex gap-3">
@@ -351,7 +351,7 @@ export default function ResidencesStory() {
                 </p>
                 <a
                   href="#enquire"
-                  className="mt-auto inline-block w-fit rounded-full bg-[#C6A46B] px-5 py-3 text-xs font-semibold text-[#1D1714] transition-all duration-300 ease-out hover:scale-[1.03] hover:bg-[#D6B87E]"
+                  className="mt-auto inline-block w-fit rounded-full bg-[#C99355] px-5 py-3 text-xs font-semibold text-[#2B211D] transition-all duration-300 ease-out hover:scale-[1.03] hover:bg-[#D6B87E]"
                 >
                   Register interest
                 </a>
@@ -365,7 +365,7 @@ export default function ResidencesStory() {
       <div className="px-(--spacing-gutter) pb-4 lg:hidden">
         <p
           className="font-display uppercase"
-          style={{ color: "#EFD5A3", fontSize: "clamp(2.3rem,9.5vw,3.6rem)", lineHeight: 1.02, fontWeight: 600 }}
+          style={{ color: "#E8CFA4", fontSize: "clamp(2.3rem,9.5vw,3.6rem)", lineHeight: 1.02, fontWeight: 600 }}
           aria-hidden="true"
         >
           Homes made
@@ -396,10 +396,10 @@ export default function ResidencesStory() {
                   style={{ objectPosition: d.objectPosition }}
                 />
               </figure>
-              <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] uppercase tabular-nums" style={{ color: "#FFC178" }}>
+              <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] uppercase tabular-nums" style={{ color: "#E8CFA4" }}>
                 {d.quality!.num} — {d.quality!.title}
               </p>
-              <p className="font-display mt-2 leading-[1.08]" style={{ color: "#FFF8EF", fontSize: "1.7rem", fontWeight: 600 }}>
+              <p className="font-display mt-2 leading-[1.08]" style={{ color: "#FAF6F0", fontSize: "1.7rem", fontWeight: 600 }}>
                 {d.quality!.title}
               </p>
               <p className="mt-3 text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
@@ -519,8 +519,8 @@ const CAT_PANELS: CatPanelData[] = [
       { t: "Premium Outlook", d: "Signature residences with commanding views." },
     ],
     note: "Only 08 · signature duplex residences.",
-    src: "/balconyfoakh.jpg",
-    alt: "A private penthouse terrace at golden hour, high above the landscape",
+    src: "/foakhduplexbalcony.jpg",
+    alt: "The duplex penthouse terrace and double-height living room at golden hour",
     pos: "50% 42%",
     duplex: true,
   },
@@ -568,7 +568,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
       {/* ------------- desktop: pinned horizontal showcase ------------ */}
       <div ref={wrapRef} className="relative hidden lg:block lg:h-[700svh]">
         <div className="sticky top-0 h-svh overflow-hidden">
-          <div aria-hidden="true" className="absolute inset-0 bg-[#F6EBDD]" />
+          <div aria-hidden="true" className="absolute inset-0 bg-[#F5EDE3]" />
           <div className="grain absolute inset-0" aria-hidden="true" />
           {/* duplex theme layer — black, held to the last pixel */}
           <motion.div
@@ -579,7 +579,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
               background:
                 "radial-gradient(70% 60% at 78% 88%, rgb(214 138 74 / 0.22) 0%, transparent 60%)," +
                 "radial-gradient(55% 45% at 18% 12%, rgb(120 60 30 / 0.25) 0%, transparent 65%)," +
-                "linear-gradient(165deg, #241410 0%, #1A0F0A 55%, #2A160E 100%)",
+                "linear-gradient(165deg, #241410 0%, #241410 55%, #2A160E 100%)",
             }}
           />
           {/* the next section's colour, arriving as a radial wave */}
@@ -589,13 +589,13 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
             style={{
               clipPath: bloom,
               background:
-                "radial-gradient(150% 150% at 50% 100%, #F4703F 0%, #E85F34 52%, #DE5931 100%)",
+                "radial-gradient(150% 150% at 50% 100%, #F4703F 0%, #B65438 52%, #DE5931 100%)",
             }}
           />
 
           <motion.p
             className="absolute top-[6%] left-[8%] z-40 text-[0.65rem] font-medium tracking-[0.3em] uppercase"
-            style={{ color: "#A9803C", opacity: eyebrowOut }}
+            style={{ color: "#94432F", opacity: eyebrowOut }}
           >
             03 — Residences · The Collection
           </motion.p>
@@ -606,7 +606,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
               <motion.span
                 key={c.num}
                 className="text-[0.68rem] font-semibold tabular-nums"
-                style={{ color: "#A9803C", opacity: counter[i] }}
+                style={{ color: "#94432F", opacity: counter[i] }}
               >
                 {c.num} / 04
               </motion.span>
@@ -626,12 +626,12 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
               className="absolute top-0 left-[6vw] flex h-full w-[38vw] flex-col justify-center"
               style={{ opacity: introOp }}
             >
-              <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#A9803C" }}>
+              <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
                 Three categories · One finale
               </p>
               <p
                 className="font-display mt-6 leading-[1.05] font-medium"
-                style={{ color: "#943F2D", fontSize: "clamp(2.6rem,3.4vw,3.6rem)" }}
+                style={{ color: "#94432F", fontSize: "clamp(2.6rem,3.4vw,3.6rem)" }}
               >
                 One exceptional address. Three distinctive categories.
               </p>
@@ -706,7 +706,7 @@ function CategoryPanel({
         <div className="grid w-full grid-cols-[19%_1fr_28%] items-center gap-[2vw] pr-[1.5vw] pl-[5vw]">
           {/* LEFT — the exclusive marker */}
           <motion.div style={{ x: textX }}>
-            <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#EFD5A3" }}>
+            <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#E8CFA4" }}>
               {c.num}
             </p>
             <p className="mt-1.5 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(255,248,239,0.6)" }}>
@@ -714,14 +714,14 @@ function CategoryPanel({
             </p>
             <p
               className="font-display mt-6 leading-[1.04] font-medium"
-              style={{ color: "#FFF8EF", fontSize: "clamp(2.5rem,3.4vw,3.7rem)" }}
+              style={{ color: "#FAF6F0", fontSize: "clamp(2.5rem,3.4vw,3.7rem)" }}
             >
               {c.heading}
             </p>
-            <p className="font-display mt-4 text-[0.98rem] leading-snug italic" style={{ color: "#EFD5A3" }}>
+            <p className="font-display mt-4 text-[0.98rem] leading-snug italic" style={{ color: "#E8CFA4" }}>
               {c.lead}
             </p>
-            <p className="font-display mt-7 leading-none font-semibold" style={{ color: "#C78C49", fontSize: "4.2rem" }}>
+            <p className="font-display mt-7 leading-none font-semibold" style={{ color: "#C99355", fontSize: "4.2rem" }}>
               08
             </p>
             <p className="mt-1.5 max-w-[10rem] text-[0.56rem] font-semibold tracking-[0.2em] uppercase" style={{ color: "rgba(255,248,239,0.7)" }}>
@@ -732,23 +732,23 @@ function CategoryPanel({
           {/* CENTRE — the penthouse collage */}
           <motion.div className="relative -mt-[3svh] h-[68svh]" style={{ scale: settle, y: mediaY }}>
             {/* main terrace */}
-            <figure className="absolute top-0 left-0 h-[74%] w-[78%] overflow-hidden rounded-[14px] border border-[#D8B36A]/75 bg-[#140B07] p-1.5 shadow-[0_44px_88px_-36px_rgba(0,0,0,0.8)]">
+            <figure className="absolute top-0 left-0 h-[74%] w-[78%] overflow-hidden rounded-[14px] border border-[#C99355]/75 bg-[#140B07] p-1.5 shadow-[0_44px_88px_-36px_rgba(0,0,0,0.8)]">
               <div className="relative h-full w-full overflow-hidden rounded-[9px]">
-                <Image src="/balconyfoakh.jpg" alt="A private penthouse terrace at golden hour" fill sizes="34vw" className="object-cover" style={{ objectPosition: "50% 42%" }} />
+                <Image src="/foakhduplexbalcony.jpg" alt="The duplex penthouse terrace opening to a double-height living room at golden hour" fill sizes="34vw" className="object-cover" style={{ objectPosition: "50% 42%" }} />
                 <span aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(200deg, transparent 45%, rgb(14 8 5 / 0.55) 100%)" }} />
-                <span className="absolute bottom-4 left-5 text-[0.58rem] font-bold tracking-[0.28em] uppercase" style={{ color: "#EFD5A3" }}>
+                <span className="absolute bottom-4 left-5 text-[0.58rem] font-bold tracking-[0.28em] uppercase" style={{ color: "#E8CFA4" }}>
                   The grand finale
                 </span>
               </div>
             </figure>
             {/* duplex bedroom */}
-            <figure className="absolute top-[8%] right-0 h-[38%] w-[34%] rotate-[1.6deg] overflow-hidden rounded-[12px] border border-[#D8B36A]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
+            <figure className="absolute top-[8%] right-0 h-[38%] w-[34%] rotate-[1.6deg] overflow-hidden rounded-[12px] border border-[#C99355]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
-                <Image src="/bed.jpg" alt="A penthouse bedroom in soft evening light" fill sizes="16vw" className="object-cover" style={{ objectPosition: "50% 45%" }} />
+                <Image src="/foakhtopbalconyaisle.jpg" alt="The penthouse gallery walk above the city at dusk" fill sizes="16vw" className="object-cover" style={{ objectPosition: "50% 45%" }} />
               </div>
             </figure>
             {/* duplex lounge */}
-            <figure className="absolute bottom-0 right-[10%] h-[36%] w-[42%] -rotate-[1.4deg] overflow-hidden rounded-[12px] border border-[#D8B36A]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
+            <figure className="absolute bottom-0 right-[10%] h-[36%] w-[42%] -rotate-[1.4deg] overflow-hidden rounded-[12px] border border-[#C99355]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
                 <Image src="/drawingroomfoakh.jpg" alt="The double-height penthouse lounge" fill sizes="20vw" className="object-cover" />
               </div>
@@ -763,7 +763,7 @@ function CategoryPanel({
             <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
               {c.points.map((pt) => (
                 <li key={pt.t}>
-                  <p className="text-[0.78rem] font-semibold" style={{ color: "#EFD5A3" }}>
+                  <p className="text-[0.78rem] font-semibold" style={{ color: "#E8CFA4" }}>
                     {pt.t}
                   </p>
                   <p className="text-[0.74rem] leading-[1.55]" style={{ color: "rgba(255,248,239,0.65)" }}>
@@ -796,7 +796,7 @@ function CategoryPanel({
       <div className="grid w-full grid-cols-[23%_1fr_22%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
         {/* LEFT — marker + serif heading + italic lead */}
         <motion.div className="relative z-20" style={{ x: textX }}>
-          <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#A9803C" }}>
+          <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#94432F" }}>
             {c.num}
           </p>
           <p className="mt-1.5 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
@@ -804,7 +804,7 @@ function CategoryPanel({
           </p>
           <p
             className="font-display mt-6 leading-[1.04] font-medium"
-            style={{ color: "#943F2D", fontSize: "clamp(2.2rem,2.9vw,3.1rem)" }}
+            style={{ color: "#94432F", fontSize: "clamp(2.2rem,2.9vw,3.1rem)" }}
           >
             {c.heading}
           </p>
@@ -812,7 +812,7 @@ function CategoryPanel({
             {c.lead}
           </p>
           {dup && (
-            <p className="font-display mt-6 leading-none font-semibold" style={{ color: "#C78C49", fontSize: "3.6rem" }}>
+            <p className="font-display mt-6 leading-none font-semibold" style={{ color: "#C99355", fontSize: "3.6rem" }}>
               08
             </p>
           )}
@@ -820,10 +820,10 @@ function CategoryPanel({
 
         {/* CENTRE — the dominant framed media */}
         <motion.figure
-          className={`relative overflow-hidden rounded-[14px] border bg-[#FFF8EF] p-1.5 ${
+          className={`relative overflow-hidden rounded-[14px] border bg-[#FAF6F0] p-1.5 ${
             dup
-              ? "-mt-[2svh] h-[68svh] border-[#D8B36A]/80 shadow-[0_50px_100px_-40px_rgba(20,10,5,0.75)]"
-              : "-mt-[4svh] h-[62svh] border-[#D8B36A]/55 shadow-[0_36px_70px_-38px_rgba(148,63,45,0.4)]"
+              ? "-mt-[2svh] h-[68svh] border-[#C99355]/80 shadow-[0_50px_100px_-40px_rgba(20,10,5,0.75)]"
+              : "-mt-[4svh] h-[62svh] border-[#C99355]/55 shadow-[0_36px_70px_-38px_rgba(148,63,45,0.4)]"
           }`}
           style={{ scale: settle, y: mediaY }}
         >
@@ -847,14 +847,14 @@ function CategoryPanel({
                       "linear-gradient(200deg, rgb(20 11 7 / 0.12) 0%, rgb(20 11 7 / 0.3) 55%, rgb(14 8 5 / 0.78) 100%)",
                   }}
                 />
-                <span className="absolute bottom-5 left-6 text-[0.6rem] font-bold tracking-[0.3em] uppercase" style={{ color: "#EFD5A3" }}>
+                <span className="absolute bottom-5 left-6 text-[0.6rem] font-bold tracking-[0.3em] uppercase" style={{ color: "#E8CFA4" }}>
                   The grand finale
                 </span>
                 <span className="absolute right-6 bottom-5 flex gap-2">
                   {["Private Pools", "Signature Residences"].map((cue) => (
                     <span
                       key={cue}
-                      className="rounded-full border border-[#EFD5A3]/50 bg-[#140B07]/45 px-3 py-1.5 text-[0.55rem] font-semibold tracking-[0.16em] uppercase backdrop-blur-[2px]"
+                      className="rounded-full border border-[#E8CFA4]/50 bg-[#140B07]/45 px-3 py-1.5 text-[0.55rem] font-semibold tracking-[0.16em] uppercase backdrop-blur-[2px]"
                       style={{ color: "rgba(255,248,239,0.92)" }}
                     >
                       {cue}
@@ -877,13 +877,13 @@ function CategoryPanel({
 
         {/* RIGHT — reading column */}
         <motion.div style={{ x: textX2 }}>
-          <p className="text-[0.88rem] leading-[1.6]" style={{ color: dup ? "#211A17" : "rgba(33,26,23,0.78)" }}>
+          <p className="text-[0.88rem] leading-[1.6]" style={{ color: dup ? "#2B211D" : "rgba(33,26,23,0.78)" }}>
             {c.body}
           </p>
           <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
             {c.points.map((pt) => (
               <li key={pt.t}>
-                <p className="text-[0.78rem] font-semibold" style={{ color: "#943F2D" }}>
+                <p className="text-[0.78rem] font-semibold" style={{ color: "#94432F" }}>
                   {pt.t}
                 </p>
                 <p className="text-[0.74rem] leading-[1.55]" style={{ color: "rgba(33,26,23,0.65)" }}>
@@ -905,25 +905,25 @@ function CategoryPanel({
 function StackedCategories({ embedded = false }: { embedded?: boolean }) {
   const body = (
     <div className="relative mx-auto max-w-2xl px-6 py-20">
-      <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#A9803C" }}>
+      <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
         03 — Residences · The Collection
       </p>
       <p
         className="font-display mt-5 leading-[1.08] font-medium"
-        style={{ color: "#943F2D", fontSize: "clamp(2.2rem,7vw,3rem)" }}
+        style={{ color: "#94432F", fontSize: "clamp(2.2rem,7vw,3rem)" }}
       >
         One exceptional address. Three distinctive categories.
       </p>
       <div className="mt-12 space-y-16">
         {CAT_PANELS.map((c) => (
           <article key={c.num} aria-label={`${c.num} — ${c.label}`}>
-            <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#A9803C" }}>
+            <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#94432F" }}>
               {c.num} <span style={{ color: "rgba(33,26,23,0.45)" }}>/ 04</span>
             </p>
             <p className="mt-1 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
               {c.label}
             </p>
-            <div className="relative mt-4 aspect-[4/3] overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1">
+            <div className="relative mt-4 aspect-[4/3] overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1">
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
                 <Image src={c.src} alt={c.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: c.pos ?? "50% 50%" }} />
                 {c.duplex && (
@@ -937,7 +937,7 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
             </div>
             <p
               className="font-display mt-5 leading-[1.05] font-medium"
-              style={{ color: "#943F2D", fontSize: "clamp(1.7rem,5.4vw,2.3rem)" }}
+              style={{ color: "#94432F", fontSize: "clamp(1.7rem,5.4vw,2.3rem)" }}
             >
               {c.heading}
             </p>
@@ -950,7 +950,7 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
             <ul className="mt-3 space-y-2 border-t pt-3" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
               {c.points.map((pt) => (
                 <li key={pt.t}>
-                  <p className="text-[0.8rem] font-semibold" style={{ color: "#943F2D" }}>
+                  <p className="text-[0.8rem] font-semibold" style={{ color: "#94432F" }}>
                     {pt.t}
                   </p>
                   <p className="text-[0.76rem] leading-[1.55]" style={{ color: "rgba(33,26,23,0.65)" }}>
@@ -969,8 +969,8 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
     </div>
   );
 
-  if (embedded) return <div className="bg-[#F6EBDD]">{body}</div>;
-  return <div className="bg-[#F6EBDD]">{body}</div>;
+  if (embedded) return <div className="bg-[#F5EDE3]">{body}</div>;
+  return <div className="bg-[#F5EDE3]">{body}</div>;
 }
 
 
@@ -993,12 +993,12 @@ function PenthouseEnquiry({ className = "" }: { className?: string }) {
     <form
       aria-label="Enquire about the duplex penthouses"
       onSubmit={(e) => e.preventDefault()}
-      className={`rounded-[14px] border border-[#D8B36A]/50 bg-[#FFF8EF] p-4 shadow-[0_20px_44px_-26px_rgba(0,0,0,0.6)] ${className}`}
+      className={`rounded-[14px] border border-[#C99355]/50 bg-[#FAF6F0] p-4 shadow-[0_20px_44px_-26px_rgba(0,0,0,0.6)] ${className}`}
     >
-      <p className="text-[0.55rem] font-bold tracking-[0.24em] uppercase" style={{ color: "#C78C49" }}>
+      <p className="text-[0.55rem] font-bold tracking-[0.24em] uppercase" style={{ color: "#C99355" }}>
         Penthouse enquiry
       </p>
-      <p className="font-display mt-1 text-[1.05rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
+      <p className="font-display mt-1 text-[1.05rem] leading-snug font-medium" style={{ color: "#94432F" }}>
         Register for the eight.
       </p>
       <div className="mt-3 space-y-2">
@@ -1013,7 +1013,7 @@ function PenthouseEnquiry({ className = "" }: { className?: string }) {
               type={f.type}
               autoComplete={f.auto}
               placeholder={f.label}
-              className="w-full rounded-md border border-[#D8B36A]/45 bg-[#FFFCF7] px-3 py-2 text-[0.8rem] text-[#211A17] transition-colors outline-none placeholder:text-[#211A17]/40 focus:border-[#C78C49]"
+              className="w-full rounded-md border border-[#C99355]/45 bg-[#FAF6F0] px-3 py-2 text-[0.8rem] text-[#2B211D] transition-colors outline-none placeholder:text-[#2B211D]/40 focus:border-[#C99355]"
             />
           </div>
         ))}
@@ -1023,7 +1023,7 @@ function PenthouseEnquiry({ className = "" }: { className?: string }) {
         disabled
         aria-disabled="true"
         title="Penthouse enquiries activate once the sales inbox is confirmed"
-        className="mt-3 w-full cursor-not-allowed rounded-full bg-[#C78C49]/45 px-4 py-2.5 text-[0.78rem] font-bold text-[#1A0F0A]"
+        className="mt-3 w-full cursor-not-allowed rounded-full bg-[#C99355]/45 px-4 py-2.5 text-[0.78rem] font-bold text-[#241410]"
       >
         Enquire About Penthouses
       </button>
@@ -1112,7 +1112,7 @@ function DeckCard({
         />
         <motion.span
           aria-hidden="true"
-          className="absolute inset-0 bg-[#1D1714]"
+          className="absolute inset-0 bg-[#2B211D]"
           style={{ opacity: reduced ? 0 : dim }}
         />
       </motion.figure>
@@ -1145,14 +1145,14 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
       >
         <p
           className="text-[0.82rem] font-semibold tracking-[0.26em] uppercase tabular-nums"
-          style={{ color: "#FFC178" }}
+          style={{ color: "#E8CFA4" }}
         >
           {q.num} — {q.title}
         </p>
         <p
           className="font-display mt-4 leading-[1.05]"
           style={{
-            color: "#FFF8EF",
+            color: "#FAF6F0",
             fontSize: "clamp(2.4rem,4vw,4.4rem)",
             fontWeight: 600,
             letterSpacing: "-0.015em",

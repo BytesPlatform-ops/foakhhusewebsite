@@ -30,7 +30,7 @@ import {
  * readable spread before unpinning.
  */
 
-const INK = "#241B17";
+const INK = "#2B211D";
 
 export default function DesignedAroundNature() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -127,7 +127,7 @@ export default function DesignedAroundNature() {
         <div className="grain absolute inset-0" aria-hidden="true" />
 
         {/* eyebrow */}
-        <p className="absolute top-[5%] left-[5%] z-40 text-[0.62rem] font-medium tracking-[0.3em] text-[#9A5D43] uppercase">
+        <p className="absolute top-[5%] left-[5%] z-40 text-[0.62rem] font-medium tracking-[0.3em] text-[#94432F] uppercase">
           01 — Project Vision
         </p>
 
@@ -194,7 +194,7 @@ export default function DesignedAroundNature() {
               style={{ objectPosition: "62% 45%" }}
             />
           </motion.div>
-          <motion.span aria-hidden="true" className="absolute inset-0 bg-[#241B17]" style={{ opacity: f1Shade }} />
+          <motion.span aria-hidden="true" className="absolute inset-0 bg-[#2B211D]" style={{ opacity: f1Shade }} />
         </motion.figure>
 
         {/* ---------------- Frame Two: environment context --------------- */}
@@ -204,7 +204,7 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f2InnerScale }}>
             <Image
-              src="/waterdesalination.png"
+              src="/waterdesalination.jpg"
               alt="The integrated water treatment and desalination system running through the building"
               fill
               sizes="40vw"
@@ -212,7 +212,7 @@ export default function DesignedAroundNature() {
               style={{ objectPosition: "50% 35%" }}
             />
           </motion.div>
-          <motion.span aria-hidden="true" className="absolute inset-0 bg-[#241B17]" style={{ opacity: f2Shade }} />
+          <motion.span aria-hidden="true" className="absolute inset-0 bg-[#2B211D]" style={{ opacity: f2Shade }} />
         </motion.figure>
 
         {/* ---------------- Frame Three: compact solar detail ------------ */}
@@ -222,7 +222,7 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f3InnerScale }}>
             <Image
-              src="/windenergy.png"
+              src="/windenergy.jpg"
               alt="Rooftop wind turbines, solar panels and the kite winch catching first light"
               fill
               sizes="20vw"
@@ -240,17 +240,17 @@ export default function DesignedAroundNature() {
         </motion.div>
 
         {/* ---------------- supporting copy + CTA ------------------------ */}
-        <motion.div className="absolute right-[6%] bottom-[7%] z-40 max-w-xs rounded-md border border-[#241B17]/10 bg-[#FFF8EF]/95 p-5 text-left shadow-[0_18px_44px_-28px_rgba(36,27,23,0.45)] backdrop-blur-sm lg:max-w-sm" style={{ opacity: copyOpacity }}>
-          <p className="font-display text-xl leading-snug font-medium text-[#241B17] md:text-2xl">
+        <motion.div className="absolute right-[6%] bottom-[7%] z-40 max-w-xs rounded-md border border-[#2B211D]/10 bg-[#FAF6F0]/95 p-5 text-left shadow-[0_18px_44px_-28px_rgba(36,27,23,0.45)] backdrop-blur-sm lg:max-w-sm" style={{ opacity: copyOpacity }}>
+          <p className="font-display text-xl leading-snug font-medium text-[#2B211D] md:text-2xl">
             Architecture that responds to air, energy, water and everyday comfort.
           </p>
-          <p className="mt-3 text-[0.82rem] leading-relaxed text-[#241B17]/75 md:text-[0.9rem]">
+          <p className="mt-3 text-[0.82rem] leading-relaxed text-[#2B211D]/75 md:text-[0.9rem]">
             Natural airflow, renewable-energy planning, future-ready water systems and refined residential living — brought together in one considered development.
           </p>
           <motion.a
             href="#route"
             style={{ opacity: ctaOpacity }}
-            className="pointer-events-auto mt-5 inline-block rounded-lg border border-[#9A5D43]/50 px-5 py-2.5 text-sm font-medium text-[#241B17] transition-colors hover:bg-[#9A5D43] hover:text-[#F7F0E8]"
+            className="pointer-events-auto mt-5 inline-block rounded-lg border border-[#94432F]/50 px-5 py-2.5 text-sm font-medium text-[#2B211D] transition-colors hover:bg-[#94432F] hover:text-[#F5EDE3]"
           >
             Explore the Project
           </motion.a>
@@ -258,10 +258,10 @@ export default function DesignedAroundNature() {
 
         {/* ---------------- chapter progress ------------------------------ */}
         <div className="absolute bottom-[5%] left-1/2 z-40 hidden -translate-x-1/2 items-center gap-3 lg:flex">
-          <span className="text-[0.6rem] tracking-[0.24em] text-[#241B17]/50">02</span>
-          <span className="relative h-px w-28 bg-[#241B17]/15">
+          <span className="text-[0.6rem] tracking-[0.24em] text-[#2B211D]/50">02</span>
+          <span className="relative h-px w-28 bg-[#2B211D]/15">
             <motion.span
-              className="absolute inset-y-0 left-0 w-full origin-left bg-[#9A5D43]"
+              className="absolute inset-y-0 left-0 w-full origin-left bg-[#94432F]"
               style={{ scaleX: progressX }}
             />
           </span>
@@ -290,8 +290,8 @@ function SystemLabel({
       className={`absolute flex items-center gap-2.5 ${lineTo === "right" ? "flex-row-reverse" : ""}`}
       style={{ left: x, top: y }}
     >
-      <span className="h-px w-12 bg-[#241B17]/40" />
-      <span className="text-[0.6rem] font-medium tracking-[0.24em] whitespace-nowrap text-[#241B17]/80 uppercase">
+      <span className="h-px w-12 bg-[#2B211D]/40" />
+      <span className="text-[0.6rem] font-medium tracking-[0.24em] whitespace-nowrap text-[#2B211D]/80 uppercase">
         {text}
       </span>
     </span>
@@ -318,7 +318,7 @@ function StaticSpread() {
       id="nature"
       data-section="nature"
       aria-labelledby="nature-heading"
-      className="relative overflow-hidden bg-[#EFE3D0] py-24"
+      className="relative overflow-hidden bg-[#EEE1D3] py-24"
     >
       <MineralMarks />
       <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center opacity-40">
@@ -331,37 +331,37 @@ function StaticSpread() {
         />
       </div>
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
-        <p className="text-[0.62rem] font-medium tracking-[0.3em] text-[#9A5D43] uppercase">
+        <p className="text-[0.62rem] font-medium tracking-[0.3em] text-[#94432F] uppercase">
           01 — Project Vision
         </p>
         <h2
           id="nature-heading"
-          className="font-display mt-6 max-w-[14ch] text-[clamp(2.4rem,6vw,5.4rem)] leading-[1.02] font-medium text-[#241B17]"
+          className="font-display mt-6 max-w-[14ch] text-[clamp(2.4rem,6vw,5.4rem)] leading-[1.02] font-medium text-[#2B211D]"
         >
           Designed around how you live.
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
             { src: "/buildingtop.jpg", alt: "The rooftop wind catcher, kite and turbines above the terracotta crown", label: "Natural airflow" },
-            { src: "/windenergy.png", alt: "Rooftop wind turbines, solar panels and the kite winch at sunset", label: "Renewable energy" },
-            { src: "/waterdesalination.png", alt: "The integrated water treatment and desalination system running through the building", label: "Water systems" },
+            { src: "/windenergy.jpg", alt: "Rooftop wind turbines, solar panels and the kite winch at sunset", label: "Renewable energy" },
+            { src: "/waterdesalination.jpg", alt: "The integrated water treatment and desalination system running through the building", label: "Water systems" },
           ].map((f) => (
             <figure key={f.src} className="relative">
               <div className="relative aspect-[4/3] overflow-hidden rounded-md">
                 <Image src={f.src} alt={f.alt} fill sizes="33vw" className="object-cover" />
               </div>
-              <figcaption className="mt-2 text-[0.6rem] tracking-[0.24em] text-[#241B17]/70 uppercase">
+              <figcaption className="mt-2 text-[0.6rem] tracking-[0.24em] text-[#2B211D]/70 uppercase">
                 {f.label}
               </figcaption>
             </figure>
           ))}
         </div>
-        <p className="mt-8 max-w-md text-[0.9rem] leading-relaxed text-[#241B17]/75">
+        <p className="mt-8 max-w-md text-[0.9rem] leading-relaxed text-[#2B211D]/75">
           Natural airflow, renewable-energy planning, future-ready water systems and refined residential living — brought together in one considered development.
         </p>
         <a
           href="#route"
-          className="mt-6 inline-block rounded-lg border border-[#9A5D43]/50 px-5 py-2.5 text-sm font-medium text-[#241B17] transition-colors hover:bg-[#9A5D43] hover:text-[#F7F0E8]"
+          className="mt-6 inline-block rounded-lg border border-[#94432F]/50 px-5 py-2.5 text-sm font-medium text-[#2B211D] transition-colors hover:bg-[#94432F] hover:text-[#F5EDE3]"
         >
           Explore the Project
         </a>

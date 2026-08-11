@@ -35,17 +35,17 @@ export default function FinalCTA() {
     <section
       id="enquire"
       data-section="enquire"
-      className="relative overflow-hidden bg-[#F6EBDD] py-(--spacing-section)"
+      className="relative overflow-hidden bg-[#F5EDE3] py-(--spacing-section)"
       aria-labelledby="enquire-heading"
     >
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         {/* deep forest CONTAINED panel — the one deep surface on the page */}
         <div
-          className="grain relative overflow-hidden rounded-[32px] border border-[#D8B36A]/40 p-8 shadow-[0_44px_90px_-40px_rgba(31,58,48,0.55)] sm:p-12 lg:p-14"
+          className="grain relative overflow-hidden rounded-[32px] border border-[#C99355]/40 p-8 shadow-[0_44px_90px_-40px_rgba(31,58,48,0.55)] sm:p-12 lg:p-14"
           style={{
             background:
               "radial-gradient(80% 55% at 88% 0%, rgb(101 155 152 / 0.28) 0%, transparent 55%)," +
-              "linear-gradient(160deg, #2E5245 0%, #294A3E 55%, #1F3A30 100%)",
+              "linear-gradient(160deg, #294A3E 0%, #294A3E 55%, #294A3E 100%)",
           }}
         >
         {/* ---- Long-term value ---- */}
@@ -141,10 +141,10 @@ export default function FinalCTA() {
 /* then everything rests. Reduced motion renders the settled drawing. */
 /* ================================================================== */
 
-const G = "#D8B36A";
+const G = "#C99355";
 const G2 = "rgba(216, 179, 106, 0.38)";
 const LIT = "#F6D48A";
-const AIR = "#78AAA5";
+const AIR = "#78AFC1";
 const PIN = "#E87957";
 
 const FLOORS = 12;

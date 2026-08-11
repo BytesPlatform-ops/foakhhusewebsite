@@ -25,7 +25,7 @@ export default function ElevationBackdrop({ children }: { children: React.ReactN
   const opacity = useTransform(p, [0, 0.012, 0.985, 1], [0, 1, 1, 0]);
 
   return (
-    <div ref={ref} className="relative bg-[#F6EBDD]">
+    <div ref={ref} className="relative bg-[#F5EDE3]">
       <motion.div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 flex items-center justify-center lg:left-[200px]"

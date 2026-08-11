@@ -163,16 +163,16 @@ export default function ProjectGlance() {
           className="absolute inset-x-0 top-[30%] mx-auto max-w-3xl px-6 text-center lg:top-[26%]"
           style={{ opacity: textOpacity, y: textY, filter: textBlur }}
         >
-          <p className="text-[0.65rem] font-medium tracking-[0.32em] text-[#C6A46B] uppercase">
+          <p className="text-[0.65rem] font-medium tracking-[0.32em] text-[#C99355] uppercase">
             {COPY.eyebrow}
           </p>
           <h2
             id="glance-heading"
-            className="font-display mt-5 text-[clamp(2.1rem,4.6vw,4.1rem)] leading-[1.06] font-medium text-[#F7F0E8] text-balance"
+            className="font-display mt-5 text-[clamp(2.1rem,4.6vw,4.1rem)] leading-[1.06] font-medium text-[#F5EDE3] text-balance"
           >
             {COPY.headline}
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-[0.85rem] leading-relaxed font-light text-[#F3E7D8]/85 md:text-[0.95rem]">
+          <p className="mx-auto mt-6 max-w-xl text-[0.85rem] leading-relaxed font-light text-[#EEE1D3]/85 md:text-[0.95rem]">
             {COPY.body}
           </p>
         </motion.div>
@@ -182,15 +182,15 @@ export default function ProjectGlance() {
           className="absolute inset-x-0 bottom-[7%] mx-auto flex max-w-3xl flex-col items-center gap-4 px-6 text-center"
           style={{ opacity: innerOpacity, y: innerY }}
         >
-          <p className="text-[0.62rem] tracking-[0.3em] text-[#9C6247] uppercase">
+          <p className="text-[0.62rem] tracking-[0.3em] text-[#94432F] uppercase">
             Beyond the gate
           </p>
-          <p className="font-display text-xl font-medium text-[#1D1714] md:text-2xl">
+          <p className="font-display text-xl font-medium text-[#2B211D] md:text-2xl">
             {COPY.caption}
           </p>
           <a
             href="#residences"
-            className="mt-1 rounded-lg border border-[#9C6247]/45 px-6 py-3 text-sm font-medium text-[#1D1714] transition-colors hover:bg-[#9C6247] hover:text-[#F7F0E8]"
+            className="mt-1 rounded-lg border border-[#94432F]/45 px-6 py-3 text-sm font-medium text-[#2B211D] transition-colors hover:bg-[#94432F] hover:text-[#F5EDE3]"
           >
             Explore the Residences
           </a>
@@ -251,7 +251,7 @@ function ProjectIntroduction() {
         };
 
   return (
-    <div ref={ref} className="relative overflow-hidden bg-[#F6EBDD] py-20 lg:py-24">
+    <div ref={ref} className="relative overflow-hidden bg-[#F5EDE3] py-20 lg:py-24">
       {/* quiet ground outside the sheet — soft glow only, no drawing */}
       <div
         aria-hidden="true"
@@ -271,7 +271,7 @@ function ProjectIntroduction() {
         <div
           className="grain relative overflow-hidden rounded-[8px] border p-6 sm:p-9 lg:p-12"
           style={{
-            background: "#F7ECDE",
+            background: "#F5EDE3",
             borderColor: "rgba(155,82,55,0.34)",
             boxShadow:
               "0 60px 100px -44px rgba(90,45,25,0.45), 0 22px 44px -24px rgba(90,45,25,0.28)",
@@ -332,12 +332,12 @@ function ProjectIntroduction() {
           <motion.div className="relative" style={reduced ? undefined : { opacity: contentOpacity }}>
             {/* top-left: eyebrow / heading / lead */}
             <motion.div {...rise(0)} className="max-w-xl">
-              <p className="text-[0.65rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#C78C49" }}>
+              <p className="text-[0.65rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#C99355" }}>
                 01 — The Project
               </p>
               <h3
                 className="font-display mt-3 leading-[1.05] uppercase"
-                style={{ color: "#8E432F", fontSize: "clamp(2rem,3.4vw,3.4rem)", fontWeight: 600 }}
+                style={{ color: "#94432F", fontSize: "clamp(2rem,3.4vw,3.4rem)", fontWeight: 600 }}
               >
                 Designed around nature
               </h3>
@@ -357,20 +357,20 @@ function ProjectIntroduction() {
                   boxShadow: "0 0 34px 22px rgba(247,236,222,0.82)",
                 }}
               >
-                <p className="max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
+                <p className="max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#625750" }}>
                   Foakh Wind Corridor Enclave is an exclusive 12-storey residential development
                   in DHA City, Karachi, comprising Umer Block and Abdullah Block. With 160
                   carefully planned apartments and eight duplex penthouses with independent
                   swimming pools, the development brings together privacy, spacious living and
                   a distinctive contemporary architectural identity.
                 </p>
-                <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
+                <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#625750" }}>
                   The project has been conceived around the intelligent use of natural
                   resources. Wind turbines, solar energy and kite energy form part of its
                   renewable-energy strategy, while a dedicated wind-catcher system captures
                   high-velocity natural air and directs it through the development.
                 </p>
-                <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#51443D" }}>
+                <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#625750" }}>
                   Together, these systems are intended to enhance natural ventilation, reduce
                   heat buildup and lower dependence on conventional cooling and grid
                   electricity. Based on optimum engineering performance, residents may benefit
@@ -398,10 +398,10 @@ function ProjectIntroduction() {
                       boxShadow: "0 14px 30px -20px rgba(90,45,25,0.35)",
                     }}
                   >
-                    <p className="font-display text-[1.05rem] leading-snug font-medium" style={{ color: "#8E432F" }}>
+                    <p className="font-display text-[1.05rem] leading-snug font-medium" style={{ color: "#94432F" }}>
                       {h.title}
                     </p>
-                    <p className="mt-2 text-[0.85rem] leading-[1.6]" style={{ color: "#51443D" }}>
+                    <p className="mt-2 text-[0.85rem] leading-[1.6]" style={{ color: "#625750" }}>
                       {h.copy}
                     </p>
                   </BuildIn>
@@ -415,13 +415,13 @@ function ProjectIntroduction() {
               className="mt-10 flex flex-col items-start gap-5 border-t pt-6 sm:flex-row sm:items-center sm:justify-between"
               style={{ borderColor: "rgba(155,82,55,0.28)" }}
             >
-              <p className="text-[0.74rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#8E432F" }}>
+              <p className="text-[0.74rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#94432F" }}>
                 The future of responsible urban living starts here.
               </p>
               <a
                 href="#residences"
                 className="inline-block shrink-0 rounded-lg px-6 py-3 text-sm font-semibold transition-colors"
-                style={{ background: "#8E432F", color: "#FFF8EF" }}
+                style={{ background: "#94432F", color: "#FAF6F0" }}
               >
                 Explore the Residences
               </a>
@@ -440,7 +440,7 @@ function StaticFrame() {
       id="glance"
       data-section="glance"
       aria-labelledby="glance-heading"
-      className="relative flex min-h-svh items-center overflow-hidden bg-[#1D1714]"
+      className="relative flex min-h-svh items-center overflow-hidden bg-[#2B211D]"
     >
       <Image
         src="/buildingfront.jpg"
@@ -452,23 +452,23 @@ function StaticFrame() {
       />
       <div aria-hidden="true" className="absolute inset-0 bg-[#14100d]/40" />
       <div className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center">
-        <p className="text-[0.65rem] font-medium tracking-[0.32em] text-[#C6A46B] uppercase">
+        <p className="text-[0.65rem] font-medium tracking-[0.32em] text-[#C99355] uppercase">
           {COPY.eyebrow}
         </p>
         <h2
           id="glance-heading"
-          className="font-display mt-5 text-[clamp(2.1rem,4.6vw,4.1rem)] leading-[1.06] font-medium text-[#F7F0E8] text-balance"
+          className="font-display mt-5 text-[clamp(2.1rem,4.6vw,4.1rem)] leading-[1.06] font-medium text-[#F5EDE3] text-balance"
         >
           {COPY.headline}
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-[0.9rem] leading-relaxed font-light text-[#F3E7D8]/85">
+        <p className="mx-auto mt-6 max-w-xl text-[0.9rem] leading-relaxed font-light text-[#EEE1D3]/85">
           {COPY.body}
         </p>
-        <p className="mt-8 text-[0.65rem] tracking-[0.26em] text-[#F7F0E8]/75 uppercase">
+        <p className="mt-8 text-[0.65rem] tracking-[0.26em] text-[#F5EDE3]/75 uppercase">
           {COPY.caption}
         </p>
       </div>
-      <div className="relative bg-[#F6EBDD]">
+      <div className="relative bg-[#F5EDE3]">
         <ProjectIntroduction />
       </div>
     </section>

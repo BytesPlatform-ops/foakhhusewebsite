@@ -39,14 +39,14 @@ const ITEMS: GalleryItem[] = [
     aspect: "aspect-[4/4.4]",
   },
   {
-    src: "/foakhevening.png",
+    src: "/foakhevening.jpg",
     alt: "The two residential blocks glowing against a dramatic sunset sky",
     category: "Architecture",
     title: "Golden hour arrival",
     aspect: "aspect-[4/5]",
   },
   {
-    src: "/foakhnight.png",
+    src: "/foakhnight.jpg",
     alt: "The two residential blocks illuminated at night beneath the kite energy line",
     category: "Architecture",
     title: "The towers after dark",
@@ -60,7 +60,7 @@ const ITEMS: GalleryItem[] = [
     aspect: "aspect-[4/3]",
   },
   {
-    src: "/kiteenergyimg.png",
+    src: "/kiteenergyimg.jpg",
     alt: "A close view of the rooftop kite winch, wind turbines and solar panels at work",
     category: "Rooftop systems",
     title: "The kite winch at work",
@@ -137,11 +137,32 @@ const ITEMS: GalleryItem[] = [
     aspect: "aspect-[4/3]",
   },
   {
-    src: "/hero-poster.jpg",
-    alt: "Evening elevation of Foakh Wind Corridor Enclave",
-    category: "Architecture",
-    title: "Evening elevation",
+    src: "/waterdesalination.jpg",
+    alt: "The reverse-osmosis desalination plant feeding the building's water network",
+    category: "Water systems",
+    title: "Desalination plant",
+    aspect: "aspect-[4/5]",
+  },
+  {
+    src: "/windturbineimagefinal.jpg",
+    alt: "Rooftop wind turbines on the crown at sunset",
+    category: "Renewable systems",
+    title: "Wind turbines",
     aspect: "aspect-[4/3]",
+  },
+  {
+    src: "/foakhindoorswmpool.jpg",
+    alt: "The indoor swimming pool at night with the fitness gallery above",
+    category: "Amenities",
+    title: "The indoor pool",
+    aspect: "aspect-[4/5]",
+  },
+  {
+    src: "/foakhparking.jpg",
+    alt: "The covered resident parking level with its controlled entry",
+    category: "Amenities",
+    title: "Resident parking",
+    aspect: "aspect-[16/10]",
   },
 ];
 
@@ -161,7 +182,7 @@ export default function GallerySection() {
       id="gallery"
       data-section="gallery"
       aria-labelledby="gallery-heading"
-      className="relative bg-[#F6EBDD] py-(--spacing-section)"
+      className="relative bg-[#F5EDE3] py-(--spacing-section)"
     >
       <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         <Eyebrow num="05">Gallery</Eyebrow>
@@ -198,7 +219,7 @@ export default function GallerySection() {
                   setOpen(i);
                 }}
                 aria-label={`Open image: ${item.title} — ${item.category}`}
-                className={`group relative block w-full cursor-pointer overflow-hidden rounded-[18px] border border-[#D8B36A]/35 shadow-[0_20px_44px_-26px_rgba(90,45,22,0.4)] ${item.aspect}`}
+                className={`group relative block w-full cursor-pointer overflow-hidden rounded-[18px] border border-[#C99355]/35 shadow-[0_20px_44px_-26px_rgba(90,45,22,0.4)] ${item.aspect}`}
               >
                 <Image
                   src={item.src}
@@ -210,22 +231,22 @@ export default function GallerySection() {
                 {/* readable scrim for the category label */}
                 <span
                   aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-[38%] bg-gradient-to-t from-[#211A17]/55 to-transparent transition-opacity duration-500 group-hover:from-[#211A17]/70"
+                  className="absolute inset-x-0 bottom-0 h-[38%] bg-gradient-to-t from-[#2B211D]/55 to-transparent transition-opacity duration-500 group-hover:from-[#2B211D]/70"
                 />
                 {/* category — always present, subtle */}
                 <span className="absolute bottom-3.5 left-4 text-left">
-                  <span className="block text-[0.58rem] font-semibold tracking-[0.26em] text-[#FFF8EF]/85 uppercase">
+                  <span className="block text-[0.58rem] font-semibold tracking-[0.26em] text-[#FAF6F0]/85 uppercase">
                     {item.category}
                   </span>
                   {/* title — arrives on hover / focus */}
-                  <span className="font-display mt-1 block translate-y-1.5 text-[1rem] text-[#FFF8EF] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                  <span className="font-display mt-1 block translate-y-1.5 text-[1rem] text-[#FAF6F0] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
                     {item.title}
                   </span>
                 </span>
                 {/* view arrow */}
                 <span
                   aria-hidden="true"
-                  className="absolute top-3.5 right-3.5 flex h-8 w-8 items-center justify-center rounded-full bg-[#FFF8EF]/90 text-[#943F2D] opacity-0 transition-opacity duration-400 group-hover:opacity-100 group-focus-visible:opacity-100"
+                  className="absolute top-3.5 right-3.5 flex h-8 w-8 items-center justify-center rounded-full bg-[#FAF6F0]/90 text-[#94432F] opacity-0 transition-opacity duration-400 group-hover:opacity-100 group-focus-visible:opacity-100"
                 >
                   <svg width="11" height="11" viewBox="0 0 12 12">
                     <path d="M2 10 10 2M4 2h6v6" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />

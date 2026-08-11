@@ -30,7 +30,7 @@ import {
  * sticky trap.
  */
 
-const IVORY = "#F7F0E8";
+const IVORY = "#F5EDE3";
 
 /** The amenity theatre's own ground — the chapter's upper terracotta,
  *  isolated here so this block can be retuned without touching the
@@ -38,7 +38,7 @@ const IVORY = "#F7F0E8";
 const AMENITIES_BG =
   "radial-gradient(85% 60% at 74% 20%, rgb(255 138 97 / 0.62) 0%, transparent 58%)," +
   "radial-gradient(62% 46% at 50% 52%, rgb(230 190 108 / 0.4) 0%, transparent 70%)," +
-  "linear-gradient(172deg, #C6431E 0%, #E85F34 62%, #D64E27 100%)";
+  "linear-gradient(172deg, #94432F 0%, #B65438 62%, #B65438 100%)";
 
 interface Amenity {
   num: string;
@@ -55,9 +55,8 @@ const AMENITIES: Amenity[] = [
     num: "01",
     title: "Indoor Swimming Pool",
     copy: "A dedicated indoor environment for recreation and relaxation.",
-    src: "/buildingfront.jpg",
-    alt: "The landscaped water-feature courtyard between the two blocks at dusk",
-    pos: "50% 82%",
+    src: "/foakhindoorswmpool.jpg",
+    alt: "The indoor swimming pool at night, loungers along the water and the fitness gallery above",
   },
   {
     num: "02",
@@ -107,17 +106,15 @@ const AMENITIES: Amenity[] = [
     num: "08",
     title: "Dedicated Parking",
     copy: "Organised parking with controlled resident entry and exit.",
-    src: "/foakhshaukat.jpg",
-    alt: "The secured development with its organised access road and parking",
-    pos: "30% 78%",
+    src: "/foakhparking.jpg",
+    alt: "The covered resident parking level with its controlled entry barrier",
   },
   {
     num: "09",
     title: "Modern Architecture",
     copy: "A contemporary architectural identity balancing aesthetics, functionality and environmental thinking.",
-    src: "/buildingtop.jpg",
-    alt: "The contemporary terracotta crown with its rooftop systems",
-    pos: "50% 55%",
+    src: "/foakhmodernarchitecture.jpg",
+    alt: "The landscaped courtyard between the two blocks at sunset",
   },
 ];
 
@@ -204,19 +201,19 @@ export default function AmenitiesShowcase() {
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-16 lg:pt-32">
         <Heading />
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1.1fr]">
-          <figure className="relative min-h-[320px] overflow-hidden rounded-[24px] ring-1 ring-[#D8B36A]/50">
+          <figure className="relative min-h-[320px] overflow-hidden rounded-[24px] ring-1 ring-[#C99355]/50">
             <Image src={AMENITIES[0].src} alt={AMENITIES[0].alt} fill sizes="46vw" className="object-cover" style={{ objectPosition: AMENITIES[0].pos }} />
           </figure>
           <div className="grid gap-4 sm:grid-cols-2">
             {AMENITIES.map((x) => (
-              <article key={x.num} className="rounded-[16px] border border-[#D8B36A]/45 bg-[#FFF5E9] p-5">
-                <p className="text-[0.62rem] font-bold tracking-[0.22em] uppercase" style={{ color: "#D8B36A" }}>
+              <article key={x.num} className="rounded-[16px] border border-[#C99355]/45 bg-[#FAF6F0] p-5">
+                <p className="text-[0.62rem] font-bold tracking-[0.22em] uppercase" style={{ color: "#C99355" }}>
                   {x.num}
                 </p>
-                <p className="font-display mt-1 text-[1.2rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
+                <p className="font-display mt-1 text-[1.2rem] leading-snug font-medium" style={{ color: "#94432F" }}>
                   {x.title}
                 </p>
-                <p className="mt-2 text-[0.88rem] leading-[1.6]" style={{ color: "#66544B" }}>
+                <p className="mt-2 text-[0.88rem] leading-[1.6]" style={{ color: "#625750" }}>
                   {x.copy}
                 </p>
               </article>
@@ -257,7 +254,7 @@ export default function AmenitiesShowcase() {
             <Rail items={AMENITIES.slice(0, 5)} offset={0} active={active} onSelect={jump} side="left" />
 
             {/* centre media */}
-            <div className="relative self-center overflow-hidden rounded-[24px] shadow-[0_44px_88px_-40px_rgba(26,16,11,0.65)] ring-1 ring-[#D8B36A]/55" style={{ height: "min(66svh, 720px)" }}>
+            <div className="relative self-center overflow-hidden rounded-[24px] shadow-[0_44px_88px_-40px_rgba(26,16,11,0.65)] ring-1 ring-[#C99355]/55" style={{ height: "min(66svh, 720px)" }}>
               <AnimatePresence initial={false}>
                 <motion.div
                   key={a.src}
@@ -276,8 +273,8 @@ export default function AmenitiesShowcase() {
               </div>
 
               {/* caption */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1D1714]/78 via-[#1D1714]/30 to-transparent px-6 pt-16 pb-5">
-                <p className="text-[0.62rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "#EFD5A3" }}>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#2B211D]/78 via-[#2B211D]/30 to-transparent px-6 pt-16 pb-5">
+                <p className="text-[0.62rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "#E8CFA4" }}>
                   {a.num} — {a.title}
                 </p>
                 <p className="mt-1.5 max-w-md text-[0.85rem] leading-snug" style={{ color: "rgba(255,248,239,0.9)" }}>
@@ -287,7 +284,7 @@ export default function AmenitiesShowcase() {
 
               {/* progress: count + eight segments */}
               <div className="pointer-events-none absolute right-5 bottom-5 flex items-center gap-3">
-                <span className="text-[0.68rem] font-semibold tracking-[0.18em] tabular-nums" style={{ color: "#FFF8EF" }}>
+                <span className="text-[0.68rem] font-semibold tracking-[0.18em] tabular-nums" style={{ color: "#FAF6F0" }}>
                   {a.num} / 09
                 </span>
                 <span className="flex items-center gap-1">
@@ -297,7 +294,7 @@ export default function AmenitiesShowcase() {
                       className="h-[2px] rounded-full transition-all duration-400"
                       style={{
                         width: i === active ? 18 : 8,
-                        background: i === active ? "#D8B36A" : "rgba(255,248,239,0.45)",
+                        background: i === active ? "#C99355" : "rgba(255,248,239,0.45)",
                       }}
                     />
                   ))}
@@ -313,7 +310,7 @@ export default function AmenitiesShowcase() {
                   onClick={() => go(dir)}
                   onFocus={() => (controlsFocused.current = true)}
                   onBlur={() => (controlsFocused.current = false)}
-                  className={`absolute top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#FFF8EF]/55 bg-[#1D1714]/40 text-[#FFF8EF] opacity-80 backdrop-blur-sm transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 ${
+                  className={`absolute top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#FAF6F0]/55 bg-[#2B211D]/40 text-[#FAF6F0] opacity-80 backdrop-blur-sm transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 ${
                     dir === 1 ? "right-4" : "left-4"
                   }`}
                 >
@@ -336,14 +333,14 @@ export default function AmenitiesShowcase() {
         <p className="mt-4 text-[0.6rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "rgba(250,243,232,0.7)" }}>
           Select an amenity
         </p>
-        <div className="relative mt-4 h-[56svh] overflow-hidden rounded-[20px] ring-1 ring-[#D8B36A]/55">
+        <div className="relative mt-4 h-[56svh] overflow-hidden rounded-[20px] ring-1 ring-[#C99355]/55">
           <AnimatePresence initial={false}>
             <motion.div key={a.src} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }}>
               <Image src={a.src} alt={a.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: a.pos }} />
             </motion.div>
           </AnimatePresence>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1D1714]/75 to-transparent px-4 pt-12 pb-4">
-            <p className="text-[0.6rem] font-semibold tracking-[0.24em] uppercase" style={{ color: "#EFD5A3" }}>
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#2B211D]/75 to-transparent px-4 pt-12 pb-4">
+            <p className="text-[0.6rem] font-semibold tracking-[0.24em] uppercase" style={{ color: "#E8CFA4" }}>
               {a.num} — {a.title}
             </p>
             <p className="mt-1 text-[0.72rem]" style={{ color: "rgba(255,248,239,0.85)" }}>
@@ -364,7 +361,7 @@ export default function AmenitiesShowcase() {
               className="shrink-0 rounded-full border px-3.5 py-2 text-[0.62rem] font-bold tracking-[0.14em] whitespace-nowrap uppercase transition-colors"
               style={
                 i === active
-                  ? { background: "#FFF5E9", color: "#943F2D", borderColor: "#D8B36A" }
+                  ? { background: "#FAF6F0", color: "#94432F", borderColor: "#C99355" }
                   : { background: "transparent", color: "rgba(255,248,239,0.8)", borderColor: "rgba(255,248,239,0.4)" }
               }
             >
@@ -373,14 +370,14 @@ export default function AmenitiesShowcase() {
           ))}
         </div>
 
-        <div className="mt-3 rounded-[16px] border border-[#D8B36A]/60 bg-[#FFF5E9] p-5 shadow-[0_20px_44px_-26px_rgba(26,16,11,0.5)]">
-          <p className="text-[0.62rem] font-semibold tracking-[0.22em] uppercase" style={{ color: "#D8B36A" }}>
+        <div className="mt-3 rounded-[16px] border border-[#C99355]/60 bg-[#FAF6F0] p-5 shadow-[0_20px_44px_-26px_rgba(26,16,11,0.5)]">
+          <p className="text-[0.62rem] font-semibold tracking-[0.22em] uppercase" style={{ color: "#C99355" }}>
             {a.num}
           </p>
-          <p className="font-display mt-1 text-[1.4rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
+          <p className="font-display mt-1 text-[1.4rem] leading-snug font-medium" style={{ color: "#94432F" }}>
             {a.title}
           </p>
-          <p className="mt-2 text-[0.95rem] leading-[1.65]" style={{ color: "#66544B" }}>
+          <p className="mt-2 text-[0.95rem] leading-[1.65]" style={{ color: "#625750" }}>
             {a.copy}
           </p>
         </div>
@@ -422,8 +419,8 @@ function Rail({
             aria-label={`Show ${x.title}`}
             className="relative w-full cursor-pointer overflow-hidden rounded-[14px] border text-left transition-colors"
             animate={{
-              backgroundColor: isActive ? "#FFF5E9" : "rgba(255,245,233,0.14)",
-              borderColor: isActive ? "#D8B36A" : "rgba(255,245,233,0.3)",
+              backgroundColor: isActive ? "#FAF6F0" : "rgba(255,245,233,0.14)",
+              borderColor: isActive ? "#C99355" : "rgba(255,245,233,0.3)",
               boxShadow: isActive
                 ? "0 26px 52px -28px rgba(26,16,11,0.55)"
                 : "0 0 0 0 rgba(0,0,0,0)",
@@ -433,13 +430,13 @@ function Rail({
             <div className="flex items-center gap-3 px-4 py-3.5">
               <span
                 className="text-[0.64rem] font-bold tracking-[0.18em] tabular-nums"
-                style={{ color: isActive ? "#D8B36A" : "rgba(255,248,239,0.75)" }}
+                style={{ color: isActive ? "#C99355" : "rgba(255,248,239,0.75)" }}
               >
                 {x.num}
               </span>
               <span
                 className="font-display min-w-0 flex-1 truncate text-[1.02rem] leading-snug font-medium"
-                style={{ color: isActive ? "#943F2D" : "rgba(255,248,239,0.92)" }}
+                style={{ color: isActive ? "#94432F" : "rgba(255,248,239,0.92)" }}
               >
                 {x.title}
               </span>
@@ -448,7 +445,7 @@ function Rail({
                 aria-hidden="true"
                 animate={{ opacity: isActive ? 1 : 0.35, x: isActive ? 0 : side === "left" ? -4 : 4 }}
                 transition={{ duration: 0.35 }}
-                style={{ color: isActive ? "#C75B3B" : "rgba(255,248,239,0.7)" }}
+                style={{ color: isActive ? "#B65438" : "rgba(255,248,239,0.7)" }}
               >
                 <svg width="13" height="13" viewBox="0 0 16 16" style={{ transform: side === "right" ? "rotate(180deg)" : undefined }}>
                   <path d="M3 8h10M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -464,11 +461,11 @@ function Rail({
               className="overflow-hidden"
             >
               <div className="px-4 pb-4">
-                <span aria-hidden="true" className="block h-px w-9" style={{ background: "#D8B36A" }} />
-                <p className="mt-2.5 text-[0.86rem] leading-[1.6]" style={{ color: "#66544B" }}>
+                <span aria-hidden="true" className="block h-px w-9" style={{ background: "#C99355" }} />
+                <p className="mt-2.5 text-[0.86rem] leading-[1.6]" style={{ color: "#625750" }}>
                   {x.copy}
                 </p>
-                <p className="mt-2.5 text-[0.55rem] font-bold tracking-[0.24em] uppercase" style={{ color: "#C78C49" }}>
+                <p className="mt-2.5 text-[0.55rem] font-bold tracking-[0.24em] uppercase" style={{ color: "#C99355" }}>
                   Current amenity
                 </p>
               </div>
@@ -485,7 +482,7 @@ function Rail({
 function Heading({ compact = false }: { compact?: boolean }) {
   return (
     <div>
-      <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
+      <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
         03 — Amenities &amp; Lifestyle
       </p>
       <h3

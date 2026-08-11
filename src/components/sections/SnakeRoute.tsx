@@ -35,7 +35,7 @@ import {
  * comfort."
  */
 
-const INK = "#211A17";
+const INK = "#2B211D";
 
 /* the layer runs taller than the render (1122x1402) so object-cover
    crops the render's own pale margins instead of glaring at the edges */
@@ -83,8 +83,8 @@ const STAGES: Stage[] = [
     card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[46%]",
     frames: [
       {
-        src: "/buildingtop.jpg",
-        alt: "The wind catcher and kite system at the crown",
+        src: "/windcatcher.jpg",
+        alt: "The wind corridor between the two blocks, where captured air enters the development",
         label: "Natural Air Capture",
         pos: "60% 22%",
         className: "left-[44%] top-[11%] w-[19rem] rotate-[1.6deg]",
@@ -111,21 +111,21 @@ const STAGES: Stage[] = [
     card: "left-[6%] top-[24%] lg:left-[34%] lg:top-[30%]",
     frames: [
       {
-        src: "/windturbineimagefinal.png",
+        src: "/windturbineimagefinal.jpg",
         alt: "The rooftop wind turbines silhouetted against the sunset",
         label: "Wind Turbines",
         pos: "50% 30%",
         className: "left-[6%] top-[13%] w-[18rem] -rotate-[1.8deg]",
       },
       {
-        src: "/buildingtop.jpg",
-        alt: "The rooftop solar array within the terracotta crown",
+        src: "/windenergy.jpg",
+        alt: "The rooftop solar array on the crown terraces at golden hour",
         label: "Solar Energy",
         pos: "10% 44%",
         className: "left-[7%] top-[57%] w-[17rem] rotate-[1.4deg]",
       },
       {
-        src: "/kiteenergyimg.png",
+        src: "/kiteenergyimg.jpg",
         alt: "The tethered kite-energy wing above the roof, winch cable in view",
         label: "Kite Energy",
         pos: "63% 20%",
@@ -145,16 +145,16 @@ const STAGES: Stage[] = [
     card: "left-[6%] top-[28%] lg:left-[56%] lg:top-[40%]",
     frames: [
       {
-        src: "/windcatcher.png",
+        src: "/windcatcher.jpg",
         alt: "The landscaped water-feature courtyard and arrival fountain",
         label: "Water in the Landscape",
         pos: "50% 78%",
         className: "left-[26%] top-[13%] w-[18rem] rotate-[1.6deg]",
       },
       {
-        src: "/waterreliability.png",
+        src: "/waterreliability.jpg",
         alt: "The building's water treatment and reliability systems at work",
-        label: "Dependable Supply",
+        label: "Atmospheric Water",
         pos: "50% 70%",
         className: "left-[24%] top-[58%] w-[17rem] -rotate-[1.6deg]",
       },
@@ -211,7 +211,7 @@ export default function SnakeRoute() {
   /* the reading side deepens as the letters light, so the white always
      has ground to sit on — the lights come up, the room goes dark */
   const headWash = useTransform(p, [0.03, 0.19, 0.28, 0.35], [0, 1, 1, 0]);
-  const eyebrowColour = useTransform(p, [0.04, 0.18], ["#943F2D", "#EFD5A3"]);
+  const eyebrowColour = useTransform(p, [0.04, 0.18], ["#94432F", "#E8CFA4"]);
   const cueColour = useTransform(
     p,
     [0.14, 0.27],
@@ -230,7 +230,7 @@ export default function SnakeRoute() {
       aria-labelledby="route-heading"
       className="relative h-[320svh] lg:h-[360svh]"
     >
-      <div className="sticky top-0 h-svh overflow-hidden bg-[#F6EBDD]">
+      <div className="sticky top-0 h-svh overflow-hidden bg-[#F5EDE3]">
         {/* ------------- the building, panning slowly with scroll ------- */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
@@ -258,7 +258,7 @@ export default function SnakeRoute() {
               <path
                 d="M 2 10 C 22 6, 44 12, 66 9 S 92 8, 98 11 M 4 22 C 24 18, 46 23, 68 19"
                 fill="none"
-                stroke="#78AAA5"
+                stroke="#78AFC1"
                 strokeWidth="0.5"
                 strokeLinecap="round"
                 strokeDasharray="2.6 3.6"
@@ -299,7 +299,7 @@ export default function SnakeRoute() {
               span={0.17}
               win={0.045}
               from={INK}
-              to="#FFF8EF"
+              to="#FAF6F0"
             />
           </h2>
           <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65]">
@@ -328,7 +328,7 @@ export default function SnakeRoute() {
         ))}
 
         {/* ------------- stage rail — bottom left --------------------- */}
-        <div className="absolute bottom-[5%] left-[6%] z-30 flex items-center gap-3 rounded-full bg-[#F6EBDD]/88 px-4 py-2 lg:left-[7%]">
+        <div className="absolute bottom-[5%] left-[6%] z-30 flex items-center gap-3 rounded-full bg-[#F5EDE3]/88 px-4 py-2 lg:left-[7%]">
           {RAIL.map((r) => (
             <RailMark key={r.label} label={r.label} range={r.range} progress={p} />
           ))}
@@ -337,7 +337,7 @@ export default function SnakeRoute() {
         {/* ------------- arrival ---------------------------------------- */}
         <motion.p
           className="font-display absolute bottom-[10%] left-[6%] z-30 max-w-[15rem] text-[1.35rem] leading-snug italic lg:left-[7%]"
-          style={{ opacity: endOp, y: endY, color: "#943F2D" }}
+          style={{ opacity: endOp, y: endY, color: "#94432F" }}
         >
           From natural systems to everyday comfort.
         </motion.p>
@@ -382,7 +382,7 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
         <p className="text-[0.6rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#B95334" }}>
           {st.eyebrow}
         </p>
-        <p className="font-display mt-2.5 leading-[1.12] font-medium" style={{ color: "#7C3428", fontSize: "clamp(1.75rem,2.4vw,2.5rem)" }}>
+        <p className="font-display mt-2.5 leading-[1.12] font-medium" style={{ color: "#713427", fontSize: "clamp(1.75rem,2.4vw,2.5rem)" }}>
           {st.heading}
         </p>
         <p className="mt-4 text-[0.98rem] leading-[1.68]" style={{ color: "rgba(42,30,26,0.75)" }}>
@@ -502,9 +502,11 @@ function StageStill({
   opacity: MotionValue<number>;
   scale: MotionValue<number>;
 }) {
-  /* a long, unhurried window — staggered so the frames build in turn */
-  const s0 = st.at[0] + 0.015 + i * 0.035;
-  const s1 = s0 + 0.13;
+  /* staggered so the frames build in turn, but finished shortly after the
+     stage is fully on screen — a still that is still clay while its card
+     is being read looks broken, not slow */
+  const s0 = st.at[0] + 0.01 + i * 0.022;
+  const s1 = st.at[1] + 0.03 + i * 0.022;
   const clip = useTransform(p, (v) => {
     const t = Math.min(Math.max((v - s0) / (s1 - s0), 0), 1);
     const c = t * 9;
@@ -521,7 +523,7 @@ function StageStill({
 
   return (
     <motion.figure
-      className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1 shadow-[0_24px_48px_-28px_rgba(20,10,6,0.55)] lg:block ${f.className}`}
+      className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1 shadow-[0_24px_48px_-28px_rgba(20,10,6,0.55)] lg:block ${f.className}`}
       style={{ opacity, scale, clipPath: clip }}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
@@ -534,7 +536,7 @@ function StageStill({
           style={{ objectPosition: f.pos }}
         />
       </div>
-      <figcaption className="px-2 pt-1.5 pb-1 text-center text-[0.55rem] font-bold tracking-[0.2em] uppercase" style={{ color: "#943F2D" }}>
+      <figcaption className="px-2 pt-1.5 pb-1 text-center text-[0.55rem] font-bold tracking-[0.2em] uppercase" style={{ color: "#94432F" }}>
         {f.label}
       </figcaption>
       {/* the clay it is built from, firing clean as the last course lands */}
@@ -564,7 +566,7 @@ function ConnectorLine({ p }: { p: MotionValue<number> }) {
       <motion.path
         d="M 12 38 C 22 46, 26 56, 34 52 S 44 34, 52 36 S 62 52, 68 56 S 82 66, 88 78"
         fill="none"
-        stroke="#EFD5A3"
+        stroke="#E8CFA4"
         strokeWidth="0.22"
         strokeLinecap="round"
         strokeDasharray="0.8 1.4"
@@ -588,7 +590,7 @@ function RailMark({
   return (
     <motion.span
       className="text-[0.6rem] font-semibold tracking-[0.26em] uppercase"
-      style={{ opacity, color: "#943F2D" }}
+      style={{ opacity, color: "#94432F" }}
     >
       {label}
     </motion.span>
@@ -606,7 +608,7 @@ function StaticSystems() {
       className="relative overflow-hidden py-24"
     >
       <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
-        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#943F2D" }}>
+        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
           02 — Natural Systems
         </p>
         <h2
@@ -617,9 +619,9 @@ function StaticSystems() {
           Nature, engineered for better living.
         </h2>
         <div className="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_1.2fr]">
-          <figure className="relative mx-auto w-full max-w-sm overflow-hidden rounded-[16px] border border-[#D8B36A]/55">
+          <figure className="relative mx-auto w-full max-w-sm overflow-hidden rounded-[16px] border border-[#C99355]/55">
             <Image
-              src="/buildingtall.jpg"
+              src="/buildingpov.jpg"
               alt="The FOAKH tower from crown to entrance"
               width={720}
               height={1238}
@@ -633,7 +635,7 @@ function StaticSystems() {
                 <p className="text-[0.6rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#B95334" }}>
                   {st.eyebrow}
                 </p>
-                <p className="font-display mt-2 text-[1.3rem] leading-snug font-medium" style={{ color: "#7C3428" }}>
+                <p className="font-display mt-2 text-[1.3rem] leading-snug font-medium" style={{ color: "#713427" }}>
                   {st.heading}
                 </p>
                 <p className="mt-2.5 text-[0.85rem] leading-[1.6]" style={{ color: "rgba(42,30,26,0.75)" }}>
@@ -641,7 +643,7 @@ function StaticSystems() {
                 </p>
               </div>
             ))}
-            <p className="font-display text-[1.2rem] italic" style={{ color: "#943F2D" }}>
+            <p className="font-display text-[1.2rem] italic" style={{ color: "#94432F" }}>
               From natural systems to everyday comfort.
             </p>
           </div>

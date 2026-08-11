@@ -31,17 +31,17 @@ const MAP_ID = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID;
 /* Brand styling for the JS-API path: cream ground, champagne/sunset
    roads, deep-green water and parks, espresso labels, POI clutter off. */
 const MAP_STYLES = [
-  { elementType: "geometry", stylers: [{ color: "#F2E7D6" }] },
+  { elementType: "geometry", stylers: [{ color: "#EEE1D3" }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#3C2E22" }] },
   { elementType: "labels.text.stroke", stylers: [{ color: "#FFF7EA" }] },
   { featureType: "poi", stylers: [{ visibility: "off" }] },
   { featureType: "poi.medical", stylers: [{ visibility: "on" }] },
   { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "road", elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#FAF6F0" }] },
   { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#F4C98E" }] },
   { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#F29A3F" }] },
-  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#D8AE62" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#6F9B84" }] },
+  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#C99355" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#5E93AA" }] },
   { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#B8CDB4" }] },
   { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#EBDFC9" }] },
 ];
@@ -73,9 +73,9 @@ function buildPinSvg(): string {
     encodeURIComponent(
       `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="58" viewBox="0 0 44 58">
         <path d="M22 2C11 2 3 10.4 3 20.8 3 34 22 56 22 56s19-22 19-35.2C41 10.4 33 2 22 2Z"
-          fill="#E7653E" stroke="#D8AE62" stroke-width="2.4"/>
-        <circle cx="22" cy="20.5" r="8.2" fill="#291A16"/>
-        <path d="M18 24v-6.5l4-2.6 4 2.6V24h-2.6v-3.4h-2.8V24Z" fill="#FFF4E5"/>
+          fill="#E7653E" stroke="#C99355" stroke-width="2.4"/>
+        <circle cx="22" cy="20.5" r="8.2" fill="#2B211D"/>
+        <path d="M18 24v-6.5l4-2.6 4 2.6V24h-2.6v-3.4h-2.8V24Z" fill="#FAF6F0"/>
       </svg>`
     )
   );
@@ -110,7 +110,7 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
               zoomControl: true,
               gestureHandling: "cooperative",
               keyboardShortcuts: true,
-              backgroundColor: "#F2E7D6",
+              backgroundColor: "#EEE1D3",
               ...(MAP_ID ? { mapId: MAP_ID } : { styles: MAP_STYLES }),
             });
             if (MAP_ID) {
@@ -119,7 +119,7 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
               )) as google.maps.MarkerLibrary;
               const pin = document.createElement("div");
               pin.innerHTML = `<img src="${buildPinSvg()}" width="44" height="58" alt="" style="filter:drop-shadow(0 8px 14px rgba(30,15,8,0.35))"/>
-                <div style="margin-top:2px;background:#FFF4E5;color:#291A16;font:600 10px/1 var(--font-body,sans-serif);letter-spacing:0.14em;padding:5px 9px;border-radius:999px;border:1px solid #D8AE62;text-align:center">FOAKH WIND CORRIDOR ENCLAVE</div>`;
+                <div style="margin-top:2px;background:#FAF6F0;color:#2B211D;font:600 10px/1 var(--font-body,sans-serif);letter-spacing:0.14em;padding:5px 9px;border-radius:999px;border:1px solid #C99355;text-align:center">FOAKH WIND CORRIDOR ENCLAVE</div>`;
               pin.style.display = "grid";
               pin.style.justifyItems = "center";
               new AdvancedMarkerElement({
@@ -159,7 +159,7 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
 
   return (
     <div
-      className={`group relative w-full overflow-hidden bg-[#F2E7D6] ${heightClass}`}
+      className={`group relative w-full overflow-hidden bg-[#EEE1D3] ${heightClass}`}
       onMouseLeave={() => setEngaged(false)}
     >
       {/* JS-API map mounts here when a key is configured */}
@@ -184,8 +184,8 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
       )}
 
       {/* brand chip — card furniture, not a geo label */}
-      <div className="pointer-events-none absolute top-3.5 left-3.5 rounded-full border border-[#D8AE62] bg-[#FFF4E5]/95 px-3.5 py-1.5 shadow-sm">
-        <p className="text-[0.6rem] font-bold tracking-[0.18em] text-[#291A16] uppercase">
+      <div className="pointer-events-none absolute top-3.5 left-3.5 rounded-full border border-[#C99355] bg-[#FAF6F0]/95 px-3.5 py-1.5 shadow-sm">
+        <p className="text-[0.6rem] font-bold tracking-[0.18em] text-[#2B211D] uppercase">
           Foakh Wind Corridor Enclave
         </p>
       </div>
@@ -198,7 +198,7 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
           aria-label="Activate the interactive map"
           className="absolute inset-0 z-10 flex cursor-pointer items-end justify-center bg-transparent pb-4"
         >
-          <span className="rounded-full border border-[#D8AE62]/70 bg-[#291A16]/85 px-4 py-2 text-[0.62rem] font-semibold tracking-[0.2em] text-[#FFF4E5] uppercase backdrop-blur-sm transition-opacity group-hover:opacity-100 lg:opacity-0">
+          <span className="rounded-full border border-[#C99355]/70 bg-[#2B211D]/85 px-4 py-2 text-[0.62rem] font-semibold tracking-[0.2em] text-[#FAF6F0] uppercase backdrop-blur-sm transition-opacity group-hover:opacity-100 lg:opacity-0">
             Click to explore the map
           </span>
         </button>

@@ -1,3 +1,72 @@
+
+/* ==================================================================
+   FOAKH BRAND SYSTEM — one terracotta family, one cream family, one
+   ink family. Every surface, border, shadow and radius on the site
+   derives from these. Do not introduce new near-duplicates.
+   ================================================================== */
+:root {
+  --foakh-terracotta: #b65438;
+  --foakh-terracotta-deep: #94432f;
+  --foakh-terracotta-dark: #713427;
+  --foakh-terracotta-soft: #d78b70;
+
+  --foakh-cream: #f5ede3;
+  --foakh-cream-soft: #faf6f0;
+  --foakh-cream-warm: #eee1d3;
+
+  --foakh-ink: #2b211d;
+  --foakh-text: #625750;
+  --foakh-muted: #91867e;
+
+  --foakh-gold: #c99355;
+  --foakh-gold-light: #e8cfa4;
+  --foakh-air: #78afc1;
+  --foakh-water: #5e93aa;
+  --foakh-forest: #294a3e;
+
+  --foakh-border: rgba(119, 65, 47, 0.14);
+
+  /* one shadow scale */
+  --foakh-shadow-soft: 0 10px 30px rgba(55, 31, 23, 0.06);
+  --foakh-shadow-medium: 0 18px 55px rgba(55, 31, 23, 0.1);
+  --foakh-shadow-strong: 0 28px 80px rgba(55, 31, 23, 0.14);
+
+  /* one radius scale */
+  --foakh-radius-sm: 10px;
+  --foakh-radius: 16px;
+  --foakh-radius-card: 18px;
+  --foakh-radius-media: 22px;
+}
+
+/* the shared editorial container — every light card on the site */
+.foakh-card {
+  background: rgba(250, 246, 240, 0.97);
+  border: 1px solid var(--foakh-border);
+  border-radius: var(--foakh-radius-card);
+  box-shadow: var(--foakh-shadow-medium);
+}
+
+/* development marker: a slot whose approved image is still missing.
+   Deliberately unlike the finished design so it cannot ship unnoticed. */
+[data-image-required="true"] {
+  display: grid;
+  place-items: center;
+  min-height: 180px;
+  padding: 24px;
+  border: 1px dashed rgba(119, 65, 47, 0.45);
+  border-radius: var(--foakh-radius);
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(182, 84, 56, 0.05) 0 10px,
+    rgba(182, 84, 56, 0.11) 10px 20px
+  );
+  color: var(--foakh-terracotta-deep);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 @import "tailwindcss";
 
 /* ============================================================
@@ -9,17 +78,17 @@
 
 @theme {
   /* --- Architectural foundation --- */
-  --color-charcoal: #1D1714;
+  --color-charcoal: #2B211D;
   --color-deep-earth: #2A1E1A;
-  --color-bronze: #9C6247;
+  --color-bronze: #94432F;
   --color-terracotta: #A0664B;
   --color-copper: #B98A6A;
   --color-mineral: #BDAA98;
-  --color-ivory: #F7F0E8;
+  --color-ivory: #F5EDE3;
   --color-cream: #EFE5D9;
 
   /* --- Air & water (cool) --- */
-  --color-deep-teal: #294338;
+  --color-deep-teal: #294A3E;
   --color-wind-blue: #8FA3AB;
   --color-cyan-optic: #5E8C94;
   --color-aqua: #7FA8A8;
@@ -27,18 +96,18 @@
 
   /* --- Energy accents (events only) --- */
   --color-energy-orange: #C98D4F;
-  --color-champagne: #C6A46B;
+  --color-champagne: #C99355;
   --color-fabric-red: #7A3B2A;
   --color-magenta: #8E5A7E;
   --color-violet: #5C4A6E;
 
   /* --- Semantic surfaces --- */
-  --color-surface: #F7F0E8;
-  --color-surface-deep: #1D1714;
+  --color-surface: #F5EDE3;
+  --color-surface-deep: #2B211D;
   --color-surface-warm: #EFE5D9;
-  --color-ink: #1D1714;
+  --color-ink: #2B211D;
   --color-ink-soft: #4a453f;
-  --color-ink-invert: #F7F0E8;
+  --color-ink-invert: #F5EDE3;
 
   /* --- Typography --- */
   --font-display: var(--font-display), Georgia, serif;
@@ -74,22 +143,22 @@
 
 /* ============ MASTER COLOUR TOKENS — one palette, whole site ========== */
 :root {
-  --canvas: #f6ebdd;
-  --canvas-soft: #fff5e9;
-  --ink: #211a17;
+  --canvas: #F5EDE3;
+  --canvas-soft: #FAF6F0;
+  --ink: #2B211D;
   --ink-muted: #6f5d54;
 
-  --terracotta: #c75b3b;
-  --terracotta-deep: #943f2d;
+  --terracotta: #B65438;
+  --terracotta-deep: #94432F;
   --coral: #e87957;
-  --saffron: #e5ad42;
-  --champagne-g: #d8b36a;
+  --saffron: #C99355;
+  --champagne-g: #C99355;
 
   --sage-g: #819477;
   --teal-g: #659b98;
   --forest: #294a3e;
 
-  --white-warm: #fff8ef;
+  --white-warm: #FAF6F0;
   --line-soft: rgba(33, 26, 23, 0.15);
 }
 
@@ -214,7 +283,7 @@ body {
     radial-gradient(110% 75% at 20% 6%, #B08163 0%, transparent 58%),
     radial-gradient(60% 80% at 78% 30%, rgb(143 163 171 / 0.22) 0%, transparent 60%),
     radial-gradient(95% 80% at 80% 100%, #7A4A36 0%, transparent 62%),
-    #9C6247;
+    #94432F;
 }
 .mineral-windsky {
   background:

@@ -26,12 +26,12 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 function LocationPill() {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-[#FFF4E5]/35 bg-[#FFF4E5]/12 px-4 py-2">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D8AE62" strokeWidth="2" aria-hidden="true">
+    <span className="inline-flex items-center gap-2 rounded-full border border-[#FAF6F0]/35 bg-[#FAF6F0]/12 px-4 py-2">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C99355" strokeWidth="2" aria-hidden="true">
         <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z" />
         <circle cx="12" cy="10" r="2.6" />
       </svg>
-      <span className="text-[0.62rem] font-semibold tracking-[0.3em] text-[#FFF4E5] uppercase">
+      <span className="text-[0.62rem] font-semibold tracking-[0.3em] text-[#FAF6F0] uppercase">
         04 — Location &amp; Connectivity
       </span>
     </span>
@@ -45,7 +45,7 @@ function DirectionButtons({ dark = false }: { dark?: boolean }) {
         href={FOAKH_MAPS_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-full bg-[#D8AE62] px-5 py-2.5 text-[0.68rem] font-bold tracking-[0.18em] text-[#291A16] uppercase transition-colors hover:bg-[#E8C27C]"
+        className="rounded-full bg-[#C99355] px-5 py-2.5 text-[0.68rem] font-bold tracking-[0.18em] text-[#2B211D] uppercase transition-colors hover:bg-[#E8C27C]"
       >
         Get directions
       </a>
@@ -55,8 +55,8 @@ function DirectionButtons({ dark = false }: { dark?: boolean }) {
         rel="noopener noreferrer"
         className={`rounded-full border px-5 py-2.5 text-[0.68rem] font-semibold tracking-[0.18em] uppercase transition-colors ${
           dark
-            ? "border-[#FFF4E5]/40 text-[#FFF4E5] hover:bg-[#FFF4E5]/10"
-            : "border-[#B84E2F]/50 text-[#7E2F22] hover:bg-[#B84E2F]/10"
+            ? "border-[#FAF6F0]/40 text-[#FAF6F0] hover:bg-[#FAF6F0]/10"
+            : "border-[#B65438]/50 text-[#713427] hover:bg-[#B65438]/10"
         }`}
       >
         View on Google Maps
@@ -71,10 +71,10 @@ function PanelHeader() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <LocationPill />
         <div className="text-right">
-          <p className="text-[0.7rem] font-semibold tracking-[0.26em] text-[#FFF4E5] uppercase">
+          <p className="text-[0.7rem] font-semibold tracking-[0.26em] text-[#FAF6F0] uppercase">
             Foakh Wind Corridor Enclave
           </p>
-          <p className="mt-1 text-[0.66rem] tracking-[0.18em] text-[#FFF4E5]/70 uppercase">
+          <p className="mt-1 text-[0.66rem] tracking-[0.18em] text-[#FAF6F0]/70 uppercase">
             DHA City · Karachi
           </p>
         </div>
@@ -84,18 +84,18 @@ function PanelHeader() {
         className="font-display mt-9 leading-[1.07]"
         style={{ fontSize: "clamp(2.5rem,3.6vw,4rem)", fontWeight: 500, letterSpacing: "-0.01em" }}
       >
-        <span className="block text-[#FFF4E5]">Connected to</span>
-        <span className="block text-[#D8AE62]">what matters.</span>
+        <span className="block text-[#FAF6F0]">Connected to</span>
+        <span className="block text-[#C99355]">what matters.</span>
       </h2>
       {/* champagne divider with diamond accent */}
       <div className="mt-6 flex items-center gap-2.5" aria-hidden="true">
-        <span className="h-px w-14 bg-[#D8AE62]" />
-        <span className="h-1.5 w-1.5 rotate-45 bg-[#D8AE62]" />
+        <span className="h-px w-14 bg-[#C99355]" />
+        <span className="h-1.5 w-1.5 rotate-45 bg-[#C99355]" />
       </div>
-      <p className="mt-6 max-w-lg text-[1.02rem] leading-[1.7] text-[#FFF4E5]/92">
+      <p className="mt-6 max-w-lg text-[1.02rem] leading-[1.7] text-[#FAF6F0]/92">
         A convenient address close to healthcare, shopping, education and major road links.
       </p>
-      <p className="mt-4 max-w-lg text-[0.92rem] leading-[1.7] text-[#FFF4E5]/78">
+      <p className="mt-4 max-w-lg text-[0.92rem] leading-[1.7] text-[#FAF6F0]/78">
         Foakh Wind Corridor Enclave is positioned within Karachi&rsquo;s wind corridor and
         adjacent to Shaukat Khanum Hospital, combining environmental advantages with access
         to an important emerging residential area.
@@ -109,7 +109,7 @@ const PANEL_STYLE: React.CSSProperties = {
   background:
     "radial-gradient(90% 65% at 85% 0%, rgb(242 154 63 / 0.35) 0%, transparent 55%)," +
     "radial-gradient(70% 55% at 10% 100%, rgb(126 47 34 / 0.65) 0%, transparent 60%)," +
-    "linear-gradient(155deg, #C25835 0%, #B84E2F 45%, #93392a 100%)",
+    "linear-gradient(155deg, #B65438 0%, #B65438 45%, #94432F 100%)",
 };
 
 export default function FoakhLocationSection() {
@@ -129,15 +129,15 @@ export default function FoakhLocationSection() {
       id="location"
       data-section="location"
       aria-labelledby="location-heading"
-      className="blend-top relative bg-[#F6EBDD] py-(--spacing-section)"
-      style={{ "--blend-from": "#8A3B26" } as React.CSSProperties}
+      className="blend-top relative bg-[#F5EDE3] py-(--spacing-section)"
+      style={{ "--blend-from": "#94432F" } as React.CSSProperties}
     >
       <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         {/* ------------------------------------------------ desktop -- */}
         <div className="hidden gap-7 lg:grid lg:grid-cols-[57%_minmax(0,1fr)]">
           {/* left information panel */}
           <div
-            className="relative overflow-hidden rounded-[30px] border border-[#D8AE62]/45 p-10 shadow-[0_40px_80px_-36px_rgba(90,35,18,0.55)] xl:p-12"
+            className="relative overflow-hidden rounded-[30px] border border-[#C99355]/45 p-10 shadow-[0_40px_80px_-36px_rgba(90,35,18,0.55)] xl:p-12"
             style={PANEL_STYLE}
           >
             {/* faint approved tower drawing in the lower-right */}
@@ -156,12 +156,12 @@ export default function FoakhLocationSection() {
           <div className="flex min-w-0 flex-col gap-7">
             <motion.div
               {...rise(0.12)}
-              className="flex flex-1 flex-col overflow-hidden rounded-[28px] border border-[#D8AE62]/45 bg-[#291A16] shadow-[0_34px_70px_-32px_rgba(50,20,10,0.6)]"
+              className="flex flex-1 flex-col overflow-hidden rounded-[28px] border border-[#C99355]/45 bg-[#2B211D] shadow-[0_34px_70px_-32px_rgba(50,20,10,0.6)]"
             >
               <div className="min-h-[380px] flex-1">
                 <FoakhMap />
               </div>
-              <div className="flex items-center justify-between gap-3 border-t border-[#D8AE62]/25 p-4">
+              <div className="flex items-center justify-between gap-3 border-t border-[#C99355]/25 p-4">
                 <DirectionButtons dark />
               </div>
             </motion.div>
@@ -175,7 +175,7 @@ export default function FoakhLocationSection() {
         <div className="space-y-6 lg:hidden">
           <motion.div
             {...rise(0)}
-            className="relative overflow-hidden rounded-[26px] border border-[#D8AE62]/45 p-6 sm:p-8"
+            className="relative overflow-hidden rounded-[26px] border border-[#C99355]/45 p-6 sm:p-8"
             style={PANEL_STYLE}
           >
             <PanelHeader />
@@ -183,10 +183,10 @@ export default function FoakhLocationSection() {
 
           <motion.div
             {...rise(0.08)}
-            className="overflow-hidden rounded-[24px] border border-[#D8AE62]/45 bg-[#291A16] shadow-[0_30px_60px_-30px_rgba(50,20,10,0.55)]"
+            className="overflow-hidden rounded-[24px] border border-[#C99355]/45 bg-[#2B211D] shadow-[0_30px_60px_-30px_rgba(50,20,10,0.55)]"
           >
             <FoakhMap heightClass="h-[420px]" />
-            <div className="border-t border-[#D8AE62]/25 p-4">
+            <div className="border-t border-[#C99355]/25 p-4">
               <DirectionButtons dark />
             </div>
           </motion.div>

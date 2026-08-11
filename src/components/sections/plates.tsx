@@ -35,7 +35,7 @@ function Grade({ uid, warm = true }: { uid: string; warm?: boolean }) {
     <>
       <radialGradient id={`${uid}-vig`} cx="50%" cy="46%" r="72%">
         <stop offset="62%" stopColor="#000" stopOpacity="0" />
-        <stop offset="100%" stopColor={warm ? "#2d211d" : "#0d1418"} stopOpacity="0.38" />
+        <stop offset="100%" stopColor={warm ? "#2B211D" : "#0d1418"} stopOpacity="0.38" />
       </radialGradient>
     </>
   );
@@ -92,7 +92,7 @@ function Living() {
         <rect x="80" y="316" width="270" height="26" rx="10" fill="#c39a7c" />
         <rect x="98" y="288" width="76" height="34" rx="9" fill="#d8b494" />
         <rect x="188" y="288" width="76" height="34" rx="9" fill="#d8b494" />
-        <ellipse cx="215" cy="428" rx="150" ry="14" fill="#2d211d" opacity="0.22" />
+        <ellipse cx="215" cy="428" rx="150" ry="14" fill="#2B211D" opacity="0.22" />
       </g>
       {/* low table */}
       <ellipse cx="470" cy="470" rx="88" ry="26" fill="#6b4a35" />
@@ -121,19 +121,19 @@ function Layout() {
       <rect width="800" height="560" fill={`url(#${u}-paper)`} />
       {/* sheared plan fragment to read as an overhead view, not a flat map */}
       <g transform="translate(120 60) skewX(-8)">
-        <rect x="0" y="0" width="520" height="420" fill={`url(#${u}-room)`} stroke="#87543e" strokeWidth="3" />
-        <line x1="210" y1="0" x2="210" y2="420" stroke="#87543e" strokeWidth="2.4" />
-        <line x1="210" y1="200" x2="520" y2="200" stroke="#87543e" strokeWidth="2.4" />
-        <line x1="0" y1="290" x2="210" y2="290" stroke="#87543e" strokeWidth="2.4" />
+        <rect x="0" y="0" width="520" height="420" fill={`url(#${u}-room)`} stroke="#94432F" strokeWidth="3" />
+        <line x1="210" y1="0" x2="210" y2="420" stroke="#94432F" strokeWidth="2.4" />
+        <line x1="210" y1="200" x2="520" y2="200" stroke="#94432F" strokeWidth="2.4" />
+        <line x1="0" y1="290" x2="210" y2="290" stroke="#94432F" strokeWidth="2.4" />
         {/* balcony strip */}
         <rect x="0" y="420" width="520" height="34" fill="#b66d4d" opacity="0.55" />
         {/* door arcs */}
-        <path d="M210 96 a52 52 0 0 1 52 52" fill="none" stroke="#87543e" strokeWidth="2" />
-        <path d="M96 290 a44 44 0 0 1 44 44" fill="none" stroke="#87543e" strokeWidth="2" />
+        <path d="M210 96 a52 52 0 0 1 52 52" fill="none" stroke="#94432F" strokeWidth="2" />
+        <path d="M96 290 a44 44 0 0 1 44 44" fill="none" stroke="#94432F" strokeWidth="2" />
         {/* airflow through the plan */}
         <path d="M-30 230 C 120 200, 320 250, 560 210" fill="none" stroke="#22a8aa" strokeWidth="3" strokeDasharray="2 8" strokeLinecap="round" opacity="0.75" />
       </g>
-      <text x="132" y="530" fontSize="15" letterSpacing="2.5" fill="#87543e">
+      <text x="132" y="530" fontSize="15" letterSpacing="2.5" fill="#94432F">
         CONCEPTUAL LAYOUT — FINAL PLANS AWAITING APPROVAL
       </text>
       <VigRect uid={u} />
@@ -153,7 +153,7 @@ function Balcony() {
           <stop offset="100%" stopColor="#f4c98c" />
         </linearGradient>
         <linearGradient id={`${u}-frame`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#8a5138" />
+          <stop offset="0%" stopColor="#94432F" />
           <stop offset="100%" stopColor="#5f3826" />
         </linearGradient>
         <Grade uid={u} />
@@ -164,9 +164,9 @@ function Balcony() {
       <rect x="96" y="54" width="608" height="430" fill={`url(#${u}-sky)`} />
       {/* neighbouring block edge on one side */}
       <g opacity="0.85">
-        <rect x="96" y="96" width="118" height="388" fill="#b06c4c" />
+        <rect x="96" y="96" width="118" height="388" fill="#D78B70" />
         {[0, 1, 2, 3, 4, 5].map((f) => (
-          <rect key={f} x="110" y={116 + f * 62} width="90" height="10" fill="#8a5138" />
+          <rect key={f} x="110" y={116 + f * 62} width="90" height="10" fill="#94432F" />
         ))}
       </g>
       {/* wind lines drifting past */}
@@ -175,7 +175,7 @@ function Balcony() {
           key={i}
           d={`M250 ${150 + i * 74} C 400 ${132 + i * 74}, 540 ${170 + i * 74}, 690 ${144 + i * 74}`}
           fill="none"
-          stroke="#ffffff"
+          stroke="#FAF6F0"
           strokeOpacity={0.5 - i * 0.12}
           strokeWidth="2.6"
           strokeLinecap="round"
@@ -394,10 +394,10 @@ function Parking() {
       {/* columns receding */}
       {[0, 1, 2].map((i) => (
         <g key={i} opacity={1 - i * 0.24}>
-          <rect x={116 + i * 96} y={220 - i * 26} width={26 - i * 5} height={200 + i * 60} fill="#33302c" />
-          <rect x={660 - i * 96} y={220 - i * 26} width={26 - i * 5} height={200 + i * 60} fill="#33302c" />
-          <rect x={116 + i * 96} y={220 - i * 26} width={26 - i * 5} height={8} fill="#c17b58" />
-          <rect x={660 - i * 96} y={220 - i * 26} width={26 - i * 5} height={8} fill="#c17b58" />
+          <rect x={116 + i * 96} y={220 - i * 26} width={26 - i * 5} height={200 + i * 60} fill="#625750" />
+          <rect x={660 - i * 96} y={220 - i * 26} width={26 - i * 5} height={200 + i * 60} fill="#625750" />
+          <rect x={116 + i * 96} y={220 - i * 26} width={26 - i * 5} height={8} fill="#D78B70" />
+          <rect x={660 - i * 96} y={220 - i * 26} width={26 - i * 5} height={8} fill="#D78B70" />
         </g>
       ))}
       {/* leading road marking */}
@@ -437,9 +437,9 @@ function Recreation() {
       <rect width="800" height="560" fill={`url(#${u}-sky)`} />
       {/* building edge with balconies, soft in the background */}
       <g opacity="0.72">
-        <rect x="580" y="40" width="180" height="330" fill="#b06c4c" />
+        <rect x="580" y="40" width="180" height="330" fill="#D78B70" />
         {[0, 1, 2, 3, 4].map((f) => (
-          <rect key={f} x="596" y={64 + f * 62} width="148" height="10" fill="#8a5138" />
+          <rect key={f} x="596" y={64 + f * 62} width="148" height="10" fill="#94432F" />
         ))}
       </g>
       {/* lawn */}
@@ -451,7 +451,7 @@ function Recreation() {
         [150, 320, 66], [330, 292, 50], [520, 322, 58],
       ].map(([x, y, r], i) => (
         <g key={i}>
-          <ellipse cx={x} cy={y + r * 0.98} rx={r * 0.9} ry={r * 0.2} fill="#2d211d" opacity="0.2" />
+          <ellipse cx={x} cy={y + r * 0.98} rx={r * 0.9} ry={r * 0.2} fill="#2B211D" opacity="0.2" />
           <rect x={x - 5} y={y} width="10" height={r * 0.9} fill="#5f3f2b" />
           <circle cx={x} cy={y - r * 0.35} r={r * 0.72} fill="#48704f" />
           <circle cx={x - r * 0.3} cy={y - r * 0.5} r={r * 0.4} fill="#5c8a63" />
@@ -489,21 +489,21 @@ function Security() {
       </defs>
       <rect width="800" height="560" fill={`url(#${u}-dusk)`} />
       {/* entrance mass, slight low angle: verticals lean outward gently */}
-      <polygon points="150,540 200,90 600,90 650,540" fill="#8a5138" />
-      <polygon points="200,90 230,40 570,40 600,90" fill="#6d3f2c" />
+      <polygon points="150,540 200,90 600,90 650,540" fill="#94432F" />
+      <polygon points="200,90 230,40 570,40 600,90" fill="#713427" />
       {/* lit lobby door */}
       <polygon points="330,540 344,220 456,220 470,540" fill={`url(#${u}-door)`} />
-      <line x1="400" y1="220" x2="400" y2="540" stroke="#8a5138" strokeWidth="5" />
+      <line x1="400" y1="220" x2="400" y2="540" stroke="#94432F" strokeWidth="5" />
       {/* canopy + downlights */}
       <rect x="266" y="196" width="268" height="16" fill="#3f2a1e" />
       {[0, 1, 2].map((i) => (
         <circle key={i} cx={318 + i * 82} cy="224" r="12" fill="#ffe2ae" opacity="0.8" />
       ))}
       {/* subtle camera + intercom detail, not a shield icon */}
-      <rect x="252" y="300" width="26" height="40" rx="6" fill="#2d211d" />
+      <rect x="252" y="300" width="26" height="40" rx="6" fill="#2B211D" />
       <circle cx="265" cy="312" r="5" fill="#22a8aa" opacity="0.9" />
       {/* forecourt */}
-      <polygon points="0,560 800,560 690,500 110,500" fill="#33302c" />
+      <polygon points="0,560 800,560 690,500 110,500" fill="#625750" />
       <line x1="400" y1="560" x2="400" y2="502" stroke="#c9baa6" strokeWidth="5" opacity="0.6" />
       <VigRect uid={u} warm={false} />
     </svg>
@@ -524,7 +524,7 @@ function Facade() {
         </linearGradient>
         <linearGradient id={`${u}-face`} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#c2795a" />
-          <stop offset="100%" stopColor="#8a5138" />
+          <stop offset="100%" stopColor="#94432F" />
         </linearGradient>
         <Grade uid={u} />
       </defs>
@@ -534,13 +534,13 @@ function Facade() {
           <rect x={cx - 90} y="80" width="180" height="400" fill={`url(#${u}-face)`} />
           {Array.from({ length: 10 }).map((_, f) => (
             <g key={f}>
-              <rect x={cx - 90} y={102 + f * 38} width="180" height="7" fill="#6d3f2c" />
+              <rect x={cx - 90} y={102 + f * 38} width="180" height="7" fill="#713427" />
               {[0, 1, 2].map((w) => (
                 <rect key={w} x={cx - 72 + w * 56} y={112 + f * 38} width="34" height="18" fill="#22303a" opacity="0.85" />
               ))}
             </g>
           ))}
-          <rect x={cx - 90} y="64" width="180" height="18" fill="#c17b58" />
+          <rect x={cx - 90} y="64" width="180" height="18" fill="#D78B70" />
         </g>
       ))}
       {/* ground + road */}
@@ -574,8 +574,8 @@ function Site() {
         {/* two block footprints, extruded a little */}
         {[60, 380].map((x, b) => (
           <g key={b}>
-            <rect x={x + 12} y="88" width="180" height="128" fill="#6d3f2c" />
-            <rect x={x} y="76" width="180" height="128" fill="#b06c4c" />
+            <rect x={x + 12} y="88" width="180" height="128" fill="#713427" />
+            <rect x={x} y="76" width="180" height="128" fill="#D78B70" />
             <rect x={x} y="76" width="180" height="16" fill="#c98a68" />
           </g>
         ))}

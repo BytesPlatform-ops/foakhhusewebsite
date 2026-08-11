@@ -41,7 +41,7 @@ export const CLAY_BG =
   "repeating-linear-gradient(0deg, rgba(58,22,10,0.13) 0 1px, transparent 1px 17px)," +
   "repeating-linear-gradient(0deg, rgba(255,196,146,0.07) 0 1px, transparent 1px 29px)," +
   "radial-gradient(120% 60% at 30% 12%, rgba(255,190,140,0.16), transparent 70%)," +
-  "linear-gradient(180deg, #C4653F 0%, #A9472E 48%, #8A3D2A 100%)";
+  "linear-gradient(180deg, #B65438 0%, #94432F 48%, #713427 100%)";
 
 /** the bright course line at the top of the rising clay */
 export const CLAY_EDGE =

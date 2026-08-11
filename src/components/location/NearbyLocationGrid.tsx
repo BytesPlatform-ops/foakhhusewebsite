@@ -65,11 +65,11 @@ export default function NearbyLocationGrid({ onPanel = false }: { onPanel?: bool
         <BuildIn
           delay={i * 0.09}
           amount={0.35}
-          className="flex items-center gap-3.5 rounded-[14px] border border-[#D8AE62]/35 bg-[#FFF4E5] p-3.5 shadow-[0_14px_28px_-18px_rgba(60,26,14,0.5)]"
+          className="flex items-center gap-3.5 rounded-[14px] border border-[#C99355]/35 bg-[#FAF6F0] p-3.5 shadow-[0_14px_28px_-18px_rgba(60,26,14,0.5)]"
         >
           <span
             aria-hidden="true"
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#B84E2F] text-[#FFF4E5]"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#B65438] text-[#FAF6F0]"
           >
             <svg
               width="19"
@@ -85,10 +85,10 @@ export default function NearbyLocationGrid({ onPanel = false }: { onPanel?: bool
             </svg>
           </span>
           <span className="min-w-0">
-            <span className="block text-[0.82rem] leading-snug font-semibold text-[#291A16]">
+            <span className="block text-[0.82rem] leading-snug font-semibold text-[#2B211D]">
               {item.label}
             </span>
-            <span className="mt-0.5 block border-t border-[#D8AE62]/30 pt-0.5 text-[0.68rem] leading-snug text-[#291A16]/65">
+            <span className="mt-0.5 block border-t border-[#C99355]/30 pt-0.5 text-[0.68rem] leading-snug text-[#2B211D]/65">
               {item.sub}
             </span>
           </span>
@@ -98,7 +98,7 @@ export default function NearbyLocationGrid({ onPanel = false }: { onPanel?: bool
     </ul>
     <p
       className="mt-6 text-[0.68rem] font-semibold tracking-[0.28em] uppercase"
-      style={{ color: onPanel ? "rgba(255,244,229,0.85)" : "#943F2D" }}
+      style={{ color: onPanel ? "rgba(255,244,229,0.85)" : "#94432F" }}
     >
       Everything you need, within reach.
     </p>

@@ -414,13 +414,6 @@ export default function ResidencesStory() {
 
       {/* ==================== 03C — AMENITIES & LIFESTYLE ============== */}
       <AmenitiesShowcase />
-
-      {/* --------------------------------------- compliance note -------- */}
-      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-12 pb-10 lg:pt-0 lg:pb-12">
-        <p className="text-[0.62rem] leading-relaxed tracking-[0.14em] uppercase" style={{ color: "rgba(247,240,232,0.55)" }}>
-          Imagery shown conceptually — final finishes subject to approved specifications
-        </p>
-      </div>
     </section>
   );
 }
@@ -546,22 +539,22 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   const trackX = useTransform(cp, [0.04, 0.92], ["0vw", "-300vw"]);
   const introOp = useTransform(cp, [0, 0.06, 0.11], [1, 1, 0]);
   /* the finale takes over: cream stage crossfades to deep bronze-charcoal */
-  const duplexOp = useTransform(cp, [0.79, 0.89, 0.94, 0.995], [0, 1, 1, 0]);
+  const duplexOp = useTransform(cp, [0.7, 0.79], [0, 1]);
   /* the section's coral rises and fills the stage over the last stretch,
      so the pin releases into the same colour instead of cutting from
      near-black straight to red */
   const eyebrowOut = useTransform(cp, [0.9, 0.97], [1, 0]);
-  const baseOp = useTransform(cp, [0.94, 0.995], [1, 0]);
   /* the section's orange takes the stage over as one circle blooming from
      bottom-centre — eased long and soft (Apple's slow-out curve) so the
      colour arrives rather than switches */
-  /* once the bloom has filled, it dissolves onto the section's own
-     ground so the pin releases with nothing to step across */
-  const bloomOp = useTransform(cp, [0.965, 1], [1, 0]);
+  /* the duplex holds its dark ground to the very end; only as the
+     chapter hands over does the section's orange bloom up from
+     bottom-centre — a long window, eased gently at both ends so the
+     colour neither jumps in nor rushes */
   const bloom = useTransform(cp, (v) => {
-    const t = Math.min(Math.max((v - 0.84) / 0.15, 0), 1);
-    const e = 1 - Math.pow(1 - t, 5);
-    return `circle(${(e * 158).toFixed(2)}% at 50% 100%)`;
+    const t = Math.min(Math.max((v - 0.93) / 0.07, 0), 1);
+    const e = t * t * t * (t * (t * 6 - 15) + 10);
+    return `circle(${(e * 165).toFixed(2)}% at 50% 100%)`;
   });
   const counter = [
     useTransform(cp, [0.05, 0.11, 0.28, 0.33], [0, 1, 1, 0]),
@@ -575,13 +568,9 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   return (
     <div>
       {/* ------------- desktop: pinned horizontal showcase ------------ */}
-      <div ref={wrapRef} className="relative hidden lg:block lg:h-[460svh]">
+      <div ref={wrapRef} className="relative hidden lg:block lg:h-[540svh]">
         <div className="sticky top-0 h-svh overflow-hidden">
-          <motion.div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[#F6EBDD]"
-            style={{ opacity: baseOp }}
-          />
+          <div aria-hidden="true" className="absolute inset-0 bg-[#F6EBDD]" />
           <div className="grain absolute inset-0" aria-hidden="true" />
           {/* the coral handoff — fills upward, matching the section ground */}
           {/* rendered after the theme layer below so it sits on top of it */}
@@ -602,9 +591,8 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
             className="absolute inset-0"
             style={{
               clipPath: bloom,
-              opacity: bloomOp,
               background:
-                "radial-gradient(140% 140% at 50% 100%, #E85F34 0%, #C6431E 45%, #6E2911 100%)",
+                "radial-gradient(150% 150% at 50% 100%, #F4703F 0%, #E85F34 52%, #DE5931 100%)",
             }}
           />
 

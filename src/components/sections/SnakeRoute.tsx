@@ -242,9 +242,6 @@ export default function SnakeRoute() {
   const headOp = useTransform(p, [0, 0.24, 0.31], [1, 1, 0]);
   const headY = useTransform(p, [0.24, 0.31], [0, -14]);
   const airOp = useTransform(p, [0.05, 0.1, 0.24, 0.29], [0, 0.55, 0.55, 0]);
-  /* the reading scrim is only needed while the heading sits on the
-     render — it thins to a whisper once the cards take over */
-  const scrimOp = useTransform(p, [0.24, 0.31], [1, 0]);
   const endOp = useTransform(p, [0.88, 0.95], [0, 1]);
   const endY = useTransform(p, [0.88, 0.95], [12, 0]);
 
@@ -288,18 +285,6 @@ export default function SnakeRoute() {
                 className="object-cover"
               />
             </motion.div>
-
-            {/* cream scrim on the reading side — keeps the ink type crisp */}
-            <motion.span
-              aria-hidden="true"
-              className="absolute inset-0"
-              style={{
-                opacity: scrimOp,
-                background:
-                  "linear-gradient(90deg, #F6EBDD 0%, rgba(246,235,221,0.86) 20%, rgba(246,235,221,0) 46%)," +
-                  "linear-gradient(180deg, rgba(246,235,221,0.5) 0%, transparent 12%)",
-              }}
-            />
 
             {/* the construction line: clay edge, sand, brick chips, dust */}
             <motion.div

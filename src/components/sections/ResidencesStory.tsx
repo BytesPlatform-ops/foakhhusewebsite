@@ -676,7 +676,7 @@ function CategoryPanel({
         >
           {c.mark}
         </span>
-        <div className="grid w-full grid-cols-[21%_1fr_25%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
+        <div className="grid w-full grid-cols-[19%_1fr_28%] items-center gap-[2vw] pr-[1.5vw] pl-[5vw]">
           {/* LEFT — the exclusive marker */}
           <motion.div style={{ x: textX }}>
             <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#EFD5A3" }}>
@@ -745,12 +745,7 @@ function CategoryPanel({
                 </li>
               ))}
             </ul>
-            <a
-              href="#enquire"
-              className="mt-6 inline-block rounded-full bg-[#C78C49] px-6 py-3 text-sm font-semibold text-[#1A0F0A] transition-all duration-300 ease-out hover:scale-[1.02] hover:bg-[#EFD5A3]"
-            >
-              Enquire About Penthouses
-            </a>
+            <PenthouseEnquiry className="mt-5" />
           </motion.div>
         </div>
       </motion.article>
@@ -940,14 +935,7 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
             <p className="mt-4 text-[0.6rem] tracking-[0.14em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
               {c.note}
             </p>
-            {c.duplex && (
-              <a
-                href="#enquire"
-                className="mt-4 inline-block rounded-full bg-[#C78C49] px-6 py-3 text-sm font-semibold text-[#1A0F0A] transition-all duration-300 ease-out active:scale-[0.98]"
-              >
-                Enquire About Penthouses
-              </a>
-            )}
+            {c.duplex && <PenthouseEnquiry className="mt-4" />}
           </article>
         ))}
       </div>
@@ -956,6 +944,68 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
 
   if (embedded) return <div className="bg-[#F6EBDD]">{body}</div>;
   return <div className="bg-[#F6EBDD]">{body}</div>;
+}
+
+
+/* ------------------------------------------- penthouse enquiry ----- */
+
+const PENTHOUSE_FIELDS = [
+  { id: "ph-name", label: "Full name", type: "text", auto: "name" },
+  { id: "ph-email", label: "Email", type: "email", auto: "email" },
+  { id: "ph-phone", label: "Phone", type: "tel", auto: "tel" },
+];
+
+/**
+ * A dedicated enquiry form for the eight duplex penthouses — separate
+ * from the general Register Interest form. Real fields and validation
+ * styling; submission stays disabled until the penthouse sales inbox is
+ * confirmed, so no enquiry is silently dropped.
+ */
+function PenthouseEnquiry({ className = "" }: { className?: string }) {
+  return (
+    <form
+      aria-label="Enquire about the duplex penthouses"
+      onSubmit={(e) => e.preventDefault()}
+      className={`rounded-[14px] border border-[#D8B36A]/50 bg-[#FFF8EF] p-4 shadow-[0_20px_44px_-26px_rgba(0,0,0,0.6)] ${className}`}
+    >
+      <p className="text-[0.55rem] font-bold tracking-[0.24em] uppercase" style={{ color: "#C78C49" }}>
+        Penthouse enquiry
+      </p>
+      <p className="font-display mt-1 text-[1.05rem] leading-snug font-medium" style={{ color: "#943F2D" }}>
+        Register for the eight.
+      </p>
+      <div className="mt-3 space-y-2">
+        {PENTHOUSE_FIELDS.map((f) => (
+          <div key={f.id}>
+            <label htmlFor={f.id} className="sr-only">
+              {f.label}
+            </label>
+            <input
+              id={f.id}
+              name={f.id}
+              type={f.type}
+              autoComplete={f.auto}
+              placeholder={f.label}
+              className="w-full rounded-md border border-[#D8B36A]/45 bg-[#FFFCF7] px-3 py-2 text-[0.8rem] text-[#211A17] transition-colors outline-none placeholder:text-[#211A17]/40 focus:border-[#C78C49]"
+            />
+          </div>
+        ))}
+      </div>
+      <button
+        type="submit"
+        disabled
+        aria-disabled="true"
+        title="Penthouse enquiries activate once the sales inbox is confirmed"
+        className="mt-3 w-full cursor-not-allowed rounded-full bg-[#C78C49]/45 px-4 py-2.5 text-[0.78rem] font-bold text-[#1A0F0A]"
+      >
+        Enquire About Penthouses
+      </button>
+      <p className="mt-2 text-[0.58rem] leading-relaxed" style={{ color: "rgba(33,26,23,0.55)" }}>
+        Penthouse enquiries activate once the sales inbox is confirmed — no enquiry is
+        silently dropped in the meantime.
+      </p>
+    </form>
+  );
 }
 
 /* ============================================================ deck == *//* ============================================================ deck == *//* ============================================================ deck == */

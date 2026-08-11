@@ -534,31 +534,31 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   });
   const cp = useSpring(scrollYProgress, { stiffness: 100, damping: 28, mass: 0.4 });
 
-  const trackX = useTransform(cp, [0.04, 0.71], ["0vw", "-300vw"]);
+  const trackX = useTransform(cp, [0.04, 0.6], ["0vw", "-300vw"]);
   const introOp = useTransform(cp, [0, 0.05, 0.09], [1, 1, 0]);
   /* the finale takes over: cream stage crossfades to deep bronze-charcoal */
-  const duplexOp = useTransform(cp, [0.56, 0.64], [0, 1]);
+  const duplexOp = useTransform(cp, [0.474, 0.541], [0, 1]);
   /* the next section's orange rises over the duplex itself as you scroll
      toward it — one slow radial wave from bottom-centre that reaches full
      cover exactly as the pin hands over, so the colour change and the
      move to the next section are the same gesture */
   const bloom = useTransform(cp, (v) => {
-    const t = Math.min(Math.max((v - 0.855) / 0.145, 0), 1);
+    const t = Math.min(Math.max((v - 0.8) / 0.2, 0), 1);
     const e = t * t * t * (t * (t * 6 - 15) + 10);
     return `circle(${(e * 168).toFixed(2)}% at 50% 100%)`;
   });
   /* the section's coral rises and fills the stage over the last stretch,
      so the pin releases into the same colour instead of cutting from
      near-black straight to red */
-  const eyebrowOut = useTransform(cp, [0.88, 0.96], [1, 0]);
+  const eyebrowOut = useTransform(cp, [0.86, 0.95], [1, 0]);
   /* the section's orange takes the stage over as one circle blooming from
      bottom-centre — eased long and soft (Apple's slow-out curve) so the
      colour arrives rather than switches */
   const counter = [
-    useTransform(cp, [0.048, 0.093, 0.223, 0.261], [0, 1, 1, 0]),
-    useTransform(cp, [0.223, 0.261, 0.421, 0.459], [0, 1, 1, 0]),
-    useTransform(cp, [0.421, 0.459, 0.611, 0.649], [0, 1, 1, 0]),
-    useTransform(cp, [0.611, 0.649, 1, 1.01], [0, 1, 1, 1]),
+    useTransform(cp, [0.047, 0.084, 0.193, 0.225], [0, 1, 1, 0]),
+    useTransform(cp, [0.193, 0.225, 0.359, 0.39], [0, 1, 1, 0]),
+    useTransform(cp, [0.359, 0.39, 0.517, 0.549], [0, 1, 1, 0]),
+    useTransform(cp, [0.517, 0.549, 1, 1.01], [0, 1, 1, 1]),
   ];
 
   if (reduced) return <StackedCategories />;
@@ -671,8 +671,8 @@ function CategoryPanel({
   progress: MotionValue<number>;
   left: number;
 }) {
-  const focal = [0.13, 0.33, 0.52, 0.695][index];
-  const win = 0.091;
+  const focal = [0.115, 0.282, 0.441, 0.588][index];
+  const win = 0.076;
   /* the finale holds full strength to the release — the colour changes
      around it, the panel itself never dims */
   const op = useTransform(

@@ -198,50 +198,21 @@ export default function SnakeRoute() {
      entrance; travel measured from the rendered image height */
   const bRef = useRef<HTMLDivElement>(null);
   const travel = useMotionValue(0);
-  const elH = useMotionValue(1);
-  const vpH = useMotionValue(1);
   useEffect(() => {
     const measure = () => {
       const el = bRef.current;
       if (!el) return;
-      elH.set(el.offsetHeight);
-      vpH.set(window.innerHeight);
       travel.set(Math.min(0, window.innerHeight - el.offsetHeight));
     };
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [travel, elH, vpH]);
+  }, [travel]);
   /* the camera travels the full height of the render, top to bottom */
   const buildingY = useTransform([pb, travel] as const, ([v, t]) => {
     const a = Math.min(Math.max(((v as number) - 0.02) / 0.9, 0), 1);
     const e = a * a * (3 - 2 * a);
     return e * (t as number);
-  });
-
-  /* the structure completes just ahead of the descending camera, so the
-     construction line always sits in frame — quantised into courses */
-  const built = useTransform([pb, elH, vpH] as const, ([v, h, vh]) => {
-    const H = h as number;
-    const V = vh as number;
-    if (H <= 0) return 1;
-    const a = Math.min(Math.max(((v as number) - 0.02) / 0.9, 0), 1);
-    const e = a * a * (3 - 2 * a);
-    const raw = (((H - V) * e + V * 0.7) / H) * 1.25;
-    const c = Math.min(Math.max(raw, 0), 1);
-    return Math.ceil(c * 16) / 16;
-  });
-  const builtClip = useTransform(built, (c) => `inset(0% 0% ${(1 - c) * 100}% 0%)`);
-  /* the photo trails the raw-clay leading edge — each course shows as
-     brick first, then settles into the real photograph a moment later,
-     never both at once */
-  const builtPhoto = useSpring(built, { stiffness: 50, damping: 16, mass: 0.8 });
-  const builtPhotoClip = useTransform(builtPhoto, (c) => `inset(0% 0% ${(1 - c) * 100}% 0%)`);
-  const buildLine = useTransform(built, (c) => `${c * 100}%`);
-  const buildActive = useTransform([p, built] as const, ([v, c]) => {
-    const fadeIn = Math.min(Math.max(((v as number) - 0.02) / 0.04, 0), 1);
-    const done = (c as number) >= 0.999 ? 0 : 1;
-    return fadeIn * done;
   });
 
   const headOp = useTransform(p, [0, 0.24, 0.31], [1, 1, 0]);
@@ -261,106 +232,21 @@ export default function SnakeRoute() {
       className="relative h-[320svh] lg:h-[360svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden bg-[#F6EBDD]">
-        {/* ------------- the building constructs itself ---------------- */}
+        {/* ------------- the building, panning slowly with scroll ------- */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             ref={bRef}
             className="absolute top-0 left-1/2 w-[230vw] -translate-x-1/2 will-change-transform sm:w-[150vw] lg:w-full"
             style={{ y: buildingY, aspectRatio: `${FRAME_ASPECT}` }}
           >
-            {/* the ghost — what is still to be built */}
             <Image
               src="/buildingpov.jpg"
-              alt=""
-              aria-hidden="true"
+              alt="The Foakh tower in section — rooftop kite, wind turbine and solar above the residences, amenity floors and entrance"
               fill
-              quality={70}
+              quality={88}
               sizes="100vw"
-              className="object-cover opacity-[0.14] grayscale-[0.3]"
+              className="object-cover"
             />
-
-            {/* the raw courses — brick fills each band the instant it's
-                reached, ahead of the photo that settles into it */}
-            <motion.div className="absolute inset-0" style={{ clipPath: builtClip }}>
-              <span className="absolute inset-0" style={{ background: CLAY_BG }} />
-            </motion.div>
-
-            {/* the built structure — the real photograph, always trailing
-                the brick edge above so construction and finish never
-                arrive together */}
-            <motion.div className="absolute inset-0" style={{ clipPath: builtPhotoClip }}>
-              <Image
-                src="/buildingpov.jpg"
-                alt="The Foakh tower in section — rooftop kite, wind turbine and solar above the residences, amenity floors and entrance"
-                fill
-                quality={88}
-                sizes="100vw"
-                className="object-cover"
-              />
-            </motion.div>
-
-            {/* the construction line: clay edge, sand, brick chips, dust */}
-            <motion.div
-              data-construction
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 h-0"
-              style={{ top: buildLine, opacity: buildActive }}
-            >
-              <span
-                className="absolute inset-x-[7%] -top-[3px] h-[6px] rounded-full"
-                style={{ background: CLAY_EDGE, filter: "blur(1px)" }}
-              />
-              {SAND.map((g, i) => (
-                <span
-                  key={`s${i}`}
-                  className="absolute block rounded-full"
-                  style={
-                    {
-                      left: `${g.x}%`,
-                      width: g.w,
-                      height: g.w,
-                      background: "#E0B183",
-                      "--dx": `${g.dx}px`,
-                      animation: `foakh-sand ${g.dur}s linear ${g.delay}s infinite`,
-                    } as React.CSSProperties
-                  }
-                />
-              ))}
-              {BRICKS.map((br, i) => (
-                <span
-                  key={`b${i}`}
-                  className="absolute block rounded-[1px]"
-                  style={
-                    {
-                      left: `${br.x}%`,
-                      width: br.w,
-                      height: br.w * 0.5,
-                      background: "linear-gradient(180deg, #C4653F, #8A3D2A)",
-                      "--dx": `${br.dx}px`,
-                      "--rot": `${br.rot}deg`,
-                      animation: `foakh-brick ${br.dur}s ease-in ${br.delay}s infinite`,
-                    } as React.CSSProperties
-                  }
-                />
-              ))}
-              {DUSTP.map((d, i) => (
-                <span
-                  key={`d${i}`}
-                  className="absolute block rounded-full blur-md"
-                  style={
-                    {
-                      left: `${d.x}%`,
-                      width: d.w,
-                      height: d.w * 0.5,
-                      background:
-                        "radial-gradient(ellipse at 50% 60%, rgba(226,186,142,0.7), transparent 72%)",
-                      "--dx": `${d.dx}px`,
-                      animation: `foakh-dust ${d.dur}s ease-out ${d.delay}s infinite`,
-                    } as React.CSSProperties
-                  }
-                />
-              ))}
-            </motion.div>
 
             {/* airflow whisper toward the crown — stage A only */}
             <motion.svg

@@ -244,7 +244,7 @@ export default function SnakeRoute() {
   const airOp = useTransform(p, [0.05, 0.1, 0.24, 0.29], [0, 0.55, 0.55, 0]);
   /* the reading scrim is only needed while the heading sits on the
      render — it thins to a whisper once the cards take over */
-  const scrimOp = useTransform(p, [0.24, 0.31], [1, 0.32]);
+  const scrimOp = useTransform(p, [0.24, 0.31], [1, 0]);
   const endOp = useTransform(p, [0.88, 0.95], [0, 1]);
   const endY = useTransform(p, [0.88, 0.95], [12, 0]);
 
@@ -417,7 +417,7 @@ export default function SnakeRoute() {
         ))}
 
         {/* ------------- stage rail — bottom left --------------------- */}
-        <div className="absolute bottom-[5%] left-[6%] z-30 flex items-center gap-3 lg:left-[7%]">
+        <div className="absolute bottom-[5%] left-[6%] z-30 flex items-center gap-3 rounded-full bg-[#F6EBDD]/88 px-4 py-2 lg:left-[7%]">
           {RAIL.map((r) => (
             <RailMark key={r.label} label={r.label} range={r.range} progress={p} />
           ))}
@@ -497,29 +497,72 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
         </div>
       </motion.div>
 
-      {/* the companion stills — one per point, scattered but visible */}
-      {st.frames.map((f) => (
-        <motion.figure
-          key={f.label}
-          className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1 shadow-[0_24px_48px_-28px_rgba(20,10,6,0.55)] lg:block ${f.className}`}
-          style={{ opacity, scale }}
-        >
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
-            <Image
-              src={f.src}
-              alt={f.alt}
-              fill
-              sizes="20rem"
-              className="object-cover"
-              style={{ objectPosition: f.pos }}
-            />
-          </div>
-          <figcaption className="px-2 pt-1.5 pb-1 text-center text-[0.55rem] font-bold tracking-[0.2em] uppercase" style={{ color: "#943F2D" }}>
-            {f.label}
-          </figcaption>
-        </motion.figure>
+      {/* the companion stills — each one lays itself up in brick courses */}
+      {st.frames.map((f, i) => (
+        <StageStill key={f.label} p={p} st={st} f={f} i={i} opacity={opacity} scale={scale} />
       ))}
     </>
+  );
+}
+
+/** a companion still that lays itself up in brick courses, slowly */
+function StageStill({
+  p,
+  st,
+  f,
+  i,
+  opacity,
+  scale,
+}: {
+  p: MotionValue<number>;
+  st: Stage;
+  f: StageFrame;
+  i: number;
+  opacity: MotionValue<number>;
+  scale: MotionValue<number>;
+}) {
+  /* a long, unhurried window — staggered so the frames build in turn */
+  const s0 = st.at[0] + 0.015 + i * 0.035;
+  const s1 = s0 + 0.13;
+  const clip = useTransform(p, (v) => {
+    const t = Math.min(Math.max((v - s0) / (s1 - s0), 0), 1);
+    const c = t * 9;
+    const laid = Math.floor(c) / 9;
+    const frac = c % 1;
+    if (frac <= 0.74) return `inset(${(1 - laid) * 100}% 0% 0% 0%)`;
+    const lift = (frac - 0.74) / 0.26;
+    const e = laid + (lift * lift * (3 - 2 * lift)) / 9;
+    return `inset(${(1 - Math.min(1, e)) * 100}% 0% 0% 0%)`;
+  });
+  const clay = useTransform(p, [s0 + (s1 - s0) * 0.3, s1 - (s1 - s0) * 0.06], [1, 0]);
+
+  return (
+    <motion.figure
+      className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1 shadow-[0_24px_48px_-28px_rgba(20,10,6,0.55)] lg:block ${f.className}`}
+      style={{ opacity, scale, clipPath: clip }}
+    >
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
+        <Image
+          src={f.src}
+          alt={f.alt}
+          fill
+          sizes="20rem"
+          className="object-cover"
+          style={{ objectPosition: f.pos }}
+        />
+      </div>
+      <figcaption className="px-2 pt-1.5 pb-1 text-center text-[0.55rem] font-bold tracking-[0.2em] uppercase" style={{ color: "#943F2D" }}>
+        {f.label}
+      </figcaption>
+      {/* the clay it is built from, firing clean as the last course lands */}
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-50"
+        style={{ opacity: clay, borderRadius: "inherit" }}
+      >
+        <ClayFace />
+      </motion.span>
+    </motion.figure>
   );
 }
 

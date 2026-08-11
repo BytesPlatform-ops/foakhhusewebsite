@@ -241,17 +241,24 @@ export default function ResidencesStory() {
       <ResidenceCategories reduced={!!reduced} />
 
       {/* ---- Apartments & Interiors — intro copy before the deck ----- */}
-      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pb-16 lg:pb-20">
-        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
+      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-20 pb-16 lg:pt-28 lg:pb-20">
+        {/* soft mask fading down from the dark duplex finale above, so the
+            hard seam between sections doesn't cut straight across the copy */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-16 lg:h-24"
+          style={{ background: "linear-gradient(to bottom, #1A0F0A 0%, transparent 100%)" }}
+        />
+        <p className="relative text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
           Apartments &amp; Interiors
         </p>
         <p
-          className="font-display mt-4 max-w-[26ch] leading-[1.15]"
+          className="font-display relative mt-4 max-w-[26ch] leading-[1.15]"
           style={{ color: IVORY, fontSize: "clamp(1.9rem,2.6vw,2.8rem)", fontWeight: 500 }}
         >
           Homes made for real life.
         </p>
-        <p className="mt-4 max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
+        <p className="relative mt-4 max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
           Every residence is shaped around comfort, practicality and visual refinement.
         </p>
       </div>

@@ -196,37 +196,46 @@ export default function SnakeRoute() {
      entrance; travel measured from the rendered image height */
   const bRef = useRef<HTMLDivElement>(null);
   const travel = useMotionValue(0);
+  const elH = useMotionValue(1);
+  const vpH = useMotionValue(1);
   useEffect(() => {
     const measure = () => {
       const el = bRef.current;
       if (!el) return;
+      elH.set(el.offsetHeight);
+      vpH.set(window.innerHeight);
       travel.set(Math.min(0, window.innerHeight - el.offsetHeight));
     };
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [travel]);
-  /* a gentle settle only — the construction is the motion */
+  }, [travel, elH, vpH]);
+  /* the camera travels the full height of the render, top to bottom */
   const buildingY = useTransform([pb, travel] as const, ([v, t]) => {
     const a = Math.min(Math.max(((v as number) - 0.02) / 0.9, 0), 1);
     const e = a * a * (3 - 2 * a);
-    return e * (t as number) * 0.16;
+    return e * (t as number);
   });
 
-  /* the tower rises in twelve courses — one per storey — topping out
-     with the crown systems as the renewable-energy stage closes */
-  const built = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - 0.02) / 0.56, 0), 1);
-    const c = t * 12;
-    const laid = Math.floor(c) / 12;
-    const frac = c % 1;
-    if (frac <= 0.7) return laid;
-    const lift = (frac - 0.7) / 0.3;
-    return Math.min(1, laid + (lift * lift * (3 - 2 * lift)) / 12);
+  /* the structure completes just ahead of the descending camera, so the
+     construction line always sits in frame — quantised into courses */
+  const built = useTransform([pb, elH, vpH] as const, ([v, h, vh]) => {
+    const H = h as number;
+    const V = vh as number;
+    if (H <= 0) return 1;
+    const a = Math.min(Math.max(((v as number) - 0.02) / 0.9, 0), 1);
+    const e = a * a * (3 - 2 * a);
+    const raw = (((H - V) * e + V * 0.7) / H) * 1.25;
+    const c = Math.min(Math.max(raw, 0), 1);
+    return Math.ceil(c * 16) / 16;
   });
-  const builtClip = useTransform(built, (c) => `inset(${(1 - c) * 100}% 0% 0% 0%)`);
-  const buildLine = useTransform(built, (c) => `${(1 - c) * 100}%`);
-  const buildActive = useTransform(p, [0.02, 0.05, 0.55, 0.6], [0, 1, 1, 0]);
+  const builtClip = useTransform(built, (c) => `inset(0% 0% ${(1 - c) * 100}% 0%)`);
+  const buildLine = useTransform(built, (c) => `${c * 100}%`);
+  const buildActive = useTransform([p, built] as const, ([v, c]) => {
+    const fadeIn = Math.min(Math.max(((v as number) - 0.02) / 0.04, 0), 1);
+    const done = (c as number) >= 0.999 ? 0 : 1;
+    return fadeIn * done;
+  });
 
   const headOp = useTransform(p, [0, 0.24, 0.31], [1, 1, 0]);
   const headY = useTransform(p, [0.24, 0.31], [0, -14]);
@@ -246,11 +255,11 @@ export default function SnakeRoute() {
     >
       <div className="sticky top-0 h-svh overflow-hidden bg-[#F6EBDD]">
         {/* ------------- the building constructs itself ---------------- */}
-        <div className="absolute inset-0 flex items-end justify-center overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
           <motion.div
             ref={bRef}
-            className="relative will-change-transform"
-            style={{ y: buildingY, height: "112svh", aspectRatio: `${B_ASPECT}` }}
+            className="absolute top-0 left-1/2 w-[230vw] -translate-x-1/2 will-change-transform sm:w-[150vw] lg:w-screen"
+            style={{ y: buildingY, aspectRatio: `${B_ASPECT}` }}
           >
             {/* the ghost — what is still to be built */}
             <Image
@@ -259,8 +268,8 @@ export default function SnakeRoute() {
               aria-hidden="true"
               fill
               quality={70}
-              sizes="(min-width:1024px) 62vw, 100vw"
-              className="object-contain opacity-[0.13] grayscale-[0.35]"
+              sizes="100vw"
+              className="object-cover opacity-[0.14] grayscale-[0.3]"
             />
 
             {/* the built structure — rises course by course with scroll */}
@@ -270,10 +279,21 @@ export default function SnakeRoute() {
                 alt="The Foakh tower in section — rooftop kite, wind turbine and solar above the residences, amenity floors and entrance"
                 fill
                 quality={88}
-                sizes="(min-width:1024px) 62vw, 100vw"
-                className="object-contain"
+                sizes="100vw"
+                className="object-cover"
               />
             </motion.div>
+
+            {/* cream scrim on the reading side — keeps the ink type crisp */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(90deg, #F6EBDD 0%, rgba(246,235,221,0.86) 20%, rgba(246,235,221,0) 46%)," +
+                  "linear-gradient(180deg, rgba(246,235,221,0.5) 0%, transparent 12%)",
+              }}
+            />
 
             {/* the construction line: clay edge, sand, brick chips, dust */}
             <motion.div

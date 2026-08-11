@@ -2,9 +2,16 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
 import GalleryLightbox from "./GalleryLightbox";
-import BuildIn from "@/components/shared/BuildIn";
+
+/** each tile rises into place at its own speed/delay — a loose rain-like
+ *  cascade rather than a synchronized grid reveal. Deterministic per
+ *  index so server and client render the same values. */
+const rainDelay = (i: number) => (i % 3) * 0.1 + ((i * 7) % 5) * 0.06;
+const rainOffset = (i: number) => 64 + ((i * 5) % 4) * 20;
+const rainDuration = (i: number) => 0.85 + (i % 3) * 0.12;
 
 /**
  * 05 — Gallery: an image-led editorial masonry of the project's real
@@ -118,6 +125,7 @@ const ITEMS: GalleryItem[] = [
 ];
 
 export default function GallerySection() {
+  const reduced = useReducedMotion();
   const [open, setOpen] = useState<number | null>(null);
   const [direction, setDirection] = useState<1 | -1>(1);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -149,11 +157,17 @@ export default function GallerySection() {
         {/* -------------------------- masonry -------------------------- */}
         <div className="mt-14 columns-1 gap-5 sm:columns-2 lg:columns-3">
           {ITEMS.map((item, i) => (
-            <BuildIn
+            <motion.div
               key={item.src}
-              className="mb-5 break-inside-avoid rounded-[18px]"
-              delay={(i % 3) * 0.09 + (i % 2) * 0.04}
-              amount={0.2}
+              className="mb-5 break-inside-avoid"
+              initial={reduced ? undefined : { opacity: 0, y: rainOffset(i) }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{
+                duration: rainDuration(i),
+                delay: rainDelay(i),
+                ease: [0.22, 1, 0.36, 1],
+              }}
             >
               <button
                 type="button"
@@ -197,7 +211,7 @@ export default function GallerySection() {
                   </svg>
                 </span>
               </button>
-            </BuildIn>
+            </motion.div>
           ))}
         </div>
       </div>

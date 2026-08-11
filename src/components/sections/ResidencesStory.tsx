@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import Image from "next/image";
 import AmenitiesShowcase from "./AmenitiesShowcase";
-import { CLAY_BG } from "@/components/shared/BuildIn";
 import {
   motion,
   useReducedMotion,
@@ -651,13 +650,6 @@ function CategoryPanel({
 }) {
   const focal = [0.16, 0.42, 0.67, 0.9][index];
   const win = 0.12;
-  /* construction clip for the media — six clay courses on entry */
-  const buildClip = useTransform(progress, (v) => {
-    const t = Math.min(Math.max((v - (focal - win)) / (win * 0.6), 0), 1);
-    const c = Math.ceil(t * 6) / 6;
-    return `inset(${(1 - c) * 100}% 0% 0% 0%)`;
-  });
-  const clay = useTransform(progress, [focal - win * 0.6, focal - win * 0.25], [1, 0]);
   const op = useTransform(
     progress,
     [focal - win, focal - win * 0.55, focal + win * 0.8, focal + win * 1.4],
@@ -711,7 +703,7 @@ function CategoryPanel({
           </motion.div>
 
           {/* CENTRE — the penthouse collage */}
-          <motion.div className="relative -mt-[3svh] h-[68svh]" style={{ scale: settle, y: mediaY, clipPath: buildClip }}>
+          <motion.div className="relative -mt-[3svh] h-[68svh]" style={{ scale: settle, y: mediaY }}>
             {/* main terrace */}
             <figure className="absolute top-0 left-0 h-[74%] w-[78%] overflow-hidden rounded-[14px] border border-[#D8B36A]/75 bg-[#140B07] p-1.5 shadow-[0_44px_88px_-36px_rgba(0,0,0,0.8)]">
               <div className="relative h-full w-full overflow-hidden rounded-[9px]">
@@ -811,13 +803,8 @@ function CategoryPanel({
               ? "-mt-[2svh] h-[68svh] border-[#D8B36A]/80 shadow-[0_50px_100px_-40px_rgba(20,10,5,0.75)]"
               : "-mt-[4svh] h-[62svh] border-[#D8B36A]/55 shadow-[0_36px_70px_-38px_rgba(148,63,45,0.4)]"
           }`}
-          style={{ scale: settle, y: mediaY, clipPath: buildClip }}
+          style={{ scale: settle, y: mediaY }}
         >
-          <motion.span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-50"
-            style={{ opacity: clay, background: CLAY_BG, borderRadius: "inherit" }}
-          />
           <div className="relative h-full w-full overflow-hidden rounded-[9px]">
             <Image
               src={c.src}
@@ -1012,13 +999,6 @@ function DeckCard({
     cover ? [s, e, cover[0], cover[1]] : [s, e],
     cover ? [0.97, 1, 1, 0.955] : [0.97, 1]
   );
-  /* construction: the card assembles in clay courses as it rises */
-  const buildClip = useTransform(p, (v) => {
-    const t = Math.min(Math.max((v - s) / ((e - s) * 0.85), 0), 1);
-    const c = Math.ceil(t * 6) / 6;
-    return `inset(${(1 - c) * 100}% 0% 0% 0%)`;
-  });
-  const clay = useTransform(p, [(s + e) / 2, e], [1, 0]);
   const rotate = useTransform(p, [s, e], [spec.rotate * 2.2, spec.rotate]);
   const dim = useTransform(p, cover ? [cover[0], cover[1]] : [0, 1], cover ? [0, 0.28] : [0, 0]);
 
@@ -1034,16 +1014,9 @@ function DeckCard({
           aspectRatio: spec.aspect,
           borderRadius: spec.radius,
           backgroundColor: INK,
-          ...(reduced ? {} : { y, scale, rotate, clipPath: buildClip }),
+          ...(reduced ? {} : { y, scale, rotate }),
         }}
       >
-        {!reduced && (
-          <motion.span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-50"
-            style={{ opacity: clay, background: CLAY_BG }}
-          />
-        )}
         <Image
           src={spec.src}
           alt={spec.alt}

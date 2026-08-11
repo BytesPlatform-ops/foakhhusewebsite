@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { CLAY_BG } from "@/components/shared/BuildIn";
+import { ClayFace } from "@/components/shared/BuildIn";
 import {
   motion,
   useMotionValue,
@@ -332,8 +332,10 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
         <motion.span
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 z-50"
-          style={{ opacity: clay, background: CLAY_BG, borderRadius: "inherit" }}
-        />
+          style={{ opacity: clay, borderRadius: "inherit" }}
+        >
+          <ClayFace />
+        </motion.span>
         <p className="text-[0.6rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#B95334" }}>
           {st.eyebrow}
         </p>
@@ -368,13 +370,8 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
         <motion.figure
           key={f.label}
           className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#D8B36A]/55 bg-[#FFF8EF] p-1 shadow-[0_24px_48px_-28px_rgba(20,10,6,0.55)] lg:block ${f.className}`}
-          style={{ opacity, scale, clipPath: clip }}
+          style={{ opacity, scale }}
         >
-          <motion.span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-50"
-            style={{ opacity: clay, background: CLAY_BG, borderRadius: "inherit" }}
-          />
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
             <Image
               src={f.src}

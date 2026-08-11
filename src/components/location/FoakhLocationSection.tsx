@@ -155,9 +155,8 @@ export default function FoakhLocationSection() {
 
           {/* right column: map above the architectural visual */}
           <div className="flex min-w-0 flex-col gap-7">
-            <BuildIn
-              delay={0.15}
-              amount={0.15}
+            <motion.div
+              {...rise(0.12)}
               className="flex flex-1 flex-col overflow-hidden rounded-[28px] border border-[#D8AE62]/45 bg-[#291A16] shadow-[0_34px_70px_-32px_rgba(50,20,10,0.6)]"
             >
               <div className="min-h-[380px] flex-1">
@@ -166,7 +165,7 @@ export default function FoakhLocationSection() {
               <div className="flex items-center justify-between gap-3 border-t border-[#D8AE62]/25 p-4">
                 <DirectionButtons dark />
               </div>
-            </BuildIn>
+            </motion.div>
             <BuildIn delay={0.3} amount={0.15} className="rounded-[28px]">
               <FoakhLocationVisual />
             </BuildIn>

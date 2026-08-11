@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
-import BuildIn from "@/components/shared/BuildIn";
 
 /**
  * 22 — Limited Community & Long-Term Value, closing into the Final CTA.
@@ -41,8 +40,8 @@ export default function FinalCTA() {
     >
       <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         {/* deep forest CONTAINED panel — the one deep surface on the page */}
-        <BuildIn
-          amount={0.12} className="grain overflow-hidden rounded-[32px] border border-[#D8B36A]/40 p-8 shadow-[0_44px_90px_-40px_rgba(31,58,48,0.55)] sm:p-12 lg:p-14"
+        <div
+          className="grain relative overflow-hidden rounded-[32px] border border-[#D8B36A]/40 p-8 shadow-[0_44px_90px_-40px_rgba(31,58,48,0.55)] sm:p-12 lg:p-14"
           style={{
             background:
               "radial-gradient(80% 55% at 88% 0%, rgb(101 155 152 / 0.28) 0%, transparent 55%)," +
@@ -125,7 +124,7 @@ export default function FinalCTA() {
             </form>
           </div>
           </div>
-        </BuildIn>
+        </div>
       </div>
     </section>
   );

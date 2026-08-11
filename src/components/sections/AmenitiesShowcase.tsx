@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { CLAY_BG, courses } from "@/components/shared/BuildIn";
 import {
   AnimatePresence,
   motion,
@@ -253,23 +252,11 @@ export default function AmenitiesShowcase() {
                 <motion.div
                   key={a.src}
                   className="absolute inset-0"
-                  initial={{ opacity: 0, scale: 1.035, y: 14, clipPath: "inset(100% 0% 0% 0%)" }}
-                  animate={{ opacity: 1, scale: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
+                  initial={{ opacity: 0, scale: 1.035, y: 14 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  transition={{
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                    clipPath: { duration: 0.55, ease: courses(6) },
-                  }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <motion.span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 z-50"
-                    style={{ background: CLAY_BG }}
-                    initial={{ opacity: 1 }}
-                    animate={{ opacity: 0 }}
-                    transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
-                  />
                   <Image src={a.src} alt={a.alt} fill sizes="46vw" className="object-cover" style={{ objectPosition: a.pos }} />
                 </motion.div>
               </AnimatePresence>

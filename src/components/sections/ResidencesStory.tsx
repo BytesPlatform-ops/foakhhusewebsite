@@ -240,18 +240,30 @@ export default function ResidencesStory() {
       {/* ==================== 03A — RESIDENCE CATEGORIES =============== */}
       <ResidenceCategories reduced={!!reduced} />
 
+      {/* seam: the duplex finale above is a pinned/sticky dark stage that
+          cuts instantly to whatever follows once its scroll track ends —
+          this gives that hand-off a real, gradual fade instead of a snap */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none h-28 lg:h-40"
+        style={{
+          background:
+            "linear-gradient(to bottom, #1A0F0A 0%, rgba(26,15,10,0.82) 30%, rgba(26,15,10,0.42) 62%, transparent 100%)",
+        }}
+      />
+
       {/* ---- Apartments & Interiors — intro copy before the deck ----- */}
-      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-20 pb-16 lg:pt-28 lg:pb-20">
-        <p className="relative text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
+      <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pb-16 lg:pb-20">
+        <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
           Apartments &amp; Interiors
         </p>
         <p
-          className="font-display relative mt-4 max-w-[26ch] leading-[1.15]"
+          className="font-display mt-4 max-w-[26ch] leading-[1.15]"
           style={{ color: IVORY, fontSize: "clamp(1.9rem,2.6vw,2.8rem)", fontWeight: 500 }}
         >
           Homes made for real life.
         </p>
-        <p className="relative mt-4 max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
+        <p className="mt-4 max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
           Every residence is shaped around comfort, practicality and visual refinement.
         </p>
       </div>

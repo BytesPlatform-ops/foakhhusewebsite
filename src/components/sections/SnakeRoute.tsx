@@ -56,7 +56,9 @@ const DUSTP = [
   { x: 46, w: 96, dx: 4, dur: 3, delay: 1 },
   { x: 72, w: 72, dx: 6, dur: 2.8, delay: 1.7 },
 ];
-const B_ASPECT = 1122 / 1402;
+/* the layer runs taller than the render (1122x1402) so object-cover
+   crops the render's own pale margins instead of glaring at the edges */
+const FRAME_ASPECT = 0.7;
 
 const CARD_STYLE: React.CSSProperties = {
   background: "rgba(248, 240, 229, 0.985)",
@@ -240,6 +242,9 @@ export default function SnakeRoute() {
   const headOp = useTransform(p, [0, 0.24, 0.31], [1, 1, 0]);
   const headY = useTransform(p, [0.24, 0.31], [0, -14]);
   const airOp = useTransform(p, [0.05, 0.1, 0.24, 0.29], [0, 0.55, 0.55, 0]);
+  /* the reading scrim is only needed while the heading sits on the
+     render — it thins to a whisper once the cards take over */
+  const scrimOp = useTransform(p, [0.24, 0.31], [1, 0.32]);
   const endOp = useTransform(p, [0.88, 0.95], [0, 1]);
   const endY = useTransform(p, [0.88, 0.95], [12, 0]);
 
@@ -259,7 +264,7 @@ export default function SnakeRoute() {
           <motion.div
             ref={bRef}
             className="absolute top-0 left-1/2 w-[230vw] -translate-x-1/2 will-change-transform sm:w-[150vw] lg:w-screen"
-            style={{ y: buildingY, aspectRatio: `${B_ASPECT}` }}
+            style={{ y: buildingY, aspectRatio: `${FRAME_ASPECT}` }}
           >
             {/* the ghost — what is still to be built */}
             <Image
@@ -285,10 +290,11 @@ export default function SnakeRoute() {
             </motion.div>
 
             {/* cream scrim on the reading side — keeps the ink type crisp */}
-            <span
+            <motion.span
               aria-hidden="true"
               className="absolute inset-0"
               style={{
+                opacity: scrimOp,
                 background:
                   "linear-gradient(90deg, #F6EBDD 0%, rgba(246,235,221,0.86) 20%, rgba(246,235,221,0) 46%)," +
                   "linear-gradient(180deg, rgba(246,235,221,0.5) 0%, transparent 12%)",

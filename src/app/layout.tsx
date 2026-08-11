@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import IntroLoader from "@/components/shared/IntroLoader";
 import "./globals.css";
 
 // High-contrast editorial serif for display — graceful, tall, refined
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="antialiased">
+        <IntroLoader />
         <a href="#main" className="skip-link">
           Skip to content
         </a>

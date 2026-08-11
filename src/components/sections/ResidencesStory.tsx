@@ -207,6 +207,7 @@ export default function ResidencesStory() {
   });
   const p = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.4 });
 
+
   /* the two headline halves cross in from the edges, then recede to a
      faint backdrop once the quality beats begin */
   const leftX = useTransform(p, [0, 0.12, 1], ["-16vw", "0vw", "-1.8vw"]);
@@ -240,10 +241,7 @@ export default function ResidencesStory() {
       {/* ==================== 03A — RESIDENCE CATEGORIES =============== */}
       <ResidenceCategories reduced={!!reduced} />
 
-      {/* ---- Apartments & Interiors — intro copy before the deck -----
-           The stage above hands off already blooming orange, so this
-           block simply continues the section ground: no dark base, no
-           seam to mask. */}
+      {/* ---- Apartments & Interiors — the deck's introduction ------- */}
       <div className="relative">
         <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-16 pb-16 lg:pt-20 lg:pb-20">
         <p className="relative text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#FFC178" }}>
@@ -540,6 +538,15 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   const introOp = useTransform(cp, [0, 0.06, 0.11], [1, 1, 0]);
   /* the finale takes over: cream stage crossfades to deep bronze-charcoal */
   const duplexOp = useTransform(cp, [0.7, 0.79], [0, 1]);
+  /* the next section's orange rises over the duplex itself as you scroll
+     toward it — one slow radial wave from bottom-centre that reaches full
+     cover exactly as the pin hands over, so the colour change and the
+     move to the next section are the same gesture */
+  const bloom = useTransform(cp, (v) => {
+    const t = Math.min(Math.max((v - 0.88) / 0.12, 0), 1);
+    const e = t * t * t * (t * (t * 6 - 15) + 10);
+    return `circle(${(e * 168).toFixed(2)}% at 50% 100%)`;
+  });
   /* the section's coral rises and fills the stage over the last stretch,
      so the pin releases into the same colour instead of cutting from
      near-black straight to red */
@@ -547,15 +554,6 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   /* the section's orange takes the stage over as one circle blooming from
      bottom-centre — eased long and soft (Apple's slow-out curve) so the
      colour arrives rather than switches */
-  /* the duplex holds its dark ground to the very end; only as the
-     chapter hands over does the section's orange bloom up from
-     bottom-centre — a long window, eased gently at both ends so the
-     colour neither jumps in nor rushes */
-  const bloom = useTransform(cp, (v) => {
-    const t = Math.min(Math.max((v - 0.93) / 0.07, 0), 1);
-    const e = t * t * t * (t * (t * 6 - 15) + 10);
-    return `circle(${(e * 165).toFixed(2)}% at 50% 100%)`;
-  });
   const counter = [
     useTransform(cp, [0.05, 0.11, 0.28, 0.33], [0, 1, 1, 0]),
     useTransform(cp, [0.28, 0.33, 0.54, 0.59], [0, 1, 1, 0]),
@@ -572,9 +570,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
         <div className="sticky top-0 h-svh overflow-hidden">
           <div aria-hidden="true" className="absolute inset-0 bg-[#F6EBDD]" />
           <div className="grain absolute inset-0" aria-hidden="true" />
-          {/* the coral handoff — fills upward, matching the section ground */}
-          {/* rendered after the theme layer below so it sits on top of it */}
-          {/* duplex theme layer */}
+          {/* duplex theme layer — black, held to the last pixel */}
           <motion.div
             aria-hidden="true"
             className="absolute inset-0"
@@ -586,6 +582,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
                 "linear-gradient(165deg, #241410 0%, #1A0F0A 55%, #2A160E 100%)",
             }}
           />
+          {/* the next section's colour, arriving as a radial wave */}
           <motion.div
             aria-hidden="true"
             className="absolute inset-0"

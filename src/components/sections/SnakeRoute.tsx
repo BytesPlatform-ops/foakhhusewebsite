@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { ClayFace, CLAY_EDGE } from "@/components/shared/BuildIn";
+import { ClayFace, CLAY_BG, CLAY_EDGE } from "@/components/shared/BuildIn";
 import {
   motion,
   useMotionValue,
@@ -232,6 +232,11 @@ export default function SnakeRoute() {
     return Math.ceil(c * 16) / 16;
   });
   const builtClip = useTransform(built, (c) => `inset(0% 0% ${(1 - c) * 100}% 0%)`);
+  /* the photo trails the raw-clay leading edge — each course shows as
+     brick first, then settles into the real photograph a moment later,
+     never both at once */
+  const builtPhoto = useSpring(built, { stiffness: 50, damping: 16, mass: 0.8 });
+  const builtPhotoClip = useTransform(builtPhoto, (c) => `inset(0% 0% ${(1 - c) * 100}% 0%)`);
   const buildLine = useTransform(built, (c) => `${c * 100}%`);
   const buildActive = useTransform([p, built] as const, ([v, c]) => {
     const fadeIn = Math.min(Math.max(((v as number) - 0.02) / 0.04, 0), 1);
@@ -274,8 +279,16 @@ export default function SnakeRoute() {
               className="object-cover opacity-[0.14] grayscale-[0.3]"
             />
 
-            {/* the built structure — rises course by course with scroll */}
+            {/* the raw courses — brick fills each band the instant it's
+                reached, ahead of the photo that settles into it */}
             <motion.div className="absolute inset-0" style={{ clipPath: builtClip }}>
+              <span className="absolute inset-0" style={{ background: CLAY_BG }} />
+            </motion.div>
+
+            {/* the built structure — the real photograph, always trailing
+                the brick edge above so construction and finish never
+                arrive together */}
+            <motion.div className="absolute inset-0" style={{ clipPath: builtPhotoClip }}>
               <Image
                 src="/buildingpov.jpg"
                 alt="The Foakh tower in section — rooftop kite, wind turbine and solar above the residences, amenity floors and entrance"

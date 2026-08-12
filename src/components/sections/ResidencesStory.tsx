@@ -20,18 +20,20 @@ import {
  * (premium cards, not icon chips), soft scroll reveals.
  *
  * 03B — APARTMENTS & INTERIORS: the statement stage with the rising
- * card deck, now cut to THREE motifs that each carry a different
- * residential idea rather than six overlapping adjectives:
+ * card deck — SIX residence motifs. The opening three were rewritten
+ * from the old Spacious / Functional / Elegant, which were generic and
+ * echoed the category names above:
  *
  *   01 OPEN      — room to breathe (space, daylight, the balcony edge)
  *   02 INTUITIVE — a plan that works (kitchen, dining, circulation)
  *   03 COMPOSED  — detail up close (materials, finish, calm)
+ *   04 COMFORT FOCUSED · 05 PRIVATE BALCONIES · 06 REFINED MATERIALS
  *
- * "Refined" was deliberately not used as a motif: the collection panels
- * above already run on Elegant / "a more refined specification", so a
- * third motif by that name would echo a category instead of adding an
- * idea. The three images are exclusive to this sequence — no other
- * section of the site uses them.
+ * "Refined" was deliberately avoided for 03: the collection panels above
+ * already run on Elegant / "a more refined specification", and 06 owns
+ * Refined Materials, so a third use would echo rather than add an idea.
+ * The three images behind 01–03 are exclusive to this sequence — no
+ * other section of the site uses them.
  *
  * Each card rises and covers the last with a changing boundary while its
  * reading pair (heading left, copy right) swaps in. The split backdrop
@@ -71,19 +73,22 @@ interface DeckSpec {
 }
 
 /**
- * Three beats, three shapes. The deck widens then stands up: OPEN is the
- * broadest card in the sequence, INTUITIVE squares off, and COMPOSED is
- * the tallest — so the rhythm reads as expanse → order → stillness even
- * before the words arrive. Long holds between beats keep it editorial
- * rather than carousel-paced.
+ * Six beats. The opening three carry their own shape rhythm — OPEN is the
+ * broadest card in the deck, INTUITIVE squares off, COMPOSED stands tall —
+ * so the sequence reads expanse → order → stillness before the words even
+ * arrive, then hands over to the original four-to-six run.
+ *
+ * Even step of 0.14: rise over 0.10, hold for 0.05, then the next card
+ * covers. Slightly more generous than the old 0.12 step, which keeps the
+ * reading pairs editorial rather than carousel-paced.
  */
 const DECK: DeckSpec[] = [
   {
     kind: "image",
     src: "/residence-open.jpg",
     alt: "A living room with its corner glazing slid fully open to a private balcony, morning daylight across the limestone floor",
-    rise: [0.03, 0.15],
-    cover: [0.36, 0.45],
+    rise: [0.03, 0.13],
+    cover: [0.18, 0.27],
     fromY: "86svh",
     width: "clamp(400px,32vw,600px)",
     aspect: "16 / 9",
@@ -101,8 +106,8 @@ const DECK: DeckSpec[] = [
     kind: "image",
     src: "/residence-intuitive.jpg",
     alt: "The circulation spine of a residence — entry, open kitchen and dining reading through in a single line of sight",
-    rise: [0.36, 0.45],
-    cover: [0.66, 0.75],
+    rise: [0.18, 0.27],
+    cover: [0.32, 0.41],
     fromY: "118svh",
     width: "clamp(340px,26vw,470px)",
     aspect: "4 / 3",
@@ -120,8 +125,8 @@ const DECK: DeckSpec[] = [
     kind: "image",
     src: "/residence-composed.jpg",
     alt: "The fluted walnut headboard wall of a principal bedroom, lime plaster and brass caught in low evening light",
-    rise: [0.66, 0.75],
-    cover: null,
+    rise: [0.32, 0.41],
+    cover: [0.46, 0.55],
     fromY: "118svh",
     width: "clamp(300px,22vw,400px)",
     aspect: "4 / 5",
@@ -134,6 +139,65 @@ const DECK: DeckSpec[] = [
       copy: "Considered finishes and quiet detailing, resolved into one calm interior.",
     },
     accent: "205 143 96",
+  },
+  {
+    kind: "image",
+    src: "/family.jpg",
+    alt: "Daylight filling the open family living space",
+    rise: [0.46, 0.55],
+    cover: [0.60, 0.69],
+    fromY: "118svh",
+    width: "clamp(300px,22vw,390px)",
+    aspect: "3 / 4",
+    radius: "16px",
+    rotate: 2.2,
+    z: 24,
+    quality: {
+      num: "04",
+      title: "Comfort Focused",
+      copy: "Planning designed around light, usability and comfortable everyday living.",
+    },
+    accent: "111 155 152",
+    objectPosition: "50% 50%",
+  },
+  {
+    kind: "image",
+    src: "/balconyfoakh.jpg",
+    alt: "A private balcony with seating above the green landscape",
+    rise: [0.60, 0.69],
+    cover: [0.74, 0.83],
+    fromY: "118svh",
+    width: "clamp(340px,26vw,460px)",
+    aspect: "4 / 3",
+    radius: "8px",
+    rotate: -1.8,
+    z: 25,
+    quality: {
+      num: "05",
+      title: "Private Balconies",
+      copy: "Personal outdoor space for fresh air, relaxation and views.",
+    },
+    accent: "213 155 84",
+    objectPosition: "50% 55%",
+  },
+  {
+    kind: "image",
+    src: "/buildingfront.jpg",
+    alt: "The refined terracotta materials of the two blocks at dusk",
+    rise: [0.74, 0.83],
+    cover: null,
+    fromY: "118svh",
+    width: "clamp(320px,24vw,430px)",
+    aspect: "1 / 1",
+    radius: "24px",
+    rotate: 1.4,
+    z: 26,
+    quality: {
+      num: "06",
+      title: "Refined Materials",
+      copy: "Carefully selected finishes contribute to a lasting residential environment.",
+    },
+    accent: "198 164 107",
   },
 ];
 
@@ -195,14 +259,14 @@ export default function ResidencesStory() {
           Homes made for real life.
         </p>
         <p className="relative mt-4 max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
-          Three ideas shape every residence — room to breathe, a plan that works, and
-          detail that rewards a closer look.
+          Every residence is shaped around openness, everyday practicality and
+          considered material detail.
         </p>
         </div>
       </div>
 
       {/* ==================== 03B — the quality deck =================== */}
-      <div ref={deckRef} className="relative hidden lg:block lg:h-[420svh]">
+      <div ref={deckRef} className="relative hidden lg:block lg:h-[600svh]">
         <div className="sticky top-0 h-svh overflow-hidden">
           {/* per-beat ambient glow — the stage light shifts with each card */}
           {!reduced &&
@@ -314,9 +378,9 @@ export default function ResidencesStory() {
           <br />
           <span style={{ color: "rgba(224,193,148,0.72)" }}>for real life.</span>
         </p>
-        {/* the same three beats, stacked — each card keeps its own shape so
-            the expanse → order → stillness rhythm survives on a phone, and
-            the numeral carries the count instead of repeating the title */}
+        {/* the same six beats, stacked — each card keeps its own shape so the
+            deck's rhythm survives on a phone, and the numeral carries the
+            count instead of repeating the title underneath itself */}
         <div className="mt-12 space-y-14">
           {DECK.filter((d) => d.quality).map((d) => (
             <div key={d.quality!.num}>
@@ -334,7 +398,7 @@ export default function ResidencesStory() {
                 />
               </figure>
               <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] tabular-nums" style={{ color: "#E8CFA4" }}>
-                {d.quality!.num} <span style={{ color: "rgba(232,207,164,0.5)" }}>/ 03</span>
+                {d.quality!.num} <span style={{ color: "rgba(232,207,164,0.5)" }}>/ 06</span>
               </p>
               <p className="font-display mt-2 leading-[1.08]" style={{ color: "#FAF6F0", fontSize: "1.9rem", fontWeight: 600 }}>
                 {d.quality!.title}
@@ -607,9 +671,13 @@ function ResidenceIndex({
 
   /* column on the right of the opening screen → bar along the foot of
      the collection, one element crossing the stage as the track starts */
-  const morph = useTransform(p, [0.045, 0.135], [0, 1]);
-  const top = useTransform(p, [0, 0.045, 0.135], ["31%", "31%", "84%"]);
-  const left = useTransform(p, [0, 0.045, 0.135], ["56vw", "56vw", "3.2vw"]);
+  const morph = useTransform(p, [0.03, 0.088], [0, 1]);
+  const top = useTransform(p, [0, 0.03, 0.088], ["27%", "27%", "84%"]);
+  const left = useTransform(p, [0, 0.03, 0.088], ["54vw", "54vw", "3.2vw"]);
+  /* the opening screen carries the index large — it is the second thing
+     you read there. It settles back to its own size as it becomes the bar,
+     where it has to sit quietly under four full panels of content */
+  const scale = useTransform(morph, [0, 1], [1.55, 1]);
   const fade = useTransform(p, [0.86, 0.95], [1, 0]);
   const eyebrow = useTransform(duplex, [0, 1], ["rgba(33,26,23,0.42)", "rgba(255,248,239,0.45)"]);
   /* the label belongs to the column; the bar carries its own rhythm */
@@ -619,7 +687,7 @@ function ResidenceIndex({
     <motion.nav
       aria-label="Residence categories"
       className="absolute z-40"
-      style={{ top, left, opacity: fade }}
+      style={{ top, left, opacity: fade, scale, transformOrigin: "left top" }}
     >
       {/* levitation: a few pixels, very slowly — depth, not decoration */}
       <motion.div

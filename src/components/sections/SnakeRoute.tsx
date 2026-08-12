@@ -385,7 +385,17 @@ export default function SnakeRoute() {
    panel's corners rather than becoming full-width blocks. "Arrival" is a
    transition state on desktop, not content, so it is not offered as a tab. */
 
-function MobileStill({ f, index }: { f: StageFrame; index: number }) {
+function MobileStill({
+  f,
+  className,
+  width,
+  index,
+}: {
+  f: StageFrame;
+  className: string;
+  width: string;
+  index: number;
+}) {
   const reduced = useReducedMotion();
   /* the composition assembles: each still rises into place in discrete
      courses rather than fading, so it reads as built rather than dropped */
@@ -401,7 +411,8 @@ function MobileStill({ f, index }: { f: StageFrame; index: number }) {
       initial={reduced ? undefined : "raw"}
       whileInView={reduced ? undefined : "built"}
       viewport={{ once: true, amount: 0.3 }}
-      className="relative w-full"
+      className={`absolute z-20 ${className}`}
+      style={{ width }}
     >
       <motion.div
         className="overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1 shadow-[0_18px_36px_-20px_rgba(20,10,6,0.55)]"
@@ -429,7 +440,7 @@ function MobileStill({ f, index }: { f: StageFrame; index: number }) {
             </span>
           </div>
         ) : (
-          <Image src={f.src} alt={f.alt} fill sizes="(min-width:640px) 60vw, 88vw" className="object-cover" style={{ objectPosition: f.pos }} />
+          <Image src={f.src} alt={f.alt} fill sizes="45vw" className="object-cover" style={{ objectPosition: f.pos }} />
         )}
       </div>
       <figcaption
@@ -479,32 +490,52 @@ function MobileSystems() {
 
   return (
     <div ref={wrapRef} className="relative bg-[#F5EDE3]">
-      {/* ---------------- the building, standing at the head ------------
-          It used to be stretched over the whole section: a 1122x1402
-          portrait render inside a container several thousand pixels tall,
-          object-cover, so the sides were cropped away and what survived
-          read as a slab of masonry rather than the towers. It now keeps
-          its own aspect ratio at full width, anchored to the top, so the
-          building is seen whole. The cream wash that used to sit at 30–72%
-          across the entire section is gone; only the head of the image is
-          lifted, and only enough to carry the heading. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 overflow-hidden">
-        <motion.div
-          className="relative w-full will-change-transform"
-          style={{ y: buildingY, aspectRatio: "1122 / 1402" }}
-        >
-          <Image src="/buildingpov.jpg" alt="" fill sizes="100vw" className="object-cover" priority={false} />
-          {/* the facade settles into the cream ground instead of cutting */}
+      {/* ---------------- the building, descending through the section ----
+          The same gesture as desktop, now actually pinned on mobile: the
+          layer sticks to the viewport for the length of the section, and
+          the render travels inside it. Previously it was a static
+          full-section layer, so the building never moved — it just sat
+          there hugely over-scaled.
+
+          The travel is solved, not guessed. The inner layer is 152% of the
+          viewport, so 52svh of it is out of frame; expressed as a share of
+          the layer's own height that is 52/152 = 34.2%. Moving it -34%
+          therefore lands the foot of the render exactly as the section
+          ends — crown at "Nature, engineered…", entrance at the close —
+          and because the driver is this section's own 0→1 scroll progress,
+          the background and the cards in front advance on one clock. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div className="sticky top-0 h-svh overflow-hidden">
+          <motion.div
+            className="absolute inset-x-0 top-0 h-[152%] will-change-transform"
+            style={{ y: buildingY }}
+          >
+            {/* a mobile-only master: the source render carries its own pale
+                cream surround, and on a narrow layer that surround was what
+                read as white glare down the sides. This copy is trimmed to
+                the façade itself, so no edge of the render can show however
+                the layer crops. */}
+            <Image
+              src="/building-mobile.jpg"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover"
+              style={{ objectPosition: "50% 50%" }}
+            />
+          </motion.div>
+          {/* No full-cover wash any more — that sheet of cream over the whole
+              façade was the glare. Only the head is lifted, and it is clear
+              by a third of the way down; the cards carry their own legibility
+              from here. */}
           <span
-            className="absolute inset-x-0 bottom-0 h-[38%]"
-            style={{ background: "linear-gradient(180deg, rgb(245 237 227 / 0) 0%, rgb(245 237 227 / 0.86) 62%, #F5EDE3 100%)" }}
+            className="absolute inset-x-0 top-0 h-[38%]"
+            style={{
+              background:
+                "linear-gradient(180deg, rgb(245 237 227 / 0.58) 0%, rgb(245 237 227 / 0.20) 55%, rgb(245 237 227 / 0) 100%)",
+            }}
           />
-          {/* just enough lift behind the eyebrow and heading to stay legible */}
-          <span
-            className="absolute inset-x-0 top-0 h-[52%]"
-            style={{ background: "linear-gradient(180deg, rgb(245 237 227 / 0.80) 0%, rgb(245 237 227 / 0.42) 52%, rgb(245 237 227 / 0) 100%)" }}
-          />
-        </motion.div>
+        </div>
       </div>
 
       {/* ---------------- heading ---------------------------------------- */}
@@ -554,12 +585,20 @@ function MobileSystems() {
           ref={(el) => {
             panels.current[i] = el;
           }}
-          className="relative scroll-mt-[124px] px-4 pt-10 pb-10"
+          className="relative scroll-mt-[124px] px-4 pt-14 pb-10"
         >
+          <MobileStill f={st.frames[0]} index={0} width="44%" className="top-0 right-5 rotate-[2.2deg]" />
+
           <div
-            className="relative rounded-[20px] border border-[#C99355]/45 px-6 pt-6 pb-6"
+            className="relative rounded-[20px] border border-[#C99355]/45 px-6 pt-20 pb-6"
             style={{
-              background: "rgba(250,246,240,0.97)",
+              /* mobile only — the desktop cards are unchanged. Dropped from
+                 0.97 to 0.82 so the façade reads through the card instead of
+                 being blanked out behind it; the blur keeps the copy clean
+                 over the balcony detail moving underneath. */
+              background: "rgba(250,246,240,0.82)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
               boxShadow: "0 22px 46px -30px rgba(36,27,23,0.5)",
             }}
           >
@@ -580,16 +619,12 @@ function MobileSystems() {
                 </li>
               ))}
             </ul>
-            {/* the stage's own stills, in flow and full width — they were
-                small rotated cards pinned to the corners, which floated over
-                the heading above and the next stage below. Same images, same
-                captions, now stacked under the copy they explain. */}
-            <div className="mt-6 space-y-4">
-              {st.frames.map((f, fi) => (
-                <MobileStill key={f.label} f={f} index={fi} />
-              ))}
-            </div>
+            {st.frames[1] && <div aria-hidden="true" className="h-24" />}
           </div>
+
+          {st.frames[1] && (
+            <MobileStill f={st.frames[1]} index={1} width="41%" className="bottom-4 left-7 -rotate-[2.4deg]" />
+          )}
         </article>
       ))}
     </div>

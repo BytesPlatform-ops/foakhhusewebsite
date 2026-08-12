@@ -129,7 +129,7 @@ export default function FoakhLocationSection() {
       id="location"
       data-section="location"
       aria-labelledby="location-heading"
-      className="blend-top relative bg-[#F5EDE3] py-(--spacing-section)"
+      className="blend-top relative bg-[#F5EDE3] pt-10 pb-(--spacing-section) lg:pt-(--spacing-section)"
       style={{ "--blend-from": "#713427" } as React.CSSProperties}
     >
       <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">

@@ -327,6 +327,13 @@ body {
   pointer-events: none;
   background: linear-gradient(to bottom, var(--blend-from, transparent), transparent);
 }
+/* On a phone the section's own content starts much sooner, so a 28vh blend
+   ran out into bare cream and left a pale band between the two grounds. */
+@media (max-width: 1023px) {
+  .blend-top::before {
+    height: 62vh;
+  }
+}
 
 /* Oversized concept words: active vs quiet hierarchy (MONOLOG principle). */
 .word-quiet {

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node .qa/film.mjs 8200 9500 11500 13500 15200 16500)",
+      "Bash(awk '/{CAT_PANELS.map\\\\\\(\\\\\\(c, i\\\\\\) => \\\\\\(/,/<\\\\/motion.article>/' src/components/sections/ResidencesStory.tsx)",
+      "Bash(node .qa/amen2.mjs)",
+      "Bash(cd /Users/bytes/Documents/GitHub/foakhhusewebsite *)",
+      "Bash(node .qa/route.mjs)",
+      "Bash(node .qa/amen3.mjs)",
+      "Bash(node .qa/seam.mjs)",
+      "Bash(node .qa/deck.mjs)",
+      "Bash(node .qa/final.mjs)",
+      "Bash(node .qa/desk.mjs)",
+      "Bash(node .qa/dpr.mjs)"
+    ],
+    "additionalDirectories": [
+      "/tmp"
+    ]
+  }
+}

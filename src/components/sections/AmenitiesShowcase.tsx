@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import useIsMobile from "@/components/shared/useIsMobile";
 import Image from "next/image";
 import {
   AnimatePresence,
@@ -43,6 +44,8 @@ const AMENITIES_BG =
 
 interface Amenity {
   num: string;
+  /** the compact label the mobile capsules show when closed */
+  short: string;
   /** set instead of src when no asset honestly depicts this amenity */
   missing?: string;
   title: string;
@@ -57,6 +60,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "01",
     title: "Indoor Swimming Pool",
+    short: "Pool",
     copy: "A dedicated indoor environment for recreation and relaxation.",
     src: "/foakhindoorswmpool.jpg",
     alt: "The indoor swimming pool at night, loungers along the water and the fitness gallery above",
@@ -64,6 +68,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "02",
     title: "Lobby",
+    short: "Lobby",
     copy: "A welcoming arrival experience designed around comfort and everyday interaction.",
     src: "/lounge.jpg",
     alt: "The welcoming arrival lobby in warm stone and timber",
@@ -71,6 +76,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "03",
     title: "Fully Equipped Fitness Centre",
+    short: "Fitness",
     copy: "A modern fitness environment supporting wellness and an active lifestyle.",
     src: "/foakhgym.jpg",
     alt: "Residents training in the fully equipped fitness centre",
@@ -78,6 +84,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "04",
     title: "High-Speed Elevators",
+    short: "Elevators",
     copy: "Advanced elevator systems designed for fast and convenient access throughout the development.",
     src: "/aislefoakh.jpg",
     alt: "The corridor beside the high-speed elevators",
@@ -85,6 +92,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "05",
     title: "24/7 Security",
+    short: "Security",
     copy: "Controlled access and continuous security supporting everyday peace of mind.",
     src: "/foakhsecurity.jpg",
     alt: "The staffed security gate with controlled turnstile access at the entrance",
@@ -92,6 +100,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "06",
     title: "Community Hall",
+    short: "Community",
     copy: "A dedicated space for gatherings, celebrations and resident events.",
     src: "/amenity-community-hall.jpg",
     alt: "Residents gathered in the community hall for a presentation",
@@ -99,6 +108,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "07",
     title: "Concierge",
+    short: "Concierge",
     copy: "Resident-focused assistance adding another layer of everyday convenience.",
     src: "/recepton.jpg",
     alt: "The concierge desk assisting residents in the lobby",
@@ -107,6 +117,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "08",
     title: "Dedicated Parking",
+    short: "Parking",
     copy: "Organised parking with controlled resident entry and exit.",
     src: "/foakhparking.jpg",
     alt: "The covered resident parking level with its controlled entry barrier",
@@ -114,6 +125,7 @@ const AMENITIES: Amenity[] = [
   {
     num: "09",
     title: "Modern Architecture",
+    short: "Architecture",
     copy: "A contemporary architectural identity balancing aesthetics, functionality and environmental thinking.",
     src: "/foakhmodernarchitecture.jpg",
     alt: "The landscaped courtyard between the two blocks at sunset",
@@ -125,6 +137,7 @@ const N = AMENITIES.length;
 export default function AmenitiesShowcase() {
   const stageRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const mobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({
     target: stageRef,
@@ -156,6 +169,7 @@ export default function AmenitiesShowcase() {
 
   /* eight equal scroll states — a small scroll gives a visible response */
   useMotionValueEvent(p, "change", (v) => {
+    if (mobile) return;
     const s = Math.min(N - 1, Math.max(0, Math.floor(v * N)));
     if (s !== stateRef.current) {
       stateRef.current = s;
@@ -164,14 +178,21 @@ export default function AmenitiesShowcase() {
     }
   });
 
-  /* pause autoplay while off-screen */
+  /* pause autoplay while off-screen. The desktop stage is display:none on a
+     phone, so observing only that left mobile autoplay permanently gated. */
+  const mobileRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const el = stageRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver((es) => {
-      inView.current = es.some((e) => e.isIntersecting);
-    });
-    io.observe(el);
+    const targets = [stageRef.current, mobileRef.current].filter(Boolean) as Element[];
+    if (!targets.length) return;
+    const seen = new Map<Element, boolean>();
+    const io = new IntersectionObserver(
+      (es) => {
+        es.forEach((e) => seen.set(e.target, e.isIntersecting));
+        inView.current = [...seen.values()].some(Boolean);
+      },
+      { rootMargin: "-10% 0px -10% 0px" }
+    );
+    targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
   }, []);
 
@@ -181,7 +202,7 @@ export default function AmenitiesShowcase() {
     const id = setInterval(() => {
       if (!inView.current || document.hidden || controlsFocused.current || holdRef.current) return;
       setActive((s) => (s + 1) % N);
-    }, 5000);
+    }, 4000);
     return () => clearInterval(id);
   }, [reduced]);
 
@@ -330,59 +351,94 @@ export default function AmenitiesShowcase() {
       </div>
 
       {/* ========================== mobile ============================ */}
-      <div className="px-(--spacing-gutter) pt-24 lg:hidden">
+      <div ref={mobileRef} className="px-5 pt-16 lg:hidden">
         <Heading />
-        <p className="mt-4 text-[0.6rem] font-semibold tracking-[0.26em] uppercase" style={{ color: "rgba(250,243,232,0.7)" }}>
-          Select an amenity
-        </p>
-        <div className="relative mt-4 h-[56svh] overflow-hidden rounded-[20px] ring-1 ring-[#C99355]/55">
+
+        {/* the amenity itself, with its name over the image */}
+        <div className="relative mt-6 aspect-[4/5] overflow-hidden rounded-[20px] ring-1 ring-[#C99355]/55">
           <AnimatePresence initial={false}>
-            <motion.div key={a.src} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }}>
+            <motion.div
+              key={a.src || a.num}
+              className="absolute inset-0"
+              initial={{ opacity: 0, scale: 1.015 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+            >
               <AmenityMedia a={a} sizes="92vw" />
             </motion.div>
           </AnimatePresence>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#2B211D]/75 to-transparent px-4 pt-12 pb-4">
-            <p className="text-[0.6rem] font-semibold tracking-[0.24em] uppercase" style={{ color: "#E8CFA4" }}>
-              {a.num} — {a.title}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#2B211D]/85 via-[#2B211D]/35 to-transparent px-4 pt-16 pb-4">
+            <p className="text-[0.55rem] font-semibold tracking-[0.24em] uppercase" style={{ color: "#E8CFA4" }}>
+              {a.num} / {String(N).padStart(2, "0")}
             </p>
-            <p className="mt-1 text-[0.72rem]" style={{ color: "rgba(255,248,239,0.85)" }}>
-              {a.num} / 09
+            <p className="font-display mt-1 text-[1.5rem] leading-tight font-medium" style={{ color: "#FAF6F0" }}>
+              {a.title}
             </p>
           </div>
         </div>
 
-        <div className="mt-4 flex gap-2 overflow-x-auto pb-2" role="tablist" aria-label="Amenities">
-          {AMENITIES.map((x, i) => (
-            <button
-              key={x.num}
-              type="button"
-              role="tab"
-              aria-selected={i === active}
-              aria-label={x.title}
-              onClick={() => jump(i)}
-              className="shrink-0 rounded-full border px-3.5 py-2 text-[0.62rem] font-bold tracking-[0.14em] whitespace-nowrap uppercase transition-colors"
-              style={
-                i === active
-                  ? { background: "#FAF6F0", color: "#94432F", borderColor: "#C99355" }
-                  : { background: "transparent", color: "rgba(255,248,239,0.8)", borderColor: "rgba(255,248,239,0.4)" }
-              }
-            >
-              {x.num}
-            </button>
-          ))}
-        </div>
+        {/* the capsules — compact, all nine reachable. Closed ones carry
+            the number, the active one opens to add its name. The
+            description belongs under the image, not inside a pill. */}
+        <ul className="mt-4 flex flex-wrap gap-2" role="tablist" aria-label="Amenities">
+          {AMENITIES.map((x, i) => {
+            const on = i === active;
+            return (
+              <li key={x.num}>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={on}
+                  aria-label={x.title}
+                  onClick={() => jump(i)}
+                  className="flex items-center gap-2 overflow-hidden rounded-full border transition-all duration-300 ease-out"
+                  style={{
+                    minHeight: 44,
+                    paddingLeft: 16,
+                    paddingRight: on ? 18 : 16,
+                    background: on ? "#FAF6F0" : "rgba(250,246,240,0.08)",
+                    borderColor: on ? "#C99355" : "rgba(250,246,240,0.24)",
+                  }}
+                >
+                  <span
+                    className="text-[0.66rem] font-bold tabular-nums"
+                    style={{ color: on ? "#C99355" : "rgba(250,246,240,0.62)" }}
+                  >
+                    {x.num}
+                  </span>
+                  <span
+                    className="block overflow-hidden whitespace-nowrap transition-all duration-300 ease-out"
+                    style={{ maxWidth: on ? 190 : 0, opacity: on ? 1 : 0 }}
+                  >
+                    <span className="text-[0.76rem] font-semibold" style={{ color: "#94432F" }}>
+                      {x.short}
+                    </span>
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
 
-        <div className="mt-3 rounded-[16px] border border-[#C99355]/60 bg-[#FAF6F0] p-5 shadow-[0_20px_44px_-26px_rgba(26,16,11,0.5)]">
-          <p className="text-[0.62rem] font-semibold tracking-[0.22em] uppercase" style={{ color: "#C99355" }}>
-            {a.num}
-          </p>
-          <p className="font-display mt-1 text-[1.4rem] leading-snug font-medium" style={{ color: "#94432F" }}>
-            {a.title}
-          </p>
-          <p className="mt-2 text-[0.95rem] leading-[1.65]" style={{ color: "#625750" }}>
-            {a.copy}
-          </p>
-        </div>
+        {/* the description, below the image where it can be read */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={a.num}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-5"
+          >
+            <p className="font-display text-[1.35rem] leading-snug font-medium" style={{ color: "#FAF6F0" }}>
+              {a.title}
+            </p>
+            <p className="mt-2 text-[0.95rem] leading-[1.6]" style={{ color: "rgba(250,243,232,0.82)" }}>
+              {a.copy}
+            </p>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

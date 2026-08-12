@@ -1118,6 +1118,17 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
     return () => io.disconnect();
   }, []);
 
+  /* the finale takes the whole screen with it: a fixed layer crossfades the
+     entire environment to espresso as the duplex arrives and releases it
+     again on the way out, so the change reads as the room darkening rather
+     than one card changing colour */
+  const duplexRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress: dp } = useScroll({
+    target: duplexRef,
+    offset: ["start end", "end start"],
+  });
+  const duskOpacity = useTransform(dp, [0, 0.28, 0.72, 1], [0, 1, 1, 0]);
+
   /* the strip follows whichever residence is holding the screen */
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -1156,22 +1167,10 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
             key={c.num}
             ref={(el) => {
               items.current[i] = el;
+              if (c.duplex) duplexRef.current = el;
             }}
             aria-label={`${c.num} — ${c.label}`}
-            className={`scroll-mt-[124px] ${
-              c.duplex
-                ? "-mx-6 rounded-[20px] px-6 pt-8 pb-10"
-                : ""
-            }`}
-            style={
-              c.duplex
-                ? {
-                    background:
-                      "radial-gradient(80% 50% at 80% 8%, rgb(214 138 74 / 0.16) 0%, transparent 60%)," +
-                      "linear-gradient(170deg, #2A160E 0%, #241410 62%, #1C0F0A 100%)",
-                  }
-                : undefined
-            }
+            className={`relative z-10 scroll-mt-[124px] ${c.duplex ? "pt-6 pb-10" : ""}`}
             {...(reduced
               ? {}
               : {
@@ -1221,10 +1220,21 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
             <p className="mt-4 text-[0.6rem] tracking-[0.14em] uppercase" style={{ color: c.duplex ? "rgba(239,213,163,0.72)" : "rgba(33,26,23,0.5)" }}>
               {c.note}
             </p>
-            {c.duplex && <PenthouseEnquiry className="mt-4" />}
           </motion.article>
         ))}
       </div>
+
+      {/* the environment itself, dissolving to espresso for the finale */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-[5] lg:hidden"
+        style={{
+          opacity: duskOpacity,
+          background:
+            "radial-gradient(70% 45% at 78% 10%, rgb(214 138 74 / 0.14) 0%, transparent 62%)," +
+            "linear-gradient(168deg, #2A160E 0%, #241410 58%, #180D08 100%)",
+        }}
+      />
 
       <AnimatePresence>
         {duplexNear && !sheetOpen && <PenthouseCapsule onOpen={() => setSheetOpen(true)} />}

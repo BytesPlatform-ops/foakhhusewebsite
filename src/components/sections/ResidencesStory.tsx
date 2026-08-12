@@ -646,12 +646,10 @@ function ResidenceIndex({
   p,
   duplex,
   onJump,
-  reduced,
 }: {
   p: MotionValue<number>;
   duplex: MotionValue<number>;
   onJump: (i: number) => void;
-  reduced: boolean;
 }) {
   const listRef = useRef<HTMLUListElement>(null);
   const [natX, setNatX] = useState<number[]>(() => CAT_PANELS.map(() => 0));
@@ -689,12 +687,8 @@ function ResidenceIndex({
       className="absolute z-40"
       style={{ top, left, opacity: fade, scale, transformOrigin: "left top" }}
     >
-      {/* levitation: a few pixels, very slowly — depth, not decoration */}
-      <motion.div
-        animate={reduced ? undefined : { y: [0, -3, 0], opacity: [1, 0.965, 1] }}
-        transition={reduced ? undefined : { duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        style={{ filter: "drop-shadow(0 14px 22px rgba(90,40,22,0.12))" }}
-      >
+      {/* the index holds still — depth comes from the shadow alone */}
+      <div style={{ filter: "drop-shadow(0 14px 22px rgba(90,40,22,0.12))" }}>
         <motion.p
           className="absolute -top-6 left-0 text-[0.52rem] font-semibold tracking-[0.3em] whitespace-nowrap uppercase"
           style={{ color: eyebrow, opacity: eyebrowOp }}
@@ -715,7 +709,7 @@ function ResidenceIndex({
             />
           ))}
         </ul>
-      </motion.div>
+      </div>
     </motion.nav>
   );
 }
@@ -797,7 +791,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
           </motion.p>
 
           {/* the standing index — one element, travelling (see below) */}
-          <ResidenceIndex p={cp} duplex={duplexOp} onJump={jumpTo} reduced={reduced} />
+          <ResidenceIndex p={cp} duplex={duplexOp} onJump={jumpTo} />
 
           <motion.div className="absolute top-0 left-0 h-full w-[500vw]" style={{ x: trackX }}>
             {/* ---- intro anchor ---- */}

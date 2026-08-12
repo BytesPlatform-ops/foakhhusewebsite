@@ -26,12 +26,12 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 function LocationPill() {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-[#FAF6F0]/35 bg-[#FAF6F0]/12 px-4 py-2">
+    <span className="inline-flex items-center gap-2 rounded-full border border-[#FAF6F0]/35 bg-[#FAF6F0]/12 px-3.5 py-2 whitespace-nowrap">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C99355" strokeWidth="2" aria-hidden="true">
         <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z" />
         <circle cx="12" cy="10" r="2.6" />
       </svg>
-      <span className="text-[0.62rem] font-semibold tracking-[0.3em] text-[#FAF6F0] uppercase">
+      <span className="text-[0.55rem] font-semibold tracking-[0.22em] text-[#FAF6F0] uppercase sm:text-[0.62rem] sm:tracking-[0.3em]">
         04 — Location &amp; Connectivity
       </span>
     </span>
@@ -68,9 +68,9 @@ function DirectionButtons({ dark = false }: { dark?: boolean }) {
 function PanelHeader() {
   return (
     <>
-      <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-4">
         <LocationPill />
-        <div className="text-right">
+        <div className="text-left sm:text-right">
           <p className="text-[0.7rem] font-semibold tracking-[0.26em] text-[#FAF6F0] uppercase">
             Foakh Wind Corridor Enclave
           </p>
@@ -81,8 +81,8 @@ function PanelHeader() {
       </div>
       <h2
         id="location-heading"
-        className="font-display mt-9 leading-[1.07]"
-        style={{ fontSize: "clamp(2.5rem,3.6vw,4rem)", fontWeight: 500, letterSpacing: "-0.01em" }}
+        className="font-display mt-7 leading-[1.06] sm:mt-9 sm:leading-[1.07]"
+        style={{ fontSize: "clamp(2.05rem,8.4vw,4rem)", fontWeight: 500, letterSpacing: "-0.01em" }}
       >
         <span className="block text-[#FAF6F0]">Connected to</span>
         <span className="block text-[#C99355]">what matters.</span>
@@ -92,10 +92,10 @@ function PanelHeader() {
         <span className="h-px w-14 bg-[#C99355]" />
         <span className="h-1.5 w-1.5 rotate-45 bg-[#C99355]" />
       </div>
-      <p className="mt-6 max-w-lg text-[1.02rem] leading-[1.7] text-[#FAF6F0]/92">
+      <p className="mt-5 max-w-lg text-[0.98rem] leading-[1.65] text-[#FAF6F0]/92 sm:mt-6 sm:text-[1.02rem] sm:leading-[1.7]">
         A convenient address close to healthcare, shopping, education and major road links.
       </p>
-      <p className="mt-4 max-w-lg text-[0.92rem] leading-[1.7] text-[#FAF6F0]/78">
+      <p className="mt-3 max-w-lg text-[0.88rem] leading-[1.65] text-[#FAF6F0]/78 sm:mt-4 sm:text-[0.92rem] sm:leading-[1.7]">
         Foakh Wind Corridor Enclave is positioned within Karachi&rsquo;s wind corridor and
         adjacent to Shaukat Khanum Hospital, combining environmental advantages with access
         to an important emerging residential area.
@@ -130,7 +130,7 @@ export default function FoakhLocationSection() {
       data-section="location"
       aria-labelledby="location-heading"
       className="blend-top relative bg-[#F5EDE3] py-(--spacing-section)"
-      style={{ "--blend-from": "#94432F" } as React.CSSProperties}
+      style={{ "--blend-from": "#713427" } as React.CSSProperties}
     >
       <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter)">
         {/* ------------------------------------------------ desktop -- */}
@@ -175,7 +175,7 @@ export default function FoakhLocationSection() {
         <div className="space-y-6 lg:hidden">
           <motion.div
             {...rise(0)}
-            className="relative overflow-hidden rounded-[26px] border border-[#C99355]/45 p-6 sm:p-8"
+            className="relative overflow-hidden rounded-[22px] border border-[#C99355]/45 p-5 sm:p-8"
             style={PANEL_STYLE}
           >
             <PanelHeader />

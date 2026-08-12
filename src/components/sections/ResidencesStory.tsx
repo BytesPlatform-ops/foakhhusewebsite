@@ -802,78 +802,139 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
 
 const PHRASE = ["Homes", "made", "for", "real", "life."];
 
-function MobileInteriors() {
-  const reduced = useReducedMotion();
+/** One card in the mobile deck: rises from below with a degree of tilt that
+ *  settles out, then sinks back a step as the next one lands on top of it. */
+function StackCard({
+  d,
+  i,
+  n,
+  p,
+}: {
+  d: DeckSpec;
+  i: number;
+  n: number;
+  p: MotionValue<number>;
+}) {
+  const seg = 1 / n;
+  const inStart = (i - 1) * seg;
+  const inEnd = i * seg;
+  /* its own arrival */
+  const y = useTransform(p, [inStart, inEnd], i === 0 ? ["0%", "0%"] : ["108%", "0%"]);
+  const rot = useTransform(p, [inStart, inEnd], i === 0 ? [0, 0] : [i % 2 === 0 ? 2.4 : -2.4, 0]);
+  const op = useTransform(p, [inStart, inStart + seg * 0.35], i === 0 ? [1, 1] : [0, 1]);
+  /* and the way it settles back under whatever lands next */
+  const depth = useTransform(p, [inEnd, inEnd + seg * 2], [0, 1]);
+  const scale = useTransform(depth, [0, 1], [1, 0.93]);
+  const lift = useTransform(depth, [0, 1], ["0%", "-4%"]);
+  const dim = useTransform(depth, [0, 1], [0, 0.42]);
 
   return (
-    <div className="px-5 pb-6 lg:hidden">
-      {/* the phrase warms word by word as it arrives */}
-      <p className="font-display uppercase" style={{ fontSize: "clamp(2.2rem,9.2vw,3.4rem)", lineHeight: 1.04, fontWeight: 600 }}>
-        {PHRASE.map((w, i) => (
-          <motion.span
-            key={w}
-            className="mr-[0.24em] inline-block"
-            initial={reduced ? undefined : { color: "rgba(148,63,45,0.55)", opacity: 0, y: 12 }}
-            whileInView={reduced ? undefined : { color: "#EFD5A3", opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.62, delay: i * 0.07, ease: M.ease }}
-          >
-            {w}
-          </motion.span>
-        ))}
+    <motion.figure
+      className="absolute inset-0 overflow-hidden rounded-[18px] shadow-[0_28px_56px_-30px_rgba(26,16,11,0.7)]"
+      style={{ y, rotate: rot, opacity: op, scale, translateY: lift, zIndex: i + 1 }}
+    >
+      <Image src={d.src} alt={d.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: d.objectPosition }} />
+      <motion.span aria-hidden="true" className="absolute inset-0 bg-[#1C0F0A]" style={{ opacity: dim }} />
+    </motion.figure>
+  );
+}
+
+/** The line under the deck, morphing from one motif to the next. */
+function DeckCaption({ d, i, n, p }: { d: DeckSpec; i: number; n: number; p: MotionValue<number> }) {
+  const seg = 1 / n;
+  const a = i * seg;
+  const op = useTransform(
+    p,
+    [a - seg * 0.34, a + seg * 0.12, a + seg * 0.78, a + seg],
+    i === 0 ? [1, 1, 1, 0] : [0, 1, 1, 0]
+  );
+  const y = useTransform(p, [a - seg * 0.34, a + seg * 0.12], [14, 0]);
+
+  return (
+    <motion.div className="absolute inset-x-0 top-0" style={{ opacity: op, y }}>
+      <p className="text-[0.62rem] font-semibold tracking-[0.24em] tabular-nums" style={{ color: "#E8CFA4" }}>
+        {d.quality!.num} <span style={{ color: "rgba(232,207,164,0.5)" }}>/ 06</span>
       </p>
+      <p className="font-display mt-1.5 leading-[1.06]" style={{ color: "#FAF6F0", fontSize: "1.75rem", fontWeight: 600 }}>
+        {d.quality!.title}
+      </p>
+      <p className="mt-2 text-[0.92rem] leading-[1.55]" style={{ color: "rgba(250,243,232,0.86)" }}>
+        {d.quality!.copy}
+      </p>
+    </motion.div>
+  );
+}
 
-      <div className="mt-10 space-y-16">
-        {DECK.filter((d) => d.quality).map((d, i) => (
-          <section key={d.quality!.num} className="min-h-[76svh]">
-            {/* 1 — the title reads first */}
-            <motion.div
-              initial={reduced ? undefined : { opacity: 0, y: 16 }}
-              whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: M.text, ease: M.ease }}
-            >
-              <p className="text-[0.66rem] font-semibold tracking-[0.24em] tabular-nums" style={{ color: "#E8CFA4" }}>
-                {d.quality!.num} <span style={{ color: "rgba(232,207,164,0.5)" }}>/ 06</span>
-              </p>
-              <p className="font-display mt-2 leading-[1.06]" style={{ color: "#FAF6F0", fontSize: "1.95rem", fontWeight: 600 }}>
-                {d.quality!.title}
-              </p>
-            </motion.div>
+/* ---------------------------------------------------------------- mobile --
+   The desktop deck pins a stage and raises its cards into a stack. Mobile
+   now does the same rather than listing them: the screen holds still, each
+   image rises from below with a little tilt that straightens, settles back
+   under the next one, and the line beneath morphs across as it goes.       */
 
-            {/* 2 — the image rises from below and straightens */}
-            <motion.figure
-              className="relative mt-5 overflow-hidden rounded-[16px] shadow-[0_30px_60px_-32px_rgba(26,16,11,0.65)]"
-              style={{ aspectRatio: "4 / 5" }}
-              initial={reduced ? undefined : { opacity: 0, y: 90, rotate: i % 2 === 0 ? 1.5 : -1.5, scale: 0.96 }}
-              whileInView={reduced ? undefined : { opacity: 1, y: 0, rotate: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.28 }}
-              transition={{ duration: 0.72, delay: 0.06, ease: M.ease }}
-            >
-              <Image
-                src={d.src}
-                alt={d.alt}
-                fill
-                sizes="92vw"
-                className="object-cover"
-                style={{ objectPosition: d.objectPosition }}
-              />
-            </motion.figure>
+function MobileInteriors() {
+  const reduced = useReducedMotion();
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const cards = DECK.filter((d) => d.quality);
+  const n = cards.length;
 
-            {/* 3 — the line of copy settles in last */}
-            <motion.div
-              initial={reduced ? undefined : { opacity: 0, y: 14 }}
-              whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: M.text, delay: 0.16, ease: M.ease }}
-            >
-              <span className="mt-5 block h-px w-9" style={{ background: "rgba(240,178,105,0.42)" }} />
-              <p className="mt-4 text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
-                {d.quality!.copy}
-              </p>
-            </motion.div>
-          </section>
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start start", "end end"],
+  });
+  const p = useSpring(scrollYProgress, { stiffness: 110, damping: 26, mass: 0.35 });
+
+  if (reduced) {
+    return (
+      <div className="px-5 pb-6 lg:hidden">
+        {cards.map((d) => (
+          <div key={d.quality!.num} className="mb-12">
+            <figure className="relative overflow-hidden rounded-[18px]" style={{ aspectRatio: "4 / 5" }}>
+              <Image src={d.src} alt={d.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: d.objectPosition }} />
+            </figure>
+            <p className="font-display mt-4 text-[1.7rem] font-semibold" style={{ color: "#FAF6F0" }}>
+              {d.quality!.title}
+            </p>
+            <p className="mt-2 text-[0.92rem] leading-[1.55]" style={{ color: "rgba(250,243,232,0.86)" }}>
+              {d.quality!.copy}
+            </p>
+          </div>
         ))}
+      </div>
+    );
+  }
+
+  return (
+    <div ref={wrapRef} className="relative lg:hidden" style={{ height: `${n * 72}svh` }}>
+      <div className="sticky top-0 flex h-svh flex-col px-5 pt-14 pb-7">
+        {/* the phrase holds still while the deck works beneath it */}
+        <p className="font-display shrink-0 uppercase" style={{ fontSize: "clamp(1.9rem,8vw,2.9rem)", lineHeight: 1.04, fontWeight: 600 }}>
+          {PHRASE.map((w, i) => (
+            <motion.span
+              key={w}
+              className="mr-[0.24em] inline-block"
+              initial={{ color: "rgba(148,63,45,0.55)", opacity: 0, y: 10 }}
+              whileInView={{ color: "#EFD5A3", opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.6, delay: i * 0.06, ease: M.ease }}
+            >
+              {w}
+            </motion.span>
+          ))}
+        </p>
+
+        {/* the stack */}
+        <div className="relative mt-5 min-h-0 flex-1 overflow-hidden">
+          {cards.map((d, i) => (
+            <StackCard key={d.quality!.num} d={d} i={i} n={n} p={p} />
+          ))}
+        </div>
+
+        {/* the line beneath, morphing across */}
+        <div className="relative mt-4 h-[124px] shrink-0">
+          {cards.map((d, i) => (
+            <DeckCaption key={d.quality!.num} d={d} i={i} n={n} p={p} />
+          ))}
+        </div>
       </div>
     </div>
   );

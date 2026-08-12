@@ -20,10 +20,20 @@ import {
  * (premium cards, not icon chips), soft scroll reveals.
  *
  * 03B — APARTMENTS & INTERIORS: the statement stage with the rising
- * card deck — kept, extended from four to SIX residence qualities
- * (Spacious / Functional / Elegant / Comfort Focused / Private
- * Balconies / Limited Community). The film card rises first, then each
- * quality card covers the last with a changing boundary while its
+ * card deck, now cut to THREE motifs that each carry a different
+ * residential idea rather than six overlapping adjectives:
+ *
+ *   01 OPEN      — room to breathe (space, daylight, the balcony edge)
+ *   02 INTUITIVE — a plan that works (kitchen, dining, circulation)
+ *   03 COMPOSED  — detail up close (materials, finish, calm)
+ *
+ * "Refined" was deliberately not used as a motif: the collection panels
+ * above already run on Elegant / "a more refined specification", so a
+ * third motif by that name would echo a category instead of adding an
+ * idea. The three images are exclusive to this sequence — no other
+ * section of the site uses them.
+ *
+ * Each card rises and covers the last with a changing boundary while its
  * reading pair (heading left, copy right) swaps in. The split backdrop
  * headline "HOMES MADE / FOR REAL LIFE" recedes once the beats begin.
  *
@@ -60,139 +70,70 @@ interface DeckSpec {
   objectPosition?: string;
 }
 
+/**
+ * Three beats, three shapes. The deck widens then stands up: OPEN is the
+ * broadest card in the sequence, INTUITIVE squares off, and COMPOSED is
+ * the tallest — so the rhythm reads as expanse → order → stillness even
+ * before the words arrive. Long holds between beats keep it editorial
+ * rather than carousel-paced.
+ */
 const DECK: DeckSpec[] = [
   {
     kind: "image",
-    src: "/lobby.jpg",
-    alt: "Residents at ease together in the warm family lounge of the residences",
-    rise: [0.02, 0.12],
-    cover: [0.15, 0.23],
-    fromY: "62svh",
-    width: "clamp(280px,20vw,350px)",
-    aspect: "3 / 4.2",
-    radius: "12px",
-    rotate: 0,
-    z: 20,
-    quality: null,
-    accent: "198 164 107",
-    objectPosition: "38% 50%",
-  },
-  {
-    kind: "image",
-    src: "/drawingroomfoakh.jpg",
-    alt: "The generous living and dining space filled with evening light",
-    rise: [0.15, 0.23],
-    cover: [0.27, 0.35],
-    fromY: "118svh",
-    width: "clamp(340px,26vw,460px)",
-    aspect: "4 / 3",
-    radius: "22px",
-    rotate: -2,
+    src: "/residence-open.jpg",
+    alt: "A living room with its corner glazing slid fully open to a private balcony, morning daylight across the limestone floor",
+    rise: [0.03, 0.15],
+    cover: [0.36, 0.45],
+    fromY: "86svh",
+    width: "clamp(400px,32vw,600px)",
+    aspect: "16 / 9",
+    radius: "20px",
+    rotate: -1.6,
     z: 21,
     quality: {
       num: "01",
-      title: "Spacious",
-      copy: "Generously planned living, dining and bedroom spaces.",
+      title: "Open",
+      copy: "Generous layouts that carry daylight from the living room to the balcony edge.",
     },
-    accent: "213 155 84",
+    accent: "224 190 132",
   },
   {
     kind: "image",
-    src: "/kitchen.jpg",
-    alt: "The functional family kitchen in warm terracotta and stone",
-    rise: [0.27, 0.35],
-    cover: [0.39, 0.47],
+    src: "/residence-intuitive.jpg",
+    alt: "The circulation spine of a residence — entry, open kitchen and dining reading through in a single line of sight",
+    rise: [0.36, 0.45],
+    cover: [0.66, 0.75],
     fromY: "118svh",
-    width: "clamp(320px,24vw,420px)",
-    aspect: "4 / 5",
-    radius: "10px",
+    width: "clamp(340px,26vw,470px)",
+    aspect: "4 / 3",
+    radius: "12px",
     rotate: 1.8,
     z: 22,
     quality: {
       num: "02",
-      title: "Functional",
-      copy: "Practical layouts created around everyday family routines.",
+      title: "Intuitive",
+      copy: "Planning that follows real routines — cooking, gathering, moving through the day.",
     },
-    accent: "135 147 131",
+    accent: "138 152 132",
   },
   {
     kind: "image",
-    src: "/bed.jpg",
-    alt: "A refined bedroom with contemporary finishes and soft evening light",
-    rise: [0.39, 0.47],
-    cover: [0.51, 0.59],
+    src: "/residence-composed.jpg",
+    alt: "The fluted walnut headboard wall of a principal bedroom, lime plaster and brass caught in low evening light",
+    rise: [0.66, 0.75],
+    cover: null,
     fromY: "118svh",
-    width: "clamp(360px,28vw,500px)",
-    aspect: "16 / 11",
-    radius: "26px",
-    rotate: -1.4,
+    width: "clamp(300px,22vw,400px)",
+    aspect: "4 / 5",
+    radius: "24px",
+    rotate: -1.3,
     z: 23,
     quality: {
       num: "03",
-      title: "Elegant",
-      copy: "Thoughtful finishes and contemporary interior detailing.",
+      title: "Composed",
+      copy: "Considered finishes and quiet detailing, resolved into one calm interior.",
     },
-    accent: "213 155 84",
-    objectPosition: "50% 40%",
-  },
-  {
-    kind: "image",
-    src: "/family.jpg",
-    alt: "Daylight filling the open family living space",
-    rise: [0.51, 0.59],
-    cover: [0.63, 0.71],
-    fromY: "118svh",
-    width: "clamp(300px,22vw,390px)",
-    aspect: "3 / 4",
-    radius: "16px",
-    rotate: 2.2,
-    z: 24,
-    quality: {
-      num: "04",
-      title: "Comfort Focused",
-      copy: "Planning designed around light, usability and comfortable everyday living.",
-    },
-    accent: "111 155 152",
-    objectPosition: "50% 50%",
-  },
-  {
-    kind: "image",
-    src: "/balconyfoakh.jpg",
-    alt: "A private balcony with seating above the green landscape",
-    rise: [0.63, 0.71],
-    cover: [0.75, 0.83],
-    fromY: "118svh",
-    width: "clamp(340px,26vw,460px)",
-    aspect: "4 / 3",
-    radius: "8px",
-    rotate: -1.8,
-    z: 25,
-    quality: {
-      num: "05",
-      title: "Private Balconies",
-      copy: "Personal outdoor space for fresh air, relaxation and views.",
-    },
-    accent: "213 155 84",
-    objectPosition: "50% 55%",
-  },
-  {
-    kind: "image",
-    src: "/buildingfront.jpg",
-    alt: "The refined terracotta materials of the two blocks at dusk",
-    rise: [0.75, 0.83],
-    cover: null,
-    fromY: "118svh",
-    width: "clamp(320px,24vw,430px)",
-    aspect: "1 / 1",
-    radius: "24px",
-    rotate: 1.4,
-    z: 26,
-    quality: {
-      num: "06",
-      title: "Refined Materials",
-      copy: "Carefully selected finishes contribute to a lasting residential environment.",
-    },
-    accent: "198 164 107",
+    accent: "205 143 96",
   },
 ];
 
@@ -216,8 +157,8 @@ export default function ResidencesStory() {
   const textOpacity = useTransform(p, [0, 0.08, 0.16, 0.26], [0.4, 1, 1, 0.11]);
 
   /* the featured corner card arrives as the deck completes */
-  const cardOpacity = useTransform(p, [0.85, 0.95], [0, 1]);
-  const cardY = useTransform(p, [0.85, 0.95], [28, 0]);
+  const cardOpacity = useTransform(p, [0.86, 0.95], [0, 1]);
+  const cardY = useTransform(p, [0.86, 0.95], [28, 0]);
 
   return (
     <section
@@ -254,13 +195,14 @@ export default function ResidencesStory() {
           Homes made for real life.
         </p>
         <p className="relative mt-4 max-w-[62ch] text-[1rem] leading-[1.75]" style={{ color: "rgba(250,243,232,0.88)" }}>
-          Every residence is shaped around comfort, practicality and visual refinement.
+          Three ideas shape every residence — room to breathe, a plan that works, and
+          detail that rewards a closer look.
         </p>
         </div>
       </div>
 
       {/* ==================== 03B — the quality deck =================== */}
-      <div ref={deckRef} className="relative hidden lg:block lg:h-[600svh]">
+      <div ref={deckRef} className="relative hidden lg:block lg:h-[420svh]">
         <div className="sticky top-0 h-svh overflow-hidden">
           {/* per-beat ambient glow — the stage light shifts with each card */}
           {!reduced &&
@@ -372,21 +314,16 @@ export default function ResidencesStory() {
           <br />
           <span style={{ color: "rgba(224,193,148,0.72)" }}>for real life.</span>
         </p>
-        <figure className="relative mx-auto mt-10 aspect-[3/4] w-full max-w-sm overflow-hidden rounded-xl shadow-[0_40px_80px_-40px_rgba(26,16,11,0.7)]">
-          <Image
-            src="/lobby.jpg"
-            alt="Residents at ease together in the warm family lounge of the residences"
-            fill
-            sizes="(min-width:640px) 60vw, 100vw"
-            className="object-cover"
-            style={{ objectPosition: "38% 50%" }}
-          />
-        </figure>
-        {/* each image card followed by its quality pair */}
-        <div className="mt-10 space-y-10">
+        {/* the same three beats, stacked — each card keeps its own shape so
+            the expanse → order → stillness rhythm survives on a phone, and
+            the numeral carries the count instead of repeating the title */}
+        <div className="mt-12 space-y-14">
           {DECK.filter((d) => d.quality).map((d) => (
             <div key={d.quality!.num}>
-              <figure className="relative aspect-[16/10] overflow-hidden rounded-xl shadow-[0_30px_60px_-32px_rgba(26,16,11,0.65)]">
+              <figure
+                className="relative overflow-hidden rounded-xl shadow-[0_30px_60px_-32px_rgba(26,16,11,0.65)]"
+                style={{ aspectRatio: d.aspect }}
+              >
                 <Image
                   src={d.src}
                   alt={d.alt}
@@ -396,13 +333,14 @@ export default function ResidencesStory() {
                   style={{ objectPosition: d.objectPosition }}
                 />
               </figure>
-              <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] uppercase tabular-nums" style={{ color: "#E8CFA4" }}>
-                {d.quality!.num} — {d.quality!.title}
+              <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] tabular-nums" style={{ color: "#E8CFA4" }}>
+                {d.quality!.num} <span style={{ color: "rgba(232,207,164,0.5)" }}>/ 03</span>
               </p>
-              <p className="font-display mt-2 leading-[1.08]" style={{ color: "#FAF6F0", fontSize: "1.7rem", fontWeight: 600 }}>
+              <p className="font-display mt-2 leading-[1.08]" style={{ color: "#FAF6F0", fontSize: "1.9rem", fontWeight: 600 }}>
                 {d.quality!.title}
               </p>
-              <p className="mt-3 text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
+              <span className="mt-4 block h-px w-9" style={{ background: "rgba(240,178,105,0.4)" }} />
+              <p className="mt-4 text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
                 {d.quality!.copy}
               </p>
             </div>
@@ -547,17 +485,26 @@ const FOCALS = [0.115, 0.282, 0.441, 0.588];
  * to sit at the foot of the stage, and it takes over the 01/label pair the
  * panels used to print for themselves — the category is named once.
  */
+/** one row height, so the vertical stack lands on an even rhythm */
+const ROW = 46;
+
 function IndexRow({
   c,
   i,
   p,
   duplex,
+  morph,
+  natX,
   onJump,
 }: {
   c: CatPanelData;
   i: number;
   p: MotionValue<number>;
   duplex: MotionValue<number>;
+  /** 0 = the vertical index of the intro, 1 = the horizontal bar below */
+  morph: MotionValue<number>;
+  /** where this entry sits when the list is laid out as a row */
+  natX: number;
   onJump: (i: number) => void;
 }) {
   const focal = FOCALS[i];
@@ -572,27 +519,52 @@ function IndexRow({
   );
   const rest = useTransform(p, [0.05, 0.11], [0.62, 0.34]);
   const dim = useTransform([active, rest] as MotionValue<number>[], ([a, r]: number[]) => r + (1 - r) * a);
-  const rule = useTransform(active, [0, 1], ["0rem", "1rem"]);
-  const shift = useTransform(active, [0, 1], [0, 15]);
+
+  /* the morph itself: the row is always laid out horizontally, and the
+     vertical index is that same row pulled back to a single column — so
+     the entries travel between the two layouts instead of re-flowing */
+  const x = useTransform(morph, (m) => -natX * (1 - m));
+  const y = useTransform(morph, (m) => i * ROW * (1 - m));
+
+  /* the indicator changes with the layout: a rule to the left of the
+     entry while it reads as a column, an underline once it reads as a bar */
+  const leftRule = useTransform([active, morph] as MotionValue<number>[], ([a, m]: number[]) => `${a * (1 - m)}rem`);
+  const underline = useTransform([active, morph] as MotionValue<number>[], ([a, m]: number[]) => `${a * m * 100}%`);
+  const shift = useTransform([active, morph] as MotionValue<number>[], ([a, m]: number[]) => a * (1 - m) * 15);
+  const dividerOp = useTransform(morph, [0, 1], [1, 0]);
+
   /* the finale darkens the stage, so the index changes tone with it */
   const tone = useTransform(duplex, [0, 1], ["#94432F", "#EFD5A3"]);
   const numTone = useTransform(duplex, [0, 1], ["rgba(33,26,23,0.55)", "rgba(255,248,239,0.62)"]);
   const divider = useTransform(duplex, [0, 1], ["rgba(148,63,45,0.15)", "rgba(239,213,163,0.18)"]);
 
   return (
-    <li className="relative">
+    <motion.li
+      className="relative flex shrink-0 items-center"
+      style={{ x, y, height: ROW }}
+    >
+      {/* the hairlines that separate the column entries — gone in the bar */}
       {i > 0 && (
-        <motion.span aria-hidden="true" className="block h-px w-full" style={{ background: divider }} />
+        <motion.span
+          aria-hidden="true"
+          className="absolute top-0 left-0 h-px w-[11.5rem]"
+          style={{ background: divider, opacity: dividerOp }}
+        />
       )}
       <motion.span
         aria-hidden="true"
-        className="absolute left-0 h-px"
-        style={{ width: rule, background: tone, top: i > 0 ? "calc(50% + 0.5px)" : "50%" }}
+        className="absolute top-1/2 left-0 h-px -translate-y-1/2"
+        style={{ width: leftRule, background: tone }}
+      />
+      <motion.span
+        aria-hidden="true"
+        className="absolute bottom-1.5 left-0 h-px"
+        style={{ width: underline, background: tone }}
       />
       <motion.button
         type="button"
         onClick={() => onJump(i)}
-        className="flex w-full items-baseline gap-2.5 py-3.5 text-left"
+        className="flex items-baseline gap-2.5 text-left whitespace-nowrap"
         style={{ opacity: dim, x: shift }}
       >
         <motion.span className="text-[0.56rem] font-semibold tabular-nums" style={{ color: numTone }}>
@@ -602,7 +574,7 @@ function IndexRow({
           {c.short}
         </motion.span>
       </motion.button>
-    </li>
+    </motion.li>
   );
 }
 
@@ -617,17 +589,36 @@ function ResidenceIndex({
   onJump: (i: number) => void;
   reduced: boolean;
 }) {
-  /* the travel: it holds under the intro copy, then moves down and tucks
-     left as the track starts, clearing each panel's own reading column */
-  const top = useTransform(p, [0, 0.045, 0.135], ["58%", "58%", "63%"]);
-  const left = useTransform(p, [0, 0.045, 0.135], ["6vw", "6vw", "3.2vw"]);
+  const listRef = useRef<HTMLUListElement>(null);
+  const [natX, setNatX] = useState<number[]>(() => CAT_PANELS.map(() => 0));
+
+  /* measure the row layout once it exists — the column is derived from it
+     by pulling each entry back to x=0, and the un-measured default (0) is
+     exactly the column, so the opening screen is right on first paint */
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const measure = () =>
+      setNatX(Array.from(el.children, (c) => (c as HTMLElement).offsetLeft));
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  /* column on the right of the opening screen → bar along the foot of
+     the collection, one element crossing the stage as the track starts */
+  const morph = useTransform(p, [0.045, 0.135], [0, 1]);
+  const top = useTransform(p, [0, 0.045, 0.135], ["31%", "31%", "84%"]);
+  const left = useTransform(p, [0, 0.045, 0.135], ["56vw", "56vw", "3.2vw"]);
   const fade = useTransform(p, [0.86, 0.95], [1, 0]);
   const eyebrow = useTransform(duplex, [0, 1], ["rgba(33,26,23,0.42)", "rgba(255,248,239,0.45)"]);
+  /* the label belongs to the column; the bar carries its own rhythm */
+  const eyebrowOp = useTransform(morph, [0, 0.5], [1, 0]);
 
   return (
     <motion.nav
       aria-label="Residence categories"
-      className="absolute z-40 w-[11.5rem]"
+      className="absolute z-40"
       style={{ top, left, opacity: fade }}
     >
       {/* levitation: a few pixels, very slowly — depth, not decoration */}
@@ -637,14 +628,23 @@ function ResidenceIndex({
         style={{ filter: "drop-shadow(0 14px 22px rgba(90,40,22,0.12))" }}
       >
         <motion.p
-          className="mb-3 text-[0.52rem] font-semibold tracking-[0.3em] uppercase"
-          style={{ color: eyebrow }}
+          className="absolute -top-6 left-0 text-[0.52rem] font-semibold tracking-[0.3em] whitespace-nowrap uppercase"
+          style={{ color: eyebrow, opacity: eyebrowOp }}
         >
           The collection
         </motion.p>
-        <ul>
+        <ul ref={listRef} className="flex items-center gap-9">
           {CAT_PANELS.map((c, i) => (
-            <IndexRow key={c.num} c={c} i={i} p={p} duplex={duplex} onJump={onJump} />
+            <IndexRow
+              key={c.num}
+              c={c}
+              i={i}
+              p={p}
+              duplex={duplex}
+              morph={morph}
+              natX={natX[i] ?? 0}
+              onJump={onJump}
+            />
           ))}
         </ul>
       </motion.div>
@@ -734,7 +734,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
           <motion.div className="absolute top-0 left-0 h-full w-[500vw]" style={{ x: trackX }}>
             {/* ---- intro anchor ---- */}
             <motion.div
-              className="absolute top-0 left-[6vw] flex h-full w-[38vw] flex-col justify-center pb-[26svh]"
+              className="absolute top-0 left-[6vw] flex h-full w-[38vw] flex-col justify-center"
               style={{ opacity: introOp }}
             >
               <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
@@ -749,6 +749,9 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
               <p className="mt-5 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
                 From practical family living to serviced sophistication — each category
                 reflects thoughtful planning, quality materials and dependable craftsmanship.
+              </p>
+              <p className="mt-6 inline-flex items-center gap-2 text-[0.65rem] tracking-[0.22em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+                Scroll <span aria-hidden="true">→</span>
               </p>
             </motion.div>
 

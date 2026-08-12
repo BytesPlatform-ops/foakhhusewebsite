@@ -120,7 +120,7 @@ export default function DesignedAroundNature() {
       ref={sectionRef}
       data-section="nature"
       aria-labelledby="nature-heading"
-      className="relative h-[220svh] lg:h-[250svh]"
+      className="relative h-[150svh] lg:h-[250svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden">
         <MineralMarks />
@@ -186,8 +186,8 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f1InnerScale, y: f1InnerY }}>
             <Image
-              src="/buildingtop.jpg"
-              alt="Natural airflow drawn through a terracotta opening of the development"
+              src="/airflow-diagram.jpg"
+              alt="Air drawn through the building, traced floor by floor"
               fill
               sizes="44vw"
               className="object-cover"
@@ -204,8 +204,8 @@ export default function DesignedAroundNature() {
         >
           <motion.div className="absolute inset-0" style={{ scale: f2InnerScale }}>
             <Image
-              src="/waterdesalination.jpg"
-              alt="The integrated water treatment and desalination system running through the building"
+              src="/waterreliability.jpg"
+              alt="The water plant at the base of the development at dusk"
               fill
               sizes="40vw"
               className="object-cover"
@@ -342,9 +342,9 @@ function StaticSpread() {
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { src: "/buildingtop.jpg", alt: "The rooftop wind catcher, kite and turbines above the terracotta crown", label: "Natural airflow" },
+            { src: "/airflow-diagram.jpg", alt: "Air drawn through the building, traced floor by floor", label: "Natural airflow" },
             { src: "/windenergy.jpg", alt: "Rooftop wind turbines, solar panels and the kite winch at sunset", label: "Renewable energy" },
-            { src: "/waterdesalination.jpg", alt: "The integrated water treatment and desalination system running through the building", label: "Water systems" },
+            { src: "/waterreliability.jpg", alt: "The water plant at the base of the development at dusk", label: "Water systems" },
           ].map((f) => (
             <figure key={f.src} className="relative">
               <div className="relative aspect-[4/3] overflow-hidden rounded-md">

@@ -91,7 +91,7 @@ const STAGES: Stage[] = [
            between the two blocks with an arrival fountain, which explained
            nothing about air capture */
         src: "/sys-windcatcher.jpg",
-        alt: "The wind catcher tower, its scoops open to the prevailing wind",
+        alt: "The wind catcher above the two blocks, its captured air drawn down into the buildings",
         label: "Natural Air Capture",
         pos: "50% 50%",
         className: "left-[44%] top-[11%] w-[19rem] rotate-[1.6deg]",
@@ -122,21 +122,21 @@ const STAGES: Stage[] = [
            the old frames were distant tower shots where the turbines, panels
            and kite were a few pixels each */
         src: "/sys-windturbines.jpg",
-        alt: "Two vertical-axis wind turbines mounted on the roof terrace",
+        alt: "The ducted wind turbines standing on the development's own roof terrace",
         label: "Wind Turbines",
         pos: "50% 50%",
         className: "left-[6%] top-[13%] w-[18rem] -rotate-[1.8deg]",
       },
       {
         src: "/sys-solar.jpg",
-        alt: "The rooftop photovoltaic array catching low sun across its panels",
+        alt: "The photovoltaic array on the development's roof terrace catching first light",
         label: "Solar Energy",
         pos: "50% 50%",
         className: "left-[7%] top-[57%] w-[17rem] rotate-[1.4deg]",
       },
       {
         src: "/sys-kite.jpg",
-        alt: "The tethered kite-energy wing aloft above its twin launch masts",
+        alt: "The tethered kite aloft on its line above the development's roof",
         label: "Kite Energy",
         pos: "50% 50%",
         className: "left-[66%] top-[13%] w-[15rem] rotate-[2deg]",
@@ -166,12 +166,12 @@ const STAGES: Stage[] = [
         className: "left-[26%] top-[13%] w-[18rem] rotate-[1.6deg]",
       },
       {
-        /* the atmospheric water generation plant itself, cropped tight from
-           the site render so the blue process racking and the generator unit
-           fill the frame — the earlier frame showed the whole development at
-           dusk with this bay a few pixels wide */
+        /* the generation plant in its bay at the foot of the towers, cropped
+           from the site render at native resolution — the first attempt was
+           upscaled and went soft, so this one is not resized at all, only
+           lifted out of the night render's shadow. */
         src: "/sys-atmospheric-water.jpg",
-        alt: "The atmospheric water generation plant — process racking and generator unit in its lit bay",
+        alt: "The atmospheric water generation plant — process racking and generator unit lit in its bay",
         label: "Atmospheric Water",
         pos: "50% 50%",
         className: "left-[24%] top-[58%] w-[17rem] -rotate-[1.6deg]",
@@ -246,7 +246,7 @@ export default function SnakeRoute() {
       ref={sectionRef}
       data-section="route"
       aria-labelledby="route-heading"
-      className="relative h-[320svh] lg:h-[360svh]"
+      className="relative h-[200svh] lg:h-[360svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden bg-[#F5EDE3]">
         {/* ------------- the building, panning slowly with scroll ------- */}

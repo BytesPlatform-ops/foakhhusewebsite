@@ -43,6 +43,8 @@ const AMENITIES_BG =
 
 interface Amenity {
   num: string;
+  /** set instead of src when no asset honestly depicts this amenity */
+  missing?: string;
   title: string;
   copy: string;
   /** explicit approved-asset mapping — image always matches the amenity */
@@ -79,7 +81,6 @@ const AMENITIES: Amenity[] = [
     copy: "Advanced elevator systems designed for fast and convenient access throughout the development.",
     src: "/aislefoakh.jpg",
     alt: "The corridor beside the high-speed elevators",
-    pos: "18% 45%",
   },
   {
     num: "05",
@@ -92,8 +93,8 @@ const AMENITIES: Amenity[] = [
     num: "06",
     title: "Community Hall",
     copy: "A dedicated space for gatherings, celebrations and resident events.",
-    src: "/lobby.jpg",
-    alt: "Residents gathered in the shared community space",
+    src: "/amenity-community-hall.jpg",
+    alt: "Residents gathered in the community hall for a presentation",
   },
   {
     num: "07",
@@ -203,7 +204,7 @@ export default function AmenitiesShowcase() {
         <Heading />
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1.1fr]">
           <figure className="relative min-h-[320px] overflow-hidden rounded-[24px] ring-1 ring-[#C99355]/50">
-            <Image src={AMENITIES[0].src} alt={AMENITIES[0].alt} fill sizes="46vw" className="object-cover" style={{ objectPosition: AMENITIES[0].pos }} />
+            <AmenityMedia a={AMENITIES[0]} sizes="46vw" />
           </figure>
           <div className="grid gap-4 sm:grid-cols-2">
             {AMENITIES.map((x) => (
@@ -265,12 +266,12 @@ export default function AmenitiesShowcase() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Image src={a.src} alt={a.alt} fill sizes="46vw" className="object-cover" style={{ objectPosition: a.pos }} />
+                  <AmenityMedia a={a} sizes="46vw" />
                 </motion.div>
               </AnimatePresence>
               {/* preload next */}
               <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-0">
-                <Image src={AMENITIES[(active + 1) % N].src} alt="" fill sizes="46vw" className="object-cover" />
+                <AmenityMedia a={AMENITIES[(active + 1) % N]} sizes="46vw" alt="" />
               </div>
 
               {/* caption */}
@@ -337,7 +338,7 @@ export default function AmenitiesShowcase() {
         <div className="relative mt-4 h-[56svh] overflow-hidden rounded-[20px] ring-1 ring-[#C99355]/55">
           <AnimatePresence initial={false}>
             <motion.div key={a.src} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }}>
-              <Image src={a.src} alt={a.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: a.pos }} />
+              <AmenityMedia a={a} sizes="92vw" />
             </motion.div>
           </AnimatePresence>
           <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#2B211D]/75 to-transparent px-4 pt-12 pb-4">
@@ -479,6 +480,33 @@ function Rail({
 }
 
 /* ---------------------------------------------------------- pieces --- */
+
+/** An amenity's picture — or a clearly marked gap when /public has no
+ *  asset that honestly shows it, so the slot cannot ship unnoticed. */
+function AmenityMedia({ a, sizes, alt }: { a: Amenity; sizes: string; alt?: string }) {
+  if (a.missing) {
+    return (
+      <div
+        data-image-required="true"
+        className="flex h-full w-full flex-col items-center justify-center gap-2 px-4 text-center"
+        style={{
+          background:
+            "repeating-linear-gradient(45deg, rgba(148,63,45,0.10) 0 12px, rgba(148,63,45,0.18) 12px 24px)",
+        }}
+      >
+        <span className="text-[0.58rem] font-bold tracking-[0.2em] uppercase" style={{ color: "#FAF6F0" }}>
+          HQ Image Required
+        </span>
+        <span className="text-[0.72rem] leading-tight font-medium" style={{ color: "rgba(250,246,240,0.85)" }}>
+          {a.missing}
+        </span>
+      </div>
+    );
+  }
+  return (
+    <Image src={a.src} alt={alt ?? a.alt} fill sizes={sizes} className="object-cover" style={{ objectPosition: a.pos }} />
+  );
+}
 
 function Heading({ compact = false }: { compact?: boolean }) {
   return (

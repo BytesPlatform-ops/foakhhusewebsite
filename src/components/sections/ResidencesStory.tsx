@@ -182,8 +182,8 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/foakhmodernarchitecture.jpg",
-    alt: "The terracotta façade detailing — fluted piers, deep reveals and shading fins",
+    src: "/residence-composed.jpg",
+    alt: "The fluted walnut headboard wall, lime plaster and brass of a principal bedroom",
     rise: [0.74, 0.83],
     cover: null,
     fromY: "118svh",
@@ -483,9 +483,9 @@ const CAT_PANELS: CatPanelData[] = [
       { t: "Statement Details", d: "Feature lighting, chandeliers and a solid-wood entrance door." },
     ],
     note: "Best for · residents seeking an upgraded interior experience.",
-    src: "/residence-composed.jpg",
-    alt: "Elegant-category detailing — fluted walnut, brass and stone at close range",
-    pos: "50% 45%",
+    src: "/interior-elegant.jpg",
+    alt: "An Elegant-category living room — feature lighting, panelled walls and the solid-wood entrance door",
+    pos: "50% 50%",
   },
   {
     num: "03",
@@ -909,16 +909,20 @@ function CategoryPanel({
                 </span>
               </div>
             </figure>
-            {/* duplex bedroom */}
+            {/* the private pool — "Private Pools" is the first thing this
+                panel claims and the first cue printed over the hero, yet the
+                collage showed a terrace, a gallery walk and a lounge. This is
+                the quieter second pool render, kept clear of the communal
+                pool the amenities use, so the finale stays exclusive. */}
             <figure className="absolute top-[8%] right-0 h-[38%] w-[34%] rotate-[1.6deg] overflow-hidden rounded-[12px] border border-[#C99355]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
-                <Image src="/foakhtopbalconyaisle.jpg" alt="The penthouse gallery walk above the city at dusk" fill sizes="16vw" className="object-cover" style={{ objectPosition: "50% 45%" }} />
+                <Image src="/duplex-pool.jpg" alt="The penthouse's own swimming pool, lit behind full-height glazing at dusk" fill sizes="16vw" className="object-cover" style={{ objectPosition: "50% 55%" }} />
               </div>
             </figure>
             {/* duplex lounge */}
             <figure className="absolute bottom-0 right-[10%] h-[36%] w-[42%] -rotate-[1.4deg] overflow-hidden rounded-[12px] border border-[#C99355]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
-                <Image src="/lounge.jpg" alt="The double-height penthouse lounge" fill sizes="20vw" className="object-cover" />
+                <Image src="/penthouse-lounge.jpg" alt="The penthouse lounge above the city, lit by its chandelier" fill sizes="20vw" className="object-cover" />
               </div>
             </figure>
           </motion.div>

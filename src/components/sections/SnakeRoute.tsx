@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ClayFace } from "@/components/shared/BuildIn";
+import { ClayFace, courses } from "@/components/shared/BuildIn";
 import { M } from "@/components/shared/useIsMobile";
 import {
   motion,
@@ -389,16 +389,39 @@ function MobileStill({
   f,
   className,
   width,
+  index,
 }: {
   f: StageFrame;
   className: string;
   width: string;
+  index: number;
 }) {
+  const reduced = useReducedMotion();
+  /* the composition assembles: each still rises into place in discrete
+     courses rather than fading, so it reads as built rather than dropped */
+  const build = reduced
+    ? {}
+    : {
+        clipPath: { duration: 0.62, delay: index * 0.12, ease: courses(3) },
+        y: { duration: 0.6, delay: index * 0.12, ease: M.ease },
+      };
+
   return (
-    <figure
-      className={`absolute z-20 overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1 shadow-[0_18px_36px_-20px_rgba(20,10,6,0.55)] ${className}`}
+    <motion.figure
+      initial={reduced ? undefined : "raw"}
+      whileInView={reduced ? undefined : "built"}
+      viewport={{ once: true, amount: 0.3 }}
+      className={`absolute z-20 ${className}`}
       style={{ width }}
     >
+      <motion.div
+        className="overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1 shadow-[0_18px_36px_-20px_rgba(20,10,6,0.55)]"
+        variants={{
+          raw: { clipPath: "inset(100% 0% 0% 0%)", y: 14 },
+          built: { clipPath: "inset(0% 0% 0% 0%)", y: 0 },
+        }}
+        transition={build}
+      >
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
         {f.missing ? (
           <div
@@ -426,14 +449,27 @@ function MobileStill({
       >
         {f.label}
       </figcaption>
-    </figure>
+      </motion.div>
+    </motion.figure>
   );
 }
 
 function MobileSystems() {
   const reduced = useReducedMotion();
+  const wrapRef = useRef<HTMLDivElement>(null);
   const panels = useRef<(HTMLElement | null)[]>([]);
   const [active, setActive] = useState(0);
+
+  /* the building is the canvas: it descends slowly behind the panels while
+     the content moves at full scroll speed, so the two read as depth rather
+     than as one flat page. The image spans exactly this container, so the
+     facade runs out at the same moment the last panel does. */
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start start", "end end"],
+  });
+  const bg = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.4 });
+  const buildingY = useTransform(bg, [0, 1], ["0%", "-34%"]);
 
   /* the tab follows whichever stage holds the screen */
   useEffect(() => {
@@ -452,57 +488,62 @@ function MobileSystems() {
     return () => io.disconnect();
   }, []);
 
-  const reveal = (delay = 0) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 16 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, amount: 0.25 },
-          transition: { duration: M.text, delay, ease: M.ease },
-        };
-
   return (
-    <div className="relative bg-[#F5EDE3]">
-      {/* the facade stays, but as a quiet header image rather than the ground
-          the whole section has to be read against */}
-      <div className="relative h-[34svh] w-full overflow-hidden">
-        <Image src="/buildingpov.jpg" alt="" fill sizes="100vw" className="object-cover" style={{ objectPosition: "50% 22%" }} />
+    <div ref={wrapRef} className="relative bg-[#F5EDE3]">
+      {/* ---------------- the building, descending slowly -------------- */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div className="absolute inset-x-0 top-0 h-[152%] will-change-transform" style={{ y: buildingY }}>
+          <Image
+            src="/buildingpov.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover"
+            style={{ objectPosition: "50% 30%" }}
+          />
+        </motion.div>
+        {/* the facade stays legible as a ground without swallowing the type */}
         <span
-          aria-hidden="true"
           className="absolute inset-0"
-          style={{ background: "linear-gradient(to top, #F5EDE3 2%, rgb(245 237 227 / 0.55) 38%, transparent 78%)" }}
+          style={{
+            background:
+              "linear-gradient(180deg, rgb(245 237 227 / 0.30) 0%, rgb(245 237 227 / 0.62) 34%, rgb(245 237 227 / 0.72) 100%)",
+          }}
         />
       </div>
 
-      <div className="relative -mt-14 px-5">
+      {/* ---------------- heading ---------------------------------------- */}
+      <div className="relative px-5 pt-12">
         <p className="text-[0.6rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
           02 — Natural Systems
         </p>
-        <h2 id="route-heading" className="font-display mt-3 text-[1.95rem] leading-[1.08] font-medium" style={{ color: "#2B211D" }}>
+        <h2 id="route-heading" className="font-display mt-3 text-[2.1rem] leading-[1.06] font-medium" style={{ color: "#2B211D" }}>
           Nature, engineered for better living.
         </h2>
-        <p className="mt-3 text-[0.88rem] leading-relaxed text-[#2B211D]/72">
+        <p className="mt-3 text-[0.92rem] leading-relaxed text-[#2B211D]/78">
           A connected set of natural-resource systems designed to support airflow, renewable power
           and resilient water planning throughout the development.
         </p>
       </div>
 
-      {/* the stage control — compact, sticky under the fixed header */}
-      <div className="sticky top-[68px] z-30 mt-5 bg-[#F5EDE3]/95 px-5 py-2.5 backdrop-blur-sm">
-        <ul className="flex gap-2">
+      {/* ---------------- stage control, joined to the heading ----------- */}
+      <div className="sticky top-[68px] z-30 mt-4 px-4 pb-2">
+        <ul
+          className="flex gap-1.5 rounded-full p-1.5"
+          style={{ background: "rgba(250,246,240,0.92)", backdropFilter: "blur(6px)", boxShadow: "0 8px 22px -14px rgba(36,27,23,0.5)" }}
+        >
           {STAGES.map((st, i) => (
             <li key={st.eyebrow} className="flex-1">
               <button
                 type="button"
                 onClick={() => panels.current[i]?.scrollIntoView({ behavior: "smooth", block: "start" })}
                 aria-current={active === i ? "true" : undefined}
-                className="w-full rounded-full px-3 py-2 text-[0.62rem] font-bold tracking-[0.16em] uppercase transition-colors duration-300"
-                style={
-                  active === i
-                    ? { background: "#B65438", color: "#FAF6F0" }
-                    : { background: "rgba(148,63,45,0.09)", color: "rgba(43,33,29,0.62)" }
-                }
+                className="w-full rounded-full px-2 text-[0.64rem] font-bold tracking-[0.14em] uppercase transition-colors duration-300"
+                style={{
+                  minHeight: 40,
+                  background: active === i ? "#B65438" : "transparent",
+                  color: active === i ? "#FAF6F0" : "rgba(43,33,29,0.6)",
+                }}
               >
                 {["Air", "Energy", "Water"][i]}
               </button>
@@ -511,45 +552,46 @@ function MobileSystems() {
         </ul>
       </div>
 
+      {/* ---------------- the three stages ------------------------------- */}
       {STAGES.map((st, i) => (
         <article
           key={st.eyebrow}
           ref={(el) => {
             panels.current[i] = el;
           }}
-          className="relative scroll-mt-[132px] px-5 pt-16 pb-12"
+          className="relative scroll-mt-[124px] px-4 pt-14 pb-10"
         >
-          {/* upper-right still, overlapping the panel's top corner */}
-          <MobileStill f={st.frames[0]} width="43%" className="top-0 right-4 rotate-[2.2deg]" />
+          <MobileStill f={st.frames[0]} index={0} width="44%" className="top-0 right-5 rotate-[2.2deg]" />
 
-          <motion.div
-            className="relative rounded-[18px] border border-[#C99355]/40 bg-[#FAF6F0] px-5 pt-20 pb-5 shadow-[0_20px_44px_-30px_rgba(36,27,23,0.4)]"
-            {...reveal()}
+          <div
+            className="relative rounded-[20px] border border-[#C99355]/45 px-6 pt-20 pb-6"
+            style={{
+              background: "rgba(250,246,240,0.97)",
+              boxShadow: "0 22px 46px -30px rgba(36,27,23,0.5)",
+            }}
           >
             <p className="text-[0.58rem] font-bold tracking-[0.22em] uppercase" style={{ color: "#B65438" }}>
               {st.eyebrow}
             </p>
-            <h3 className="font-display mt-2.5 text-[1.6rem] leading-[1.1] font-medium" style={{ color: "#94432F" }}>
+            <h3 className="font-display mt-2.5 text-[1.7rem] leading-[1.1] font-medium" style={{ color: "#94432F" }}>
               {st.heading}
             </h3>
-            <p className="mt-3 text-[0.86rem] leading-relaxed text-[#2B211D]/75">{st.copy}</p>
+            <p className="mt-3 text-[0.9rem] leading-relaxed text-[#2B211D]/78">{st.copy}</p>
             <ul className="mt-4">
               {st.items.map((it) => (
                 <li key={it.t} className="border-t border-[#94432F]/12 py-2.5 first:border-t-0 first:pt-0">
-                  <p className="text-[0.84rem] font-semibold" style={{ color: "#2B211D" }}>
+                  <p className="text-[0.86rem] font-semibold" style={{ color: "#2B211D" }}>
                     {it.t}
                   </p>
-                  {it.d && <p className="mt-0.5 text-[0.78rem] leading-snug text-[#2B211D]/68">{it.d}</p>}
+                  {it.d && <p className="mt-0.5 text-[0.8rem] leading-snug text-[#2B211D]/70">{it.d}</p>}
                 </li>
               ))}
             </ul>
-            {/* the second still tucks into the lower-right of the panel, with
-                the list kept clear of it by this reserved strip */}
             {st.frames[1] && <div aria-hidden="true" className="h-24" />}
-          </motion.div>
+          </div>
 
           {st.frames[1] && (
-            <MobileStill f={st.frames[1]} width="40%" className="bottom-6 left-8 -rotate-[2.4deg]" />
+            <MobileStill f={st.frames[1]} index={1} width="41%" className="bottom-4 left-7 -rotate-[2.4deg]" />
           )}
         </article>
       ))}

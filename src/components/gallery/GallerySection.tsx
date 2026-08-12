@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
@@ -180,6 +180,126 @@ const ITEMS: GalleryItem[] = [
   },
 ];
 
+
+/* ---------------------------------------------------------------- mobile --
+   A masonry column becomes a single 8,100px column on a phone — the whole
+   gallery read as one long list you had to scroll past. Mobile gets a
+   swipeable rail instead: one image at a time with the next one peeking,
+   scroll-snap for a native feel, a counter, and autoplay that yields to the
+   hand the moment it is touched.                                            */
+
+const AUTOPLAY_MS = 3600;
+const RESUME_MS = 6000;
+
+function MobileGallery({ onOpen }: { onOpen: (i: number, el: HTMLElement) => void }) {
+  const rail = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  /* when the user last touched the rail — autoplay stays out of the way
+     until they have been still for a while */
+  const touchedAt = useRef(0);
+
+  /* which slide is centred */
+  useEffect(() => {
+    const el = rail.current;
+    if (!el) return;
+    const onScroll = () => {
+      const i = Math.round(el.scrollLeft / (el.scrollWidth / ITEMS.length));
+      setActive(Math.min(Math.max(i, 0), ITEMS.length - 1));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* autoplay — slow enough to read a building, paused while in use */
+  useEffect(() => {
+    const el = rail.current;
+    if (!el) return;
+    const mark = () => {
+      touchedAt.current = performance.now();
+    };
+    el.addEventListener("pointerdown", mark);
+    el.addEventListener("touchstart", mark, { passive: true });
+    el.addEventListener("wheel", mark, { passive: true });
+
+    const id = window.setInterval(() => {
+      if (performance.now() - touchedAt.current < RESUME_MS) return;
+      if (document.hidden) return;
+      const step = el.scrollWidth / ITEMS.length;
+      const next = Math.round(el.scrollLeft / step) + 1;
+      el.scrollTo({ left: next >= ITEMS.length ? 0 : next * step, behavior: "smooth" });
+    }, AUTOPLAY_MS);
+
+    return () => {
+      window.clearInterval(id);
+      el.removeEventListener("pointerdown", mark);
+      el.removeEventListener("touchstart", mark);
+      el.removeEventListener("wheel", mark);
+    };
+  }, []);
+
+  const item = ITEMS[active];
+
+  return (
+    <div className="mt-9 lg:hidden">
+      <div
+        ref={rail}
+        className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        style={{ scrollPaddingLeft: 20 }}
+      >
+        {ITEMS.map((it, i) => (
+          <button
+            key={it.src}
+            type="button"
+            onClick={(e) => onOpen(i, e.currentTarget)}
+            aria-label={`Open image: ${it.title} — ${it.category}`}
+            className="relative aspect-[4/5] w-[82vw] shrink-0 snap-start overflow-hidden rounded-[18px] border border-[#C99355]/35 shadow-[0_20px_44px_-26px_rgba(90,45,22,0.4)]"
+          >
+            <Image
+              src={it.src}
+              alt={it.alt}
+              fill
+              sizes="82vw"
+              className="object-cover"
+              loading={i < 2 ? "eager" : "lazy"}
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-28"
+              style={{ background: "linear-gradient(to top, rgb(20 16 13 / 0.72), transparent)" }}
+            />
+            <span className="absolute right-3 bottom-3 left-3 text-left">
+              <span className="block text-[0.52rem] font-semibold tracking-[0.22em] text-[#E8CFA4] uppercase">
+                {it.category}
+              </span>
+              <span className="font-display mt-0.5 block text-[1.05rem] leading-tight text-[#FAF6F0]">
+                {it.title}
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* counter + progress — the rail is long, so say where you are */}
+      <div className="mt-4 flex items-center gap-3">
+        <span className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#94432F" }}>
+          {String(active + 1).padStart(2, "0")}
+          <span className="text-[#2B211D]/40"> / {String(ITEMS.length).padStart(2, "0")}</span>
+        </span>
+        <span className="relative h-px flex-1 bg-[#94432F]/15">
+          <span
+            className="absolute inset-y-0 left-0 bg-[#B65438] transition-[width] duration-300 ease-out"
+            style={{ width: `${((active + 1) / ITEMS.length) * 100}%` }}
+          />
+        </span>
+        <span className="text-[0.55rem] tracking-[0.18em] text-[#2B211D]/45 uppercase">Swipe</span>
+      </div>
+      <p className="sr-only" aria-live="polite">
+        {item.title} — {item.category}
+      </p>
+    </div>
+  );
+}
+
 export default function GallerySection() {
   const reduced = useReducedMotion();
   const [open, setOpen] = useState<number | null>(null);
@@ -210,8 +330,17 @@ export default function GallerySection() {
           Wind Corridor Enclave.
         </Lead>
 
+        {/* ------------- mobile: one image at a time, swipeable --------- */}
+        <MobileGallery
+          onOpen={(i, el) => {
+            openerRef.current = el;
+            setDirection(1);
+            setOpen(i);
+          }}
+        />
+
         {/* -------------------------- masonry -------------------------- */}
-        <div className="mt-14 columns-1 gap-5 sm:columns-2 lg:columns-3">
+        <div className="mt-14 hidden gap-5 sm:columns-2 lg:block lg:columns-3">
           {ITEMS.map((item, i) => (
             <motion.div
               key={item.src}

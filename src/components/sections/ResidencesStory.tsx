@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import AmenitiesShowcase from "./AmenitiesShowcase";
 import {
+  AnimatePresence,
   motion,
   useReducedMotion,
   useScroll,
@@ -932,7 +933,7 @@ function CategoryPanel({
             <p className="text-[0.88rem] leading-[1.6]" style={{ color: "rgba(255,248,239,0.9)" }}>
               {c.body}
             </p>
-            <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
+            <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: c.duplex ? "rgba(239,213,163,0.3)" : "rgba(216,179,106,0.45)" }}>
               {c.points.map((pt) => (
                 <li key={pt.t}>
                   <p className="text-[0.78rem] font-semibold" style={{ color: "#E8CFA4" }}>
@@ -1046,7 +1047,7 @@ function CategoryPanel({
           <p className="text-[0.88rem] leading-[1.6]" style={{ color: dup ? "#2B211D" : "rgba(33,26,23,0.78)" }}>
             {c.body}
           </p>
-          <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
+          <ul className="mt-4 space-y-2.5 border-t pt-4" style={{ borderColor: c.duplex ? "rgba(239,213,163,0.3)" : "rgba(216,179,106,0.45)" }}>
             {c.points.map((pt) => (
               <li key={pt.t}>
                 <p className="text-[0.78rem] font-semibold" style={{ color: "#94432F" }}>
@@ -1102,6 +1103,20 @@ function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) =
 function StackedCategories({ embedded = false }: { embedded?: boolean }) {
   const items = useRef<(HTMLElement | null)[]>([]);
   const [active, setActive] = useState(0);
+  const reduced = useReducedMotion();
+  /* the capsule only exists while the finale is on screen */
+  const [duplexNear, setDuplexNear] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  useEffect(() => {
+    const el = items.current[CAT_PANELS.length - 1];
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setDuplexNear(e.isIntersecting), {
+      rootMargin: "-10% 0px -20% 0px",
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   /* the strip follows whichever residence is holding the screen */
   useEffect(() => {
@@ -1137,18 +1152,37 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
       <MobileIndex active={active} onJump={jump} />
       <div className="space-y-16">
         {CAT_PANELS.map((c, i) => (
-          <article
+          <motion.article
             key={c.num}
             ref={(el) => {
               items.current[i] = el;
             }}
             aria-label={`${c.num} — ${c.label}`}
-            className="scroll-mt-[124px]"
+            className={`scroll-mt-[124px] ${
+              c.duplex
+                ? "-mx-6 rounded-[20px] px-6 pt-8 pb-10"
+                : ""
+            }`}
+            style={
+              c.duplex
+                ? {
+                    background:
+                      "radial-gradient(80% 50% at 80% 8%, rgb(214 138 74 / 0.16) 0%, transparent 60%)," +
+                      "linear-gradient(170deg, #2A160E 0%, #241410 62%, #1C0F0A 100%)",
+                  }
+                : undefined
+            }
+            {...(reduced
+              ? {}
+              : {
+                  /* the editorial diagonal, kept small enough to stay stable */
+                  initial: { opacity: 0, x: i % 2 === 0 ? -18 : 18, y: 24, scale: 0.985 },
+                  whileInView: { opacity: 1, x: 0, y: 0, scale: 1 },
+                  viewport: { once: true, amount: 0.18 },
+                  transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] },
+                })}
           >
-            <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#94432F" }}>
-              {c.num} <span style={{ color: "rgba(33,26,23,0.45)" }}>/ 04</span>
-            </p>
-            <div className="relative mt-4 aspect-[4/3] overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1">
+            <div className={`relative mt-4 aspect-[4/3] overflow-hidden rounded-[12px] border p-1 ${c.duplex ? "border-[#C99355]/75 bg-[#140B07]" : "border-[#C99355]/55 bg-[#FAF6F0]"}`}>
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
                 <Image src={c.src} alt={c.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: c.pos ?? "50% 50%" }} />
                 {c.duplex && (
@@ -1162,35 +1196,40 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
             </div>
             <p
               className="font-display mt-5 leading-[1.05] font-medium"
-              style={{ color: "#94432F", fontSize: "clamp(1.7rem,5.4vw,2.3rem)" }}
+              style={{ color: c.duplex ? "#FAF6F0" : "#94432F", fontSize: "clamp(1.7rem,5.4vw,2.3rem)" }}
             >
               {c.heading}
             </p>
-            <p className="font-display mt-2 text-[0.95rem] italic" style={{ color: "#6E8163" }}>
+            <p className="font-display mt-2 text-[0.95rem] italic" style={{ color: c.duplex ? "#E8CFA4" : "#6E8163" }}>
               {c.lead}
             </p>
-            <p className="mt-3 text-[0.9rem] leading-[1.6]" style={{ color: "rgba(33,26,23,0.75)" }}>
+            <p className="mt-3 text-[0.9rem] leading-[1.6]" style={{ color: c.duplex ? "rgba(250,246,240,0.86)" : "rgba(33,26,23,0.75)" }}>
               {c.body}
             </p>
-            <ul className="mt-3 space-y-2 border-t pt-3" style={{ borderColor: "rgba(216,179,106,0.45)" }}>
+            <ul className="mt-3 space-y-2 border-t pt-3" style={{ borderColor: c.duplex ? "rgba(239,213,163,0.3)" : "rgba(216,179,106,0.45)" }}>
               {c.points.map((pt) => (
                 <li key={pt.t}>
-                  <p className="text-[0.8rem] font-semibold" style={{ color: "#94432F" }}>
+                  <p className="text-[0.8rem] font-semibold" style={{ color: c.duplex ? "#EFD5A3" : "#94432F" }}>
                     {pt.t}
                   </p>
-                  <p className="text-[0.76rem] leading-[1.55]" style={{ color: "rgba(33,26,23,0.65)" }}>
+                  <p className="text-[0.76rem] leading-[1.55]" style={{ color: c.duplex ? "rgba(250,246,240,0.7)" : "rgba(33,26,23,0.65)" }}>
                     {pt.d}
                   </p>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-[0.6rem] tracking-[0.14em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
+            <p className="mt-4 text-[0.6rem] tracking-[0.14em] uppercase" style={{ color: c.duplex ? "rgba(239,213,163,0.72)" : "rgba(33,26,23,0.5)" }}>
               {c.note}
             </p>
             {c.duplex && <PenthouseEnquiry className="mt-4" />}
-          </article>
+          </motion.article>
         ))}
       </div>
+
+      <AnimatePresence>
+        {duplexNear && !sheetOpen && <PenthouseCapsule onOpen={() => setSheetOpen(true)} />}
+      </AnimatePresence>
+      <PenthouseSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
     </div>
   );
 
@@ -1213,6 +1252,107 @@ const PENTHOUSE_FIELDS = [
  * styling; submission stays disabled until the penthouse sales inbox is
  * confirmed, so no enquiry is silently dropped.
  */
+
+/* ------------------------------------------------------- duplex, mobile --
+   The penthouse form sits at the very bottom of the duplex story, which on a
+   phone means scrolling the whole finale to reach it. A capsule follows the
+   duplex panel instead and opens the same form as a bottom sheet.           */
+
+function PenthouseCapsule({ onOpen }: { onOpen: () => void }) {
+  const reduced = useReducedMotion();
+  return (
+    <motion.button
+      type="button"
+      onClick={onOpen}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 16 }}
+      transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed right-4 bottom-5 z-40 flex min-h-[46px] items-center gap-2 rounded-full px-5 py-3 lg:hidden"
+      style={{
+        background: "linear-gradient(140deg, #2A160E 0%, #3A1F13 100%)",
+        border: "1px solid rgba(232,207,164,0.45)",
+        boxShadow: "0 16px 34px -16px rgba(20,10,6,0.75)",
+      }}
+    >
+      {/* a slow breath, not a bounce */}
+      <motion.span
+        aria-hidden="true"
+        className="absolute inset-0 rounded-full"
+        style={{ border: "1px solid rgba(232,207,164,0.5)" }}
+        animate={reduced ? undefined : { opacity: [0.5, 0, 0.5], scale: [1, 1.13, 1] }}
+        transition={reduced ? undefined : { duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <span className="relative text-[0.72rem] font-bold tracking-[0.12em] uppercase" style={{ color: "#EFD5A3" }}>
+        Penthouse Enquiry
+      </span>
+      <span aria-hidden="true" className="relative text-[0.8rem]" style={{ color: "#EFD5A3" }}>
+        ↗
+      </span>
+    </motion.button>
+  );
+}
+
+function PenthouseSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  /* the page must not scroll behind an open sheet */
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-modal="true" aria-label="Penthouse enquiry">
+          <motion.button
+            type="button"
+            aria-label="Close enquiry"
+            onClick={onClose}
+            className="absolute inset-0 h-full w-full bg-[#140B07]/70"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.28 }}
+          />
+          <motion.div
+            className="absolute inset-x-0 bottom-0 max-h-[88svh] overflow-y-auto rounded-t-[22px] px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]"
+            style={{ background: "linear-gradient(180deg, #2A160E 0%, #241410 100%)" }}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[#EFD5A3]/30" aria-hidden="true" />
+            <div className="mb-3 flex items-start justify-between gap-4">
+              <p className="pt-1 text-[0.55rem] font-bold tracking-[0.24em] uppercase" style={{ color: "#C99355" }}>
+                04 — Duplex Penthouses
+              </p>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close enquiry"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#EFD5A3]/35 text-[#EFD5A3]"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+            <PenthouseEnquiry />
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function PenthouseEnquiry({ className = "" }: { className?: string }) {
   return (
     <form

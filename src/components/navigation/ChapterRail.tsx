@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 /**
  * Chapter rail rebuilt to the Units structural reference: a solid designed
@@ -91,6 +92,19 @@ function useActiveChapter() {
 function Wordmark({ big = false }: { big?: boolean }) {
   return (
     <span className="block">
+      {/* the FWCE emblem — kites, turbine and water, the three systems */}
+      <Image
+        src="/foakh-mark.png"
+        alt=""
+        width={898}
+        height={958}
+        priority
+        className={`mb-2 block w-auto ${
+          big
+            ? "h-14 [@media(max-height:760px)]:hidden"
+            : "h-[54px] [@media(max-height:820px)]:hidden"
+        }`}
+      />
       <span
         className={`font-display block leading-[0.9] font-bold tracking-[-0.01em] text-[#B65438] ${
           big ? "text-4xl" : "text-[1.7rem]"
@@ -199,7 +213,7 @@ export default function ChapterRail() {
       {/* ---------------- Desktop rail ---------------- */}
       <nav
         aria-label="Chapters"
-        className="fixed inset-y-0 left-0 z-(--z-rail) hidden w-[200px] flex-col bg-[#F5EDE3] px-4 py-5 lg:flex"
+        className="fixed inset-y-0 left-0 z-(--z-rail) hidden w-[200px] flex-col overflow-y-auto bg-[#F5EDE3] px-4 py-5 [scrollbar-width:none] lg:flex [&::-webkit-scrollbar]:hidden"
       >
         <a href="#hero" className="mb-5 block w-[82%]" aria-label="Foakh Wind Corridor Enclave — top">
           <Wordmark />
@@ -220,7 +234,8 @@ export default function ChapterRail() {
 
       {/* ---------------- Mobile header + full-screen menu ---------------- */}
       <header className="fixed inset-x-0 top-0 z-(--z-header) flex items-center justify-between bg-[#F5EDE3] px-4 py-2.5 lg:hidden">
-        <a href="#hero" aria-label="Foakh Wind Corridor Enclave — top">
+        <a href="#hero" className="flex items-center gap-2" aria-label="Foakh Wind Corridor Enclave — top">
+          <Image src="/foakh-mark.png" alt="" width={898} height={958} priority className="h-9 w-auto shrink-0" />
           <span className="font-display text-xl leading-none font-bold tracking-[-0.01em] text-[#B65438]">
             foakh wind corridor.
           </span>
@@ -247,7 +262,7 @@ export default function ChapterRail() {
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-0 z-(--z-header) flex flex-col bg-[#F5EDE3] px-4 pt-16 pb-5 lg:hidden"
+          className="fixed inset-0 z-(--z-header) flex flex-col overflow-y-auto bg-[#F5EDE3] px-4 pt-16 pb-5 lg:hidden"
         >
           <div className="mb-5">
             <Wordmark big />

@@ -61,6 +61,10 @@ interface StageFrame {
   label: string;
   pos?: string;
   className: string;
+  /** Set instead of a real src when no asset in /public honestly depicts
+   *  this topic. Renders a clearly marked gap so the slot cannot ship
+   *  unnoticed and cannot be mistaken for finished artwork. */
+  missing?: string;
 }
 
 interface Stage {
@@ -83,10 +87,13 @@ const STAGES: Stage[] = [
     card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[46%]",
     frames: [
       {
-        src: "/windcatcher.jpg",
-        alt: "The wind corridor between the two blocks, where captured air enters the development",
+        /* the wind-catcher tower itself — the previous frame showed the gap
+           between the two blocks with an arrival fountain, which explained
+           nothing about air capture */
+        src: "/sys-windcatcher.jpg",
+        alt: "The wind catcher tower, its scoops open to the prevailing wind",
         label: "Natural Air Capture",
-        pos: "60% 22%",
+        pos: "50% 50%",
         className: "left-[44%] top-[11%] w-[19rem] rotate-[1.6deg]",
       },
       {
@@ -111,24 +118,27 @@ const STAGES: Stage[] = [
     card: "left-[6%] top-[24%] lg:left-[34%] lg:top-[30%]",
     frames: [
       {
-        src: "/windturbineimagefinal.jpg",
-        alt: "The rooftop wind turbines silhouetted against the sunset",
+        /* each energy frame now shows its own equipment at readable scale —
+           the old frames were distant tower shots where the turbines, panels
+           and kite were a few pixels each */
+        src: "/sys-windturbines.jpg",
+        alt: "Two vertical-axis wind turbines mounted on the roof terrace",
         label: "Wind Turbines",
-        pos: "50% 30%",
+        pos: "50% 50%",
         className: "left-[6%] top-[13%] w-[18rem] -rotate-[1.8deg]",
       },
       {
-        src: "/windenergy.jpg",
-        alt: "The rooftop solar array on the crown terraces at golden hour",
+        src: "/sys-solar.jpg",
+        alt: "The rooftop photovoltaic array catching low sun across its panels",
         label: "Solar Energy",
-        pos: "10% 44%",
+        pos: "50% 50%",
         className: "left-[7%] top-[57%] w-[17rem] rotate-[1.4deg]",
       },
       {
-        src: "/kiteenergyimg.jpg",
-        alt: "The tethered kite-energy wing above the roof, winch cable in view",
+        src: "/sys-kite.jpg",
+        alt: "The tethered kite-energy wing aloft above its twin launch masts",
         label: "Kite Energy",
-        pos: "63% 20%",
+        pos: "50% 50%",
         className: "left-[66%] top-[13%] w-[15rem] rotate-[2deg]",
       },
     ],
@@ -145,17 +155,25 @@ const STAGES: Stage[] = [
     card: "left-[6%] top-[28%] lg:left-[56%] lg:top-[40%]",
     frames: [
       {
-        src: "/windcatcher.jpg",
-        alt: "The landscaped water-feature courtyard and arrival fountain",
-        label: "Water in the Landscape",
-        pos: "50% 78%",
+        /* the reverse-osmosis plant itself. The old frame here was the
+           arrival fountain labelled "Water in the Landscape" — a fountain
+           is not a desalination system, and it duplicated the image used
+           for Natural Air Capture. */
+        src: "/sys-desalination.jpg",
+        alt: "The reverse-osmosis desalination plant — membrane racks, pressure vessels and control panel",
+        label: "Water Desalination",
+        pos: "50% 50%",
         className: "left-[26%] top-[13%] w-[18rem] rotate-[1.6deg]",
       },
       {
-        src: "/waterreliability.jpg",
-        alt: "The building's water treatment and reliability systems at work",
+        /* the atmospheric water generation plant itself, cropped tight from
+           the site render so the blue process racking and the generator unit
+           fill the frame — the earlier frame showed the whole development at
+           dusk with this bay a few pixels wide */
+        src: "/sys-atmospheric-water.jpg",
+        alt: "The atmospheric water generation plant — process racking and generator unit in its lit bay",
         label: "Atmospheric Water",
-        pos: "50% 70%",
+        pos: "50% 50%",
         className: "left-[24%] top-[58%] w-[17rem] -rotate-[1.6deg]",
       },
     ],
@@ -527,14 +545,31 @@ function StageStill({
       style={{ opacity, scale, clipPath: clip }}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
-        <Image
-          src={f.src}
-          alt={f.alt}
-          fill
-          sizes="20rem"
-          className="object-cover"
-          style={{ objectPosition: f.pos }}
-        />
+        {f.missing ? (
+          <div
+            className="flex h-full w-full flex-col items-center justify-center gap-1.5 px-3 text-center"
+            style={{
+              background:
+                "repeating-linear-gradient(45deg, rgba(148,63,45,0.07) 0 10px, rgba(148,63,45,0.13) 10px 20px)",
+            }}
+          >
+            <span className="text-[0.5rem] font-bold tracking-[0.18em] uppercase" style={{ color: "#94432F" }}>
+              HQ Image Required
+            </span>
+            <span className="text-[0.58rem] leading-tight font-medium" style={{ color: "rgba(43,33,29,0.72)" }}>
+              {f.missing}
+            </span>
+          </div>
+        ) : (
+          <Image
+            src={f.src}
+            alt={f.alt}
+            fill
+            sizes="20rem"
+            className="object-cover"
+            style={{ objectPosition: f.pos }}
+          />
+        )}
       </div>
       <figcaption className="px-2 pt-1.5 pb-1 text-center text-[0.55rem] font-bold tracking-[0.2em] uppercase" style={{ color: "#94432F" }}>
         {f.label}

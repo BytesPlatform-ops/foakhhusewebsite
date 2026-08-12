@@ -85,7 +85,7 @@ interface DeckSpec {
 const DECK: DeckSpec[] = [
   {
     kind: "image",
-    src: "/residence-open.jpg",
+    src: "/drawingroomfoakh.jpg",
     alt: "A living room with its corner glazing slid fully open to a private balcony, morning daylight across the limestone floor",
     rise: [0.03, 0.13],
     cover: [0.18, 0.27],
@@ -104,7 +104,7 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/residence-intuitive.jpg",
+    src: "/family.jpg",
     alt: "The circulation spine of a residence — entry, open kitchen and dining reading through in a single line of sight",
     rise: [0.18, 0.27],
     cover: [0.32, 0.41],
@@ -123,7 +123,7 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/residence-composed.jpg",
+    src: "/bed.jpg",
     alt: "The fluted walnut headboard wall of a principal bedroom, lime plaster and brass caught in low evening light",
     rise: [0.32, 0.41],
     cover: [0.46, 0.55],
@@ -142,8 +142,8 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/family.jpg",
-    alt: "Daylight filling the open family living space",
+    src: "/residence-open.jpg",
+    alt: "A bright, generously planned living room opening to its balcony",
     rise: [0.46, 0.55],
     cover: [0.60, 0.69],
     fromY: "118svh",
@@ -182,8 +182,8 @@ const DECK: DeckSpec[] = [
   },
   {
     kind: "image",
-    src: "/buildingfront.jpg",
-    alt: "The refined terracotta materials of the two blocks at dusk",
+    src: "/foakhmodernarchitecture.jpg",
+    alt: "The terracotta façade detailing — fluted piers, deep reveals and shading fins",
     rise: [0.74, 0.83],
     cover: null,
     fromY: "118svh",
@@ -462,8 +462,8 @@ const CAT_PANELS: CatPanelData[] = [
       { t: "Welcoming Environment", d: "A calm, practical home for modern families." },
     ],
     note: "Best for · practical modern family living.",
-    src: "/family.jpg",
-    alt: "A family sharing a meal in a bright Classic apartment",
+    src: "/residence-intuitive.jpg",
+    alt: "A Classic apartment in everyday use — kitchen, dining and circulation reading through",
   },
   {
     num: "02",
@@ -483,8 +483,8 @@ const CAT_PANELS: CatPanelData[] = [
       { t: "Statement Details", d: "Feature lighting, chandeliers and a solid-wood entrance door." },
     ],
     note: "Best for · residents seeking an upgraded interior experience.",
-    src: "/bed.jpg",
-    alt: "A refined Elegant-category bedroom in warm evening light",
+    src: "/residence-composed.jpg",
+    alt: "Elegant-category detailing — fluted walnut, brass and stone at close range",
     pos: "50% 45%",
   },
   {
@@ -505,8 +505,8 @@ const CAT_PANELS: CatPanelData[] = [
       { t: "Resident Services", d: "Everyday convenience built into the experience." },
     ],
     note: "Best for · elevated comfort, convenience and serviced living.",
-    src: "/drawingroomfoakh.jpg",
-    alt: "The coordinated interior of a Sonder Class serviced apartment",
+    src: "/kitchen.jpg",
+    alt: "The coordinated, ready-to-live interior of a Sonder Class serviced apartment",
   },
   {
     num: "04",
@@ -918,7 +918,7 @@ function CategoryPanel({
             {/* duplex lounge */}
             <figure className="absolute bottom-0 right-[10%] h-[36%] w-[42%] -rotate-[1.4deg] overflow-hidden rounded-[12px] border border-[#C99355]/70 bg-[#140B07] p-1 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.85)]">
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
-                <Image src="/drawingroomfoakh.jpg" alt="The double-height penthouse lounge" fill sizes="20vw" className="object-cover" />
+                <Image src="/lounge.jpg" alt="The double-height penthouse lounge" fill sizes="20vw" className="object-cover" />
               </div>
             </figure>
           </motion.div>

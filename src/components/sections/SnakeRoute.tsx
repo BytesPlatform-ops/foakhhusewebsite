@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ClayFace } from "@/components/shared/BuildIn";
+import { M } from "@/components/shared/useIsMobile";
 import {
   motion,
   useMotionValue,
@@ -246,9 +247,15 @@ export default function SnakeRoute() {
       ref={sectionRef}
       data-section="route"
       aria-labelledby="route-heading"
-      className="relative h-[200svh] lg:h-[360svh]"
+      className="relative lg:h-[360svh]"
     >
-      <div className="sticky top-0 h-svh overflow-hidden bg-[#F5EDE3]">
+      {/* ---------------- mobile: tabs on top, panels below -------------- */}
+      <div className="lg:hidden">
+        <MobileSystems />
+      </div>
+
+      {/* ---------------- desktop: the pinned facade composition --------- */}
+      <div className="sticky top-0 hidden h-svh overflow-hidden bg-[#F5EDE3] lg:block">
         {/* ------------- the building, panning slowly with scroll ------- */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
@@ -365,6 +372,190 @@ export default function SnakeRoute() {
 }
 
 /* --------------------------------------------------- stage pieces ---- */
+
+
+/* ---------------------------------------------------------------- mobile --
+   The desktop stage pins a full-bleed facade and floats the panels and their
+   stills across it in absolute rem positions — at 390px the heading lands on
+   top of the render and the stage rail ends up at the foot of the screen.
+
+   Mobile instead reads as three panels, each one screen's worth, with the
+   stage control sitting at the top under the section heading where it can be
+   reached. The stills keep their editorial character by overlapping the
+   panel's corners rather than becoming full-width blocks. "Arrival" is a
+   transition state on desktop, not content, so it is not offered as a tab. */
+
+function MobileStill({
+  f,
+  className,
+  width,
+}: {
+  f: StageFrame;
+  className: string;
+  width: string;
+}) {
+  return (
+    <figure
+      className={`absolute z-20 overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1 shadow-[0_18px_36px_-20px_rgba(20,10,6,0.55)] ${className}`}
+      style={{ width }}
+    >
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
+        {f.missing ? (
+          <div
+            data-image-required="true"
+            className="flex h-full w-full flex-col items-center justify-center gap-1 px-2 text-center"
+            style={{
+              background:
+                "repeating-linear-gradient(45deg, rgba(148,63,45,0.08) 0 8px, rgba(148,63,45,0.15) 8px 16px)",
+            }}
+          >
+            <span className="text-[0.42rem] font-bold tracking-[0.16em] uppercase" style={{ color: "#94432F" }}>
+              HQ Image Required
+            </span>
+            <span className="text-[0.48rem] leading-tight font-medium" style={{ color: "rgba(43,33,29,0.72)" }}>
+              {f.missing}
+            </span>
+          </div>
+        ) : (
+          <Image src={f.src} alt={f.alt} fill sizes="45vw" className="object-cover" style={{ objectPosition: f.pos }} />
+        )}
+      </div>
+      <figcaption
+        className="px-1 pt-1 pb-0.5 text-center text-[0.44rem] font-bold tracking-[0.16em] uppercase"
+        style={{ color: "#94432F" }}
+      >
+        {f.label}
+      </figcaption>
+    </figure>
+  );
+}
+
+function MobileSystems() {
+  const reduced = useReducedMotion();
+  const panels = useRef<(HTMLElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+
+  /* the tab follows whichever stage holds the screen */
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const best = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!best) return;
+        const i = panels.current.indexOf(best.target as HTMLElement);
+        if (i >= 0) setActive(i);
+      },
+      { threshold: [0.2, 0.5], rootMargin: "-30% 0px -40% 0px" }
+    );
+    panels.current.forEach((el) => el && io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const reveal = (delay = 0) =>
+    reduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 16 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.25 },
+          transition: { duration: M.text, delay, ease: M.ease },
+        };
+
+  return (
+    <div className="relative bg-[#F5EDE3]">
+      {/* the facade stays, but as a quiet header image rather than the ground
+          the whole section has to be read against */}
+      <div className="relative h-[34svh] w-full overflow-hidden">
+        <Image src="/buildingpov.jpg" alt="" fill sizes="100vw" className="object-cover" style={{ objectPosition: "50% 22%" }} />
+        <span
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(to top, #F5EDE3 2%, rgb(245 237 227 / 0.55) 38%, transparent 78%)" }}
+        />
+      </div>
+
+      <div className="relative -mt-14 px-5">
+        <p className="text-[0.6rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
+          02 — Natural Systems
+        </p>
+        <h2 id="route-heading" className="font-display mt-3 text-[1.95rem] leading-[1.08] font-medium" style={{ color: "#2B211D" }}>
+          Nature, engineered for better living.
+        </h2>
+        <p className="mt-3 text-[0.88rem] leading-relaxed text-[#2B211D]/72">
+          A connected set of natural-resource systems designed to support airflow, renewable power
+          and resilient water planning throughout the development.
+        </p>
+      </div>
+
+      {/* the stage control — compact, sticky under the fixed header */}
+      <div className="sticky top-[68px] z-30 mt-5 bg-[#F5EDE3]/95 px-5 py-2.5 backdrop-blur-sm">
+        <ul className="flex gap-2">
+          {STAGES.map((st, i) => (
+            <li key={st.eyebrow} className="flex-1">
+              <button
+                type="button"
+                onClick={() => panels.current[i]?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                aria-current={active === i ? "true" : undefined}
+                className="w-full rounded-full px-3 py-2 text-[0.62rem] font-bold tracking-[0.16em] uppercase transition-colors duration-300"
+                style={
+                  active === i
+                    ? { background: "#B65438", color: "#FAF6F0" }
+                    : { background: "rgba(148,63,45,0.09)", color: "rgba(43,33,29,0.62)" }
+                }
+              >
+                {["Air", "Energy", "Water"][i]}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {STAGES.map((st, i) => (
+        <article
+          key={st.eyebrow}
+          ref={(el) => {
+            panels.current[i] = el;
+          }}
+          className="relative scroll-mt-[132px] px-5 pt-16 pb-12"
+        >
+          {/* upper-right still, overlapping the panel's top corner */}
+          <MobileStill f={st.frames[0]} width="43%" className="top-0 right-4 rotate-[2.2deg]" />
+
+          <motion.div
+            className="relative rounded-[18px] border border-[#C99355]/40 bg-[#FAF6F0] px-5 pt-20 pb-5 shadow-[0_20px_44px_-30px_rgba(36,27,23,0.4)]"
+            {...reveal()}
+          >
+            <p className="text-[0.58rem] font-bold tracking-[0.22em] uppercase" style={{ color: "#B65438" }}>
+              {st.eyebrow}
+            </p>
+            <h3 className="font-display mt-2.5 text-[1.6rem] leading-[1.1] font-medium" style={{ color: "#94432F" }}>
+              {st.heading}
+            </h3>
+            <p className="mt-3 text-[0.86rem] leading-relaxed text-[#2B211D]/75">{st.copy}</p>
+            <ul className="mt-4">
+              {st.items.map((it) => (
+                <li key={it.t} className="border-t border-[#94432F]/12 py-2.5 first:border-t-0 first:pt-0">
+                  <p className="text-[0.84rem] font-semibold" style={{ color: "#2B211D" }}>
+                    {it.t}
+                  </p>
+                  {it.d && <p className="mt-0.5 text-[0.78rem] leading-snug text-[#2B211D]/68">{it.d}</p>}
+                </li>
+              ))}
+            </ul>
+            {/* the second still tucks into the lower-right of the panel, with
+                the list kept clear of it by this reserved strip */}
+            {st.frames[1] && <div aria-hidden="true" className="h-24" />}
+          </motion.div>
+
+          {st.frames[1] && (
+            <MobileStill f={st.frames[1]} width="40%" className="bottom-6 left-8 -rotate-[2.4deg]" />
+          )}
+        </article>
+      ))}
+    </div>
+  );
+}
 
 function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: boolean }) {
   const opacity = useTransform(p, st.at, [0, 1, 1, 0]);

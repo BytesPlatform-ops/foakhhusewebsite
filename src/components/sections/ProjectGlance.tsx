@@ -120,7 +120,7 @@ export default function ProjectGlance() {
       aria-labelledby="glance-heading"
       className="relative"
     >
-      <div ref={pinRef} className="relative h-[230svh] lg:h-[290svh]">
+      <div ref={pinRef} className="relative h-[142svh] lg:h-[290svh]">
       {/* Stage ground is the page's stone — when the window contracts, the
           portal sits on the same surface the next section begins from, so
           the two stages and the following section read as one passage. */}
@@ -160,7 +160,7 @@ export default function ProjectGlance() {
 
         {/* STAGE 1 message — brightens on approach, dissolves at the door */}
         <motion.div
-          className="absolute inset-x-0 top-[30%] mx-auto max-w-3xl px-6 text-center lg:top-[26%]"
+          className="absolute inset-x-0 top-[26%] mx-auto max-w-3xl px-5 text-center sm:px-6 lg:top-[26%]"
           style={{ opacity: textOpacity, y: textY, filter: textBlur }}
         >
           <p className="text-[0.65rem] font-medium tracking-[0.32em] text-[#C99355] uppercase">
@@ -172,14 +172,14 @@ export default function ProjectGlance() {
           >
             {COPY.headline}
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-[0.85rem] leading-relaxed font-light text-[#EEE1D3]/85 md:text-[0.95rem]">
+          <p className="mx-auto mt-5 max-w-xl text-[0.85rem] leading-relaxed font-light text-[#EEE1D3]/85 md:mt-6 md:text-[0.95rem]">
             {COPY.body}
           </p>
         </motion.div>
 
         {/* STAGE 2 — beyond the threshold: quiet caption on the stone */}
         <motion.div
-          className="absolute inset-x-0 bottom-[7%] mx-auto flex max-w-3xl flex-col items-center gap-4 px-6 text-center"
+          className="absolute inset-x-0 bottom-[10%] mx-auto flex max-w-3xl flex-col items-center gap-3.5 px-5 text-center sm:gap-4 sm:px-6 lg:bottom-[7%]"
           style={{ opacity: innerOpacity, y: innerY }}
         >
           <p className="text-[0.62rem] tracking-[0.3em] text-[#94432F] uppercase">
@@ -251,7 +251,7 @@ function ProjectIntroduction() {
         };
 
   return (
-    <div ref={ref} className="relative overflow-hidden bg-[#F5EDE3] py-20 lg:py-24">
+    <div ref={ref} className="relative overflow-hidden bg-[#F5EDE3] pt-8 pb-14 lg:py-24">
       {/* quiet ground outside the sheet — soft glow only, no drawing */}
       <div
         aria-hidden="true"

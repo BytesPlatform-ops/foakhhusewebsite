@@ -354,7 +354,9 @@ export default function AmenitiesShowcase() {
       <div ref={mobileRef} className="px-5 pt-16 lg:hidden">
         <Heading />
 
-        {/* the amenity itself, with its name over the image */}
+        {/* the amenity itself: the capsules ride the image edges the way the
+            rails flank the stage on desktop — 01–04 left, 05–09 right — and
+            the name sits over the picture. The description stays below. */}
         <div className="relative mt-6 aspect-[4/5] overflow-hidden rounded-[20px] ring-1 ring-[#C99355]/55">
           <AnimatePresence initial={false}>
             <motion.div
@@ -368,58 +370,30 @@ export default function AmenitiesShowcase() {
               <AmenityMedia a={a} sizes="92vw" />
             </motion.div>
           </AnimatePresence>
+
+          {/* a soft wash at each edge so the capsules keep contrast without
+              hiding the subject in the middle of the frame */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, rgb(20 16 13 / 0.42) 0%, transparent 26%, transparent 74%, rgb(20 16 13 / 0.42) 100%)",
+            }}
+          />
+
+          <MobileRail items={AMENITIES.slice(0, 4)} offset={0} active={active} onSelect={jump} side="left" />
+          <MobileRail items={AMENITIES.slice(4)} offset={4} active={active} onSelect={jump} side="right" />
+
           <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#2B211D]/85 via-[#2B211D]/35 to-transparent px-4 pt-16 pb-4">
             <p className="text-[0.55rem] font-semibold tracking-[0.24em] uppercase" style={{ color: "#E8CFA4" }}>
               {a.num} / {String(N).padStart(2, "0")}
             </p>
-            <p className="font-display mt-1 text-[1.5rem] leading-tight font-medium" style={{ color: "#FAF6F0" }}>
+            <p className="font-display mt-1 text-[1.45rem] leading-tight font-medium" style={{ color: "#FAF6F0" }}>
               {a.title}
             </p>
           </div>
         </div>
-
-        {/* the capsules — compact, all nine reachable. Closed ones carry
-            the number, the active one opens to add its name. The
-            description belongs under the image, not inside a pill. */}
-        <ul className="mt-4 flex flex-wrap gap-2" role="tablist" aria-label="Amenities">
-          {AMENITIES.map((x, i) => {
-            const on = i === active;
-            return (
-              <li key={x.num}>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={on}
-                  aria-label={x.title}
-                  onClick={() => jump(i)}
-                  className="flex items-center gap-2 overflow-hidden rounded-full border transition-all duration-300 ease-out"
-                  style={{
-                    minHeight: 44,
-                    paddingLeft: 16,
-                    paddingRight: on ? 18 : 16,
-                    background: on ? "#FAF6F0" : "rgba(250,246,240,0.08)",
-                    borderColor: on ? "#C99355" : "rgba(250,246,240,0.24)",
-                  }}
-                >
-                  <span
-                    className="text-[0.66rem] font-bold tabular-nums"
-                    style={{ color: on ? "#C99355" : "rgba(250,246,240,0.62)" }}
-                  >
-                    {x.num}
-                  </span>
-                  <span
-                    className="block overflow-hidden whitespace-nowrap transition-all duration-300 ease-out"
-                    style={{ maxWidth: on ? 190 : 0, opacity: on ? 1 : 0 }}
-                  >
-                    <span className="text-[0.76rem] font-semibold" style={{ color: "#94432F" }}>
-                      {x.short}
-                    </span>
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
 
         {/* the description, below the image where it can be read */}
         <AnimatePresence mode="wait">
@@ -431,16 +405,84 @@ export default function AmenitiesShowcase() {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="mt-5"
           >
-            <p className="font-display text-[1.35rem] leading-snug font-medium" style={{ color: "#FAF6F0" }}>
-              {a.title}
-            </p>
-            <p className="mt-2 text-[0.95rem] leading-[1.6]" style={{ color: "rgba(250,243,232,0.82)" }}>
+            <p className="text-[0.95rem] leading-[1.6]" style={{ color: "rgba(250,243,232,0.85)" }}>
               {a.copy}
             </p>
           </motion.div>
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+
+/** Capsules riding one edge of the mobile stage: compact and numbered when
+ *  closed, opening inward to add the name when active so they never run off
+ *  the frame. */
+function MobileRail({
+  items,
+  offset,
+  active,
+  onSelect,
+  side,
+}: {
+  items: Amenity[];
+  offset: number;
+  active: number;
+  onSelect: (i: number) => void;
+  side: "left" | "right";
+}) {
+  return (
+    <ul
+      role="tablist"
+      aria-label={`Amenities ${side}`}
+      className={`absolute top-3 bottom-24 z-10 flex flex-col justify-center gap-2 ${
+        side === "left" ? "left-2 items-start" : "right-2 items-end"
+      }`}
+    >
+      {items.map((x, k) => {
+        const i = offset + k;
+        const on = i === active;
+        return (
+          <li key={x.num}>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={on}
+              aria-label={x.title}
+              onClick={() => onSelect(i)}
+              className={`flex items-center overflow-hidden rounded-full border backdrop-blur-[2px] transition-all duration-300 ease-out ${
+                side === "right" ? "flex-row-reverse" : ""
+              }`}
+              style={{
+                minHeight: 44,
+                minWidth: 44,
+                gap: on ? 8 : 0,
+                paddingLeft: 13,
+                paddingRight: 13,
+                background: on ? "rgba(250,246,240,0.96)" : "rgba(20,16,13,0.42)",
+                borderColor: on ? "#C99355" : "rgba(250,246,240,0.4)",
+              }}
+            >
+              <span
+                className="text-[0.66rem] font-bold tabular-nums"
+                style={{ color: on ? "#C99355" : "rgba(250,246,240,0.9)" }}
+              >
+                {x.num}
+              </span>
+              <span
+                className="block overflow-hidden whitespace-nowrap transition-all duration-300 ease-out"
+                style={{ maxWidth: on ? 128 : 0, opacity: on ? 1 : 0 }}
+              >
+                <span className="text-[0.72rem] font-semibold" style={{ color: "#94432F" }}>
+                  {x.short}
+                </span>
+              </span>
+            </button>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 

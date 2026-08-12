@@ -359,6 +359,19 @@ body {
   top: 0.75rem;
 }
 
+/* ---------- Anchor landing under the fixed mobile header ----------
+   The mobile header is fixed at the top, so an in-page jump would put the
+   target section's first line underneath it. Below lg the header is gone
+   and no offset is wanted. */
+html {
+  scroll-padding-top: calc(3.75rem + env(safe-area-inset-top));
+}
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: 0;
+  }
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,

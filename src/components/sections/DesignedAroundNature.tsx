@@ -341,68 +341,74 @@ function MobileVision() {
         ))}
       </h2>
 
-      {/* the primary image — 4:5, the ratio the source actually suits */}
-      <motion.figure
-        className="relative mt-7 aspect-[4/5] w-full overflow-hidden rounded-[16px] border border-[#C99355]/45 shadow-[0_24px_48px_-30px_rgba(36,27,23,0.5)]"
-        {...(reduced
-          ? {}
-          : {
-              initial: { opacity: 0, y: 20, scale: 0.985 },
-              whileInView: { opacity: 1, y: 0, scale: 1 },
-              viewport: { once: true, amount: 0.3 },
-              transition: { duration: M.media, ease: M.ease },
-            })}
-      >
-        <Image
-          src="/airflow-diagram.jpg"
-          alt="Air drawn through the building, traced floor by floor"
-          fill
-          sizes="90vw"
-          className="object-cover"
-          style={{ objectPosition: "58% 45%" }}
-        />
-        <figcaption className="absolute bottom-0 left-0 flex items-center gap-2 px-4 pb-3">
-          <span className="h-px w-7 bg-[#F5EDE3]/70" />
-          <span className="text-[0.58rem] font-semibold tracking-[0.24em] text-[#F5EDE3] uppercase">
-            Natural airflow
-          </span>
-        </figcaption>
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
-          style={{ background: "linear-gradient(to top, rgb(20 16 13 / 0.6), transparent)" }}
-        />
-      </motion.figure>
+      {/* the composition, layered rather than stacked: the building rises
+          first, then the two system cards lock in over its corners — the
+          desktop aperture idea at a size a phone can actually read */}
+      <div className="relative mt-7 pb-[22%]">
+        <motion.figure
+          className="relative aspect-[4/5] w-[86%] overflow-hidden rounded-[16px] border border-[#C99355]/45 shadow-[0_24px_48px_-30px_rgba(36,27,23,0.5)]"
+          {...(reduced
+            ? {}
+            : {
+                initial: { opacity: 0, y: 26, scale: 0.97 },
+                whileInView: { opacity: 1, y: 0, scale: 1 },
+                viewport: { once: true, amount: 0.3 },
+                transition: { duration: M.media, ease: M.ease },
+              })}
+        >
+          <Image
+            src="/airflow-diagram.jpg"
+            alt="Air drawn through the building, traced floor by floor"
+            fill
+            sizes="86vw"
+            className="object-cover"
+            style={{ objectPosition: "56% 42%" }}
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
+            style={{ background: "linear-gradient(to top, rgb(20 16 13 / 0.62), transparent)" }}
+          />
+          <figcaption className="absolute bottom-0 left-0 flex items-center gap-2 px-4 pb-3">
+            <span className="h-px w-7 bg-[#F5EDE3]/70" />
+            <span className="text-[0.56rem] font-semibold tracking-[0.24em] text-[#F5EDE3] uppercase">
+              Natural airflow
+            </span>
+          </figcaption>
+        </motion.figure>
 
-      {/* the two supporting systems, 3:4 so neither dominates the screen */}
-      <div className="mt-3 grid grid-cols-2 gap-3">
         {VISION_FRAMES.map((f, i) => (
           <motion.figure
             key={f.src}
-            className="relative aspect-[3/4] overflow-hidden rounded-[14px] border border-[#C99355]/40 shadow-[0_18px_36px_-26px_rgba(36,27,23,0.45)]"
+            className={`absolute overflow-hidden rounded-[14px] border border-[#C99355]/45 shadow-[0_20px_40px_-24px_rgba(36,27,23,0.55)] ${
+              i === 0
+                ? "right-0 bottom-[13%] w-[41%] rotate-[2.2deg]"
+                : "left-[3%] bottom-0 w-[33%] -rotate-[2.4deg]"
+            }`}
+            style={{ aspectRatio: "3 / 4" }}
             {...(reduced
               ? {}
               : {
-                  initial: { opacity: 0, y: 18, scale: 0.985 },
+                  initial: { opacity: 0, y: 30, scale: 0.96 },
                   whileInView: { opacity: 1, y: 0, scale: 1 },
-                  viewport: { once: true, amount: 0.3 },
-                  transition: { duration: M.media, delay: 0.06 + i * 0.08, ease: M.ease },
+                  viewport: { once: true, amount: 0.2 },
+                  transition: { duration: M.media, delay: 0.18 + i * 0.12, ease: M.ease },
                 })}
           >
-            <Image src={f.src} alt={f.alt} fill sizes="45vw" className="object-cover" style={{ objectPosition: f.pos }} />
+            <Image src={f.src} alt={f.alt} fill sizes="42vw" className="object-cover" style={{ objectPosition: f.pos }} />
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-16"
-              style={{ background: "linear-gradient(to top, rgb(20 16 13 / 0.62), transparent)" }}
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-14"
+              style={{ background: "linear-gradient(to top, rgb(20 16 13 / 0.66), transparent)" }}
             />
-            <figcaption className="absolute bottom-0 left-0 px-3 pb-2.5 text-[0.52rem] font-semibold tracking-[0.2em] text-[#F5EDE3] uppercase">
+            <figcaption className="absolute bottom-0 left-0 px-2.5 pb-2 text-[0.46rem] font-semibold tracking-[0.18em] text-[#F5EDE3] uppercase">
               {f.label}
             </figcaption>
           </motion.figure>
         ))}
       </div>
 
-      <motion.div className="mt-7" {...rise(0.05)}>
+      <motion.div className="mt-8" {...rise(0.08)}>
         <p className="font-display text-[1.32rem] leading-snug font-medium" style={{ color: INK }}>
           Architecture that responds to air, energy, water and everyday comfort.
         </p>

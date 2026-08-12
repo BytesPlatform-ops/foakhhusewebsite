@@ -109,7 +109,10 @@ export default function GalleryLightbox({
           </motion.figure>
 
           {/* caption — bottom left */}
-          <div className="pointer-events-none absolute bottom-5 left-5 lg:bottom-8 lg:left-10">
+          <div
+            className="pointer-events-none absolute left-5 max-w-[62vw] lg:left-10"
+            style={{ bottom: "max(1.25rem, env(safe-area-inset-bottom))" }}
+          >
             <p className="text-[0.6rem] font-semibold tracking-[0.28em] text-[#C99355] uppercase">
               {item.category}
             </p>
@@ -117,18 +120,26 @@ export default function GalleryLightbox({
           </div>
 
           {/* count — bottom right */}
-          <p className="pointer-events-none absolute right-5 bottom-5 text-[0.78rem] font-semibold tracking-[0.2em] text-[#FAF6F0]/80 tabular-nums lg:right-10 lg:bottom-8">
+          <p
+            className="pointer-events-none absolute right-5 text-[0.78rem] font-semibold tracking-[0.2em] text-[#FAF6F0]/80 tabular-nums lg:right-10"
+            style={{ bottom: "max(1.25rem, env(safe-area-inset-bottom))" }}
+          >
             {String(index! + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
           </p>
 
-          {/* close — top right */}
+          {/* Close — top right. Solid ink fill rather than a transparent
+              ring: the stage is object-contain, so a light image (the solar
+              array, a pale sky) can sit directly behind this corner and a
+              hairline white ring would disappear into it. Offset by the
+              safe-area inset so it clears the notch / Dynamic Island. */}
           <button
             ref={closeRef}
             data-lightbox-focus
             type="button"
             onClick={onClose}
             aria-label="Close gallery"
-            className="absolute top-5 right-5 flex h-11 w-11 items-center justify-center rounded-full border border-[#FAF6F0]/30 text-[#FAF6F0] transition-colors hover:bg-[#FAF6F0]/10 lg:top-7 lg:right-10"
+            className="absolute right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-[#FAF6F0]/25 bg-[#1A130F]/85 text-[#FAF6F0] shadow-[0_6px_18px_-6px_rgba(0,0,0,0.8)] backdrop-blur-sm transition-colors hover:bg-[#1A130F] lg:right-10"
+            style={{ top: "max(1rem, env(safe-area-inset-top))" }}
           >
             <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true">
               <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />

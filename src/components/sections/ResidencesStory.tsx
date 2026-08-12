@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { M } from "@/components/shared/useIsMobile";
 import AmenitiesShowcase from "./AmenitiesShowcase";
 import {
   AnimatePresence,
@@ -369,49 +370,7 @@ export default function ResidencesStory() {
       </div>
 
       {/* -------------------------------------------- mobile / reduced -- */}
-      <div className="px-(--spacing-gutter) pb-4 lg:hidden">
-        <p
-          className="font-display uppercase"
-          style={{ color: "#E8CFA4", fontSize: "clamp(2.3rem,9.5vw,3.6rem)", lineHeight: 1.02, fontWeight: 600 }}
-          aria-hidden="true"
-        >
-          Homes made
-          <br />
-          <span style={{ color: "rgba(224,193,148,0.72)" }}>for real life.</span>
-        </p>
-        {/* the same six beats, stacked — each card keeps its own shape so the
-            deck's rhythm survives on a phone, and the numeral carries the
-            count instead of repeating the title underneath itself */}
-        <div className="mt-12 space-y-14">
-          {DECK.filter((d) => d.quality).map((d) => (
-            <div key={d.quality!.num}>
-              <figure
-                className="relative overflow-hidden rounded-xl shadow-[0_30px_60px_-32px_rgba(26,16,11,0.65)]"
-                style={{ aspectRatio: d.aspect }}
-              >
-                <Image
-                  src={d.src}
-                  alt={d.alt}
-                  fill
-                  sizes="(min-width:640px) 60vw, 100vw"
-                  className="object-cover"
-                  style={{ objectPosition: d.objectPosition }}
-                />
-              </figure>
-              <p className="mt-5 text-[0.68rem] font-semibold tracking-[0.24em] tabular-nums" style={{ color: "#E8CFA4" }}>
-                {d.quality!.num} <span style={{ color: "rgba(232,207,164,0.5)" }}>/ 06</span>
-              </p>
-              <p className="font-display mt-2 leading-[1.08]" style={{ color: "#FAF6F0", fontSize: "1.9rem", fontWeight: 600 }}>
-                {d.quality!.title}
-              </p>
-              <span className="mt-4 block h-px w-9" style={{ background: "rgba(240,178,105,0.4)" }} />
-              <p className="mt-4 text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
-                {d.quality!.copy}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+      <MobileInteriors />
 
       {/* ==================== 03C — AMENITIES & LIFESTYLE ============== */}
       <AmenitiesShowcase />
@@ -828,6 +787,93 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
       {/* ------------- mobile: stacked story -------------------------- */}
       <div className="lg:hidden">
         <StackedCategories embedded />
+      </div>
+    </div>
+  );
+}
+
+
+/* ---------------------------------------------------------------- mobile --
+   The deck is a pinned, rising card sequence on desktop. Stacking it flat on
+   a phone lost the story, so each motif becomes its own scene instead: the
+   title reads first, the image rises from below with a degree of rotation
+   that settles out, then the line of copy arrives. One scene occupies most
+   of a screen without pinning, so there is no dead scrolling.              */
+
+const PHRASE = ["Homes", "made", "for", "real", "life."];
+
+function MobileInteriors() {
+  const reduced = useReducedMotion();
+
+  return (
+    <div className="px-5 pb-6 lg:hidden">
+      {/* the phrase warms word by word as it arrives */}
+      <p className="font-display uppercase" style={{ fontSize: "clamp(2.2rem,9.2vw,3.4rem)", lineHeight: 1.04, fontWeight: 600 }}>
+        {PHRASE.map((w, i) => (
+          <motion.span
+            key={w}
+            className="mr-[0.24em] inline-block"
+            initial={reduced ? undefined : { color: "rgba(148,63,45,0.55)", opacity: 0, y: 12 }}
+            whileInView={reduced ? undefined : { color: "#EFD5A3", opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.62, delay: i * 0.07, ease: M.ease }}
+          >
+            {w}
+          </motion.span>
+        ))}
+      </p>
+
+      <div className="mt-10 space-y-16">
+        {DECK.filter((d) => d.quality).map((d, i) => (
+          <section key={d.quality!.num} className="min-h-[76svh]">
+            {/* 1 — the title reads first */}
+            <motion.div
+              initial={reduced ? undefined : { opacity: 0, y: 16 }}
+              whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: M.text, ease: M.ease }}
+            >
+              <p className="text-[0.66rem] font-semibold tracking-[0.24em] tabular-nums" style={{ color: "#E8CFA4" }}>
+                {d.quality!.num} <span style={{ color: "rgba(232,207,164,0.5)" }}>/ 06</span>
+              </p>
+              <p className="font-display mt-2 leading-[1.06]" style={{ color: "#FAF6F0", fontSize: "1.95rem", fontWeight: 600 }}>
+                {d.quality!.title}
+              </p>
+            </motion.div>
+
+            {/* 2 — the image rises from below and straightens */}
+            <motion.figure
+              className="relative mt-5 overflow-hidden rounded-[16px] shadow-[0_30px_60px_-32px_rgba(26,16,11,0.65)]"
+              style={{ aspectRatio: "4 / 5" }}
+              initial={reduced ? undefined : { opacity: 0, y: 90, rotate: i % 2 === 0 ? 1.5 : -1.5, scale: 0.96 }}
+              whileInView={reduced ? undefined : { opacity: 1, y: 0, rotate: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.28 }}
+              transition={{ duration: 0.72, delay: 0.06, ease: M.ease }}
+            >
+              <Image
+                src={d.src}
+                alt={d.alt}
+                fill
+                sizes="92vw"
+                className="object-cover"
+                style={{ objectPosition: d.objectPosition }}
+              />
+            </motion.figure>
+
+            {/* 3 — the line of copy settles in last */}
+            <motion.div
+              initial={reduced ? undefined : { opacity: 0, y: 14 }}
+              whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: M.text, delay: 0.16, ease: M.ease }}
+            >
+              <span className="mt-5 block h-px w-9" style={{ background: "rgba(240,178,105,0.42)" }} />
+              <p className="mt-4 text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.9)" }}>
+                {d.quality!.copy}
+              </p>
+            </motion.div>
+          </section>
+        ))}
       </div>
     </div>
   );

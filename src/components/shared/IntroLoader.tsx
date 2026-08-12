@@ -86,6 +86,7 @@ export default function IntroLoader() {
     const finish = () => {
       cancelAnimationFrame(raf);
       setProgress(100);
+      playChime();
       setTimeout(() => setReady(true), 550);
     };
 

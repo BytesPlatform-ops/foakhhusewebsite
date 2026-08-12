@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import AmenitiesShowcase from "./AmenitiesShowcase";
 import {
@@ -427,6 +427,8 @@ export default function ResidencesStory() {
 interface CatPanelData {
   num: string;
   label: string;
+  /** the name the standing index uses — short enough to read as a list */
+  short: string;
   mark: string;
   heading: React.ReactNode;
   lead: string;
@@ -443,6 +445,7 @@ const CAT_PANELS: CatPanelData[] = [
   {
     num: "01",
     label: "Classic",
+    short: "Classic",
     mark: "CLASSIC",
     heading: (
       <>
@@ -463,6 +466,7 @@ const CAT_PANELS: CatPanelData[] = [
   {
     num: "02",
     label: "Elegant",
+    short: "Elegant",
     mark: "ELEGANT",
     heading: (
       <>
@@ -484,6 +488,7 @@ const CAT_PANELS: CatPanelData[] = [
   {
     num: "03",
     label: "Sonder Class · Serviced",
+    short: "Sonder Class",
     mark: "SONDER",
     heading: (
       <>
@@ -504,6 +509,7 @@ const CAT_PANELS: CatPanelData[] = [
   {
     num: "04",
     label: "Duplex Penthouses",
+    short: "Duplex Penthouses",
     mark: "DUPLEX",
     heading: (
       <>
@@ -525,6 +531,126 @@ const CAT_PANELS: CatPanelData[] = [
     duplex: true,
   },
 ];
+
+/* the scroll positions at which each panel holds the stage — shared by
+   the panels and by the index that points at them */
+const FOCALS = [0.115, 0.282, 0.441, 0.588];
+
+/**
+ * THE STANDING INDEX — one list, never two.
+ *
+ * It opens beneath the intro copy and then travels down the stage as the
+ * collection begins, ending as the index that stands beside every panel.
+ * There is no second copy fading in below: the same element moves, so the
+ * eye carries the list from the introduction into the collection. It also
+ * replaces the small "Classic · Elegant · Sonder · Duplex" strip that used
+ * to sit at the foot of the stage, and it takes over the 01/label pair the
+ * panels used to print for themselves — the category is named once.
+ */
+function IndexRow({
+  c,
+  i,
+  p,
+  duplex,
+  onJump,
+}: {
+  c: CatPanelData;
+  i: number;
+  p: MotionValue<number>;
+  duplex: MotionValue<number>;
+  onJump: (i: number) => void;
+}) {
+  const focal = FOCALS[i];
+  const win = 0.085;
+  /* lit while its panel holds the stage; the finale stays lit to the end */
+  const active = useTransform(
+    p,
+    i === 3
+      ? [focal - win, focal, 1.6, 1.7]
+      : [focal - win, focal, focal + win, focal + win * 1.6],
+    [0, 1, 1, 0]
+  );
+  const rest = useTransform(p, [0.05, 0.11], [0.62, 0.34]);
+  const dim = useTransform([active, rest] as MotionValue<number>[], ([a, r]: number[]) => r + (1 - r) * a);
+  const rule = useTransform(active, [0, 1], ["0rem", "1rem"]);
+  const shift = useTransform(active, [0, 1], [0, 15]);
+  /* the finale darkens the stage, so the index changes tone with it */
+  const tone = useTransform(duplex, [0, 1], ["#94432F", "#EFD5A3"]);
+  const numTone = useTransform(duplex, [0, 1], ["rgba(33,26,23,0.55)", "rgba(255,248,239,0.62)"]);
+  const divider = useTransform(duplex, [0, 1], ["rgba(148,63,45,0.15)", "rgba(239,213,163,0.18)"]);
+
+  return (
+    <li className="relative">
+      {i > 0 && (
+        <motion.span aria-hidden="true" className="block h-px w-full" style={{ background: divider }} />
+      )}
+      <motion.span
+        aria-hidden="true"
+        className="absolute left-0 h-px"
+        style={{ width: rule, background: tone, top: i > 0 ? "calc(50% + 0.5px)" : "50%" }}
+      />
+      <motion.button
+        type="button"
+        onClick={() => onJump(i)}
+        className="flex w-full items-baseline gap-2.5 py-3.5 text-left"
+        style={{ opacity: dim, x: shift }}
+      >
+        <motion.span className="text-[0.56rem] font-semibold tabular-nums" style={{ color: numTone }}>
+          {c.num}
+        </motion.span>
+        <motion.span className="font-display text-[1rem] leading-none" style={{ color: tone }}>
+          {c.short}
+        </motion.span>
+      </motion.button>
+    </li>
+  );
+}
+
+function ResidenceIndex({
+  p,
+  duplex,
+  onJump,
+  reduced,
+}: {
+  p: MotionValue<number>;
+  duplex: MotionValue<number>;
+  onJump: (i: number) => void;
+  reduced: boolean;
+}) {
+  /* the travel: it holds under the intro copy, then moves down and tucks
+     left as the track starts, clearing each panel's own reading column */
+  const top = useTransform(p, [0, 0.045, 0.135], ["58%", "58%", "63%"]);
+  const left = useTransform(p, [0, 0.045, 0.135], ["6vw", "6vw", "3.2vw"]);
+  const fade = useTransform(p, [0.86, 0.95], [1, 0]);
+  const eyebrow = useTransform(duplex, [0, 1], ["rgba(33,26,23,0.42)", "rgba(255,248,239,0.45)"]);
+
+  return (
+    <motion.nav
+      aria-label="Residence categories"
+      className="absolute z-40 w-[11.5rem]"
+      style={{ top, left, opacity: fade }}
+    >
+      {/* levitation: a few pixels, very slowly — depth, not decoration */}
+      <motion.div
+        animate={reduced ? undefined : { y: [0, -3, 0], opacity: [1, 0.965, 1] }}
+        transition={reduced ? undefined : { duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        style={{ filter: "drop-shadow(0 14px 22px rgba(90,40,22,0.12))" }}
+      >
+        <motion.p
+          className="mb-3 text-[0.52rem] font-semibold tracking-[0.3em] uppercase"
+          style={{ color: eyebrow }}
+        >
+          The collection
+        </motion.p>
+        <ul>
+          {CAT_PANELS.map((c, i) => (
+            <IndexRow key={c.num} c={c} i={i} p={p} duplex={duplex} onJump={onJump} />
+          ))}
+        </ul>
+      </motion.div>
+    </motion.nav>
+  );
+}
 
 function ResidenceCategories({ reduced }: { reduced: boolean }) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -554,12 +680,14 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
   /* the section's orange takes the stage over as one circle blooming from
      bottom-centre — eased long and soft (Apple's slow-out curve) so the
      colour arrives rather than switches */
-  const counter = [
-    useTransform(cp, [0.047, 0.084, 0.193, 0.225], [0, 1, 1, 0]),
-    useTransform(cp, [0.193, 0.225, 0.359, 0.39], [0, 1, 1, 0]),
-    useTransform(cp, [0.359, 0.39, 0.517, 0.549], [0, 1, 1, 0]),
-    useTransform(cp, [0.517, 0.549, 1, 1.01], [0, 1, 1, 1]),
-  ];
+  /* clicking an index entry lands the track on that panel's focal point */
+  const jumpTo = (i: number) => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    const span = el.offsetHeight - window.innerHeight;
+    window.scrollTo({ top: top + FOCALS[i] * span, behavior: "smooth" });
+  };
 
   if (reduced) return <StackedCategories />;
 
@@ -600,30 +728,13 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
             03 — Residences · The Collection
           </motion.p>
 
-          {/* compact progress — bottom left, the classic strip */}
-          <div className="absolute bottom-[6%] left-[8%] z-40 flex items-center gap-4">
-            {CAT_PANELS.map((c, i) => (
-              <motion.span
-                key={c.num}
-                className="text-[0.68rem] font-semibold tabular-nums"
-                style={{ color: "#94432F", opacity: counter[i] }}
-              >
-                {c.num} / 04
-              </motion.span>
-            ))}
-            <span className="h-px w-12" style={{ background: "rgba(169,128,60,0.4)" }} />
-            <span className="relative text-[0.6rem] tracking-[0.26em] uppercase">
-              <span style={{ color: "rgba(33,26,23,0.5)" }}>Classic · Elegant · Sonder · Duplex</span>
-              <motion.span className="absolute inset-0" style={{ opacity: duplexOp, color: "rgba(255,248,239,0.75)" }}>
-                Classic · Elegant · Sonder · Duplex
-              </motion.span>
-            </span>
-          </div>
+          {/* the standing index — one element, travelling (see below) */}
+          <ResidenceIndex p={cp} duplex={duplexOp} onJump={jumpTo} reduced={reduced} />
 
           <motion.div className="absolute top-0 left-0 h-full w-[500vw]" style={{ x: trackX }}>
             {/* ---- intro anchor ---- */}
             <motion.div
-              className="absolute top-0 left-[6vw] flex h-full w-[38vw] flex-col justify-center"
+              className="absolute top-0 left-[6vw] flex h-full w-[38vw] flex-col justify-center pb-[26svh]"
               style={{ opacity: introOp }}
             >
               <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
@@ -638,9 +749,6 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
               <p className="mt-5 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
                 From practical family living to serviced sophistication — each category
                 reflects thoughtful planning, quality materials and dependable craftsmanship.
-              </p>
-              <p className="mt-6 inline-flex items-center gap-2 text-[0.65rem] tracking-[0.22em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
-                Scroll <span aria-hidden="true">→</span>
               </p>
             </motion.div>
 
@@ -671,7 +779,7 @@ function CategoryPanel({
   progress: MotionValue<number>;
   left: number;
 }) {
-  const focal = [0.115, 0.282, 0.441, 0.588][index];
+  const focal = FOCALS[index];
   const win = 0.076;
   /* the finale holds full strength to the release — the colour changes
      around it, the panel itself never dims */
@@ -682,9 +790,10 @@ function CategoryPanel({
       : [focal - win, focal - win * 0.55, focal + win * 0.8, focal + win * 1.4],
     index === 3 ? [0, 1, 1, 1] : [0, 1, 1, 0.12]
   );
-  const settle = useTransform(progress, [focal - win, focal], [0.96, 1]);
+  const settle = useTransform(progress, [focal - win, focal], [0.985, 1]);
+  const textY = useTransform(progress, [focal - win, focal], [12, 0]);
   const mediaY = useTransform(progress, [focal - win, focal + win], ["2.5svh", "-2.5svh"]);
-  const textX = useTransform(progress, [focal - win, focal + win], ["1.5vw", "-1vw"]);
+  const textX = useTransform(progress, [focal - win, focal + win], ["0.6vw", "-0.4vw"]);
   const textX2 = useTransform(textX, (v) => `calc(${v} * -0.7)`);
   const dup = !!c.duplex;
 
@@ -705,13 +814,7 @@ function CategoryPanel({
         </span>
         <div className="grid w-full grid-cols-[19%_1fr_28%] items-center gap-[2vw] pr-[1.5vw] pl-[5vw]">
           {/* LEFT — the exclusive marker */}
-          <motion.div style={{ x: textX }}>
-            <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#E8CFA4" }}>
-              {c.num}
-            </p>
-            <p className="mt-1.5 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(255,248,239,0.6)" }}>
-              {c.label}
-            </p>
+          <motion.div style={{ x: textX, y: textY }}>
             <p
               className="font-display mt-6 leading-[1.04] font-medium"
               style={{ color: "#FAF6F0", fontSize: "clamp(2.5rem,3.4vw,3.7rem)" }}
@@ -756,7 +859,7 @@ function CategoryPanel({
           </motion.div>
 
           {/* RIGHT — reading column + the single enquiry CTA */}
-          <motion.div style={{ x: textX2 }}>
+          <motion.div style={{ x: textX2, y: textY }}>
             <p className="text-[0.88rem] leading-[1.6]" style={{ color: "rgba(255,248,239,0.9)" }}>
               {c.body}
             </p>
@@ -795,13 +898,7 @@ function CategoryPanel({
       </span>
       <div className="grid w-full grid-cols-[23%_1fr_22%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
         {/* LEFT — marker + serif heading + italic lead */}
-        <motion.div className="relative z-20" style={{ x: textX }}>
-          <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#94432F" }}>
-            {c.num}
-          </p>
-          <p className="mt-1.5 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
-            {c.label}
-          </p>
+        <motion.div className="relative z-20" style={{ x: textX, y: textY }}>
           <p
             className="font-display mt-6 leading-[1.04] font-medium"
             style={{ color: "#94432F", fontSize: "clamp(2.2rem,2.9vw,3.1rem)" }}
@@ -876,7 +973,7 @@ function CategoryPanel({
         </motion.figure>
 
         {/* RIGHT — reading column */}
-        <motion.div style={{ x: textX2 }}>
+        <motion.div style={{ x: textX2, y: textY }}>
           <p className="text-[0.88rem] leading-[1.6]" style={{ color: dup ? "#2B211D" : "rgba(33,26,23,0.78)" }}>
             {c.body}
           </p>
@@ -902,7 +999,61 @@ function CategoryPanel({
 }
 
 /** stacked story — mobile and reduced motion */
+/** mobile: the same index, compacted to a snapping strip above the stack */
+function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) => void }) {
+  return (
+    <div className="sticky top-[68px] z-30 -mx-6 mb-8 border-b bg-[#F5EDE3]/94 backdrop-blur-sm" style={{ borderColor: "rgba(148,63,45,0.12)" }}>
+      <ul className="flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {CAT_PANELS.map((c, i) => (
+          <li key={c.num} className="snap-start">
+            <button
+              type="button"
+              onClick={() => onJump(i)}
+              className="flex flex-col items-start gap-1.5 whitespace-nowrap"
+              aria-current={active === i ? "true" : undefined}
+            >
+              <span
+                className="font-display text-[0.95rem] leading-none transition-colors duration-300"
+                style={{ color: active === i ? "#94432F" : "rgba(33,26,23,0.4)" }}
+              >
+                {c.short}
+              </span>
+              <span
+                className="block h-px transition-all duration-300 ease-out"
+                style={{ width: active === i ? "100%" : "0%", background: "#B65438" }}
+              />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function StackedCategories({ embedded = false }: { embedded?: boolean }) {
+  const items = useRef<(HTMLElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+
+  /* the strip follows whichever residence is holding the screen */
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const seen = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!seen) return;
+        const i = items.current.indexOf(seen.target as HTMLElement);
+        if (i >= 0) setActive(i);
+      },
+      { threshold: [0.25, 0.5, 0.75], rootMargin: "-20% 0px -35% 0px" }
+    );
+    items.current.forEach((el) => el && io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const jump = (i: number) =>
+    items.current[i]?.scrollIntoView({ behavior: "smooth", block: "start" });
+
   const body = (
     <div className="relative mx-auto max-w-2xl px-6 py-20">
       <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
@@ -914,14 +1065,19 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
       >
         One exceptional address. Three distinctive categories.
       </p>
-      <div className="mt-12 space-y-16">
-        {CAT_PANELS.map((c) => (
-          <article key={c.num} aria-label={`${c.num} — ${c.label}`}>
+      <MobileIndex active={active} onJump={jump} />
+      <div className="space-y-16">
+        {CAT_PANELS.map((c, i) => (
+          <article
+            key={c.num}
+            ref={(el) => {
+              items.current[i] = el;
+            }}
+            aria-label={`${c.num} — ${c.label}`}
+            className="scroll-mt-[124px]"
+          >
             <p className="text-[0.72rem] font-semibold tabular-nums" style={{ color: "#94432F" }}>
               {c.num} <span style={{ color: "rgba(33,26,23,0.45)" }}>/ 04</span>
-            </p>
-            <p className="mt-1 text-[0.6rem] tracking-[0.26em] uppercase" style={{ color: "rgba(33,26,23,0.5)" }}>
-              {c.label}
             </p>
             <div className="relative mt-4 aspect-[4/3] overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1">
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">

@@ -418,7 +418,7 @@ function MobileStill({
       style={{ width }}
     >
       <motion.div
-        className="overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1 shadow-[0_18px_36px_-20px_rgba(20,10,6,0.55)]"
+        className="glass-warm overflow-hidden rounded-[12px] p-1"
         variants={{
           raw: { opacity: 0, y: 14 },
           built: { opacity: 1, y: 0 },
@@ -599,16 +599,19 @@ function MobileSystems() {
                 type="button"
                 onClick={() => panels.current[i]?.scrollIntoView({ behavior: "smooth", block: "start" })}
                 aria-current={active === i ? "true" : undefined}
-                className="w-full rounded-full px-2 text-[0.64rem] font-bold tracking-[0.14em] uppercase transition-colors duration-300"
+                className={`w-full rounded-full px-2 text-[0.64rem] font-bold tracking-[0.14em] uppercase transition-colors duration-300 ${
+                  active === i ? "" : "glass-warm"
+                }`}
                 style={{
                   minHeight: 40,
-                  background: active === i ? "#B65438" : "rgba(250,246,240,0.93)",
-                  color: active === i ? "#FAF6F0" : "rgba(43,33,29,0.66)",
-                  border: active === i ? "1px solid transparent" : "1px solid rgba(148,63,45,0.22)",
-                  boxShadow:
-                    active === i
-                      ? "0 10px 22px -12px rgba(148,63,45,0.65)"
-                      : "0 6px 16px -12px rgba(36,27,23,0.45)",
+                  ...(active === i
+                    ? {
+                        background: "#B65438",
+                        color: "#FAF6F0",
+                        border: "1px solid transparent",
+                        boxShadow: "0 10px 22px -12px rgba(148,63,45,0.65)",
+                      }
+                    : { color: "rgba(43,33,29,0.72)" }),
                 }}
               >
                 {["Air", "Energy", "Water"][i]}
@@ -648,14 +651,14 @@ function MobileSystems() {
             <h3 className="font-display mt-2.5 text-[1.7rem] leading-[1.1] font-medium" style={{ color: "#94432F" }}>
               {st.heading}
             </h3>
-            <p className="mt-3 text-[0.9rem] leading-relaxed text-[#2B211D]/78">{st.copy}</p>
+            <p className="mt-3 text-[0.9rem] leading-relaxed text-[#2B211D]/88">{st.copy}</p>
             <ul className="mt-4">
               {st.items.map((it) => (
                 <li key={it.t} className="border-t border-[#94432F]/12 py-2.5 first:border-t-0 first:pt-0">
                   <p className="text-[0.86rem] font-semibold" style={{ color: "#2B211D" }}>
                     {it.t}
                   </p>
-                  {it.d && <p className="mt-0.5 text-[0.8rem] leading-snug text-[#2B211D]/70">{it.d}</p>}
+                  {it.d && <p className="mt-0.5 text-[0.8rem] leading-snug text-[#2B211D]/82">{it.d}</p>}
                 </li>
               ))}
             </ul>

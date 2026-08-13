@@ -451,17 +451,21 @@ function MobileRail({
               aria-selected={on}
               aria-label={x.title}
               onClick={() => onSelect(i)}
-              className={`flex items-center overflow-hidden rounded-full border backdrop-blur-[2px] transition-all duration-300 ease-out ${
+              className={`flex items-center overflow-hidden rounded-full transition-all duration-300 ease-out ${
                 side === "right" ? "flex-row-reverse" : ""
-              }`}
+              } ${on ? "" : "glass-dark"}`}
               style={{
                 minHeight: 44,
                 minWidth: 44,
                 gap: on ? 8 : 0,
                 paddingLeft: 13,
                 paddingRight: 13,
-                background: on ? "rgba(250,246,240,0.96)" : "rgba(20,16,13,0.42)",
-                borderColor: on ? "#C99355" : "rgba(250,246,240,0.4)",
+                ...(on
+                  ? {
+                      background: "rgba(250,246,240,0.96)",
+                      border: "1px solid #C99355",
+                    }
+                  : {}),
               }}
             >
               <span

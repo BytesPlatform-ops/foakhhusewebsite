@@ -1177,9 +1177,12 @@ function CategoryPanel({
 
 /** stacked story — mobile and reduced motion */
 /** mobile: the same index, compacted to a snapping strip above the stack */
-/** How wide each label is allowed to grow, so a long name never squeezes
- *  its partner off the screen. */
-const CAPSULE_MAX = "min(58vw, 15rem)";
+/** How wide each label is allowed to grow. A pair must always fit one row,
+ *  so the cap is a share of the row rather than of the viewport — 58vw each
+ *  let two capsules ask for 116vw and the row clipped the difference. The
+ *  capsules also stay shrinkable now, so this is an upper bound, not a
+ *  promise: flex absorbs whatever is left over. */
+const CAPSULE_MAX = "min(56%, 15rem)";
 
 /**
  * Collection navigation on mobile: the current category and the one that
@@ -1213,7 +1216,7 @@ function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) =
          ground, so the content can run under them cleanly */
       className="pointer-events-none sticky top-[76px] z-30 mb-7 py-1"
     >
-      <div className="pointer-events-auto flex items-center gap-2.5 overflow-hidden">
+      <div className="tab-row pointer-events-auto overflow-hidden">
         <AnimatePresence initial={false} mode="popLayout">
           {shown.map((i) => {
             const c = CAT_PANELS[i];
@@ -1233,12 +1236,7 @@ function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) =
                     border: "1px solid transparent",
                     boxShadow: "0 10px 22px -12px rgba(148,63,45,0.65)",
                   }
-              : {
-                    background: "#FAF6F0",
-                    color: "#94432F",
-                    border: "1px solid rgba(148,63,45,0.28)",
-                    boxShadow: "none",
-                  };
+              : { color: "#94432F" };
 
             return (
               <motion.button
@@ -1251,14 +1249,11 @@ function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) =
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={reduced ? undefined : { opacity: 0, x: -dir * 46, scale: 0.96 }}
                 transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-                className={`shrink-0 truncate rounded-full text-left whitespace-nowrap ${
-                  isCurrent ? "px-5" : "px-4"
-                }`}
+                className="tab-capsule truncate rounded-full text-left whitespace-nowrap"
                 style={{
                   ...style,
                   minHeight: 40,
                   maxWidth: CAPSULE_MAX,
-                  fontSize: isCurrent ? "0.8rem" : "0.74rem",
                   fontWeight: 600,
                   letterSpacing: "0.02em",
                 }}

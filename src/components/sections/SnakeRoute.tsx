@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ClayFace, courses } from "@/components/shared/BuildIn";
+import { ClayFace } from "@/components/shared/BuildIn";
 import { M } from "@/components/shared/useIsMobile";
 import {
   motion,
@@ -397,13 +397,16 @@ function MobileStill({
   index: number;
 }) {
   const reduced = useReducedMotion();
-  /* the composition assembles: each still rises into place in discrete
-     courses rather than fading, so it reads as built rather than dropped */
+  /* These were built in discrete courses like the desktop stage. On a phone
+     the clipPath holds the still at zero height until the observer fires, and
+     a thumb crossing the trigger band faster than the courses can lay leaves
+     a photograph that is half-drawn or never drawn at all. A still is not a
+     wall: it arrives, with a short fade and a small rise. */
   const build = reduced
     ? {}
     : {
-        clipPath: { duration: 0.62, delay: index * 0.12, ease: courses(3) },
-        y: { duration: 0.6, delay: index * 0.12, ease: M.ease },
+        opacity: { duration: M.media, delay: index * 0.1, ease: M.ease },
+        y: { duration: M.media, delay: index * 0.1, ease: M.ease },
       };
 
   return (
@@ -417,8 +420,8 @@ function MobileStill({
       <motion.div
         className="overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1 shadow-[0_18px_36px_-20px_rgba(20,10,6,0.55)]"
         variants={{
-          raw: { clipPath: "inset(100% 0% 0% 0%)", y: 14 },
-          built: { clipPath: "inset(0% 0% 0% 0%)", y: 0 },
+          raw: { opacity: 0, y: 14 },
+          built: { opacity: 1, y: 0 },
         }}
         transition={build}
       >
@@ -481,6 +484,17 @@ function MobileSystems() {
   });
   const bg = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.4 });
   const buildingY = useTransform(bg, [0, 1], ["0%", "-34%"]);
+
+  /* the heading lights letter by letter as it rises, the same move the
+     desktop stage makes — and the facade behind it deepens as they turn so
+     cream type never has to sit on bright sky */
+  const headRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: headRaw } = useScroll({
+    target: headRef,
+    offset: ["start 0.92", "end 0.08"],
+  });
+  const hp = useSpring(headRaw, { stiffness: 90, damping: 26, mass: 0.35 });
+  const headWash = useTransform(hp, [0, 0.18, 0.55], [0, 0.55, 0.92]);
 
   /* the tab follows whichever stage holds the screen */
   useEffect(() => {
@@ -550,16 +564,27 @@ function MobileSystems() {
       </div>
 
       {/* ---------------- heading ---------------------------------------- */}
-      <div className="relative px-5 pt-12">
-        <p className="text-[0.6rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#94432F" }}>
+      <div ref={headRef} className="relative px-5 pt-12">
+        {/* the wash rides with the letters, not the scroll position */}
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-2 -top-6 -bottom-4"
+          style={{
+            opacity: headWash,
+            background:
+              "linear-gradient(180deg, rgb(24 13 8 / 0.78) 0%, rgb(24 13 8 / 0.72) 62%, rgb(24 13 8 / 0.38) 88%, transparent 100%)",
+          }}
+        />
+        <p className="relative text-[0.6rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#C99355" }}>
           02 — Natural Systems
         </p>
-        <h2 id="route-heading" className="font-display mt-3 text-[2.1rem] leading-[1.06] font-medium" style={{ color: "#2B211D" }}>
-          Nature, engineered for better living.
+        <h2 id="route-heading" className="font-display relative mt-3 text-[2.1rem] leading-[1.06] font-medium">
+          <span className="sr-only">{HEADING_TEXT}</span>
+          <LitText p={hp} text={HEADING_TEXT} start={0.06} span={0.6} win={0.1} from={INK} to="#FFF8EF" />
         </h2>
-        <p className="mt-3 text-[0.92rem] leading-relaxed text-[#2B211D]/78">
-          A connected set of natural-resource systems designed to support airflow, renewable power
-          and resilient water planning throughout the development.
+        <p className="relative mt-3 text-[0.92rem] leading-relaxed">
+          <span className="sr-only">{LEAD_TEXT}</span>
+          <LitText p={hp} text={LEAD_TEXT} start={0.34} span={0.58} win={0.07} from="rgba(43,33,29,0.82)" to="rgba(244,231,214,0.94)" />
         </p>
       </div>
 

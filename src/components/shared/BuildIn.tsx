@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import useIsMobile from "./useIsMobile";
+import useIsMobile, { M } from "./useIsMobile";
 
 /**
  * UNIVERSAL CONSTRUCTION ENTRANCE — content containers "build" into view
@@ -82,15 +82,34 @@ export default function BuildIn({
 }) {
   const reduced = useReducedMotion();
   const mobile = useIsMobile();
-  /* a phone scrolls past a card in a fraction of the time a desktop pointer
-     does, so the build has to land sooner or it reads as a broken block */
-  const t = mobile ? 0.62 : 1;
 
   if (reduced) {
     return (
       <div className={className} style={style}>
         {children}
       </div>
+    );
+  }
+
+  /* MOBILE: the construction reveal does not survive a phone. It hides the
+     container behind a clipPath until an observer fires, and a thumb moving
+     at phone speed either outruns the courses — leaving a terracotta block
+     where the content should be — or scrolls the element through the trigger
+     band so fast that it never fires and the card stays blank. The clay is a
+     desktop pleasure; here the content simply arrives, with enough of a fade
+     to register as an arrival. */
+  if (mobile) {
+    return (
+      <motion.div
+        className={className}
+        style={style}
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount }}
+        transition={{ duration: M.text, delay: delay * 0.5, ease: M.ease }}
+      >
+        {children}
+      </motion.div>
     );
   }
 
@@ -110,9 +129,9 @@ export default function BuildIn({
           built: { clipPath: "inset(0% 0% 0% 0%)", y: 0, scale: 1 },
         }}
         transition={{
-          clipPath: { duration: 0.72 * t, delay: delay * t, ease: courses(5) },
-          y: { duration: 0.8 * t, delay: delay * t, ease: [0.22, 1, 0.36, 1] },
-          scale: { duration: 0.8 * t, delay: delay * t, ease: [0.22, 1, 0.36, 1] },
+          clipPath: { duration: 0.72, delay, ease: courses(5) },
+          y: { duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] },
+          scale: { duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] },
         }}
       >
         {children}
@@ -123,7 +142,7 @@ export default function BuildIn({
           className="pointer-events-none absolute inset-0 z-50"
           style={{ borderRadius: "inherit" }}
           variants={{ raw: { opacity: 1 }, built: { opacity: 0 } }}
-          transition={{ duration: 0.42 * t, delay: (delay + 0.6) * t, ease: "easeOut" }}
+          transition={{ duration: 0.42, delay: delay + 0.6, ease: "easeOut" }}
         >
           <ClayFace />
         </motion.span>
@@ -146,7 +165,7 @@ export default function BuildIn({
               raw: { opacity: 0, y: 6, scale: 0.55 },
               built: { opacity: [0, 0.6, 0], y: [6, -22], scale: [0.55, 1.4] },
             }}
-            transition={{ duration: 1.15 * t, delay: (delay + d.d) * t, ease: "easeOut" }}
+            transition={{ duration: 1.15, delay: delay + d.d, ease: "easeOut" }}
           />
         ))}
       </span>

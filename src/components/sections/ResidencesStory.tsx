@@ -1177,32 +1177,97 @@ function CategoryPanel({
 
 /** stacked story — mobile and reduced motion */
 /** mobile: the same index, compacted to a snapping strip above the stack */
+/** How wide each label is allowed to grow, so a long name never squeezes
+ *  its partner off the screen. */
+const CAPSULE_MAX = "min(58vw, 15rem)";
+
+/**
+ * Collection navigation on mobile: the current category and the one that
+ * follows it, never all four. Four labels across a 390px screen left
+ * "Sonder Class" and "Duplex Penthouses" fighting for the same few pixels.
+ *
+ * The pair advances like a ticker — the current capsule leaves to the left,
+ * the next slides across into its place, and the one after it arrives from
+ * the right. Scrolling back up runs the same move in reverse. The finale
+ * stands alone, and turns espresso rather than terracotta so the capsule
+ * itself signals the change of register.
+ */
 function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) => void }) {
+  const reduced = useReducedMotion();
+  /* which way the pair is travelling, so a scroll back up reverses it */
+  const [dir, setDir] = useState(1);
+  const seen = useRef(active);
+  useEffect(() => {
+    if (active !== seen.current) {
+      setDir(active > seen.current ? 1 : -1);
+      seen.current = active;
+    }
+  }, [active]);
+
+  const last = CAT_PANELS.length - 1;
+  const shown = active >= last ? [active] : [active, active + 1];
+
   return (
-    <div className="sticky top-[68px] z-30 -mx-6 mb-8 border-b bg-[#F5EDE3]/94 backdrop-blur-sm" style={{ borderColor: "rgba(148,63,45,0.12)" }}>
-      <ul className="flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {CAT_PANELS.map((c, i) => (
-          <li key={c.num} className="snap-start">
-            <button
-              type="button"
-              onClick={() => onJump(i)}
-              className="flex flex-col items-start gap-1.5 whitespace-nowrap"
-              aria-current={active === i ? "true" : undefined}
-            >
-              <span
-                className="font-display text-[0.95rem] leading-none transition-colors duration-300"
-                style={{ color: active === i ? "#94432F" : "rgba(33,26,23,0.4)" }}
+    <div
+      className="sticky top-[68px] z-30 -mx-6 mb-7 border-b bg-[#F5EDE3]/94 px-6 py-3 backdrop-blur-sm"
+      style={{ borderColor: "rgba(148,63,45,0.12)" }}
+    >
+      <div className="flex items-center gap-2.5 overflow-hidden">
+        <AnimatePresence initial={false} mode="popLayout">
+          {shown.map((i) => {
+            const c = CAT_PANELS[i];
+            const isCurrent = i === active;
+            const isFinale = i === last;
+            const style = isCurrent
+              ? isFinale
+                ? {
+                    background: "linear-gradient(150deg, #2A160E 0%, #1C0F0A 100%)",
+                    color: "#EFD5A3",
+                    border: "1px solid rgba(239,213,163,0.42)",
+                    boxShadow: "0 10px 22px -12px rgba(20,10,6,0.7)",
+                  }
+                : {
+                    background: "#B65438",
+                    color: "#FAF6F0",
+                    border: "1px solid transparent",
+                    boxShadow: "0 10px 22px -12px rgba(148,63,45,0.65)",
+                  }
+              : {
+                    background: "#FAF6F0",
+                    color: "#94432F",
+                    border: "1px solid rgba(148,63,45,0.28)",
+                    boxShadow: "none",
+                  };
+
+            return (
+              <motion.button
+                key={c.num}
+                type="button"
+                layout={!reduced}
+                onClick={() => onJump(i)}
+                aria-current={isCurrent ? "true" : undefined}
+                initial={reduced ? false : { opacity: 0, x: dir * 46, scale: 0.96 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={reduced ? undefined : { opacity: 0, x: -dir * 46, scale: 0.96 }}
+                transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                className={`shrink-0 truncate rounded-full text-left whitespace-nowrap ${
+                  isCurrent ? "px-5" : "px-4"
+                }`}
+                style={{
+                  ...style,
+                  minHeight: 40,
+                  maxWidth: CAPSULE_MAX,
+                  fontSize: isCurrent ? "0.8rem" : "0.74rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.02em",
+                }}
               >
                 {c.short}
-              </span>
-              <span
-                className="block h-px transition-all duration-300 ease-out"
-                style={{ width: active === i ? "100%" : "0%", background: "#B65438" }}
-              />
-            </button>
-          </li>
-        ))}
-      </ul>
+              </motion.button>
+            );
+          })}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

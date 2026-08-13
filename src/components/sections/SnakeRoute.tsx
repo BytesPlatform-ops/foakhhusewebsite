@@ -440,7 +440,18 @@ function MobileStill({
             </span>
           </div>
         ) : (
-          <Image src={f.src} alt={f.alt} fill sizes="45vw" className="object-cover" style={{ objectPosition: f.pos }} />
+          <Image
+            src={f.src}
+            alt={f.alt}
+            fill
+            /* the card paints at ~166px, but a phone renders it at 2-3x, and
+               the picked candidate tracked this hint rather than the hint
+               times DPR — declaring the painted width served a 175px file
+               into a 500px slot, which is what made these read as soft */
+            sizes="520px"
+            className="object-cover"
+            style={{ objectPosition: f.pos }}
+          />
         )}
       </div>
       <figcaption
@@ -830,7 +841,7 @@ function StageStill({
             src={f.src}
             alt={f.alt}
             fill
-            sizes="20rem"
+            sizes="40rem"
             className="object-cover"
             style={{ objectPosition: f.pos }}
           />

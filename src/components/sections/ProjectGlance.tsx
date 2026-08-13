@@ -60,6 +60,26 @@ const HIGHLIGHTS = [
   },
 ];
 
+/** one panel surface, shared by the desktop grid and the mobile rail */
+const PANEL: React.CSSProperties = {
+  background: "rgba(255,249,240,0.88)",
+  borderColor: "rgba(155,82,55,0.25)",
+  boxShadow: "0 14px 30px -20px rgba(90,45,25,0.35)",
+};
+
+function PanelCopy({ h }: { h: (typeof HIGHLIGHTS)[number] }) {
+  return (
+    <>
+      <p className="font-display text-[1.05rem] leading-snug font-medium" style={{ color: "#94432F" }}>
+        {h.title}
+      </p>
+      <p className="mt-2 text-[0.85rem] leading-[1.6]" style={{ color: "#625750" }}>
+        {h.copy}
+      </p>
+    </>
+  );
+}
+
 const SAVINGS_NOTE =
   "Projected savings are based on optimum engineering performance and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.";
 
@@ -120,7 +140,11 @@ export default function ProjectGlance() {
       aria-labelledby="glance-heading"
       className="relative"
     >
-      <div ref={pinRef} className="relative h-[142svh] lg:h-[290svh]">
+      {/* 142svh gave the four beats — approach, threshold, seal, arrival —
+          about 350px of scroll on a phone, so the photograph appeared and
+          vanished inside a single flick. 215svh is still far shorter than
+          the desktop run, but long enough for the push to read as a push. */}
+      <div ref={pinRef} className="relative h-[215svh] lg:h-[290svh]">
       {/* Stage ground is the page's stone — when the window contracts, the
           portal sits on the same surface the next section begins from, so
           the two stages and the following section read as one passage. */}
@@ -155,12 +179,28 @@ export default function ProjectGlance() {
                 "radial-gradient(120% 90% at 50% 42%, transparent 48%, rgb(20 16 13 / 0.55) 100%)",
             }}
           />
+          {/* Mobile only: the copy sits low, over the garden and the drive,
+              and this carries it. At 390px the frame is all facade — lit
+              windows top to bottom — and dim blurred type over that read as
+              a printing fault rather than a reveal. Inside the clip so it
+              seals away with the photograph. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-[72%] lg:hidden"
+            style={{
+              background:
+                "linear-gradient(to top, rgb(20 16 13 / 0.84) 6%, rgb(20 16 13 / 0.62) 38%, rgb(20 16 13 / 0.3) 68%, transparent 100%)",
+            }}
+          />
+
           <div className="grain absolute inset-0" aria-hidden="true" />
         </motion.div>
 
-        {/* STAGE 1 message — brightens on approach, dissolves at the door */}
+        {/* STAGE 1 message — brightens on approach, dissolves at the door.
+            Centred on desktop; on a phone it drops onto the scrim below the
+            towers, where there is ground to read against. */}
         <motion.div
-          className="absolute inset-x-0 top-[26%] mx-auto max-w-3xl px-5 text-center sm:px-6 lg:top-[26%]"
+          className="absolute inset-x-0 bottom-[19%] mx-auto max-w-3xl px-5 text-center sm:px-6 lg:top-[26%] lg:bottom-auto"
           style={{ opacity: textOpacity, y: textY, filter: textBlur }}
         >
           <p className="text-[0.65rem] font-medium tracking-[0.32em] text-[#C99355] uppercase">
@@ -251,7 +291,7 @@ function ProjectIntroduction() {
         };
 
   return (
-    <div ref={ref} className="relative overflow-hidden bg-[#F5EDE3] pt-8 pb-14 lg:py-24">
+    <div ref={ref} className="relative overflow-hidden bg-[#F5EDE3] pt-16 pb-16 lg:py-24">
       {/* quiet ground outside the sheet — soft glow only, no drawing */}
       <div
         aria-hidden="true"
@@ -269,7 +309,7 @@ function ProjectIntroduction() {
         }
       >
         <div
-          className="grain relative overflow-hidden rounded-[8px] border p-6 sm:p-9 lg:p-12"
+          className="grain relative overflow-hidden rounded-[8px] border p-5 sm:p-9 lg:p-12"
           style={{
             background: "#F5EDE3",
             borderColor: "rgba(155,82,55,0.34)",
@@ -297,10 +337,13 @@ function ProjectIntroduction() {
             }}
           />
 
-          {/* the approved two-block elevation, inside the sheet */}
+          {/* The approved two-block elevation, inside the sheet. Desktop only:
+              the mobile sheet is roughly 2400px tall, so object-contain
+              stretches this to a full-height ghost that duplicates the fixed
+              ElevationBackdrop already showing above and below the sheet. */}
           <motion.div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-[3%] top-[7%] bottom-[5%]"
+            className="pointer-events-none absolute inset-x-[3%] top-[7%] bottom-[5%] hidden lg:block"
             style={{ opacity: reduced ? 0.52 : drawOpacity }}
           >
             <Image
@@ -322,7 +365,7 @@ function ProjectIntroduction() {
           </div>
           <p
             aria-hidden="true"
-            className="pointer-events-none absolute right-4 bottom-3 text-[0.52rem] tracking-[0.22em] uppercase lg:right-6 lg:bottom-4"
+            className="pointer-events-none absolute right-4 bottom-3 hidden text-[0.52rem] tracking-[0.22em] uppercase lg:right-6 lg:bottom-4 lg:block"
             style={{ color: "rgba(142,67,47,0.6)" }}
           >
             WCR · Sheet 01 — Project Introduction · Not to scale
@@ -341,7 +384,7 @@ function ProjectIntroduction() {
               >
                 Designed around nature
               </h3>
-              <p className="mt-4 text-[1.05rem] leading-[1.6]" style={{ color: "#2B211D" }}>
+              <p className="mt-4 text-[0.95rem] leading-[1.6] lg:text-[1.05rem]" style={{ color: "#2B211D" }}>
                 A distinctive residential concept created for comfort, efficiency and
                 future-ready living.
               </p>
@@ -349,28 +392,27 @@ function ProjectIntroduction() {
 
             <div className="mt-9 grid gap-9 lg:mt-10 lg:grid-cols-[1.04fr_1fr] lg:gap-12">
               {/* left/centre: the introduction, on a readability wash */}
+              {/* The wash exists to lift this copy off the elevation drawing
+                  behind it. The drawing is desktop-only, so below lg the wash
+                  is just a pale box with a 34px glow around it. */}
               <motion.div
                 {...rise(0.08)}
-                className="rounded-md p-4 sm:p-5"
-                style={{
-                  background: "rgba(247,236,222,0.82)",
-                  boxShadow: "0 0 34px 22px rgba(247,236,222,0.82)",
-                }}
+                className="rounded-md p-0 sm:p-5 lg:bg-[rgba(247,236,222,0.82)] lg:shadow-[0_0_34px_22px_rgba(247,236,222,0.82)]"
               >
-                <p className="max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#625750" }}>
+                <p className="max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]" style={{ color: "#625750" }}>
                   Foakh Wind Corridor Enclave is an exclusive 12-storey residential development
                   in DHA City, Karachi, comprising Umer Block and Abdullah Block. With 160
                   carefully planned apartments and eight duplex penthouses with independent
                   swimming pools, the development brings together privacy, spacious living and
                   a distinctive contemporary architectural identity.
                 </p>
-                <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#625750" }}>
+                <p className="mt-4 max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]" style={{ color: "#625750" }}>
                   The project has been conceived around the intelligent use of natural
                   resources. Wind turbines, solar energy and kite energy form part of its
                   renewable-energy strategy, while a dedicated wind-catcher system captures
                   high-velocity natural air and directs it through the development.
                 </p>
-                <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.75]" style={{ color: "#625750" }}>
+                <p className="mt-4 max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]" style={{ color: "#625750" }}>
                   Together, these systems are intended to enhance natural ventilation, reduce
                   heat buildup and lower dependence on conventional cooling and grid
                   electricity. Based on optimum engineering performance, residents may benefit
@@ -385,28 +427,43 @@ function ProjectIntroduction() {
               </motion.div>
 
               {/* right: 2×2 feature panels */}
-              <div className="grid content-start gap-4 sm:grid-cols-2">
+              <div className="hidden content-start gap-4 sm:grid sm:grid-cols-2">
                 {HIGHLIGHTS.map((h, i) => (
                   <BuildIn
                     key={h.title}
                     delay={0.16 + i * 0.09}
                     amount={0.3}
                     className="rounded-[12px] border p-5"
-                    style={{
-                      background: "rgba(255,249,240,0.88)",
-                      borderColor: "rgba(155,82,55,0.25)",
-                      boxShadow: "0 14px 30px -20px rgba(90,45,25,0.35)",
-                    }}
+                    style={PANEL}
                   >
-                    <p className="font-display text-[1.05rem] leading-snug font-medium" style={{ color: "#94432F" }}>
-                      {h.title}
-                    </p>
-                    <p className="mt-2 text-[0.85rem] leading-[1.6]" style={{ color: "#625750" }}>
-                      {h.copy}
-                    </p>
+                    <PanelCopy h={h} />
                   </BuildIn>
                 ))}
               </div>
+
+              {/* The same six qualities on a phone, swiped rather than
+                  stacked: as a single column they added some 1,400px to a
+                  chapter that is already a pinned film plus a full sheet.
+                  Bled to the sheet edges so a half-shown card says "more". */}
+              {/* The rail rises as one piece. Per-card whileInView looks
+                  right in a column and fails here: every card past the first
+                  sits outside the viewport horizontally, so it never
+                  intersects, and the sliver that should say "swipe me" stays
+                  at zero opacity until someone swipes on faith. */}
+              <motion.div
+                {...rise(0.06)}
+                className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
+              >
+                {HIGHLIGHTS.map((h) => (
+                  <div
+                    key={h.title}
+                    className="w-[72vw] shrink-0 snap-start rounded-[12px] border p-4"
+                    style={PANEL}
+                  >
+                    <PanelCopy h={h} />
+                  </div>
+                ))}
+              </motion.div>
             </div>
 
             {/* bottom: closing statement + CTA */}

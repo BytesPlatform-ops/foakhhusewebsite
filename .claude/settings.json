@@ -11,10 +11,13 @@
       "Bash(node .qa/deck.mjs)",
       "Bash(node .qa/final.mjs)",
       "Bash(node .qa/desk.mjs)",
-      "Bash(node .qa/dpr.mjs)"
+      "Bash(node .qa/dpr.mjs)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s -o /dev/null -w \"status=%{http_code}\\\\n\" http://localhost:3000)"
     ],
     "additionalDirectories": [
-      "/tmp"
+      "/tmp",
+      "/Users/bytes/Documents/GitHub/foakhhusewebsite/src/components/sections"
     ]
   }
 }

@@ -18,11 +18,14 @@ const INDEX = [
   { num: "06", label: "Enquire", href: "#enquire" },
 ];
 
+/** Each row offers the actions that number actually supports: the Pakistan
+ *  lines take a call or a WhatsApp message, so both are given rather than
+ *  making the visitor guess which one the tap will do. */
 const CONTACT = [
-  { kind: "phone" as const, label: "US Toll Free", value: "(866) 405-3998", href: "tel:+18664053998" },
-  { kind: "whatsapp" as const, label: "US WhatsApp", value: "+1 332 237 3313", href: "https://wa.me/13322373313" },
-  { kind: "whatsapp" as const, label: "Pakistan WhatsApp", value: "0306-3256772", href: "https://wa.me/923063256772" },
-  { kind: "whatsapp" as const, label: "Pakistan WhatsApp", value: "0306-3256773", href: "https://wa.me/923063256773" },
+  { label: "US Toll Free", value: "(866) 405-3998", tel: "tel:+18664053998" },
+  { label: "US WhatsApp", value: "+1 332 237 3313", wa: "https://wa.me/13322373313" },
+  { label: "Pakistan", value: "0306-3256772", tel: "tel:+923063256772", wa: "https://wa.me/923063256772" },
+  { label: "Pakistan", value: "0306-3256773", tel: "tel:+923063256773", wa: "https://wa.me/923063256773" },
 ];
 
 const SOCIAL = [
@@ -98,26 +101,37 @@ export default function Footer() {
             <p className="text-champagne/80 text-[0.62rem] font-semibold tracking-[0.24em] uppercase">
               Talk to us
             </p>
-            <ul className="mt-4 space-y-1">
+            <ul className="mt-4 space-y-2">
               {CONTACT.map((c) => (
-                <li key={`${c.label}-${c.value}`}>
-                  <a
-                    href={c.href}
-                    {...(c.kind === "whatsapp"
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
-                    className="hover:text-ivory group flex min-h-11 items-center gap-3 text-sm transition-colors"
-                  >
-                    <span className="text-champagne/70 group-hover:text-champagne shrink-0 transition-colors">
-                      <Icon name={c.kind} />
+                <li key={`${c.label}-${c.value}`} className="flex items-center gap-2">
+                  <span className="min-w-0 flex-1">
+                    <span className="text-ivory/45 block text-[0.62rem] tracking-[0.12em] uppercase">
+                      {c.label}
                     </span>
-                    <span className="min-w-0">
-                      <span className="text-ivory/45 block text-[0.62rem] tracking-[0.12em] uppercase">
-                        {c.label}
-                      </span>
-                      <span className="block tabular-nums">{c.value}</span>
-                    </span>
-                  </a>
+                    <span className="block text-sm tabular-nums">{c.value}</span>
+                  </span>
+                  <span className="flex shrink-0 gap-1.5">
+                    {c.tel && (
+                      <a
+                        href={c.tel}
+                        aria-label={`Call ${c.label} ${c.value}`}
+                        className="border-ivory/20 text-ivory/70 hover:border-champagne hover:text-champagne flex h-11 w-11 items-center justify-center rounded-full border transition-colors"
+                      >
+                        <Icon name="phone" />
+                      </a>
+                    )}
+                    {c.wa && (
+                      <a
+                        href={c.wa}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`WhatsApp ${c.label} ${c.value}`}
+                        className="border-ivory/20 text-ivory/70 hover:border-champagne hover:text-champagne flex h-11 w-11 items-center justify-center rounded-full border transition-colors"
+                      >
+                        <Icon name="whatsapp" />
+                      </a>
+                    )}
+                  </span>
                 </li>
               ))}
             </ul>

@@ -988,6 +988,20 @@ function CategoryPanel({
         >
           {c.mark}
         </span>
+        <span
+          aria-hidden="true"
+          className="font-display pointer-events-none absolute top-1/2 right-[1vw] z-0 -translate-y-1/2 font-medium whitespace-nowrap uppercase select-none"
+          style={{
+            writingMode: "vertical-rl",
+            fontSize: "clamp(3rem, 6vw, 8rem)",
+            letterSpacing: "0.08em",
+            lineHeight: 1,
+            opacity: 0.08,
+            color: "#EFD5A3",
+          }}
+        >
+          {c.mark}
+        </span>
         <div className="grid w-full grid-cols-[19%_1fr_28%] items-center gap-[2vw] pr-[1.5vw] pl-[5vw]">
           {/* LEFT — the exclusive marker */}
           <motion.div style={{ x: textX, y: textY }}>
@@ -1073,6 +1087,21 @@ function CategoryPanel({
         aria-hidden="true"
         className="font-display pointer-events-none absolute bottom-[4%] left-[3%] leading-none font-semibold whitespace-nowrap uppercase"
         style={{ color: "rgba(148,63,45,0.06)", fontSize: "13vw", letterSpacing: "-0.01em" }}
+      >
+        {c.mark}
+      </span>
+      {/* the type name down the right edge, matching the mobile card */}
+      <span
+        aria-hidden="true"
+        className="font-display pointer-events-none absolute top-1/2 right-[1vw] z-0 -translate-y-1/2 font-medium whitespace-nowrap uppercase select-none"
+        style={{
+          writingMode: "vertical-rl",
+          fontSize: "clamp(3rem, 6vw, 8rem)",
+          letterSpacing: "0.08em",
+          lineHeight: 1,
+          opacity: 0.06,
+          color: dup ? "#EFD5A3" : "#94432F",
+        }}
       >
         {c.mark}
       </span>
@@ -1346,8 +1375,7 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
               if (c.duplex) duplexRef.current = el;
             }}
             aria-label={`${c.num} — ${c.label}`}
-            className={`relative z-10 scroll-mt-[124px] ${c.duplex ? "pt-6 pb-10" : ""}`}
-            style={{ contain: "paint" }}
+            className={`relative z-10 overflow-hidden scroll-mt-[124px] ${c.duplex ? "pt-6 pb-10" : ""}`}
             {...(reduced
               ? {}
               : {
@@ -1358,19 +1386,26 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
                   transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] },
                 })}
           >
-            {/* the type name as a watermark down the right edge — set in
-                the gutter the card already has, so it never crowds the copy */}
+            {/* the type name as a full-height watermark down the right
+                edge. It sits behind the copy at 6% so it reads as a printed
+                mark rather than a label competing for attention. */}
             <span
               aria-hidden="true"
-              className="font-display pointer-events-none absolute top-[42%] right-0 hidden text-[0.62rem] font-semibold tracking-[0.42em] whitespace-nowrap uppercase min-[380px]:block"
+              className="font-display pointer-events-none absolute -right-1 z-0 font-medium whitespace-nowrap uppercase select-none"
               style={{
-                color: c.duplex ? "rgba(239,213,163,0.3)" : "rgba(148,63,45,0.26)",
+                top: "50%",
+                transform: "translateY(-50%)",
                 writingMode: "vertical-rl",
-                transform: "rotate(180deg)",
+                fontSize: "clamp(3rem, 15vw, 5.5rem)",
+                letterSpacing: "0.08em",
+                lineHeight: 1,
+                opacity: c.duplex ? 0.1 : 0.07,
+                color: c.duplex ? "#EFD5A3" : "#94432F",
               }}
             >
               {c.mark}
             </span>
+
             <div className={`relative mt-4 aspect-[4/3] overflow-hidden rounded-[12px] border p-1 ${c.duplex ? "border-[#C99355]/75 bg-[#140B07]" : "border-[#C99355]/55 bg-[#FAF6F0]"}`}>
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
                 <Image src={c.src} alt={c.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: c.pos ?? "50% 50%" }} />

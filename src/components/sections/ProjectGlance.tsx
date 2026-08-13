@@ -2,7 +2,6 @@
 
 import { useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
-import BuildIn from "@/components/shared/BuildIn";
 import {
   motion,
   useReducedMotion,
@@ -126,6 +125,9 @@ export default function ProjectGlance() {
   const textOpacity = useTransform(p, [0.05, 0.4, 0.52, 0.6], [0.35, 1, 1, 0]);
   const textBlur = useTransform(p, [0.05, 0.4], ["blur(5px)", "blur(0px)"]);
   const textY = useTransform(p, [0.05, 0.45], [16, 0]);
+  /* the mobile scrim exists only to carry that copy, so it leaves with it —
+     held on any longer it turns the contracting portal into a dark smear */
+  const scrimOpacity = useTransform(p, [0.5, 0.62], [1, 0]);
   /* stage 2: restrained caption on the stone, beneath the portal */
   const innerOpacity = useTransform(p, [0.7, 0.84], [0, 1]);
   const innerY = useTransform(p, [0.7, 0.84], [14, 0]);
@@ -184,10 +186,11 @@ export default function ProjectGlance() {
               windows top to bottom — and dim blurred type over that read as
               a printing fault rather than a reveal. Inside the clip so it
               seals away with the photograph. */}
-          <div
+          <motion.div
             aria-hidden="true"
             className="absolute inset-x-0 bottom-0 h-[72%] lg:hidden"
             style={{
+              opacity: scrimOpacity,
               background:
                 "linear-gradient(to top, rgb(20 16 13 / 0.84) 6%, rgb(20 16 13 / 0.62) 38%, rgb(20 16 13 / 0.3) 68%, transparent 100%)",
             }}
@@ -426,50 +429,44 @@ function ProjectIntroduction() {
                 </p>
               </motion.div>
 
-              {/* right: 2×2 feature panels */}
-              <div className="hidden content-start gap-4 sm:grid sm:grid-cols-2">
+              {/* The six qualities. Below md they are a single-column
+                  editorial stack at full width; from md up they return to
+                  the 2x2 grid the sheet was designed around.
+
+                  They used to be a swipe rail on a phone — 72vw cards in an
+                  overflow-x container bled past the sheet with -mx-5, which
+                  is what pushed the page wider than the viewport and left a
+                  clipped half-card at the edge. Nothing here sets a width
+                  now, so each card simply fills its column. */}
+              <div className="grid content-start gap-4 md:grid-cols-2">
                 {HIGHLIGHTS.map((h, i) => (
-                  <BuildIn
+                  <motion.div
                     key={h.title}
-                    delay={0.16 + i * 0.09}
-                    amount={0.3}
-                    className="rounded-[12px] border p-5"
+                    className="min-w-0 rounded-[12px] border p-[18px] md:p-5"
                     style={PANEL}
+                    {...(reduced
+                      ? {}
+                      : {
+                          initial: { opacity: 0, y: 20 },
+                          whileInView: { opacity: 1, y: 0 },
+                          viewport: { once: true, amount: 0.25 },
+                          transition: {
+                            duration: 0.5,
+                            delay: Math.min(i, 3) * 0.07,
+                            ease: [0.22, 1, 0.36, 1],
+                          },
+                        })}
                   >
                     <PanelCopy h={h} />
-                  </BuildIn>
+                  </motion.div>
                 ))}
               </div>
-
-              {/* The same six qualities on a phone, swiped rather than
-                  stacked: as a single column they added some 1,400px to a
-                  chapter that is already a pinned film plus a full sheet.
-                  Bled to the sheet edges so a half-shown card says "more". */}
-              {/* The rail rises as one piece. Per-card whileInView looks
-                  right in a column and fails here: every card past the first
-                  sits outside the viewport horizontally, so it never
-                  intersects, and the sliver that should say "swipe me" stays
-                  at zero opacity until someone swipes on faith. */}
-              <motion.div
-                {...rise(0.06)}
-                className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
-              >
-                {HIGHLIGHTS.map((h) => (
-                  <div
-                    key={h.title}
-                    className="w-[72vw] shrink-0 snap-start rounded-[12px] border p-4"
-                    style={PANEL}
-                  >
-                    <PanelCopy h={h} />
-                  </div>
-                ))}
-              </motion.div>
             </div>
 
             {/* bottom: closing statement + CTA */}
             <motion.div
               {...rise(0.5)}
-              className="mt-10 flex flex-col items-start gap-5 border-t pt-6 sm:flex-row sm:items-center sm:justify-between"
+              className="mt-9 flex flex-col items-start gap-5 border-t pt-6 pb-[max(0px,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-between md:mt-10"
               style={{ borderColor: "rgba(155,82,55,0.28)" }}
             >
               <p className="text-[0.74rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#94432F" }}>
@@ -477,7 +474,7 @@ function ProjectIntroduction() {
               </p>
               <a
                 href="#residences"
-                className="inline-block shrink-0 rounded-lg px-6 py-3 text-sm font-semibold transition-colors"
+                className="inline-flex w-full shrink-0 items-center justify-center rounded-lg px-6 py-3.5 text-sm font-semibold transition-colors sm:w-auto sm:py-3"
                 style={{ background: "#94432F", color: "#FAF6F0" }}
               >
                 Explore the Residences

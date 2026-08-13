@@ -22,7 +22,7 @@ export default function FoakhLocationVisual() {
           </p>
           <a
             href="#glance"
-            className="mt-5 inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.2em] text-[#B65438] uppercase transition-colors hover:text-[#713427]"
+            className="mt-5 inline-flex min-h-11 items-center gap-2 text-[0.7rem] font-semibold tracking-[0.2em] text-[#B65438] uppercase transition-colors hover:text-[#713427]"
           >
             Explore the project
             <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">

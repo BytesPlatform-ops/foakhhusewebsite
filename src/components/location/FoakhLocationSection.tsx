@@ -38,6 +38,12 @@ function LocationPill() {
   );
 }
 
+/* padding alone left these at 36–38px tall. inline-flex + min-h-11 lifts the
+   hit area to the 44px thumb minimum without touching the padding, type or
+   colour that give them their look. */
+const DIRECTION_BTN =
+  "inline-flex min-h-11 items-center rounded-full px-5 py-2.5 text-[0.68rem] tracking-[0.18em] uppercase transition-colors";
+
 function DirectionButtons({ dark = false }: { dark?: boolean }) {
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -45,7 +51,7 @@ function DirectionButtons({ dark = false }: { dark?: boolean }) {
         href={FOAKH_MAPS_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-full bg-[#C99355] px-5 py-2.5 text-[0.68rem] font-bold tracking-[0.18em] text-[#2B211D] uppercase transition-colors hover:bg-[#E8C27C]"
+        className={`${DIRECTION_BTN} bg-[#C99355] font-bold text-[#2B211D] hover:bg-[#E8C27C]`}
       >
         Get directions
       </a>
@@ -53,7 +59,7 @@ function DirectionButtons({ dark = false }: { dark?: boolean }) {
         href={FOAKH_MAPS_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className={`rounded-full border px-5 py-2.5 text-[0.68rem] font-semibold tracking-[0.18em] uppercase transition-colors ${
+        className={`${DIRECTION_BTN} border font-semibold ${
           dark
             ? "border-[#FAF6F0]/40 text-[#FAF6F0] hover:bg-[#FAF6F0]/10"
             : "border-[#B65438]/50 text-[#713427] hover:bg-[#B65438]/10"

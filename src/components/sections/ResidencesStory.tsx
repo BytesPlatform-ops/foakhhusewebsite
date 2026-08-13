@@ -1236,7 +1236,12 @@ function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) =
                     border: "1px solid transparent",
                     boxShadow: "0 10px 22px -12px rgba(148,63,45,0.65)",
                   }
-              : { color: "#94432F" };
+              : {
+                    background: "#FAF6F0",
+                    color: "#94432F",
+                    border: "1px solid rgba(148,63,45,0.3)",
+                    boxShadow: "0 6px 16px -12px rgba(36,27,23,0.4)",
+                  };
 
             return (
               <motion.button

@@ -136,7 +136,7 @@ export default function VideoHero() {
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: 8, scale: 0.94 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex items-center gap-2 rounded-full border border-[#F5EDE3]/20 bg-[#2B211D]/80 py-2.5 pr-4 pl-4 text-[0.78rem] font-medium whitespace-nowrap text-[#F5EDE3] shadow-[0_10px_28px_-8px_rgba(0,0,0,0.55)] backdrop-blur-md transition-colors hover:bg-[#2B211D]/92"
+                    className="flex min-h-11 items-center gap-2 rounded-full border border-[#F5EDE3]/20 bg-[#2B211D]/80 py-2.5 pr-4 pl-4 text-[0.78rem] font-medium whitespace-nowrap text-[#F5EDE3] shadow-[0_10px_28px_-8px_rgba(0,0,0,0.55)] backdrop-blur-md transition-colors hover:bg-[#2B211D]/92"
                   >
                     Tap to hear the film
                     <span aria-hidden="true" className="text-[#C99355]">

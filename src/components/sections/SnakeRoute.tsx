@@ -599,7 +599,10 @@ function MobileSystems() {
                 type="button"
                 onClick={() => panels.current[i]?.scrollIntoView({ behavior: "smooth", block: "start" })}
                 aria-current={active === i ? "true" : undefined}
-                className={`w-full rounded-full px-2 text-[0.64rem] font-bold tracking-[0.14em] uppercase transition-colors duration-300 ${
+                /* flex-1 already stops these three colliding, so they keep
+                   their own uppercase type; truncate is only a safety net so a
+                   longer label degrades to an ellipsis instead of spilling. */
+                className={`w-full truncate rounded-full px-2 text-[0.64rem] font-bold tracking-[0.14em] uppercase transition-colors duration-300 ${
                   active === i ? "" : "glass-warm"
                 }`}
                 style={{

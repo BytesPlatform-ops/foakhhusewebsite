@@ -250,7 +250,7 @@ export default function ResidencesStory() {
 
       {/* ---- Apartments & Interiors — the deck's introduction ------- */}
       <div className="relative">
-        <div className="relative mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-16 pb-16 lg:pt-20 lg:pb-20">
+        <div className="relative mx-auto hidden max-w-(--container-page) px-(--spacing-gutter) pt-16 pb-16 lg:block lg:pt-20 lg:pb-20">
         <p className="relative text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#E8CFA4" }}>
           Apartments &amp; Interiors
         </p>
@@ -906,8 +906,11 @@ function MobileInteriors() {
   return (
     <div ref={wrapRef} className="relative lg:hidden" style={{ height: `${n * 72}svh` }}>
       <div className="sticky top-0 flex h-svh flex-col px-5 pt-14 pb-7">
+        <p className="shrink-0 text-[0.62rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#E8CFA4" }}>
+          Apartments &amp; Interiors
+        </p>
         {/* the phrase holds still while the deck works beneath it */}
-        <p className="font-display shrink-0 uppercase" style={{ fontSize: "clamp(1.9rem,8vw,2.9rem)", lineHeight: 1.04, fontWeight: 600 }}>
+        <p className="font-display mt-2.5 shrink-0 uppercase" style={{ fontSize: "clamp(1.9rem,8vw,2.9rem)", lineHeight: 1.04, fontWeight: 600 }}>
           {PHRASE.map((w, i) => (
             <motion.span
               key={w}

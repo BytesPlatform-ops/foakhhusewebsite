@@ -84,7 +84,7 @@ const STAGES: Stage[] = [
     heading: "Wind Catcher",
     copy: "A dedicated architectural system designed to capture high-velocity natural air and guide it through internal circulation spaces.",
     items: [{ t: "Natural Air Capture" }, { t: "Corridor Distribution" }, { t: "Cooler Shared Areas" }],
-    at: [0.05, 0.1, 0.26, 0.31],
+    at: [0.04, 0.08, 0.22, 0.26],
     card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[46%]",
     frames: [
       {
@@ -115,7 +115,7 @@ const STAGES: Stage[] = [
       { t: "Solar Energy", d: "Panels harness Karachi's abundant sunlight to complement the other systems." },
       { t: "Kite Energy", d: "Airborne tethered wings capture stronger high-altitude winds for ground-based generation." },
     ],
-    at: [0.31, 0.36, 0.55, 0.6],
+    at: [0.26, 0.30, 0.46, 0.50],
     card: "left-[6%] top-[24%] lg:left-[34%] lg:top-[30%]",
     frames: [
       {
@@ -152,7 +152,7 @@ const STAGES: Stage[] = [
       { t: "Water Desalination", d: "Reverse-osmosis treatment planned to support dependable water availability." },
       { t: "Atmospheric Water Generation", d: "Thin Air technology extracts water from atmospheric air." },
     ],
-    at: [0.6, 0.65, 0.82, 0.87],
+    at: [0.50, 0.54, 0.68, 0.72],
     card: "left-[6%] top-[28%] lg:left-[56%] lg:top-[40%]",
     frames: [
       {
@@ -182,10 +182,10 @@ const STAGES: Stage[] = [
 ];
 
 const RAIL = [
-  { label: "Air", range: [0.05, 0.31] as const },
-  { label: "Energy", range: [0.31, 0.6] as const },
-  { label: "Water", range: [0.6, 0.87] as const },
-  { label: "Arrival", range: [0.87, 1.01] as const },
+  { label: "Air", range: [0.04, 0.26] as const },
+  { label: "Energy", range: [0.26, 0.5] as const },
+  { label: "Water", range: [0.5, 0.72] as const },
+  { label: "Arrival", range: [0.72, 1.01] as const },
 ];
 
 export default function SnakeRoute() {
@@ -236,8 +236,8 @@ export default function SnakeRoute() {
     [0.14, 0.27],
     ["rgba(33,26,23,0.5)", "rgba(255,248,239,0.75)"]
   );
-  const endOp = useTransform(p, [0.88, 0.95], [0, 1]);
-  const endY = useTransform(p, [0.88, 0.95], [12, 0]);
+  const endOp = useTransform(p, [0.74, 0.84], [0, 1]);
+  const endY = useTransform(p, [0.74, 0.84], [12, 0]);
 
   if (reduced) return <StaticSystems />;
 
@@ -247,7 +247,7 @@ export default function SnakeRoute() {
       ref={sectionRef}
       data-section="route"
       aria-labelledby="route-heading"
-      className="relative lg:h-[360svh]"
+      className="relative lg:h-[290svh]"
     >
       {/* ---------------- mobile: tabs on top, panels below -------------- */}
       <div className="lg:hidden">

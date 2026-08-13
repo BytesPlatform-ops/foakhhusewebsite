@@ -418,7 +418,7 @@ function MobileStill({
       style={{ width }}
     >
       <motion.div
-        className="fx-glass overflow-hidden rounded-[12px] p-1 backdrop-blur-xl backdrop-saturate-150 lg:backdrop-blur-none"
+        className="glass-light overflow-hidden rounded-[12px] p-1"
         variants={{
           raw: { opacity: 0, y: 14 },
           built: { opacity: 1, y: 0 },
@@ -603,7 +603,7 @@ function MobileSystems() {
                    their own uppercase type; truncate is only a safety net so a
                    longer label degrades to an ellipsis instead of spilling. */
                 className={`w-full truncate rounded-full px-2 text-[0.64rem] font-bold tracking-[0.14em] uppercase transition-colors duration-300 ${
-                  active === i ? "" : "fx-glass backdrop-blur-xl backdrop-saturate-150"
+                  active === i ? "" : "glass-light"
                 }`}
                 style={{
                   minHeight: 40,

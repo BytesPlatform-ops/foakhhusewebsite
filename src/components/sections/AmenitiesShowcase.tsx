@@ -453,7 +453,7 @@ function MobileRail({
               onClick={() => onSelect(i)}
               className={`flex items-center overflow-hidden rounded-full transition-all duration-300 ease-out ${
                 side === "right" ? "flex-row-reverse" : ""
-              } ${on ? "" : "fx-glass-dark backdrop-blur-lg backdrop-saturate-150"}`}
+              } ${on ? "" : "glass-dark"}`}
               style={{
                 minHeight: 44,
                 minWidth: 44,

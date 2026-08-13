@@ -1344,6 +1344,7 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
             }}
             aria-label={`${c.num} — ${c.label}`}
             className={`relative z-10 scroll-mt-[124px] ${c.duplex ? "pt-6 pb-10" : ""}`}
+            style={{ contain: "paint" }}
             {...(reduced
               ? {}
               : {
@@ -1354,6 +1355,19 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
                   transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] },
                 })}
           >
+            {/* the type name as a watermark down the right edge — set in
+                the gutter the card already has, so it never crowds the copy */}
+            <span
+              aria-hidden="true"
+              className="font-display pointer-events-none absolute top-[42%] right-0 hidden text-[0.62rem] font-semibold tracking-[0.42em] whitespace-nowrap uppercase min-[380px]:block"
+              style={{
+                color: c.duplex ? "rgba(239,213,163,0.3)" : "rgba(148,63,45,0.26)",
+                writingMode: "vertical-rl",
+                transform: "rotate(180deg)",
+              }}
+            >
+              {c.mark}
+            </span>
             <div className={`relative mt-4 aspect-[4/3] overflow-hidden rounded-[12px] border p-1 ${c.duplex ? "border-[#C99355]/75 bg-[#140B07]" : "border-[#C99355]/55 bg-[#FAF6F0]"}`}>
               <div className="relative h-full w-full overflow-hidden rounded-[8px]">
                 <Image src={c.src} alt={c.alt} fill sizes="92vw" className="object-cover" style={{ objectPosition: c.pos ?? "50% 50%" }} />

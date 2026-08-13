@@ -168,7 +168,7 @@
   --glass-light-border: rgb(255 255 255 / 0.45);
   --glass-dark-bg: rgb(29 23 20 / 0.58);
   --glass-dark-border: rgb(247 240 232 / 0.14);
-  --glass-blur: 14px;
+  --glass-blur: 22px;
 
   --grain-opacity: 0.055;
 
@@ -236,17 +236,18 @@ body {
     backdrop-filter: blur(var(--glass-blur)) saturate(1.35);
   }
 }
-/* Drop blur on small/low-power screens, keep opaque fallback */
+/* Small screens keep the material but at a cheaper blur — removing it
+   entirely left type sitting on an unblurred photograph, and a 14px blur is
+   roughly half the composite cost of the desktop radius. The grounds go a
+   little more opaque to hold contrast at the lower radius. */
 @media (max-width: 48rem) {
-  .glass-light,
-  .glass-dark {
-    backdrop-filter: none;
-  }
   .glass-light {
-    background: rgb(247 240 232 / 0.94);
+    --glass-blur: 22px;
+    background: rgb(247 240 232 / 0.82);
   }
   .glass-dark {
-    background: rgb(29 23 20 / 0.88);
+    --glass-blur: 12px;
+    background: rgb(29 23 20 / 0.62);
   }
 }
 
@@ -440,45 +441,4 @@ html {
 .tab-capsule[aria-current="true"] {
   padding-inline: clamp(0.72rem, 5.2vw, 1.25rem);
   font-size: clamp(0.72rem, 3.4vw, 0.8rem);
-}
-
-/* ---------------------------------------------------------------- glass --
-   Apple's material pattern (translucent ground + backdrop blur + a lit top
-   edge) in FOAKH's warm palette rather than neutral white, so containers
-   sitting over the building renders read as glass over architecture instead
-   of frosted plastic.
-
-   Deference: the material serves the content. It is mobile-only — desktop
-   panels keep their solid grounds — and it is applied to a handful of
-   containers, never stacked, because each blurred layer costs a phone a
-   full-screen composite. */
-@media (max-width: 1023px) {
-  .fx-glass {
-    background: rgba(250, 246, 240, 0.8);
-    backdrop-filter: blur(22px) saturate(150%);
-    -webkit-backdrop-filter: blur(22px) saturate(150%);
-    border: 1px solid rgba(255, 252, 246, 0.55);
-    box-shadow:
-      0 4px 24px rgba(60, 30, 18, 0.12),
-      0 18px 44px -30px rgba(36, 27, 23, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.62);
-  }
-  .fx-glass-dark {
-    background: rgba(24, 14, 9, 0.42);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    border: 1px solid rgba(250, 246, 240, 0.34);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  }
-}
-
-/* Where the browser cannot blur, the material falls back to a solid ground
-   rather than leaving type over an unblurred photograph. */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .fx-glass {
-    background: rgba(250, 246, 240, 0.97);
-  }
-  .glass-dark {
-    background: rgba(24, 14, 9, 0.82);
-  }
 }

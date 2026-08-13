@@ -568,7 +568,7 @@ function MobileSystems() {
         {/* the wash rides with the letters, not the scroll position */}
         <motion.span
           aria-hidden="true"
-          className="pointer-events-none absolute -inset-x-2 -top-6 -bottom-4"
+          className="pointer-events-none absolute inset-x-0 -top-6 -bottom-4"
           style={{
             opacity: headWash,
             background:

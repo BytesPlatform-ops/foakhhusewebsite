@@ -1209,10 +1209,11 @@ function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) =
 
   return (
     <div
-      className="sticky top-[68px] z-30 -mx-6 mb-7 border-b bg-[#F5EDE3]/94 px-6 py-3 backdrop-blur-sm"
-      style={{ borderColor: "rgba(148,63,45,0.12)" }}
+      /* no strip behind the pair — each capsule already carries a solid
+         ground, so the content can run under them cleanly */
+      className="pointer-events-none sticky top-[76px] z-30 mb-7 py-1"
     >
-      <div className="flex items-center gap-2.5 overflow-hidden">
+      <div className="pointer-events-auto flex items-center gap-2.5 overflow-hidden">
         <AnimatePresence initial={false} mode="popLayout">
           {shown.map((i) => {
             const c = CAT_PANELS[i];

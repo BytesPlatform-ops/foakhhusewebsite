@@ -565,10 +565,9 @@ function MobileSystems() {
 
       {/* ---------------- stage control, joined to the heading ----------- */}
       <div className="sticky top-[68px] z-30 mt-4 px-4 pb-2">
-        <ul
-          className="flex gap-1.5 rounded-full p-1.5"
-          style={{ background: "rgba(250,246,240,0.92)", backdropFilter: "blur(6px)", boxShadow: "0 8px 22px -14px rgba(36,27,23,0.5)" }}
-        >
+        {/* no tray behind the tabs — each capsule carries its own ground so
+            the facade stays visible between them */}
+        <ul className="flex gap-2">
           {STAGES.map((st, i) => (
             <li key={st.eyebrow} className="flex-1">
               <button
@@ -578,8 +577,13 @@ function MobileSystems() {
                 className="w-full rounded-full px-2 text-[0.64rem] font-bold tracking-[0.14em] uppercase transition-colors duration-300"
                 style={{
                   minHeight: 40,
-                  background: active === i ? "#B65438" : "transparent",
-                  color: active === i ? "#FAF6F0" : "rgba(43,33,29,0.6)",
+                  background: active === i ? "#B65438" : "rgba(250,246,240,0.93)",
+                  color: active === i ? "#FAF6F0" : "rgba(43,33,29,0.66)",
+                  border: active === i ? "1px solid transparent" : "1px solid rgba(148,63,45,0.22)",
+                  boxShadow:
+                    active === i
+                      ? "0 10px 22px -12px rgba(148,63,45,0.65)"
+                      : "0 6px 16px -12px rgba(36,27,23,0.45)",
                 }}
               >
                 {["Air", "Energy", "Water"][i]}

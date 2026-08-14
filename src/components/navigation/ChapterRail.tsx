@@ -241,41 +241,44 @@ const CURRENTS = [
 /**
  * The etched surface of the header glass. This used to be a ruled grid —
  * graph paper, which says drafting table. The project is a wind corridor,
- * so the surface carries moving air instead: faint curved streams drifting
- * across at their own speeds.
+ * so the surface carries moving air instead: curved streams crossing on
+ * their own headings, each running at its own speed.
  */
 function HeaderCurrents() {
   return (
     <svg
       aria-hidden="true"
-      viewBox={`0 0 ${CURRENT_BOX} 70`}
+      viewBox={`0 0 ${CURRENT_BOX.w} ${CURRENT_BOX.h}`}
       preserveAspectRatio="none"
       className="pointer-events-none absolute inset-0 h-full w-full"
       style={{ opacity: 0.16 }}
     >
       {CURRENTS.map((c) => (
-        /* two transforms, so they need two elements: the group carries the
-           slow vertical drift, the path the travel along its own length */
-        <g
-          key={c.y}
-          className="foakh-current-bob"
-          style={{ "--bob": `${c.bob}px`, "--bob-dur": `${c.bobDur}s` } as React.CSSProperties}
-        >
-          <path
-            className="foakh-current"
-            d={wavePath(c.period, c.amp, c.y, CURRENT_BOX)}
-            fill="none"
-            stroke="#4A2418"
-            strokeWidth={c.width}
-            strokeLinecap="round"
-            opacity={c.opacity}
-            style={
-              {
-                "--p": `${c.dir * c.period}px`,
-                "--dur": `${c.dur}s`,
-              } as React.CSSProperties
-            }
-          />
+        /* Three transforms, so three elements: the outer group sets the
+           heading once, the middle one drifts the stream across it, and the
+           path travels along its own length. Stacking them on one element
+           would just overwrite. */
+        <g key={c.y} transform={`rotate(${c.angle} ${CURRENT_BOX.w / 2} ${CURRENT_BOX.h / 2})`}>
+          <g
+            className="foakh-current-bob"
+            style={{ "--bob": `${c.bob}px`, "--bob-dur": `${c.bobDur}s` } as React.CSSProperties}
+          >
+            <path
+              className="foakh-current"
+              d={wavePath(c.period, c.amp, c.y)}
+              fill="none"
+              stroke="#4A2418"
+              strokeWidth={c.width}
+              strokeLinecap="round"
+              opacity={c.opacity}
+              style={
+                {
+                  "--p": `${c.dir * c.period}px`,
+                  "--dur": `${c.dur}s`,
+                } as React.CSSProperties
+              }
+            />
+          </g>
         </g>
       ))}
     </svg>

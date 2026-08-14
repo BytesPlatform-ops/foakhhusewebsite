@@ -156,11 +156,25 @@ export default function ProjectGlance() {
           about 350px of scroll on a phone, so the photograph appeared and
           vanished inside a single flick. 215svh is still far shorter than
           the desktop run, but long enough for the push to read as a push. */}
-      <div ref={pinRef} className="relative h-[215svh] lg:h-[290svh]">
+      <div
+        ref={pinRef}
+        className="relative h-[215svh] lg:h-[290svh]"
+        style={
+          {
+            "--stage-top": "calc(max(0.6rem, env(safe-area-inset-top)) + 4.9rem)",
+          } as React.CSSProperties
+        }
+      >
       {/* Stage ground is the page's stone — when the window contracts, the
           portal sits on the same surface the next section begins from, so
           the two stages and the following section read as one passage. */}
-      <div className="sticky top-0 h-svh overflow-hidden">
+      <div
+        className="sticky overflow-hidden rounded-t-[22px] lg:rounded-t-none"
+        style={{
+          top: "var(--stage-top)",
+          height: "calc(100svh - var(--stage-top))",
+        }}
+      >
         {/* THE FRAME — full-bleed scene that tightens into a portal */}
         <motion.div className="absolute inset-0" style={{ clipPath: clip }}>
           {/* perspective wrapper: the dolly happens inside real depth */}

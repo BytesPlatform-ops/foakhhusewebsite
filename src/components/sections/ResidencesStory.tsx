@@ -999,6 +999,7 @@ function CategoryPanel({
           className="font-display pointer-events-none absolute top-1/2 right-[1vw] z-0 -translate-y-1/2 font-medium whitespace-nowrap uppercase select-none"
           style={{
             writingMode: "vertical-rl",
+            transform: "translateY(-50%) rotate(180deg)",
             fontSize: "clamp(4rem, 8vw, 9rem)",
             letterSpacing: "0.12em",
             lineHeight: 1,
@@ -1102,6 +1103,7 @@ function CategoryPanel({
         className="font-display pointer-events-none absolute top-1/2 right-[1vw] z-0 -translate-y-1/2 font-medium whitespace-nowrap uppercase select-none"
         style={{
           writingMode: "vertical-rl",
+          transform: "translateY(-50%) rotate(180deg)",
           fontSize: "clamp(4rem, 8vw, 9rem)",
           letterSpacing: "0.12em",
           lineHeight: 1,
@@ -1401,13 +1403,15 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
               aria-hidden="true"
               className="font-display pointer-events-none absolute z-0 font-medium whitespace-nowrap uppercase select-none"
               style={{
-                right: "-0.35em",
-                bottom: "6%",
-                transformOrigin: "100% 100%",
-                transform: "rotate(-27deg)",
-                fontSize: "clamp(5rem, 30vw, 11rem)",
-                letterSpacing: "0.06em",
-                lineHeight: 0.85,
+                right: "-0.12em",
+                top: "50%",
+                /* vertical, but read from the foot upward — the first letter
+                   sits at the bottom and the word climbs the edge */
+                writingMode: "vertical-rl",
+                transform: "translateY(-50%) rotate(180deg)",
+                fontSize: "clamp(4.5rem, 26vw, 9rem)",
+                letterSpacing: "0.08em",
+                lineHeight: 1,
                 opacity: c.duplex ? 0.17 : 0.12,
                 color: c.duplex ? "#EFD5A3" : "#94432F",
               }}

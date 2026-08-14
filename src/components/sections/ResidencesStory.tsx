@@ -1403,7 +1403,7 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
               aria-hidden="true"
               className="font-display pointer-events-none absolute z-0 font-medium whitespace-nowrap uppercase select-none"
               style={{
-                right: "-0.12em",
+                right: "0",
                 top: "50%",
                 /* vertical, but read from the foot upward — the first letter
                    sits at the bottom and the word climbs the edge */

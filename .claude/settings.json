@@ -20,7 +20,8 @@
       "Bash(curl -s -o /dev/null -w \"3000=%{http_code}\\\\n\" --max-time 8 http://localhost:3000)",
       "Bash(kill 5152)",
       "Bash(curl -s -o /dev/null -w \"3000=%{http_code}\\\\n\" --max-time 10 http://localhost:3000)",
-      "Bash(node .qa/v.mjs)"
+      "Bash(node .qa/v.mjs)",
+      "Bash(node .qa/c.mjs)"
     ],
     "additionalDirectories": [
       "/tmp",

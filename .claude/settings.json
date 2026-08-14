@@ -13,7 +13,9 @@
       "Bash(node .qa/desk.mjs)",
       "Bash(node .qa/dpr.mjs)",
       "Bash(curl -s http://localhost:3000)",
-      "Bash(curl -s -o /dev/null -w \"status=%{http_code}\\\\n\" http://localhost:3000)"
+      "Bash(curl -s -o /dev/null -w \"status=%{http_code}\\\\n\" http://localhost:3000)",
+      "Bash(node .qa/wm.mjs)",
+      "Bash(node .qa/w.mjs)"
     ],
     "additionalDirectories": [
       "/tmp",

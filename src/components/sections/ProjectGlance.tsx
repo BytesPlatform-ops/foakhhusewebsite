@@ -2,6 +2,7 @@
 
 import { useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
+import useIsMobile from "@/components/shared/useIsMobile";
 import {
   motion,
   type MotionValue,
@@ -109,7 +110,15 @@ export default function ProjectGlance() {
   // Two phases, both quicker than before: a fast contraction to the
   // portal, then the portal seals completely — the photograph vanishes
   // into the elevation drawing.
+  const mobile = useIsMobile();
   const clip = useTransform(p, (v) => {
+    if (mobile) {
+      /* full-bleed until the very end, then one short seal */
+      const m = Math.min(Math.max((v - 0.82) / 0.18, 0), 1);
+      const em = m * m * (3 - 2 * m);
+      const inset = em * 50;
+      return `inset(${inset.toFixed(2)}% ${inset.toFixed(2)}% ${inset.toFixed(2)}% ${inset.toFixed(2)}% round ${(em * 10).toFixed(1)}px)`;
+    }
     const a = Math.min(Math.max((v - 0.55) / 0.17, 0), 1);
     const ea = 1 - Math.pow(1 - a, 3);
     const b = Math.min(Math.max((v - 0.74) / 0.16, 0), 1);

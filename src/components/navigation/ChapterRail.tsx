@@ -106,6 +106,47 @@ function useActiveChapter() {
   return active;
 }
 
+/**
+ * Full-screen sections — the hero and the residences deck — own the whole
+ * frame, and the cream bar sitting across the top of them reads as chrome
+ * laid over a picture. They opt out by marking their wrapper
+ * `data-hide-header`; the header slides away while one of them is under it
+ * and comes straight back on the next section.
+ *
+ * Starts hidden because the hero is one of those sections and is what a
+ * visitor lands on — this way the bar never flashes in and out on load.
+ */
+function useHeaderHidden() {
+  const [hidden, setHidden] = useState(true);
+
+  useEffect(() => {
+    const zones = document.querySelectorAll("[data-hide-header]");
+    if (!zones.length) {
+      setHidden(false);
+      return;
+    }
+    const covering = new Set<Element>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) covering.add(e.target);
+          else covering.delete(e.target);
+        }
+        setHidden(covering.size > 0);
+      },
+      /* Shrink the root to the strip the header actually occupies, so a zone
+         only counts while it is behind the bar rather than anywhere on
+         screen. A percentage rides out the mobile URL bar resizing the
+         viewport, which a pixel margin would not. */
+      { rootMargin: "0px 0px -90% 0px" },
+    );
+    zones.forEach((z) => io.observe(z));
+    return () => io.disconnect();
+  }, []);
+
+  return hidden;
+}
+
 function Wordmark({ big = false }: { big?: boolean }) {
   return (
     <span className="block">
@@ -133,6 +174,132 @@ function Wordmark({ big = false }: { big?: boolean }) {
         wind corridor enclave
       </span>
     </span>
+  );
+}
+
+/* ---------------------------------------------------------------------
+   Air currents in the header glass
+   ------------------------------------------------------------------ */
+
+/**
+ * One wave as a run of cubic segments. Each half wavelength is a single
+ * cubic whose two control points sit at 1/3 and 2/3 with the amplitude
+ * scaled by 4/3 — at the midpoint a cubic returns three quarters of its
+ * control height, so that factor lands the crest exactly on `amp`.
+ *
+ * The run starts a wavelength before the box and ends one past it, so the
+ * line still covers the glass at both ends of its travel.
+ */
+function wavePath(period: number, amp: number, y: number, width: number) {
+  const half = period / 2;
+  const c = amp * 1.3333;
+  const spans = Math.ceil(width / period) + 2;
+  let d = `M ${-period} ${y}`;
+  for (let i = 0; i < spans; i++) {
+    const x = -period + i * period;
+    d +=
+      ` C ${(x + half / 3).toFixed(1)} ${(y - c).toFixed(1)}` +
+      ` ${(x + (half * 2) / 3).toFixed(1)} ${(y - c).toFixed(1)}` +
+      ` ${(x + half).toFixed(1)} ${y}` +
+      ` C ${(x + half + half / 3).toFixed(1)} ${(y + c).toFixed(1)}` +
+      ` ${(x + half + (half * 2) / 3).toFixed(1)} ${(y + c).toFixed(1)}` +
+      ` ${(x + period).toFixed(1)} ${y}`;
+  }
+  return d;
+}
+
+/**
+ * Five streams, no two alike and no two on the same clock — wavelength,
+ * amplitude, speed, direction and bob are all off from one another, and the
+ * durations avoid common factors so the pattern does not visibly restart.
+ * Written out rather than generated: random values at render time would not
+ * survive hydration, and hand-chosen ones let the set stay balanced.
+ */
+const CURRENTS = [
+  { y: 11, period: 132, amp: 6, dur: 23, dir: 1, bob: 3, bobDur: 8.3, width: 1.1, opacity: 0.85 },
+  { y: 24, period: 88, amp: 3.4, dur: 17, dir: -1, bob: -2.2, bobDur: 11.7, width: 0.8, opacity: 0.6 },
+  { y: 35, period: 176, amp: 8, dur: 31, dir: 1, bob: 2.6, bobDur: 14.1, width: 1.3, opacity: 1 },
+  { y: 48, period: 104, amp: 4.6, dur: 19, dir: -1, bob: 3.4, bobDur: 9.9, width: 0.9, opacity: 0.7 },
+  { y: 60, period: 148, amp: 5.2, dur: 27, dir: 1, bob: -2.8, bobDur: 12.7, width: 1, opacity: 0.5 },
+];
+
+const CURRENT_BOX = 400;
+
+/**
+ * The etched surface of the header glass. This used to be a ruled grid —
+ * graph paper, which says drafting table. The project is a wind corridor,
+ * so the surface carries moving air instead: faint curved streams drifting
+ * across at their own speeds.
+ */
+function HeaderCurrents() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox={`0 0 ${CURRENT_BOX} 70`}
+      preserveAspectRatio="none"
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      style={{ opacity: 0.16 }}
+    >
+      {CURRENTS.map((c) => (
+        /* two transforms, so they need two elements: the group carries the
+           slow vertical drift, the path the travel along its own length */
+        <g
+          key={c.y}
+          className="foakh-current-bob"
+          style={{ "--bob": `${c.bob}px`, "--bob-dur": `${c.bobDur}s` } as React.CSSProperties}
+        >
+          <path
+            className="foakh-current"
+            d={wavePath(c.period, c.amp, c.y, CURRENT_BOX)}
+            fill="none"
+            stroke="#4A2418"
+            strokeWidth={c.width}
+            strokeLinecap="round"
+            opacity={c.opacity}
+            style={
+              {
+                "--p": `${c.dir * c.period}px`,
+                "--dur": `${c.dur}s`,
+              } as React.CSSProperties
+            }
+          />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+/** The menu control: a glass squircle carrying two thin rules that fold
+ *  into a cross. Two lines, not three — the third bar is a convention, not
+ *  a requirement, and two reads quieter against the pavilion. */
+function MenuControl({ open, onToggle }: { open: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-expanded={open}
+      aria-controls="mobile-menu"
+      aria-label={open ? "Close menu" : "Open menu"}
+      onClick={onToggle}
+      className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] transition-transform duration-200 active:scale-95"
+      style={{
+        background: "rgba(255, 252, 246, 0.55)",
+        backdropFilter: "blur(14px) saturate(1.4)",
+        WebkitBackdropFilter: "blur(14px) saturate(1.4)",
+        border: "1px solid rgba(255,255,255,0.7)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.85), 0 4px 12px -8px rgba(60,30,18,0.5)",
+      }}
+    >
+      <span aria-hidden="true" className="relative block h-3 w-[18px]">
+        <span
+          className="absolute left-0 block h-px w-full rounded-full bg-[#94432F] transition-all duration-300 ease-out"
+          style={{ top: open ? "50%" : "2px", transform: open ? "translateY(-50%) rotate(45deg)" : "none" }}
+        />
+        <span
+          className="absolute left-0 block h-px w-full rounded-full bg-[#94432F] transition-all duration-300 ease-out"
+          style={{ top: open ? "50%" : "10px", transform: open ? "translateY(-50%) rotate(-45deg)" : "none" }}
+        />
+      </span>
+    </button>
   );
 }
 
@@ -227,6 +394,15 @@ function RailActions({ onNavigate }: { onNavigate?: () => void }) {
 export default function ChapterRail() {
   const active = useActiveChapter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerHidden = useHeaderHidden();
+  /* the pavilion tightens once the page has moved */
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Lock page scroll while the mobile menu is open, and let Escape close it
   // — tapping the X is the primary route, but a tablet with a keyboard
@@ -296,28 +472,87 @@ export default function ChapterRail() {
           390px that row measured wider than the viewport, so it was a real
           source of horizontal overflow. The CTA lives in the drawer and in
           the closing section, where it has room to be a proper target. */}
+      {/* ---------------- Mobile: the floating glass pavilion ------------
+          Not a full-width bar clamped to the edge — a rounded glass object
+          inset from both sides with the hero running on behind it, so the
+          navigation reads as part of the architecture rather than chrome
+          laid over it. Warm ivory glass, a hairline of light along the top
+          edge, faint etched elevation lines in the surface, and one slow
+          highlight crossing it every thirteen seconds like air moving over
+          a facade. */}
       <header
-        className="fixed inset-x-0 top-0 z-(--z-header) flex items-center justify-between border-b border-[#2B211D]/10 bg-[#F5EDE3] px-5 pb-2 lg:hidden"
-        style={{ paddingTop: "max(0.5rem, env(safe-area-inset-top))" }}
+        inert={headerHidden || undefined}
+        className={`fixed inset-x-3 z-(--z-header) transition-transform duration-300 ease-out lg:hidden ${
+          headerHidden ? "-translate-y-[130%]" : "translate-y-0"
+        }`}
+        style={{ top: "max(0.6rem, env(safe-area-inset-top))" }}
       >
-        <a href="#hero" className="flex min-w-0 items-center gap-2" aria-label="Foakh Wind Corridor Enclave — top">
-          <Image src="/foakh-mark.png" alt="" width={898} height={958} priority className="h-8 w-auto shrink-0" />
-          <span className="font-display truncate text-[clamp(0.8rem,3.4vw,1.05rem)] leading-none font-bold tracking-[-0.01em] text-[#B65438]">
-            foakh wind corridor enclave
-          </span>
-        </a>
-        <button
-          type="button"
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label="Open menu"
-          onClick={() => setMenuOpen(true)}
-          className="-mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#2B211D] active:bg-[#2B211D]/8"
+        <div
+          className="relative flex items-center gap-3 overflow-hidden rounded-[22px] pr-2.5 pl-3 transition-[height,background-color] duration-300 ease-out"
+          style={{
+            height: scrolled ? 58 : 70,
+            background: "rgba(250, 243, 233, 0.72)",
+            backdropFilter: "blur(20px) saturate(1.5)",
+            WebkitBackdropFilter: "blur(20px) saturate(1.5)",
+            border: "1px solid rgba(255, 252, 246, 0.6)",
+            boxShadow:
+              "0 10px 30px -18px rgba(60, 30, 18, 0.4), inset 0 1px 0 rgba(255,255,255,0.7)",
+          }}
         >
-          <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
-            <path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-        </button>
+          {/* etched elevation lines — material, not illustration */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              opacity: 0.045,
+              background:
+                "repeating-linear-gradient(90deg, #4A2418 0 1px, transparent 1px 14px)," +
+                "repeating-linear-gradient(0deg, #4A2418 0 1px, transparent 1px 22px)",
+            }}
+          />
+          {/* the wind pass */}
+          <span
+            aria-hidden="true"
+            className="foakh-sweep pointer-events-none absolute inset-y-0 w-1/3"
+            style={{
+              background:
+                "linear-gradient(100deg, transparent, rgba(255,255,255,0.65), transparent)",
+            }}
+          />
+
+          <a
+            href="#hero"
+            className="relative flex min-w-0 flex-1 items-center gap-2.5"
+            aria-label="Foakh Wind Corridor Enclave — top"
+          >
+            <Image
+              src="/foakh-mark.png"
+              alt=""
+              width={898}
+              height={958}
+              priority
+              className="w-auto shrink-0 transition-[height] duration-300 ease-out"
+              style={{ height: scrolled ? 30 : 36 }}
+            />
+            <span className="min-w-0">
+              <span
+                className="font-display block truncate leading-none font-semibold tracking-[0.01em] text-[#94432F] transition-[font-size] duration-300 ease-out"
+                style={{ fontSize: scrolled ? "1.02rem" : "1.14rem" }}
+              >
+                FOAKH
+              </span>
+              {/* the second line condenses away rather than disappearing */}
+              <span
+                className="block overflow-hidden text-[0.53rem] font-semibold tracking-[0.24em] whitespace-nowrap text-[#2B211D]/55 uppercase transition-all duration-300 ease-out"
+                style={{ maxHeight: scrolled ? 0 : 16, opacity: scrolled ? 0 : 1, marginTop: scrolled ? 0 : 3 }}
+              >
+                Wind Corridor Enclave
+              </span>
+            </span>
+          </a>
+
+          <MenuControl open={menuOpen} onToggle={() => setMenuOpen((v) => !v)} />
+        </div>
       </header>
 
       {menuOpen && (
@@ -326,28 +561,33 @@ export default function ChapterRail() {
           role="dialog"
           aria-modal="true"
           aria-label="Sections"
-          className="fixed inset-0 z-[calc(var(--z-header)+1)] flex flex-col overflow-y-auto bg-[#F5EDE3] px-5 lg:hidden"
+          /* the same pavilion, unfolded — not a separate white drawer */
+          className="fixed inset-x-3 z-[calc(var(--z-header)+1)] flex origin-top flex-col overflow-y-auto rounded-[22px] px-5 pb-6 lg:hidden motion-safe:animate-[foakh-unfold_360ms_cubic-bezier(0.22,1,0.36,1)]"
           style={{
-            paddingTop: "max(0.75rem, env(safe-area-inset-top))",
-            paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))",
+            top: "max(0.6rem, env(safe-area-inset-top))",
+            maxHeight: "calc(100dvh - max(1.2rem, env(safe-area-inset-top)) - env(safe-area-inset-bottom))",
+            paddingTop: "0.7rem",
+            background: "rgba(250, 243, 233, 0.9)",
+            backdropFilter: "blur(26px) saturate(1.5)",
+            WebkitBackdropFilter: "blur(26px) saturate(1.5)",
+            border: "1px solid rgba(255, 252, 246, 0.6)",
+            boxShadow: "0 24px 60px -28px rgba(60,30,18,0.55), inset 0 1px 0 rgba(255,255,255,0.7)",
           }}
         >
           {/* The drawer covers the header, so the header's own toggle is not
               reachable while it is open — the close control has to live in
               here. 44px, ink on cream, never tinted into the background. */}
-          <div className="flex items-start justify-between gap-4">
-            <Wordmark big />
-            <button
-              type="button"
-              onClick={() => setMenuOpen(false)}
-              aria-label="Close menu"
-              autoFocus
-              className="-mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#2B211D] text-[#F5EDE3] transition-transform active:scale-95"
-            >
-              <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true">
-                <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-              </svg>
-            </button>
+          <div className="flex items-center gap-3">
+            <Image src="/foakh-mark.png" alt="" width={898} height={958} className="h-9 w-auto shrink-0" />
+            <span className="min-w-0 flex-1">
+              <span className="font-display block text-[1.14rem] leading-none font-semibold tracking-[0.01em] text-[#94432F]">
+                FOAKH
+              </span>
+              <span className="mt-[3px] block text-[0.53rem] font-semibold tracking-[0.24em] text-[#2B211D]/55 uppercase">
+                Wind Corridor Enclave
+              </span>
+            </span>
+            <MenuControl open onToggle={() => setMenuOpen(false)} />
           </div>
 
           <ul className="mt-7 flex flex-col">
@@ -357,7 +597,7 @@ export default function ChapterRail() {
                   href={c.href}
                   onClick={() => setMenuOpen(false)}
                   aria-current={active === c.href ? "location" : undefined}
-                  className="flex min-h-[56px] items-center gap-4 border-b border-[#2B211D]/10 py-3"
+                  className="flex min-h-[58px] items-baseline gap-3 border-b border-[#94432F]/12 py-3"
                 >
                   <span
                     aria-hidden="true"

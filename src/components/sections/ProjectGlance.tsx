@@ -162,6 +162,7 @@ export default function ProjectGlance() {
         style={
           {
             "--stage-top": "calc(max(0.6rem, env(safe-area-inset-top)) + 4.9rem)",
+            "--stage-gap": "0.75rem",
           } as React.CSSProperties
         }
       >
@@ -169,10 +170,10 @@ export default function ProjectGlance() {
           portal sits on the same surface the next section begins from, so
           the two stages and the following section read as one passage. */}
       <div
-        className="sticky overflow-hidden rounded-t-[22px] lg:rounded-t-none"
+        className="sticky overflow-hidden rounded-[22px] lg:rounded-none"
         style={{
           top: "var(--stage-top)",
-          height: "calc(100svh - var(--stage-top))",
+          height: "calc(100svh - var(--stage-top) - var(--stage-gap))",
         }}
       >
         {/* THE FRAME — full-bleed scene that tightens into a portal */}

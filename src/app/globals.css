@@ -494,5 +494,6 @@ html {
 @media (min-width: 1024px) {
   [style*="--stage-top"] {
     --stage-top: 0px !important;
+    --stage-gap: 0px !important;
   }
 }

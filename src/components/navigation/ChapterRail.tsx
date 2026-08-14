@@ -181,22 +181,30 @@ function Wordmark({ big = false }: { big?: boolean }) {
    Air currents in the header glass
    ------------------------------------------------------------------ */
 
+const CURRENT_BOX = { w: 400, h: 70 };
+
+/** How far past the box each stream runs. A line crossing on a diagonal has
+ *  to be longer than the box is wide or its ends swing into view as it
+ *  rotates, so every stream is built well outside the frame and cropped. */
+const CURRENT_REACH = 520;
+
 /**
  * One wave as a run of cubic segments. Each half wavelength is a single
  * cubic whose two control points sit at 1/3 and 2/3 with the amplitude
  * scaled by 4/3 — at the midpoint a cubic returns three quarters of its
  * control height, so that factor lands the crest exactly on `amp`.
  *
- * The run starts a wavelength before the box and ends one past it, so the
- * line still covers the glass at both ends of its travel.
+ * Built along a horizontal axis and then rotated into place, so the travel
+ * animation is always "along the line" whatever direction the line runs.
  */
-function wavePath(period: number, amp: number, y: number, width: number) {
+function wavePath(period: number, amp: number, y: number) {
   const half = period / 2;
   const c = amp * 1.3333;
-  const spans = Math.ceil(width / period) + 2;
-  let d = `M ${-period} ${y}`;
+  const start = -CURRENT_REACH;
+  const spans = Math.ceil((CURRENT_REACH * 2) / period) + 1;
+  let d = `M ${start} ${y}`;
   for (let i = 0; i < spans; i++) {
-    const x = -period + i * period;
+    const x = start + i * period;
     d +=
       ` C ${(x + half / 3).toFixed(1)} ${(y - c).toFixed(1)}` +
       ` ${(x + (half * 2) / 3).toFixed(1)} ${(y - c).toFixed(1)}` +
@@ -209,21 +217,26 @@ function wavePath(period: number, amp: number, y: number, width: number) {
 }
 
 /**
- * Five streams, no two alike and no two on the same clock — wavelength,
- * amplitude, speed, direction and bob are all off from one another, and the
- * durations avoid common factors so the pattern does not visibly restart.
- * Written out rather than generated: random values at render time would not
- * survive hydration, and hand-chosen ones let the set stay balanced.
+ * Six streams, no two alike and no two on the same clock — angle,
+ * wavelength, amplitude, speed, direction and bob are all off from one
+ * another, and the durations share no common factor, so the set never falls
+ * into step and never visibly restarts.
+ *
+ * `angle` is what stops this reading as ruled lines: the streams cross the
+ * glass on their own headings, steep and shallow, up and down, the way air
+ * actually moves around a building rather than along a grid.
+ *
+ * Written out rather than generated — random values at render time would not
+ * survive hydration, and hand-chosen ones keep the set balanced.
  */
 const CURRENTS = [
-  { y: 11, period: 132, amp: 6, dur: 23, dir: 1, bob: 3, bobDur: 8.3, width: 1.1, opacity: 0.85 },
-  { y: 24, period: 88, amp: 3.4, dur: 17, dir: -1, bob: -2.2, bobDur: 11.7, width: 0.8, opacity: 0.6 },
-  { y: 35, period: 176, amp: 8, dur: 31, dir: 1, bob: 2.6, bobDur: 14.1, width: 1.3, opacity: 1 },
-  { y: 48, period: 104, amp: 4.6, dur: 19, dir: -1, bob: 3.4, bobDur: 9.9, width: 0.9, opacity: 0.7 },
-  { y: 60, period: 148, amp: 5.2, dur: 27, dir: 1, bob: -2.8, bobDur: 12.7, width: 1, opacity: 0.5 },
+  { y: 8, angle: -27, period: 128, amp: 7, dur: 6.2, dir: 1, bob: 4, bobDur: 3.7, width: 1.1, opacity: 0.85 },
+  { y: 22, angle: 14, period: 86, amp: 4, dur: 4.3, dir: -1, bob: -3.2, bobDur: 5.1, width: 0.8, opacity: 0.6 },
+  { y: 34, angle: -6, period: 172, amp: 9, dur: 8.1, dir: 1, bob: 3.6, bobDur: 4.3, width: 1.3, opacity: 1 },
+  { y: 44, angle: 31, period: 104, amp: 5, dur: 5.4, dir: -1, bob: 4.4, bobDur: 6.7, width: 0.9, opacity: 0.7 },
+  { y: 58, angle: -18, period: 146, amp: 6.4, dur: 7.3, dir: 1, bob: -3.8, bobDur: 3.1, width: 1, opacity: 0.55 },
+  { y: 66, angle: 23, period: 112, amp: 5.6, dur: 4.9, dir: -1, bob: 3, bobDur: 5.9, width: 0.85, opacity: 0.45 },
 ];
-
-const CURRENT_BOX = 400;
 
 /**
  * The etched surface of the header glass. This used to be a ruled grid —
@@ -499,17 +512,8 @@ export default function ChapterRail() {
               "0 10px 30px -18px rgba(60, 30, 18, 0.4), inset 0 1px 0 rgba(255,255,255,0.7)",
           }}
         >
-          {/* etched elevation lines — material, not illustration */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              opacity: 0.045,
-              background:
-                "repeating-linear-gradient(90deg, #4A2418 0 1px, transparent 1px 14px)," +
-                "repeating-linear-gradient(0deg, #4A2418 0 1px, transparent 1px 22px)",
-            }}
-          />
+          {/* etched air currents — material, not illustration */}
+          <HeaderCurrents />
           {/* the wind pass */}
           <span
             aria-hidden="true"

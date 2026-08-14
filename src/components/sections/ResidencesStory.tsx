@@ -904,7 +904,13 @@ function MobileInteriors() {
   }
 
   return (
-    <div ref={wrapRef} className="relative lg:hidden" style={{ height: `${n * 72}svh` }}>
+    <div
+      ref={wrapRef}
+      /* the phrase and the stack hold the full screen — no bar across them */
+      data-hide-header
+      className="relative lg:hidden"
+      style={{ height: `${n * 72}svh` }}
+    >
       <div className="sticky top-0 flex h-svh flex-col px-5 pt-14 pb-7">
         <p className="shrink-0 text-[0.62rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#E8CFA4" }}>
           Apartments &amp; Interiors

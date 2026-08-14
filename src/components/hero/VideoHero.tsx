@@ -96,6 +96,8 @@ export default function VideoHero() {
     <section
       id="hero"
       ref={sectionRef}
+      /* the film runs edge to edge — the mobile header steps aside for it */
+      data-hide-header
       className="relative z-10 flex min-h-svh items-end overflow-hidden lg:m-3 lg:min-h-[calc(100svh-1.5rem)] lg:rounded-3xl"
     >
       {/* background film */}

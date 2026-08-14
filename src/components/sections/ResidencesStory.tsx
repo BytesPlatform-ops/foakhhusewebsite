@@ -1392,20 +1392,23 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
                   transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] },
                 })}
           >
-            {/* the type name as a full-height watermark down the right
-                edge. It sits behind the copy at 6% so it reads as a printed
-                mark rather than a label competing for attention. */}
+            {/* the type name as a watermark set on the diagonal — reading
+                upward from the lower right rather than down the edge, and
+                large enough to be a printed mark rather than a label. The
+                card clips it, so it can rake off the corner without ever
+                widening the page. */}
             <span
               aria-hidden="true"
-              className="font-display pointer-events-none absolute -right-1 z-0 font-medium whitespace-nowrap uppercase select-none"
+              className="font-display pointer-events-none absolute z-0 font-medium whitespace-nowrap uppercase select-none"
               style={{
-                top: "50%",
-                transform: "translateY(-50%)",
-                writingMode: "vertical-rl",
-                fontSize: "clamp(4rem, 22vw, 7.5rem)",
-                letterSpacing: "0.12em",
-                lineHeight: 1,
-                opacity: c.duplex ? 0.16 : 0.11,
+                right: "-0.35em",
+                bottom: "6%",
+                transformOrigin: "100% 100%",
+                transform: "rotate(-27deg)",
+                fontSize: "clamp(5rem, 30vw, 11rem)",
+                letterSpacing: "0.06em",
+                lineHeight: 0.85,
+                opacity: c.duplex ? 0.17 : 0.12,
                 color: c.duplex ? "#EFD5A3" : "#94432F",
               }}
             >

@@ -438,12 +438,21 @@ function ProjectIntroduction() {
                   is what pushed the page wider than the viewport and left a
                   clipped half-card at the edge. Nothing here sets a width
                   now, so each card simply fills its column. */}
-              <div className="grid content-start gap-4 md:grid-cols-2">
+              <div className="grid content-start gap-4 pb-6 md:grid-cols-2 md:pb-0">
                 {HIGHLIGHTS.map((h, i) => (
                   <motion.div
                     key={h.title}
-                    className="min-w-0 rounded-[12px] border p-[18px] md:p-5"
-                    style={PANEL}
+                    /* mobile: each card sticks a little lower than the one
+                       before it, so the next slides up over the last and the
+                       set reads as layered panels. Static again from md,
+                       where the 2-column grid takes over. */
+                    className="min-w-0 rounded-[12px] border p-[18px] sticky md:static md:p-5"
+                    style={{
+                      ...PANEL,
+                      top: `calc(5.25rem + ${i * 0.6}rem)`,
+                      zIndex: i + 1,
+                      background: "rgb(255 249 240)",
+                    }}
                     {...(reduced
                       ? {}
                       : {

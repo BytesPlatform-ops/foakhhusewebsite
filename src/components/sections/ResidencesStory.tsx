@@ -993,10 +993,10 @@ function CategoryPanel({
           className="font-display pointer-events-none absolute top-1/2 right-[1vw] z-0 -translate-y-1/2 font-medium whitespace-nowrap uppercase select-none"
           style={{
             writingMode: "vertical-rl",
-            fontSize: "clamp(3rem, 6vw, 8rem)",
-            letterSpacing: "0.08em",
+            fontSize: "clamp(4rem, 8vw, 9rem)",
+            letterSpacing: "0.12em",
             lineHeight: 1,
-            opacity: 0.08,
+            opacity: 0.13,
             color: "#EFD5A3",
           }}
         >
@@ -1096,10 +1096,10 @@ function CategoryPanel({
         className="font-display pointer-events-none absolute top-1/2 right-[1vw] z-0 -translate-y-1/2 font-medium whitespace-nowrap uppercase select-none"
         style={{
           writingMode: "vertical-rl",
-          fontSize: "clamp(3rem, 6vw, 8rem)",
-          letterSpacing: "0.08em",
+          fontSize: "clamp(4rem, 8vw, 9rem)",
+          letterSpacing: "0.12em",
           lineHeight: 1,
-          opacity: 0.06,
+          opacity: 0.1,
           color: dup ? "#EFD5A3" : "#94432F",
         }}
       >
@@ -1396,10 +1396,10 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
                 top: "50%",
                 transform: "translateY(-50%)",
                 writingMode: "vertical-rl",
-                fontSize: "clamp(3rem, 15vw, 5.5rem)",
-                letterSpacing: "0.08em",
+                fontSize: "clamp(4rem, 22vw, 7.5rem)",
+                letterSpacing: "0.12em",
                 lineHeight: 1,
-                opacity: c.duplex ? 0.1 : 0.07,
+                opacity: c.duplex ? 0.16 : 0.11,
                 color: c.duplex ? "#EFD5A3" : "#94432F",
               }}
             >

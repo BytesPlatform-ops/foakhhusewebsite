@@ -491,10 +491,10 @@ function MobileSystems() {
   const headRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: headRaw } = useScroll({
     target: headRef,
-    offset: ["start 0.92", "end 0.08"],
+    offset: ["start 0.88", "end 0.62"],
   });
   const hp = useSpring(headRaw, { stiffness: 90, damping: 26, mass: 0.35 });
-  const headWash = useTransform(hp, [0, 0.18, 0.55], [0, 0.55, 0.92]);
+  const headWash = useTransform(hp, [0, 0.14, 0.44], [0, 0.6, 0.92]);
 
   /* the tab follows whichever stage holds the screen */
   useEffect(() => {
@@ -580,11 +580,11 @@ function MobileSystems() {
         </p>
         <h2 id="route-heading" className="font-display relative mt-3 text-[2.1rem] leading-[1.06] font-medium">
           <span className="sr-only">{HEADING_TEXT}</span>
-          <LitText p={hp} text={HEADING_TEXT} start={0.06} span={0.6} win={0.1} from={INK} to="#FFF8EF" />
+          <LitText p={hp} text={HEADING_TEXT} start={0.04} span={0.5} win={0.09} from={INK} to="#FFF8EF" />
         </h2>
         <p className="relative mt-3 text-[0.92rem] leading-relaxed">
           <span className="sr-only">{LEAD_TEXT}</span>
-          <LitText p={hp} text={LEAD_TEXT} start={0.34} span={0.58} win={0.07} from="rgba(43,33,29,0.82)" to="rgba(244,231,214,0.94)" />
+          <LitText p={hp} text={LEAD_TEXT} start={0.24} span={0.5} win={0.06} from="rgba(43,33,29,0.82)" to="rgba(244,231,214,0.94)" />
         </p>
       </div>
 

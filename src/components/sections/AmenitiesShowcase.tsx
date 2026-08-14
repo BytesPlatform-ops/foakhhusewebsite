@@ -158,7 +158,7 @@ export default function AmenitiesShowcase() {
     if (holdTimer.current) clearTimeout(holdTimer.current);
     holdTimer.current = setTimeout(() => {
       holdRef.current = false;
-    }, 6000);
+    }, 4500);
   };
   useEffect(
     () => () => {
@@ -202,7 +202,7 @@ export default function AmenitiesShowcase() {
     const id = setInterval(() => {
       if (!inView.current || document.hidden || controlsFocused.current || holdRef.current) return;
       setActive((s) => (s + 1) % N);
-    }, 4000);
+    }, 2600);
     return () => clearInterval(id);
   }, [reduced]);
 

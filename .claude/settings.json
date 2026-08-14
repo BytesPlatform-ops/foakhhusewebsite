@@ -15,7 +15,12 @@
       "Bash(curl -s http://localhost:3000)",
       "Bash(curl -s -o /dev/null -w \"status=%{http_code}\\\\n\" http://localhost:3000)",
       "Bash(node .qa/wm.mjs)",
-      "Bash(node .qa/w.mjs)"
+      "Bash(node .qa/w.mjs)",
+      "Bash(node .qa/chain.mjs)",
+      "Bash(curl -s -o /dev/null -w \"3000=%{http_code}\\\\n\" --max-time 8 http://localhost:3000)",
+      "Bash(kill 5152)",
+      "Bash(curl -s -o /dev/null -w \"3000=%{http_code}\\\\n\" --max-time 10 http://localhost:3000)",
+      "Bash(node .qa/v.mjs)"
     ],
     "additionalDirectories": [
       "/tmp",

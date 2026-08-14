@@ -42,7 +42,6 @@ next-env.d.ts
 
 # archival originals (4K sources) — served assets live in public/
 /assets-source/
-public/FWCE.pdf
 
 # oversized source media — transcode into public/ before use
 public/0729*.mp4

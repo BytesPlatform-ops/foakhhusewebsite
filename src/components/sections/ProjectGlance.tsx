@@ -4,6 +4,7 @@ import { useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
 import {
   motion,
+  type MotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -294,7 +295,7 @@ function ProjectIntroduction() {
         };
 
   return (
-    <div ref={ref} className="relative overflow-hidden bg-[#F5EDE3] pt-16 pb-16 lg:py-24">
+    <div ref={ref} className="relative overflow-x-clip bg-[#F5EDE3] pt-16 pb-16 md:overflow-hidden lg:py-24">
       {/* quiet ground outside the sheet — soft glow only, no drawing */}
       <div
         aria-hidden="true"
@@ -312,7 +313,7 @@ function ProjectIntroduction() {
         }
       >
         <div
-          className="grain relative overflow-hidden rounded-[8px] border p-5 sm:p-9 lg:p-12"
+          className="grain relative overflow-x-clip rounded-[8px] border p-5 sm:p-9 md:overflow-hidden lg:p-12"
           style={{
             background: "#F5EDE3",
             borderColor: "rgba(155,82,55,0.34)",
@@ -438,44 +439,35 @@ function ProjectIntroduction() {
                   is what pushed the page wider than the viewport and left a
                   clipped half-card at the edge. Nothing here sets a width
                   now, so each card simply fills its column. */}
-              <div className="grid content-start gap-4 pb-6 md:grid-cols-2 md:pb-0">
+              {/* md and up: the 2-column grid the sheet was designed around */}
+              <div className="hidden content-start gap-4 md:grid md:grid-cols-2">
                 {HIGHLIGHTS.map((h, i) => (
                   <motion.div
                     key={h.title}
-                    /* mobile: each card sticks a little lower than the one
-                       before it, so the next slides up over the last and the
-                       set reads as layered panels. Static again from md,
-                       where the 2-column grid takes over. */
-                    className="min-w-0 rounded-[12px] border p-[18px] sticky md:static md:p-5"
-                    style={{
-                      ...PANEL,
-                      top: `calc(5.25rem + ${i * 0.6}rem)`,
-                      zIndex: i + 1,
-                      background: "rgb(255 249 240)",
-                    }}
+                    className="min-w-0 rounded-[12px] border p-5"
+                    style={PANEL}
                     {...(reduced
                       ? {}
                       : {
                           initial: { opacity: 0, y: 20 },
                           whileInView: { opacity: 1, y: 0 },
                           viewport: { once: true, amount: 0.25 },
-                          transition: {
-                            duration: 0.5,
-                            delay: Math.min(i, 3) * 0.07,
-                            ease: [0.22, 1, 0.36, 1],
-                          },
+                          transition: { duration: 0.5, delay: Math.min(i, 3) * 0.07, ease: [0.22, 1, 0.36, 1] },
                         })}
                   >
                     <PanelCopy h={h} />
                   </motion.div>
                 ))}
               </div>
+
+              {/* below md: one card at a time, the next rising over the last */}
+              <HighlightDeck reduced={!!reduced} />
             </div>
 
             {/* bottom: closing statement + CTA */}
             <motion.div
               {...rise(0.5)}
-              className="mt-9 flex flex-col items-start gap-5 border-t pt-6 pb-[max(0px,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-between md:mt-10"
+              className="sticky bottom-0 z-20 mt-9 flex flex-col items-start gap-5 border-t bg-[#F7ECDE] pt-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:static md:mt-10 md:flex-row md:items-center md:justify-between md:bg-transparent md:pt-6 md:pb-0"
               style={{ borderColor: "rgba(155,82,55,0.28)" }}
             >
               <p className="text-[0.74rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#94432F" }}>
@@ -493,6 +485,106 @@ function ProjectIntroduction() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+
+/**
+ * The six highlights as a scroll-driven deck, below md only.
+ *
+ * One card holds the stage at a time; the next rises from the bottom and
+ * covers it, so the set reads as a deck being dealt rather than a list. The
+ * stage is a plain sticky element one viewport tall inside a dvh-sized
+ * wrapper, so no height is invented by script and nothing is left blank when
+ * the section ends. The CTA sits at the foot of the stage for the whole run
+ * and leaves with the section.
+ *
+ * NOTE: this needs an unclipped ancestor chain — `overflow: hidden` anywhere
+ * above silently disables position:sticky, which is exactly why an earlier
+ * attempt rendered as a flat list.
+ */
+function HighlightDeck({ reduced }: { reduced: boolean }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const n = HIGHLIGHTS.length;
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start start", "end end"],
+  });
+  const p = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.32 });
+
+  if (reduced) {
+    return (
+      <div className="grid gap-4 md:hidden">
+        {HIGHLIGHTS.map((h) => (
+          <div key={h.title} className="min-w-0 rounded-[12px] border p-[18px]" style={PANEL}>
+            <PanelCopy h={h} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div ref={wrapRef} className="relative md:hidden" style={{ height: `${n * 46}dvh` }}>
+      <div className="sticky top-0 flex h-dvh flex-col justify-center pt-[4.5rem] pb-3">
+        <div className="relative max-h-[34svh] min-h-[13rem] flex-1">
+          {HIGHLIGHTS.map((h, i) => (
+            <DeckCard key={h.title} h={h} i={i} n={n} p={p} />
+          ))}
+        </div>
+
+        {/* the button stays at the foot for the whole run */}
+        <div className="mt-4 shrink-0 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase" style={{ color: "#94432F" }}>
+            The future of responsible urban living starts here.
+          </p>
+          <a
+            href="#residences"
+            className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold"
+            style={{ background: "#94432F", color: "#FAF6F0" }}
+          >
+            Explore the Residences
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** One card: rises from below over the card before it, then holds. */
+function DeckCard({
+  h,
+  i,
+  n,
+  p,
+}: {
+  h: (typeof HIGHLIGHTS)[number];
+  i: number;
+  n: number;
+  p: MotionValue<number>;
+}) {
+  const seg = 1 / n;
+  const from = (i - 1) * seg;
+  const to = i * seg;
+  const y = useTransform(p, [from, to], i === 0 ? ["0%", "0%"] : ["102%", "0%"]);
+  /* the one underneath eases back a touch so the arrival reads as depth */
+  const depth = useTransform(p, [to, to + seg], [0, 1]);
+  const scale = useTransform(depth, [0, 1], [1, 0.965]);
+
+  return (
+    <motion.div
+      className="absolute inset-0 flex flex-col justify-center overflow-hidden rounded-[16px] border p-6"
+      style={{
+        ...PANEL,
+        background: "rgb(255 249 240)",
+        boxShadow: "0 -14px 38px -20px rgba(90,45,25,0.5)",
+        y,
+        scale,
+        zIndex: i + 1,
+      }}
+    >
+      <PanelCopy h={h} />
+    </motion.div>
   );
 }
 

@@ -121,10 +121,6 @@ function useHeaderHidden() {
 
   useEffect(() => {
     const zones = document.querySelectorAll("[data-hide-header]");
-    if (!zones.length) {
-      setHidden(false);
-      return;
-    }
     const covering = new Set<Element>();
     const io = new IntersectionObserver(
       (entries) => {
@@ -141,6 +137,9 @@ function useHeaderHidden() {
       { rootMargin: "0px 0px -90% 0px" },
     );
     zones.forEach((z) => io.observe(z));
+    /* A page with nothing opted in would never get a callback, and the bar
+       starts hidden — so reveal it rather than leaving it stuck off screen. */
+    if (!zones.length) queueMicrotask(() => setHidden(false));
     return () => io.disconnect();
   }, []);
 
@@ -282,6 +281,57 @@ function HeaderCurrents() {
         </g>
       ))}
     </svg>
+  );
+}
+
+/**
+ * Three lines, all flush left: FOAKH and ENCLAVE at the same size with the
+ * category between them, tracked out so it measures exactly as wide as the
+ * words above and below it. That equal measure is what makes the block read
+ * as one built object rather than three stacked words.
+ *
+ * The tracking is justified, not a fixed letter-spacing: each character is
+ * its own flex child and `justify-between` shares the slack out evenly, so
+ * the line matches the large words at any font size instead of only at the
+ * one where a hand-picked em value happened to land. A fixed value would
+ * also leave a trailing gap after the last letter and miss the right edge by
+ * exactly that much.
+ */
+const CATEGORY = "WIND CORRIDOR";
+
+function HeaderLockup({ compact = false }: { compact?: boolean }) {
+  const big = compact ? "1rem" : "1.2rem";
+  const name =
+    "font-display block leading-none font-semibold tracking-[0.01em] text-[#94432F] transition-[font-size] duration-300 ease-out";
+  return (
+    <span className="inline-block w-fit min-w-0 whitespace-nowrap">
+      <span className={name} style={{ fontSize: big }}>
+        FOAKH
+      </span>
+
+      <span
+        aria-hidden="true"
+        className="flex w-full justify-between leading-none font-semibold text-[#2B211D]/55 transition-[font-size,margin] duration-300 ease-out"
+        style={{
+          fontSize: compact ? "0.44rem" : "0.5rem",
+          margin: compact ? "4px 0" : "5px 0",
+        }}
+      >
+        {CATEGORY.split("").map((ch, i) => (
+          /* the word gap is a spacer of its own, so it stays wider than the
+             letter gaps once the slack is shared out and the two words do
+             not run together */
+          <span key={i} style={ch === " " ? { width: "0.5em" } : undefined}>
+            {ch === " " ? "" : ch}
+          </span>
+        ))}
+      </span>
+      <span className="sr-only">Wind Corridor</span>
+
+      <span className={name} style={{ fontSize: big }}>
+        ENCLAVE
+      </span>
+    </span>
   );
 }
 
@@ -541,21 +591,7 @@ export default function ChapterRail() {
               className="w-auto shrink-0 transition-[height] duration-300 ease-out"
               style={{ height: scrolled ? 30 : 36 }}
             />
-            <span className="min-w-0">
-              <span
-                className="font-display block truncate leading-none font-semibold tracking-[0.01em] text-[#94432F] transition-[font-size] duration-300 ease-out"
-                style={{ fontSize: scrolled ? "1.02rem" : "1.14rem" }}
-              >
-                FOAKH
-              </span>
-              {/* the second line condenses away rather than disappearing */}
-              <span
-                className="block overflow-hidden text-[0.53rem] font-semibold tracking-[0.24em] whitespace-nowrap text-[#2B211D]/55 uppercase transition-all duration-300 ease-out"
-                style={{ maxHeight: scrolled ? 0 : 16, opacity: scrolled ? 0 : 1, marginTop: scrolled ? 0 : 3 }}
-              >
-                Wind Corridor Enclave
-              </span>
-            </span>
+            <HeaderLockup compact={scrolled} />
           </a>
 
           <MenuControl open={menuOpen} onToggle={() => setMenuOpen((v) => !v)} />
@@ -587,12 +623,7 @@ export default function ChapterRail() {
           <div className="flex items-center gap-3">
             <Image src="/foakh-mark.png" alt="" width={898} height={958} className="h-9 w-auto shrink-0" />
             <span className="min-w-0 flex-1">
-              <span className="font-display block text-[1.14rem] leading-none font-semibold tracking-[0.01em] text-[#94432F]">
-                FOAKH
-              </span>
-              <span className="mt-[3px] block text-[0.53rem] font-semibold tracking-[0.24em] text-[#2B211D]/55 uppercase">
-                Wind Corridor Enclave
-              </span>
+              <HeaderLockup />
             </span>
             <MenuControl open onToggle={() => setMenuOpen(false)} />
           </div>

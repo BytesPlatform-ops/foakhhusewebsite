@@ -1000,7 +1000,7 @@ function CategoryPanel({
           style={{
             writingMode: "vertical-rl",
             transform: "translateY(-50%) rotate(180deg)",
-            fontSize: "clamp(4rem, 8vw, 9rem)",
+            fontSize: "clamp(5rem, 11vw, 13rem)",
             letterSpacing: "0.12em",
             lineHeight: 1,
             opacity: 0.13,
@@ -1104,7 +1104,7 @@ function CategoryPanel({
         style={{
           writingMode: "vertical-rl",
           transform: "translateY(-50%) rotate(180deg)",
-          fontSize: "clamp(4rem, 8vw, 9rem)",
+          fontSize: "clamp(5rem, 11vw, 13rem)",
           letterSpacing: "0.12em",
           lineHeight: 1,
           opacity: 0.1,
@@ -1409,7 +1409,7 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
                    sits at the bottom and the word climbs the edge */
                 writingMode: "vertical-rl",
                 transform: "translateY(-50%) rotate(180deg)",
-                fontSize: "clamp(4.5rem, 26vw, 9rem)",
+                fontSize: "clamp(6rem, 36vw, 13rem)",
                 letterSpacing: "0.08em",
                 lineHeight: 1,
                 opacity: c.duplex ? 0.17 : 0.12,

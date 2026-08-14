@@ -401,7 +401,7 @@ function ProjectIntroduction() {
                   is just a pale box with a 34px glow around it. */}
               <motion.div
                 {...rise(0.08)}
-                className="rounded-md p-0 sm:p-5 lg:bg-[rgba(247,236,222,0.82)] lg:shadow-[0_0_34px_22px_rgba(247,236,222,0.82)]"
+                className="hidden rounded-md p-0 sm:p-5 md:block lg:bg-[rgba(247,236,222,0.82)] lg:shadow-[0_0_34px_22px_rgba(247,236,222,0.82)]"
               >
                 <p className="max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]" style={{ color: "#625750" }}>
                   Foakh Wind Corridor Enclave is an exclusive 12-storey residential development
@@ -462,6 +462,23 @@ function ProjectIntroduction() {
 
               {/* below md: one card at a time, the next rising over the last */}
               <HighlightDeck reduced={!!reduced} />
+
+              {/* the savings claim and the qualification it must carry —
+                  below the deck on mobile, where the stage has no room */}
+              <div className="md:hidden">
+                <p className="text-[0.86rem] leading-[1.6]" style={{ color: "#625750" }}>
+                  Together, these systems are intended to enhance natural ventilation, reduce
+                  heat buildup and lower dependence on conventional cooling and grid
+                  electricity. Based on optimum engineering performance, residents may benefit
+                  from electricity-bill savings of up to 75%.
+                </p>
+                <p
+                  className="mt-4 border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"
+                  style={{ color: "rgba(81,68,61,0.85)", borderColor: "rgba(199,140,73,0.6)" }}
+                >
+                  {SAVINGS_NOTE}
+                </p>
+              </div>
             </div>
 
             {/* bottom: closing statement + CTA */}
@@ -526,8 +543,26 @@ function HighlightDeck({ reduced }: { reduced: boolean }) {
 
   return (
     <div ref={wrapRef} className="relative md:hidden" style={{ height: `${n * 40}dvh` }}>
-      <div className="sticky top-0 flex h-dvh flex-col pt-[4.5rem] pb-3">
-        <div className="relative my-auto h-[22svh] max-h-[13rem] min-h-[9.5rem] w-full">
+      <div className="sticky top-0 flex h-dvh flex-col pt-[4.25rem] pb-3">
+        {/* the sheet's introduction rides the stage on mobile, so the space
+            above the card carries the reading rather than sitting empty */}
+        <div className="min-h-0 flex-1 overflow-hidden">
+          <p className="text-[0.86rem] leading-[1.6]" style={{ color: "#625750" }}>
+            Foakh Wind Corridor Enclave is an exclusive 12-storey residential development in
+            DHA City, Karachi, comprising Umer Block and Abdullah Block. With 160 carefully
+            planned apartments and eight duplex penthouses with independent swimming pools, the
+            development brings together privacy, spacious living and a distinctive contemporary
+            architectural identity.
+          </p>
+          <p className="mt-3 text-[0.86rem] leading-[1.6]" style={{ color: "#625750" }}>
+            The project has been conceived around the intelligent use of natural resources. Wind
+            turbines, solar energy and kite energy form part of its renewable-energy strategy,
+            while a dedicated wind-catcher system captures high-velocity natural air and directs
+            it through the development.
+          </p>
+        </div>
+
+        <div className="relative mt-3 h-[20svh] max-h-[12rem] min-h-[9rem] w-full shrink-0">
           {HIGHLIGHTS.map((h, i) => (
             <DeckCard key={h.title} h={h} i={i} n={n} p={p} />
           ))}

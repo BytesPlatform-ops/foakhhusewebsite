@@ -562,14 +562,14 @@ function HighlightDeck({ reduced }: { reduced: boolean }) {
           </p>
         </div>
 
-        <div className="relative mt-3 h-[20svh] max-h-[12rem] min-h-[9rem] w-full shrink-0">
+        <div className="relative mt-3 h-[22svh] max-h-[13rem] min-h-[10.5rem] w-full shrink-0">
           {HIGHLIGHTS.map((h, i) => (
             <DeckCard key={h.title} h={h} i={i} n={n} p={p} />
           ))}
         </div>
 
         {/* the button stays at the foot for the whole run */}
-        <div className="mt-4 shrink-0 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+        <div className="relative z-20 mt-4 shrink-0 bg-[#F7ECDE] pt-2 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
           <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase" style={{ color: "#94432F" }}>
             The future of responsible urban living starts here.
           </p>

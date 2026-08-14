@@ -212,19 +212,19 @@ export default function VideoHero() {
       />
 
       {/* content */}
-      <div className="relative z-10 mx-auto w-full max-w-(--container-page) px-(--spacing-gutter) pt-28 pb-10 lg:pb-14">
+      <div className="relative z-10 mx-auto w-full max-w-(--container-page) px-(--spacing-gutter) pt-20 pb-16 sm:pt-28 sm:pb-10 lg:pb-14">
         <p className="mb-4 text-[0.65rem] font-medium tracking-[0.3em] text-[#C99355] uppercase">
           DHA City · Karachi
         </p>
         <h1 className="font-display max-w-[14ch] text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[1.02] font-semibold tracking-[-0.01em] text-[#F5EDE3] text-balance">
           Where nature powers <em className="italic">modern living.</em>
         </h1>
-        <p className="mt-5 max-w-md text-[0.85rem] leading-relaxed font-light text-[#EEE1D3]/85 md:text-[0.95rem]">
+        <p className="mt-4 max-w-md text-[0.82rem] leading-relaxed font-light text-[#EEE1D3]/85 sm:mt-5 sm:text-[0.85rem] md:text-[0.95rem]">
           A future-focused residential development shaped around natural airflow, renewable
           energy, resilient water planning and refined family living.
         </p>
 
-        <div className="mt-7 flex flex-wrap items-center gap-3">
+        <div className="mt-5 flex flex-wrap items-center gap-2.5 sm:mt-7 sm:gap-3">
           <a
             href="#enquire"
             className="rounded-lg bg-[#C99355] px-6 py-3 text-sm font-semibold tracking-wide text-[#2B211D] transition-colors hover:bg-[#B8935A]"
@@ -247,31 +247,32 @@ export default function VideoHero() {
         </div>
 
         {/* compact facts rail */}
-        <dl className="mt-10 flex w-fit flex-wrap items-start rounded-xl border border-[#C99355]/25 bg-[#2B211D]/50 px-2 py-4 backdrop-blur-md">
+        <p className="mt-4 max-w-md sm:mt-5 text-[0.66rem] leading-snug tracking-[0.06em] text-[#EEE1D3]/70 sm:mt-3 sm:text-[0.7rem] sm:tracking-[0.08em]">
+          Eight exclusive duplex penthouses with independent swimming pools.
+        </p>
+        <dl className="mt-5 flex w-full items-stretch rounded-xl border border-[#C99355]/25 bg-[#2B211D]/50 px-1 py-3 backdrop-blur-md sm:mt-10 sm:w-fit sm:flex-wrap sm:items-start sm:px-2 sm:py-4">
           {FACTS.map((fact, i) => (
             <div
               key={fact.label}
-              className={`px-5 ${i > 0 ? "border-l border-[#F5EDE3]/12" : ""}`}
+              className={`min-w-0 flex-1 px-2 sm:flex-none sm:px-5 ${i > 0 ? "border-l border-[#F5EDE3]/12" : ""}`}
             >
               <dt className="sr-only">{fact.label}</dt>
               <dd>
                 <span
                   className={`font-display block leading-none font-semibold text-[#F5EDE3] ${
-                    i === 2 ? "text-[2.6rem]" : "text-[2.1rem]"
+                    i === 2 ? "text-[1.5rem] sm:text-[2.6rem]" : "text-[1.35rem] sm:text-[2.1rem]"
                   }`}
                 >
                   {fact.value}
                 </span>
-                <span className="mt-1.5 block max-w-[7rem] text-[0.6rem] tracking-[0.14em] text-[#C99355] uppercase">
+                <span className="mt-1 block text-[0.46rem] leading-[1.25] tracking-[0.1em] text-[#C99355] uppercase sm:mt-1.5 sm:max-w-[7rem] sm:text-[0.6rem] sm:tracking-[0.14em]">
                   {fact.label}
                 </span>
               </dd>
             </div>
           ))}
         </dl>
-        <p className="mt-3 max-w-md text-[0.7rem] tracking-[0.08em] text-[#EEE1D3]/70">
-          Eight exclusive duplex penthouses with independent swimming pools.
-        </p>
+        
       </div>
     </section>
   );

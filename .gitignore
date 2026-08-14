@@ -45,3 +45,5 @@ next-env.d.ts
 
 # oversized source media — transcode into public/ before use
 public/0729*.mp4
+
+.qa/

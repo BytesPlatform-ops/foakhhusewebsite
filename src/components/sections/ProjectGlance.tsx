@@ -467,7 +467,7 @@ function ProjectIntroduction() {
             {/* bottom: closing statement + CTA */}
             <motion.div
               {...rise(0.5)}
-              className="sticky bottom-0 z-20 mt-9 flex flex-col items-start gap-5 border-t bg-[#F7ECDE] pt-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:static md:mt-10 md:flex-row md:items-center md:justify-between md:bg-transparent md:pt-6 md:pb-0"
+              className="mt-9 hidden flex-col items-start gap-5 border-t pt-6 md:mt-10 md:flex md:flex-row md:items-center md:justify-between"
               style={{ borderColor: "rgba(155,82,55,0.28)" }}
             >
               <p className="text-[0.74rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#94432F" }}>
@@ -525,9 +525,9 @@ function HighlightDeck({ reduced }: { reduced: boolean }) {
   }
 
   return (
-    <div ref={wrapRef} className="relative md:hidden" style={{ height: `${n * 46}dvh` }}>
-      <div className="sticky top-0 flex h-dvh flex-col justify-center pt-[4.5rem] pb-3">
-        <div className="relative max-h-[34svh] min-h-[13rem] flex-1">
+    <div ref={wrapRef} className="relative md:hidden" style={{ height: `${n * 40}dvh` }}>
+      <div className="sticky top-0 flex h-dvh flex-col pt-[4.5rem] pb-3">
+        <div className="relative my-auto h-[22svh] max-h-[13rem] min-h-[9.5rem] w-full">
           {HIGHLIGHTS.map((h, i) => (
             <DeckCard key={h.title} h={h} i={i} n={n} p={p} />
           ))}
@@ -573,7 +573,7 @@ function DeckCard({
 
   return (
     <motion.div
-      className="absolute inset-0 flex flex-col justify-center overflow-hidden rounded-[16px] border p-6"
+      className="absolute inset-0 flex flex-col justify-center overflow-hidden rounded-[16px] border px-5 py-4"
       style={{
         ...PANEL,
         background: "rgb(255 249 240)",

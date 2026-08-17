@@ -29,6 +29,67 @@ const FACTS = [
   { value: "08", label: "Duplex Penthouses" },
 ];
 
+/** The headline's closing phrase, rotating slowly through one idea. */
+const LIVING_PHRASES = [
+  "modern living.",
+  "refined living.",
+  "future living.",
+  "elevated living.",
+  "thoughtful living.",
+  "nature-led living.",
+];
+
+/** how long each phrase holds before the next one takes its place */
+const PHRASE_HOLD_MS = 3400;
+
+/**
+ * The rotating closing phrase.
+ *
+ * Every variant is laid into the same grid cell — the invisible copies
+ * reserve the width of the longest, so "nature-led" arriving after "future"
+ * cannot re-wrap the headline or nudge anything below it. Only opacity, a
+ * few pixels of travel and a blur pass are animated, which is what keeps it
+ * reading as a slow dissolve rather than a ticker.
+ */
+function RotatingPhrase({ reduced }: { reduced: boolean }) {
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    if (reduced) return;
+    const t = setInterval(() => setI((v) => (v + 1) % LIVING_PHRASES.length), PHRASE_HOLD_MS);
+    return () => clearInterval(t);
+  }, [reduced]);
+
+  /* reduced motion gets the first phrase, held — no cycling, no blur */
+  if (reduced) {
+    return <em className="mt-1 block italic">{LIVING_PHRASES[0]}</em>;
+  }
+
+  return (
+    <span className="mt-1 grid">
+      {LIVING_PHRASES.map((phrase) => (
+        <em key={phrase} aria-hidden="true" className="col-start-1 row-start-1 invisible italic">
+          {phrase}
+        </em>
+      ))}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.em
+          key={LIVING_PHRASES[i]}
+          className="col-start-1 row-start-1 italic"
+          initial={{ opacity: 0, y: 12, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+          transition={{ duration: 0.75, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          {LIVING_PHRASES[i]}
+        </motion.em>
+      </AnimatePresence>
+      {/* the whole rotation announced once, rather than on every change */}
+      <span className="sr-only">modern living.</span>
+    </span>
+  );
+}
+
 export default function VideoHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -219,31 +280,41 @@ export default function VideoHero() {
         <p className="mb-4 text-[0.65rem] font-medium tracking-[0.3em] text-[#C99355] uppercase">
           {FOAKH_PROJECT.localityLabel}
         </p>
-        <h1 className="font-display max-w-[14ch] text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[1.02] font-semibold tracking-[-0.01em] text-[#F5EDE3] text-balance">
-          Where nature powers <em className="italic">modern living.</em>
+        <h1
+          aria-label="Where nature powers modern living."
+          className="font-display max-w-[14ch] text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[1.02] font-semibold tracking-[-0.01em] text-[#F5EDE3]"
+        >
+          <span aria-hidden="true">Where nature powers</span>
+          <span aria-hidden="true">
+            <RotatingPhrase reduced={!!reduced} />
+          </span>
         </h1>
         <p className="mt-4 max-w-md text-[0.82rem] leading-relaxed font-light text-[#EEE1D3]/85 sm:mt-5 sm:text-[0.85rem] md:text-[0.95rem]">
           A future-focused residential development shaped around natural airflow, renewable
           energy, resilient water planning and refined family living.
         </p>
 
-        <div className="mt-5 flex flex-wrap items-center gap-2.5 sm:mt-7 sm:gap-3">
+        {/* On the phone the three actions are a two-row grid — the primary
+            action takes the full width, the two secondary ones share the row
+            beneath it. Brochure is a first-class action here, not an
+            sm-and-up extra. From sm the row runs inline as before. */}
+        <div className="mt-5 grid grid-cols-2 gap-2.5 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
           <a
             href="#enquire"
-            className="rounded-lg bg-[#C99355] px-6 py-3 text-sm font-semibold tracking-wide text-[#2B211D] transition-colors hover:bg-[#B8935A]"
+            className="col-span-2 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#C99355] px-4 py-3 text-center text-[0.82rem] font-semibold tracking-wide text-[#2B211D] transition-colors duration-300 ease-out hover:bg-[#B8935A] sm:px-6 sm:text-sm"
           >
             Register Interest
           </a>
           <a
             href="#residences"
-            className="rounded-lg border border-[#C99355]/55 bg-[#2B211D]/30 px-6 py-3 text-sm font-medium text-[#F5EDE3] backdrop-blur-sm transition-colors hover:bg-[#2B211D]/55"
+            className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#C99355]/55 bg-[#2B211D]/30 px-3 py-2.5 text-center text-[0.76rem] leading-tight font-medium text-[#F5EDE3] backdrop-blur-sm transition-colors duration-300 ease-out hover:bg-[#2B211D]/55 sm:px-6 sm:py-3 sm:text-sm"
           >
             Explore the Residences
           </a>
           <a
             href="/FWCE.pdf"
             download
-            className="hidden rounded-lg border border-[#F5EDE3]/35 px-6 py-3 text-sm font-medium text-[#F5EDE3] backdrop-blur-sm transition-colors hover:bg-[#2B211D]/40 sm:inline"
+            className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#F5EDE3]/35 bg-[#2B211D]/20 px-3 py-2.5 text-center text-[0.76rem] leading-tight font-medium text-[#F5EDE3] backdrop-blur-sm transition-colors duration-300 ease-out hover:bg-[#2B211D]/40 sm:bg-transparent sm:px-6 sm:py-3 sm:text-sm"
           >
             Download Brochure
           </a>

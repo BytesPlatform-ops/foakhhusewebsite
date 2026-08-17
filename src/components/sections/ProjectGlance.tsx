@@ -90,8 +90,12 @@ function PanelCopy({ h }: { h: (typeof HIGHLIGHTS)[number] }) {
   );
 }
 
+/** The claim, led by the intent; the qualification follows it rather than
+ *  opening the paragraph. Both always render together. */
+const SAVINGS_LEAD =
+  "The project has been envisioned to support meaningful long-term energy efficiency. Under favourable operating conditions and according to engineering performance, residents will benefit from substantial electricity-cost reduction potential.";
 const SAVINGS_NOTE =
-  "Projected savings are based on optimum engineering performance and may vary according to wind conditions, solar output, occupancy, appliance usage, tariff changes and final system specifications.";
+  "Actual performance may vary depending on environmental conditions, occupancy patterns, appliance usage, tariff structures and final implemented system specifications.";
 
 export default function ProjectGlance() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -505,10 +509,9 @@ function ProjectIntroduction() {
                   high-velocity natural air and directs it through the development.
                 </p>
                 <p className="mt-4 max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]" style={{ color: "#625750" }}>
-                  Together, these systems are intended to enhance natural ventilation, reduce
-                  heat buildup and lower dependence on conventional cooling and grid
-                  electricity. Based on optimum engineering performance, residents may benefit
-                  from electricity-bill savings of up to 75%.
+                  Together, these systems are designed to enhance natural ventilation, moderate
+                  heat gain and reduce reliance on conventional cooling and grid electricity.{" "}
+                  {SAVINGS_LEAD}
                 </p>
                 <p
                   className="mt-4 max-w-[62ch] border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"
@@ -553,10 +556,9 @@ function ProjectIntroduction() {
             {/* the savings claim and the qualification it must carry */}
             <div className="mt-10 md:hidden">
               <p className="text-[0.88rem] leading-[1.65]" style={{ color: "#625750" }}>
-                Together, these systems are intended to enhance natural ventilation, reduce
-                heat buildup and lower dependence on conventional cooling and grid electricity.
-                Based on optimum engineering performance, residents may benefit from
-                electricity-bill savings of up to 75%.
+                Together, these systems are designed to enhance natural ventilation, moderate
+                heat gain and reduce reliance on conventional cooling and grid electricity.
+                {" "}{SAVINGS_LEAD}
               </p>
               <p
                 className="mt-4 border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"

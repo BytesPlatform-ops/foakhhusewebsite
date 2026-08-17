@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { M } from "@/components/shared/useIsMobile";
 import AmenitiesShowcase from "./AmenitiesShowcase";
+import ApartmentTypes from "@/components/residences/ApartmentTypes";
 import {
   AnimatePresence,
   motion,
@@ -245,7 +246,12 @@ export default function ResidencesStory() {
         } as React.CSSProperties
       }
     >
-      {/* ==================== 03A — RESIDENCE CATEGORIES =============== */}
+      {/* ============ 03A — APARTMENT TYPES (the floor plans) ==========
+          Ahead of the categories on purpose: the shape of the home is the
+          first decision, the level of finish is the second. */}
+      <ApartmentTypes />
+
+      {/* ==================== 03B — RESIDENCE CATEGORIES =============== */}
       <ResidenceCategories reduced={!!reduced} />
 
       {/* ---- Apartments & Interiors — the deck's introduction ------- */}

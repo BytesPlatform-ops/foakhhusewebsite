@@ -67,8 +67,9 @@ export default function FinalCTA() {
           ))}
         </ul>
         <p className="text-ivory/60 mt-6 max-w-2xl text-xs leading-relaxed">
-          No returns, appreciation or rental yields are guaranteed. Project features described
-          as planned remain subject to final engineering and approvals.
+          Foakh Wind Corridor Enclave is presented as a residential lifestyle and ownership
+          opportunity shaped around design, comfort and future-ready planning. Project
+          features described as planned remain subject to final engineering and approvals.
         </p>
 
         {/* ---- The dusk composition + enquiry ---- */}

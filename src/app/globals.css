@@ -431,6 +431,20 @@ html {
   min-width: 0;
 }
 
+/* Project notes: real <details>, open by default at every width.
+   They are NOT collapsed-by-default-then-forced-open-in-CSS: modern engines
+   hide a closed details through ::details-content rather than by setting
+   display:none on its children, so that override silently fails and the
+   copy becomes unreachable. Open markup + a working native control needs no
+   engine-specific rule and cannot hide the notes by accident. */
+.note > summary::-webkit-details-marker { display: none; }
+.note > summary { list-style: none; }
+.note[open] > summary .note-chevron { transform: rotate(45deg); }
+.note > summary .note-chevron {
+  display: inline-block;
+  transition: transform 320ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
 .tab-capsule {
   min-width: 0;
   padding-inline: clamp(0.6rem, 4.2vw, 1rem);

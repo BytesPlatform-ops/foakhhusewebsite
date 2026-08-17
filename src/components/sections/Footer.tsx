@@ -39,6 +39,34 @@ const SOCIAL = [
  *  record so the footer can never drift from the confirmed location. */
 const ADDRESS = FOAKH_PROJECT.addressLines;
 
+/**
+ * The project's clarifications, written to lead with intent and close with
+ * the qualification — the substance is unchanged, the register is not.
+ * Nothing here is a claim the project has not made elsewhere on the page.
+ */
+const PROJECT_NOTES = [
+  {
+    title: "A future-ready environmental vision",
+    body:
+      "Foakh Wind Corridor Enclave has been thoughtfully conceived around a future-ready environmental vision. Natural airflow design, wind-responsive planning, renewable-energy integration and water-support systems are incorporated as part of the project intent, in alignment with final engineering development.",
+  },
+  {
+    title: "Long-term energy efficiency",
+    body:
+      "The project has been envisioned to support meaningful long-term energy efficiency. Under favourable operating conditions and according to engineering performance, residents will benefit from substantial electricity-cost reduction potential. Actual performance may vary depending on environmental conditions, occupancy patterns, appliance usage, tariff structures and final implemented system specifications.",
+  },
+  {
+    title: "About the visual material",
+    body:
+      "The visual material presented on this website is developed from the approved design direction and physical project model to illustrate the project character, spatial vision and architectural intent.",
+  },
+  {
+    title: "A residential ownership opportunity",
+    body:
+      "Foakh Wind Corridor Enclave is presented as a residential lifestyle and ownership opportunity shaped around design, comfort and future-ready planning. Project features described as planned remain subject to final engineering and approvals.",
+  },
+];
+
 function Icon({ name }: { name: "phone" | "whatsapp" | "pin" | "Facebook" | "Instagram" }) {
   const common = { width: 15, height: 15, viewBox: "0 0 24 24", "aria-hidden": true as const };
   if (name === "phone")
@@ -179,25 +207,36 @@ export default function Footer() {
           </nav>
         </div>
 
-        {/* ---------------- disclaimers -------------------------------- */}
-        <div className="border-ivory/10 mt-12 space-y-2 border-t pt-6 text-xs leading-relaxed">
-          <p>
-            Natural-technology systems — wind catcher, corridor airflow, wind turbines, solar
-            support and water treatment/desalination — are planned and remain subject to final
-            engineering, approvals and system specifications.
-          </p>
-          <p>
-            Potential electricity-bill savings of up to 75% are projections based on optimum
-            engineering performance; savings may vary according to wind conditions, solar
-            output, occupancy, appliance usage, tariff changes and final system
-            specifications.
-          </p>
-          <p>
-            Architectural visuals on this site are schematic concepts derived from the physical
-            scale model. They are not survey drawings and not completed-construction
-            photography.
-          </p>
-        </div>
+        {/* ---------------- project notes ------------------------------
+            The same clarifications, but written as part of the project's
+            story rather than as a legal footnote — each one leads with the
+            intent and follows with the qualification. On the phone they are
+            native <details>, so the footer stays short and nothing needs
+            JavaScript; from md the accordion is neutralised in CSS and all
+            four read as an open two-column set. */}
+        <section aria-labelledby="project-notes" className="border-ivory/10 mt-12 border-t pt-8">
+          <h2
+            id="project-notes"
+            className="text-champagne/80 text-[0.62rem] font-semibold tracking-[0.24em] uppercase"
+          >
+            Project Notes
+          </h2>
+          <div className="mt-5 grid gap-x-10 gap-y-1 md:grid-cols-2 md:gap-y-6">
+            {PROJECT_NOTES.map((note) => (
+              <details key={note.title} open className="note border-ivory/10 border-b md:border-b-0">
+                <summary className="text-ivory/85 flex min-h-11 cursor-pointer items-center justify-between gap-4 text-[0.8rem] font-medium md:min-h-0 md:text-[0.72rem] md:font-semibold md:tracking-[0.16em] md:uppercase">
+                  {note.title}
+                  <span aria-hidden="true" className="note-chevron text-champagne/70">
+                    +
+                  </span>
+                </summary>
+                <p className="text-ivory/60 pb-4 text-xs leading-relaxed md:mt-2 md:pb-0">
+                  {note.body}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
 
         <div className="border-ivory/10 mt-6 flex flex-col gap-3 border-t pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
           <p className="text-ivory/55">

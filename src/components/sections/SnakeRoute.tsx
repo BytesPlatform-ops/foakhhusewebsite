@@ -385,16 +385,28 @@ export default function SnakeRoute() {
    panel's corners rather than becoming full-width blocks. "Arrival" is a
    transition state on desktop, not content, so it is not offered as a tab. */
 
+/** The frames that carry the project's two innovations. Named by source so
+ *  the desktop stage and the phone cannot drift apart on which they are. */
+const EMPHASIS_FRAMES = new Set(["/sys-kite.jpg", "/sys-atmospheric-water.jpg"]);
+
 function MobileStill({
   f,
   className,
   width,
   index,
+  emphasis = false,
+  active = true,
 }: {
   f: StageFrame;
   className: string;
   width: string;
   index: number;
+  /** the one frame in its stage that carries the idea — given a slow float
+   *  and a champagne ring so it reads as the innovation, not a third photo */
+  emphasis?: boolean;
+  /** whether its stage is the one currently holding the screen: the active
+   *  system's stills come forward, the others sit back a step */
+  active?: boolean;
 }) {
   const reduced = useReducedMotion();
   /* These were built in discrete courses like the desktop stage. On a phone
@@ -414,11 +426,41 @@ function MobileStill({
       initial={reduced ? undefined : "raw"}
       whileInView={reduced ? undefined : "built"}
       viewport={{ once: true, amount: 0.3 }}
-      className={`absolute z-20 ${className}`}
+      className={`absolute ${emphasis ? "z-30" : "z-20"} ${className}`}
       style={{ width }}
+      /* a slow rise and fall, closer to a tethered wing holding station than
+         to a UI animation — long period, a few pixels of travel */
+      animate={reduced || !emphasis ? undefined : { y: [0, -7, 0] }}
+      transition={
+        reduced || !emphasis
+          ? undefined
+          : { duration: 6.5, repeat: Infinity, ease: "easeInOut" }
+      }
     >
+      {/* THE SPOTLIGHT — the active system's stills come forward a step and
+          the others fall back. Scale and opacity only, so nothing reflows
+          and the panels underneath never move. */}
       <motion.div
-        className="glass-light overflow-hidden rounded-[12px] p-1"
+        className="relative"
+        animate={reduced ? undefined : { scale: active ? 1 : 0.945, opacity: active ? 1 : 0.72 }}
+        transition={{ duration: 0.62, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+      {emphasis && !reduced && (
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-1.5 rounded-[16px] border"
+          style={{ borderColor: "rgba(201,147,85,0.65)" }}
+          animate={{ opacity: [0.15, 0.5, 0.15], scale: [1, 1.035, 1] }}
+          transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+        />
+      )}
+      <motion.div
+        className="glass-light relative overflow-hidden rounded-[12px] p-1"
+        style={
+          emphasis
+            ? { boxShadow: "0 18px 40px -20px rgba(148,63,45,0.6)" }
+            : undefined
+        }
         variants={{
           raw: { opacity: 0, y: 14 },
           built: { opacity: 1, y: 0 },
@@ -463,6 +505,7 @@ function MobileStill({
       >
         {f.label}
       </figcaption>
+      </motion.div>
       </motion.div>
     </motion.figure>
   );
@@ -633,7 +676,18 @@ function MobileSystems() {
           }}
           className="relative scroll-mt-[124px] px-4 pt-14 pb-10"
         >
-          <MobileStill f={st.frames[0]} index={0} width="44%" className="top-0 right-5 rotate-[2.2deg]" />
+          {/* Sizes are per stage rather than one figure for all three: the
+              energy stage carries three stills and the water stage two, so
+              the same percentage reads generous in one and cramped in the
+              other. Water is deliberately the largest pair — it was the
+              least legible of the three on a phone. */}
+          <MobileStill
+            f={st.frames[0]}
+            index={0}
+            active={active === i}
+            width={st.frames[2] ? "42%" : i === 2 ? "48%" : "44%"}
+            className="top-0 right-5 rotate-[2.2deg]"
+          />
 
           <div
             className="relative rounded-[20px] border border-[#C99355]/45 px-6 pt-20 pb-6"
@@ -655,21 +709,65 @@ function MobileSystems() {
               {st.heading}
             </h3>
             <p className="mt-3 text-[0.9rem] leading-relaxed text-[#2B211D]/88">{st.copy}</p>
+            {/* each system resolves out of a soft blur as it is reached,
+                one after the next — the reveal that makes the water systems
+                in particular feel like arrivals rather than a bullet list */}
             <ul className="mt-4">
-              {st.items.map((it) => (
-                <li key={it.t} className="border-t border-[#94432F]/12 py-2.5 first:border-t-0 first:pt-0">
+              {st.items.map((it, k) => (
+                <motion.li
+                  key={it.t}
+                  className="border-t border-[#94432F]/12 py-2.5 first:border-t-0 first:pt-0"
+                  initial={reduced ? undefined : { opacity: 0, y: 14, filter: "blur(6px)" }}
+                  whileInView={reduced ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.62, delay: k * 0.11, ease: [0.25, 0.1, 0.25, 1] }}
+                >
                   <p className="text-[0.86rem] font-semibold" style={{ color: "#2B211D" }}>
                     {it.t}
                   </p>
                   {it.d && <p className="mt-0.5 text-[0.8rem] leading-snug text-[#2B211D]/82">{it.d}</p>}
-                </li>
+                </motion.li>
               ))}
             </ul>
-            {st.frames[1] && <div aria-hidden="true" className="h-24" />}
+            {/* clear space for whichever stills sit over the card's foot */}
+            {st.frames[1] && (
+              <div aria-hidden="true" className={st.frames[2] ? "h-36" : i === 2 ? "h-28" : "h-24"} />
+            )}
           </div>
 
           {st.frames[1] && (
-            <MobileStill f={st.frames[1]} index={1} width="41%" className="bottom-4 left-7 -rotate-[2.4deg]" />
+            <MobileStill
+              f={st.frames[1]}
+              index={1}
+              active={active === i}
+              /* Atmospheric Water Generation is the water stage's innovation
+                 the way the kite is energy's, so it carries the same ring
+                 and float rather than sitting as a plain second photo. */
+              emphasis={i === 2}
+              width={st.frames[2] ? "36%" : i === 2 ? "46%" : "41%"}
+              className={
+                st.frames[2]
+                  ? "bottom-7 left-5 -rotate-[2.4deg]"
+                  : "bottom-4 left-6 -rotate-[2.4deg]"
+              }
+            />
+          )}
+
+          {/* The third frame — Kite Energy — was simply never rendered below
+              lg, so the one system that makes this project distinctive was
+              invisible on a phone. It gets the emphasis treatment and the
+              largest share of the row. */}
+          {st.frames[2] && (
+            <MobileStill
+              f={st.frames[2]}
+              index={2}
+              active={active === i}
+              width="46%"
+              /* bottom-5, not bottom-1: the next stage's own top still sits
+                 at the article seam, and at this size the two met there */
+              className="right-4 bottom-5 rotate-[2.2deg]"
+              emphasis
+            />
           )}
         </article>
       ))}
@@ -850,10 +948,31 @@ function StageStill({
      the photo never shows through mid-build */
   const clay = useTransform(p, [s0 + (s1 - s0) * 0.92, s1 + (s1 - s0) * 0.1], [1, 0]);
 
+  /* The two systems that carry the project's innovation get the same
+     emphasis on desktop as on the phone. A ring is not an option here —
+     the figure is overflow-hidden for the course-laying clip, which would
+     cut it — so the lift is carried by a warm glow, which paints outside
+     the clip, and a slow float. */
+  const reduced = useReducedMotion();
+  const emphasis = EMPHASIS_FRAMES.has(f.src);
+
   return (
     <motion.figure
-      className={`absolute z-20 hidden overflow-hidden rounded-[12px] border border-[#C99355]/55 bg-[#FAF6F0] p-1 shadow-[0_24px_48px_-28px_rgba(20,10,6,0.55)] lg:block ${f.className}`}
-      style={{ opacity, scale, clipPath: clip }}
+      className={`absolute z-20 hidden overflow-hidden rounded-[12px] border bg-[#FAF6F0] p-1 lg:block ${
+        emphasis ? "border-[#C99355]/85" : "border-[#C99355]/55"
+      } ${f.className}`}
+      style={{
+        opacity,
+        scale,
+        clipPath: clip,
+        boxShadow: emphasis
+          ? "0 0 0 1px rgba(201,147,85,0.35), 0 26px 60px -26px rgba(148,63,45,0.75)"
+          : "0 24px 48px -28px rgba(20,10,6,0.55)",
+      }}
+      animate={reduced || !emphasis ? undefined : { y: [0, -6, 0] }}
+      transition={
+        reduced || !emphasis ? undefined : { duration: 7, repeat: Infinity, ease: "easeInOut" }
+      }
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[8px]">
         {f.missing ? (

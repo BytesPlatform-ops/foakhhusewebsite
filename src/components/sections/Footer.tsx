@@ -9,6 +9,8 @@
  * separators), while the label keeps the form the client publishes.
  */
 
+import { FOAKH_PROJECT } from "@/lib/project";
+
 const INDEX = [
   { num: "01", label: "Project", href: "#glance" },
   { num: "02", label: "Systems", href: "#route" },
@@ -33,7 +35,9 @@ const SOCIAL = [
   { name: "Instagram", href: "https://www.instagram.com/foakhwindcorridor" },
 ];
 
-const ADDRESS = ["Foakh Wind Corridor Enclave", "Gateway Prime", "Plot # 3 & 10", "DHA City", "Karachi"];
+/** The address is never spelled out here — it comes from the project master
+ *  record so the footer can never drift from the confirmed location. */
+const ADDRESS = FOAKH_PROJECT.addressLines;
 
 function Icon({ name }: { name: "phone" | "whatsapp" | "pin" | "Facebook" | "Instagram" }) {
   const common = { width: 15, height: 15, viewBox: "0 0 24 24", "aria-hidden": true as const };

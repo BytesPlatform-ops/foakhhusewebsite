@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { FOAKH_PROJECT } from "@/lib/project";
 
 /**
  * Video hero — the client's cinematic rooftop film as the hero background
@@ -216,7 +217,7 @@ export default function VideoHero() {
       {/* content */}
       <div className="relative z-10 mx-auto w-full max-w-(--container-page) px-(--spacing-gutter) pt-20 pb-16 sm:pt-28 sm:pb-10 lg:pb-14">
         <p className="mb-4 text-[0.65rem] font-medium tracking-[0.3em] text-[#C99355] uppercase">
-          DHA City · Karachi
+          {FOAKH_PROJECT.localityLabel}
         </p>
         <h1 className="font-display max-w-[14ch] text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[1.02] font-semibold tracking-[-0.01em] text-[#F5EDE3] text-balance">
           Where nature powers <em className="italic">modern living.</em>

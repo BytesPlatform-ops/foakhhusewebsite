@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import useIsMobile from "@/components/shared/useIsMobile";
 import {
+  cubicBezier,
   motion,
   type MotionValue,
   useReducedMotion,
@@ -59,6 +60,14 @@ const HIGHLIGHTS = [
     title: "Strategic Location",
     copy: "Located within Karachi's wind corridor, adjacent to Shaukat Khanum Hospital.",
   },
+];
+
+/** The two opening paragraphs of the introduction, as the mobile scroll
+ *  story reads them. Same words the sheet carries on desktop — held here so
+ *  the story and the reduced-motion fallback cannot drift apart. */
+const DECK_INTRO = [
+  "Foakh Wind Corridor Enclave is an exclusive 12-storey residential development in DHA City, Karachi, comprising Umer Block and Abdullah Block. With 160 carefully planned apartments and eight duplex penthouses with independent swimming pools, the development brings together privacy, spacious living and a distinctive contemporary architectural identity.",
+  "The project has been conceived around the intelligent use of natural resources. Wind turbines, solar energy and kite energy form part of its renewable-energy strategy, while a dedicated wind-catcher system captures high-velocity natural air and directs it through the development.",
 ];
 
 /** one panel surface, shared by the desktop grid and the mobile rail */
@@ -295,6 +304,19 @@ function ProjectIntroduction() {
   const reduced = useReducedMotion();
   const isDesktop = useSyncExternalStore(mqSubscribe, mqRead, () => true);
 
+  /* The card zone's progress is owned here rather than inside the deck,
+     because the pinned heading behind the cards needs it too: a position:
+     sticky element parks at the end of its scope, which is exactly where the
+     last card sits, so the heading is faded out before that can happen. Its
+     scope ends with the zone, so it is already invisible when it parks. */
+  const deckZoneRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: deckRaw } = useScroll({
+    target: deckZoneRef,
+    offset: ["start start", "end end"],
+  });
+  const deckP = useSpring(deckRaw, { stiffness: 130, damping: 28, mass: 0.3 });
+  const behindOpacity = useTransform(deckP, [0, 0.88, 0.99], [1, 1, 0]);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "start 0.22"],
@@ -337,7 +359,10 @@ function ProjectIntroduction() {
         }
       >
         <div
-          className="grain relative overflow-x-clip rounded-[8px] border p-5 sm:p-9 md:overflow-hidden lg:p-12"
+          /* No overflow clip below md: the card stage inside this sheet has to
+             reach the full width of the phone. The outer wrapper still clips
+             the page, so nothing can scroll sideways. */
+          className="grain relative rounded-[8px] border p-5 sm:p-9 md:overflow-hidden lg:p-12"
           style={{
             background: "#F5EDE3",
             borderColor: "rgba(155,82,55,0.34)",
@@ -400,25 +425,64 @@ function ProjectIntroduction() {
           </p>
 
           {/* ---------------- content, attached to the sheet ---------- */}
-          <motion.div className="relative" style={reduced ? undefined : { opacity: contentOpacity }}>
-            {/* top-left: eyebrow / heading / lead */}
-            <motion.div {...rise(0)} className="max-w-xl">
-              <p className="text-[0.65rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#C99355" }}>
-                01 — The Project
-              </p>
-              <h3
-                className="font-display mt-3 leading-[1.05] uppercase"
-                style={{ color: "#94432F", fontSize: "clamp(2rem,3.4vw,3.4rem)", fontWeight: 600 }}
+          <motion.div
+            className="relative"
+            style={
+              {
+                ...(reduced ? {} : { opacity: contentOpacity }),
+                /* the phone's fixed edges, shared by the pinned heading and
+                   the card stage so the two agree on where the free space is */
+                "--deck-top": "calc(max(0.6rem, env(safe-area-inset-top)) + 5.15rem)",
+                "--deck-cta": "calc(5.4rem + max(0.5rem, env(safe-area-inset-bottom)))",
+                "--deck-card-h": "clamp(11.75rem, 30dvh, 15.5rem)",
+              } as React.CSSProperties
+            }
+          >
+            {/* Below md this wrapper is the stickiness scope: "Designed around
+                nature" holds its place while the card zone scrolls, so the
+                cards visibly pass OVER it — one heading, pinned, never a
+                second copy. It fades out at the very end of the run, before
+                sticky would park it on top of the last card. At md and up the
+                wrapper vanishes and none of this applies. */}
+            <div className="relative md:contents">
+              <motion.div
+                className={reduced ? undefined : "sticky top-(--deck-top) z-0 md:static"}
+                style={reduced ? undefined : { opacity: behindOpacity }}
               >
-                Designed around nature
-              </h3>
-              <p className="mt-4 text-[0.95rem] leading-[1.6] lg:text-[1.05rem]" style={{ color: "#2B211D" }}>
-                A distinctive residential concept created for comfort, efficiency and
-                future-ready living.
-              </p>
-            </motion.div>
+                {/* top-left: eyebrow / heading / lead */}
+                <motion.div {...rise(0)} className="max-w-xl">
+                  <p className="text-[0.65rem] font-semibold tracking-[0.3em] uppercase" style={{ color: "#C99355" }}>
+                    01 — The Project
+                  </p>
+                  <h3
+                    className="font-display mt-3 leading-[1.05] uppercase"
+                    style={{ color: "#94432F", fontSize: "clamp(2rem,3.4vw,3.4rem)", fontWeight: 600 }}
+                  >
+                    Designed around nature
+                  </h3>
+                  <p className="mt-4 text-[0.95rem] leading-[1.6] lg:text-[1.05rem]" style={{ color: "#2B211D" }}>
+                    A distinctive residential concept created for comfort, efficiency and
+                    future-ready living.
+                  </p>
+                </motion.div>
 
-            <div className="mt-9 grid gap-9 lg:mt-10 lg:grid-cols-[1.04fr_1fr] lg:gap-12">
+                {/* Below md the introduction reads as ordinary section content —
+                    the sheet must look completely normal until the card
+                    sequence is actually reached. */}
+                <div className="mt-8 md:hidden">
+                  <p className="text-[0.88rem] leading-[1.65]" style={{ color: "#625750" }}>
+                    {DECK_INTRO[0]}
+                  </p>
+                  <p className="mt-4 text-[0.88rem] leading-[1.65]" style={{ color: "#625750" }}>
+                    {DECK_INTRO[1]}
+                  </p>
+                </div>
+              </motion.div>
+
+              <HighlightDeck reduced={!!reduced} zoneRef={deckZoneRef} p={deckP} />
+            </div>
+
+            <div className="mt-9 hidden gap-9 md:grid lg:mt-10 lg:grid-cols-[1.04fr_1fr] lg:gap-12">
               {/* left/centre: the introduction, on a readability wash */}
               {/* The wash exists to lift this copy off the elevation drawing
                   behind it. The drawing is desktop-only, so below lg the wash
@@ -484,25 +548,22 @@ function ProjectIntroduction() {
                 ))}
               </div>
 
-              {/* below md: one card at a time, the next rising over the last */}
-              <HighlightDeck reduced={!!reduced} />
+            </div>
 
-              {/* the savings claim and the qualification it must carry —
-                  below the deck on mobile, where the stage has no room */}
-              <div className="md:hidden">
-                <p className="text-[0.86rem] leading-[1.6]" style={{ color: "#625750" }}>
-                  Together, these systems are intended to enhance natural ventilation, reduce
-                  heat buildup and lower dependence on conventional cooling and grid
-                  electricity. Based on optimum engineering performance, residents may benefit
-                  from electricity-bill savings of up to 75%.
-                </p>
-                <p
-                  className="mt-4 border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"
-                  style={{ color: "rgba(81,68,61,0.85)", borderColor: "rgba(199,140,73,0.6)" }}
-                >
-                  {SAVINGS_NOTE}
-                </p>
-              </div>
+            {/* the savings claim and the qualification it must carry */}
+            <div className="mt-10 md:hidden">
+              <p className="text-[0.88rem] leading-[1.65]" style={{ color: "#625750" }}>
+                Together, these systems are intended to enhance natural ventilation, reduce
+                heat buildup and lower dependence on conventional cooling and grid electricity.
+                Based on optimum engineering performance, residents may benefit from
+                electricity-bill savings of up to 75%.
+              </p>
+              <p
+                className="mt-4 border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"
+                style={{ color: "rgba(81,68,61,0.85)", borderColor: "rgba(199,140,73,0.6)" }}
+              >
+                {SAVINGS_NOTE}
+              </p>
             </div>
 
             {/* bottom: closing statement + CTA */}
@@ -525,81 +586,197 @@ function ProjectIntroduction() {
           </motion.div>
         </div>
       </motion.div>
+
     </div>
   );
 }
 
 
 /**
- * The six highlights as a scroll-driven deck, below md only.
+ * Below md: the six qualities as a centred scroll story.
  *
- * One card holds the stage at a time; the next rises from the bottom and
- * covers it, so the set reads as a deck being dealt rather than a list. The
- * stage is a plain sticky element one viewport tall inside a dvh-sized
- * wrapper, so no height is invented by script and nothing is left blank when
- * the section ends. The CTA sits at the foot of the stage for the whole run
- * and leaves with the section.
+ * A single pinned stage one viewport tall holds the whole run. The
+ * introduction reads first in the centre, then lifts away as the deck takes
+ * the stage; from there each card rises from below and lands over the one
+ * before it, the covered cards easing back in scale, opacity and focus so
+ * the set reads as depth rather than a list. While the stage owns the
+ * viewport a focus veil softens the page behind it; the veil is handed back
+ * sharp before the neighbouring sections come into view.
  *
- * NOTE: this needs an unclipped ancestor chain — `overflow: hidden` anywhere
- * above silently disables position:sticky, which is exactly why an earlier
- * attempt rendered as a flat list.
+ * GEOMETRY — the card is centred between the two fixed edges of the phone,
+ * never at a naive top:50%. `--deck-top` clears the floating header (its
+ * 70px capsule plus the safe-area inset it is offset by) and `--deck-cta`
+ * reserves the action bar plus the home indicator, so the content box is
+ * what is genuinely free, on every device in the 320–430px range.
+ *
+ * SCROLL BUDGET — derived from the card count, never hardcoded: a short
+ * lead-in for the first card plus a beat per card, with a short tail so the
+ * last card can be read before the pin releases. The zone's own dvh height
+ * IS the spacer, so it cannot outrun its content and leave a blank screen.
+ *
+ * WHERE IT LIVES — the zone stays inside the sheet, so the cards remain part
+ * of the same "Designed around nature" story rather than becoming a separate
+ * page. Only the STAGE inside it breaks out to the width of the phone, which
+ * is what lets the veil cover the whole scene. The sheet's mobile overflow
+ * clip is lifted for exactly this reason; the outer wrapper still clips the
+ * page, so nothing can scroll sideways.
+ *
+ * NOTE: `overflow: hidden` on an ancestor silently disables position:sticky.
+ * The sheet's clip is md-and-up only, so the mobile chain stays sticky-safe.
  */
-function HighlightDeck({ reduced }: { reduced: boolean }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
+
+/** Scroll budget in dvh: a short lead-in for the first card to rise and bring
+ *  the veil up, then one beat per card. Note the pin consumes one viewport of
+ *  this, so the scroll a thumb actually spends per card is seg × (total-100) —
+ *  around 18dvh here, an unhurried but never sluggish pace. */
+const DECK_LEAD_DVH = 30;
+const DECK_CARD_DVH = 34;
+/** a short hold after the last card lands, so it can be read before release */
+const DECK_TAIL = 0.45;
+/** the Apple easing curve — content arrives quickly, settles gently */
+const APPLE_EASE = cubicBezier(0.25, 0.1, 0.25, 1);
+
+function HighlightDeck({
+  reduced,
+  zoneRef,
+  p,
+}: {
+  reduced: boolean;
+  /* the zone element is measured by the parent, which drives both this deck
+     and the pinned heading behind it from one scroll progress */
+  zoneRef: React.RefObject<HTMLDivElement | null>;
+  p: MotionValue<number>;
+}) {
   const n = HIGHLIGHTS.length;
-  const { scrollYProgress } = useScroll({
-    target: wrapRef,
-    offset: ["start start", "end end"],
-  });
-  const p = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.32 });
+
+  /* beats: card 0 rises during the lead-in, the rest own one beat each */
+  const beats = n - 1 + DECK_TAIL;
+  const totalDvh = DECK_LEAD_DVH + beats * DECK_CARD_DVH;
+  const leadEnd = DECK_LEAD_DVH / totalDvh;
+  const seg = (1 - leadEnd) / beats;
+
+  /* How far below the card's settled position it starts. Measured from the
+     viewport, not guessed from the card, so the first card genuinely begins
+     off the bottom EDGE of the phone rather than merely low on the screen. */
+  const [travel, setTravel] = useState(640);
+  useEffect(() => {
+    const sync = () => setTravel(Math.round(window.innerHeight * 0.72));
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
+
+  /* The veil is absent until the sequence actually starts, so the sheet looks
+     completely normal beforehand, and is handed back sharp before the next
+     section arrives. */
+  const veil = useTransform(p, [0, 0.1, 0.95, 1], [0, 1, 1, 0]);
 
   if (reduced) {
+    /* no pin, no stacking, no blur — the same cards in plain reading order,
+       with the action still at the end of the run */
     return (
-      <div className="grid gap-4 md:hidden">
-        {HIGHLIGHTS.map((h) => (
-          <div key={h.title} className="min-w-0 rounded-[12px] border p-[18px]" style={PANEL}>
-            <PanelCopy h={h} />
-          </div>
-        ))}
+      <div className="mt-8 md:hidden">
+        <div className="grid gap-4">
+          {HIGHLIGHTS.map((h) => (
+            <div key={h.title} className="min-w-0 rounded-[18px] border p-[18px]" style={PANEL}>
+              <PanelCopy h={h} />
+            </div>
+          ))}
+        </div>
+        <p
+          className="mt-8 text-[0.68rem] font-semibold tracking-[0.22em] uppercase"
+          style={{ color: "#94432F" }}
+        >
+          The future of responsible urban living starts here.
+        </p>
+        <a
+          href="#residences"
+          className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold"
+          style={{ background: "#94432F", color: "#FAF6F0" }}
+        >
+          Explore the Residences
+        </a>
       </div>
     );
   }
 
   return (
-    <div ref={wrapRef} className="relative md:hidden" style={{ height: `${n * 40}dvh` }}>
-      <div className="sticky top-0 flex h-dvh flex-col pt-[4.25rem] pb-3">
-        {/* the sheet's introduction rides the stage on mobile, so the space
-            above the card carries the reading rather than sitting empty */}
-        <div className="min-h-0 flex-1 overflow-hidden">
-          <p className="text-[0.86rem] leading-[1.6]" style={{ color: "#625750" }}>
-            Foakh Wind Corridor Enclave is an exclusive 12-storey residential development in
-            DHA City, Karachi, comprising Umer Block and Abdullah Block. With 160 carefully
-            planned apartments and eight duplex penthouses with independent swimming pools, the
-            development brings together privacy, spacious living and a distinctive contemporary
-            architectural identity.
-          </p>
-          <p className="mt-3 text-[0.86rem] leading-[1.6]" style={{ color: "#625750" }}>
-            The project has been conceived around the intelligent use of natural resources. Wind
-            turbines, solar energy and kite energy form part of its renewable-energy strategy,
-            while a dedicated wind-catcher system captures high-velocity natural air and directs
-            it through the development.
-          </p>
+    <div ref={zoneRef} className="relative mt-10 md:hidden" style={{ height: `${totalDvh}dvh` }}>
+      {/* The stage breaks out of the sheet's padding to the full width of the
+          phone — the zone stays inside the section, only the stage spans the
+          viewport, so the veil can cover the whole scene behind it. */}
+      {/* The geometry vars are inherited from the content wrapper, so the
+          pinned heading behind and this stage agree on the free space. */}
+      <div
+        className="sticky top-0 h-dvh"
+        style={{ width: "100vw", marginLeft: "calc(50% - 50vw)" }}
+      >
+        {/* FOCUS VEIL — an Apple-style focus pass over the scene, not a modal
+            scrim: blur plus a touch of desaturation and a warm cream wash, so
+            the scene behind stays completely recognisable. It sits below the
+            cards in paint order so it can never touch them, and inside the
+            section's own stacking context so it can never reach the header. */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{
+            opacity: veil,
+            backdropFilter: "blur(7px) saturate(0.94) brightness(1.02)",
+            WebkitBackdropFilter: "blur(7px) saturate(0.94) brightness(1.02)",
+            background: "rgba(245,237,227,0.22)",
+          }}
+        />
+
+        {/* THE TRAVEL WINDOW — reaches from under the header all the way to
+            the bottom EDGE of the phone, so a card is seen entering from the
+            edge itself rather than appearing at some line part-way up the
+            screen. The action bar sits above this and stays sharp, so a card
+            in transit passes behind it and is never obscured once settled. */}
+        {/* 20px, the top of the intended 16–20px range: the sheet's own border
+            sits between 12.8px and 19.2px from the edge across 320–480, so a
+            flat 16px let the cards and the action bar run out past it. */}
+        <div
+          className="absolute inset-x-5 z-10 overflow-hidden"
+          style={{ top: "var(--deck-top)", bottom: 0 }}
+        >
+          {/* THE SETTLED BOX — centred in the space the phone genuinely
+              leaves free between the header and the action bar, which is not
+              the same as the travel window and is never a naive top:50%. */}
+          <div
+            className="absolute inset-x-0"
+            style={{
+              top: "calc((100dvh - var(--deck-top) - var(--deck-cta)) / 2)",
+              height: "var(--deck-card-h)",
+              marginTop: "calc(var(--deck-card-h) / -2)",
+            }}
+          >
+            {HIGHLIGHTS.map((h, i) => (
+              <DeckCard
+                key={h.title}
+                h={h}
+                i={i}
+                p={p}
+                leadEnd={leadEnd}
+                seg={seg}
+                travel={travel}
+              />
+            ))}
+          </div>
         </div>
 
-        <div className="relative mt-3 h-[22svh] max-h-[13rem] min-h-[10.5rem] w-full shrink-0">
-          {HIGHLIGHTS.map((h, i) => (
-            <DeckCard key={h.title} h={h} i={i} n={n} p={p} />
-          ))}
-        </div>
-
-        {/* the button stays at the foot for the whole run */}
-        <div className="relative z-20 mt-4 shrink-0 bg-[#F7ECDE] pt-2 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase" style={{ color: "#94432F" }}>
+        {/* THE ACTION BAR — sharp, above the veil, pinned with the stage so it
+            is present for the whole run and leaves with it. Never fixed, so it
+            cannot leak past this section. */}
+        <div className="absolute inset-x-5 bottom-0 z-20 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+          <p
+            className="text-[0.62rem] font-semibold tracking-[0.2em] uppercase"
+            style={{ color: "#94432F" }}
+          >
             The future of responsible urban living starts here.
           </p>
           <a
             href="#residences"
-            className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold"
+            className="mt-2.5 inline-flex min-h-11 w-full items-center justify-center rounded-[14px] px-6 text-sm font-semibold shadow-[0_10px_26px_-14px_rgba(90,45,25,0.75)]"
             style={{ background: "#94432F", color: "#FAF6F0" }}
           >
             Explore the Residences
@@ -610,39 +787,62 @@ function HighlightDeck({ reduced }: { reduced: boolean }) {
   );
 }
 
-/** One card: rises from below over the card before it, then holds. */
+/**
+ * One card: rises from the bottom edge of the phone, settles at the optical
+ * centre, then eases back as the next lands over it. The rise and the depth
+ * live on separate elements because both are translateY.
+ *
+ * The card surface itself is never blurred or made translucent — the blur
+ * belongs to the scene behind, so type, border and shadow stay crisp.
+ */
 function DeckCard({
   h,
   i,
-  n,
   p,
+  leadEnd,
+  seg,
+  travel,
 }: {
   h: (typeof HIGHLIGHTS)[number];
   i: number;
-  n: number;
   p: MotionValue<number>;
+  leadEnd: number;
+  seg: number;
+  travel: number;
 }) {
-  const seg = 1 / n;
-  const from = (i - 1) * seg;
-  const to = i * seg;
-  const y = useTransform(p, [from, to], i === 0 ? ["0%", "0%"] : ["102%", "0%"]);
-  /* the one underneath eases back a touch so the arrival reads as depth */
-  const depth = useTransform(p, [to, to + seg], [0, 1]);
-  const scale = useTransform(depth, [0, 1], [1, 0.965]);
+  /* card 0 rises through the lead-in; card i lands by leadEnd + i*seg */
+  const from = i === 0 ? 0 : leadEnd + (i - 1) * seg;
+  const to = i === 0 ? leadEnd : leadEnd + i * seg;
+  const y = useTransform(p, [from, to], [travel, 0], { ease: APPLE_EASE });
+
+  /* how many cards have since landed on top of this one */
+  const depth = useTransform(p, (v) => {
+    const d = (v - to) / seg;
+    return d < 0 ? 0 : d > 2.4 ? 2.4 : d;
+  });
+  const lift = useTransform(depth, [0, 1, 2], [0, -12, -21]);
+  const scale = useTransform(depth, [0, 1, 2], [1, 0.972, 0.948]);
+  const opacity = useTransform(depth, [0, 1, 2, 2.4], [1, 0.62, 0.2, 0]);
+  const blur = useTransform(depth, [0, 1, 2], ["blur(0px)", "blur(1.6px)", "blur(3px)"]);
 
   return (
-    <motion.div
-      className="absolute inset-0 flex flex-col justify-center overflow-hidden rounded-[16px] border px-5 py-4"
-      style={{
-        ...PANEL,
-        background: "rgb(255 249 240)",
-        boxShadow: "0 -14px 38px -20px rgba(90,45,25,0.5)",
-        y,
-        scale,
-        zIndex: i + 1,
-      }}
-    >
-      <PanelCopy h={h} />
+    <motion.div className="absolute inset-0" style={{ y, zIndex: i + 1 }}>
+      <motion.div
+        className="flex h-full flex-col justify-center rounded-[18px] border px-5 py-5"
+        style={{
+          ...PANEL,
+          background: "rgb(255 249 240)",
+          borderColor: "rgba(155,82,55,0.28)",
+          boxShadow:
+            "0 -2px 1px rgba(255,255,255,0.7) inset, 0 18px 44px -22px rgba(90,45,25,0.55)",
+          y: lift,
+          scale,
+          opacity,
+          filter: blur,
+        }}
+      >
+        <PanelCopy h={h} />
+      </motion.div>
     </motion.div>
   );
 }

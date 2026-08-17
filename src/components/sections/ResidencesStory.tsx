@@ -1262,25 +1262,37 @@ function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) =
             const c = CAT_PANELS[i];
             const isCurrent = i === active;
             const isFinale = i === last;
+            /* Liquid-glass capsules: a translucent material rather than a flat
+               fill, so what scrolls underneath stays faintly present. Each
+               carries a specular top edge (the inset highlight) and an ambient
+               shadow beneath, which is what reads as depth rather than paint.
+               The alphas are the floor at which the label still clears 4.5:1
+               against the darkest thing that can pass behind it — glass that
+               cannot be read is decoration, not material. */
             const style = isCurrent
               ? isFinale
                 ? {
-                    background: "linear-gradient(150deg, #2A160E 0%, #1C0F0A 100%)",
+                    background:
+                      "linear-gradient(150deg, rgba(42,22,14,0.88) 0%, rgba(28,15,10,0.92) 100%)",
                     color: "#EFD5A3",
-                    border: "1px solid rgba(239,213,163,0.42)",
-                    boxShadow: "0 10px 22px -12px rgba(20,10,6,0.7)",
+                    border: "1px solid rgba(239,213,163,0.5)",
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,235,200,0.22), 0 12px 26px -14px rgba(20,10,6,0.75)",
                   }
                 : {
-                    background: "#B65438",
+                    background:
+                      "linear-gradient(150deg, rgba(190,92,62,0.9) 0%, rgba(168,74,48,0.92) 100%)",
                     color: "#FAF6F0",
-                    border: "1px solid transparent",
-                    boxShadow: "0 10px 22px -12px rgba(148,63,45,0.65)",
+                    border: "1px solid rgba(255,236,222,0.38)",
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,255,255,0.3), 0 12px 26px -14px rgba(148,63,45,0.7)",
                   }
               : {
-                    background: "#FAF6F0",
+                    background: "rgba(250,246,240,0.85)",
                     color: "#94432F",
-                    border: "1px solid rgba(148,63,45,0.3)",
-                    boxShadow: "0 6px 16px -12px rgba(36,27,23,0.4)",
+                    border: "1px solid rgba(148,63,45,0.24)",
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,255,255,0.85), 0 8px 20px -14px rgba(36,27,23,0.45)",
                   };
 
             return (
@@ -1297,7 +1309,14 @@ function MobileIndex({ active, onJump }: { active: number; onJump: (i: number) =
                 className="tab-capsule truncate rounded-full text-left whitespace-nowrap"
                 style={{
                   ...style,
-                  minHeight: 40,
+                  /* the material itself — blur plus a saturation lift, which is
+                     what stops glass reading as flat translucency */
+                  backdropFilter: "blur(18px) saturate(1.8)",
+                  WebkitBackdropFilter: "blur(18px) saturate(1.8)",
+                  transition:
+                    "background 320ms cubic-bezier(0.25,0.1,0.25,1), box-shadow 320ms cubic-bezier(0.25,0.1,0.25,1), border-color 320ms cubic-bezier(0.25,0.1,0.25,1)",
+                  /* 44px is the touch-target floor; 40 was under it */
+                  minHeight: 44,
                   maxWidth: CAPSULE_MAX,
                   fontWeight: 600,
                   letterSpacing: "0.02em",

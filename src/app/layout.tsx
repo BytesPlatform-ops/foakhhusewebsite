@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import IntroLoader from "@/components/shared/IntroLoader";
+import { FOAKH_PROJECT } from "@/lib/project";
 import "./globals.css";
 
 // High-contrast editorial serif for display — graceful, tall, refined
@@ -19,9 +20,11 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Foakh Wind Corridor Enclave",
+  title: FOAKH_PROJECT.projectName,
   description:
-    "Foakh Wind Corridor Enclave — a 12-storey residential development in DHA City, Karachi. Two blocks, 160 apartments and eight duplex penthouses, shaped around natural airflow, renewable energy and resilient water planning.",
+    `${FOAKH_PROJECT.projectName} — a 12-storey residential development at ` +
+    `${FOAKH_PROJECT.displayAddress}. Two blocks, 160 apartments and eight duplex ` +
+    "penthouses, shaped around natural airflow, renewable energy and resilient water planning.",
 };
 
 export default function RootLayout({

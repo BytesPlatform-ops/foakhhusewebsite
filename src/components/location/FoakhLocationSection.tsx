@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import FoakhMap, { FOAKH_MAPS_URL } from "./FoakhMap";
+import FoakhMap from "./FoakhMap";
 import NearbyLocationGrid from "./NearbyLocationGrid";
 import FoakhLocationVisual from "./FoakhLocationVisual";
 import BuildIn from "@/components/shared/BuildIn";
+import { FOAKH_PROJECT } from "@/lib/project";
 
 /**
  * 04 — Location: "Connected to what matters."
@@ -48,7 +49,7 @@ function DirectionButtons({ dark = false }: { dark?: boolean }) {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <a
-        href={FOAKH_MAPS_URL}
+        href={FOAKH_PROJECT.directionsUrl}
         target="_blank"
         rel="noopener noreferrer"
         className={`${DIRECTION_BTN} bg-[#C99355] font-bold text-[#2B211D] hover:bg-[#E8C27C]`}
@@ -56,7 +57,7 @@ function DirectionButtons({ dark = false }: { dark?: boolean }) {
         Get directions
       </a>
       <a
-        href={FOAKH_MAPS_URL}
+        href={FOAKH_PROJECT.mapsUrl}
         target="_blank"
         rel="noopener noreferrer"
         className={`${DIRECTION_BTN} border font-semibold ${
@@ -78,10 +79,10 @@ function PanelHeader() {
         <LocationPill />
         <div className="text-left sm:text-right">
           <p className="text-[0.7rem] font-semibold tracking-[0.26em] text-[#FAF6F0] uppercase">
-            Foakh Wind Corridor Enclave
+            {FOAKH_PROJECT.projectName}
           </p>
           <p className="mt-1 text-[0.66rem] tracking-[0.18em] text-[#FAF6F0]/70 uppercase">
-            DHA City · Karachi
+            {FOAKH_PROJECT.localityLabel}
           </p>
         </div>
       </div>
@@ -106,6 +107,32 @@ function PanelHeader() {
         adjacent to Shaukat Khanum Hospital, combining environmental advantages with access
         to an important emerging residential area.
       </p>
+
+      {/* The confirmed address in its single-line form. A visitor planning a
+          site visit should be able to read and copy it without opening a map. */}
+      <address className="mt-6 flex items-start gap-3 not-italic sm:mt-7">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#C99355"
+          strokeWidth="2"
+          aria-hidden="true"
+          className="mt-1 shrink-0"
+        >
+          <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z" />
+          <circle cx="12" cy="10" r="2.6" />
+        </svg>
+        <span>
+          <span className="block text-[0.6rem] font-semibold tracking-[0.24em] text-[#C99355] uppercase">
+            Project Location
+          </span>
+          <span className="mt-1 block text-[0.92rem] leading-[1.6] text-[#FAF6F0]">
+            {FOAKH_PROJECT.displayAddress}
+          </span>
+        </span>
+      </address>
     </>
   );
 }

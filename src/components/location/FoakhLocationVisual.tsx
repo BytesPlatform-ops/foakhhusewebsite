@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FOAKH_PROJECT } from "@/lib/project";
 
 /**
  * Lower-right card: the approved architectural line drawing of the
@@ -11,10 +12,10 @@ export default function FoakhLocationVisual() {
       <div className="grid items-center gap-2 p-7 sm:grid-cols-[minmax(0,0.9fr)_1.1fr] sm:p-8">
         <figcaption>
           <p className="text-[0.72rem] font-semibold tracking-[0.3em] text-[#2B211D] uppercase">
-            Foakh Wind Corridor Enclave
+            {FOAKH_PROJECT.projectName}
           </p>
           <p className="mt-1.5 text-[0.68rem] tracking-[0.22em] text-[#2B211D]/60 uppercase">
-            DHA City · Karachi
+            {FOAKH_PROJECT.localityLabel}
           </p>
           <span className="mt-4 block h-px w-10 bg-[#C99355]" />
           <p className="font-display mt-4 text-[1.05rem] leading-snug text-[#713427] italic">

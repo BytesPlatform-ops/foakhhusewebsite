@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { FOAKH_PROJECT } from "@/lib/project";
 
 /**
  * The live map inside the Location card — always a REAL, moveable
@@ -18,12 +19,11 @@ import { useEffect, useRef, useState } from "react";
  * page scroll until the visitor opts in; leaving the card re-arms it.
  */
 
-export const FOAKH_TOWER_LOCATION = {
-  lat: 25.0407493,
-  lng: 67.4501243,
-};
-
-export const FOAKH_MAPS_URL = "https://maps.app.goo.gl/WfWt1ugz5HmEpXur6";
+/* Location comes from the project master record, never from this file. The
+   JS-API path needs numeric coordinates to centre and to anchor the marker;
+   the keyless embed is queried by the confirmed plus code instead, so it
+   resolves the exact address rather than a decoded approximation. */
+const { coordinates: FOAKH_TOWER_LOCATION, embedUrl: EMBED_SRC } = FOAKH_PROJECT;
 
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 const MAP_ID = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID;
@@ -166,15 +166,15 @@ export default function FoakhMap({ heightClass = "h-full" }: { heightClass?: str
       <div
         ref={holderRef}
         className={showEmbed ? "hidden" : "absolute inset-0"}
-        aria-label="Map showing the location of Foakh Wind Corridor Enclave in DHA City, Karachi"
+        aria-label={`Map showing the location of ${FOAKH_PROJECT.projectName} at ${FOAKH_PROJECT.displayAddress}`}
         role="application"
       />
 
       {/* keyless path: the real Google embed, colour-graded to brand */}
       {showEmbed && (
         <iframe
-          title="Google Map — Foakh Wind Corridor Enclave, DHA City, Karachi"
-          src={`https://maps.google.com/maps?q=${FOAKH_TOWER_LOCATION.lat},${FOAKH_TOWER_LOCATION.lng}&z=13&hl=en&output=embed`}
+          title={`Google Map — ${FOAKH_PROJECT.projectName}, ${FOAKH_PROJECT.displayAddress}`}
+          src={EMBED_SRC}
           className="absolute inset-0 h-full w-full border-0"
           style={{ filter: EMBED_GRADE }}
           loading="lazy"

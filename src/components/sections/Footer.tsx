@@ -53,7 +53,7 @@ const PROJECT_NOTES = [
   {
     title: "Long-term energy efficiency",
     body:
-      "The project has been envisioned to support meaningful long-term energy efficiency. Under favourable operating conditions and according to engineering performance, residents will benefit from substantial electricity-cost reduction potential. Actual performance may vary depending on environmental conditions, occupancy patterns, appliance usage, tariff structures and final implemented system specifications.",
+      "The project has been envisioned to support meaningful long-term energy efficiency, with natural ventilation, moderated heat gain and renewable generation working together to reduce day-to-day reliance on conventional cooling and grid electricity.",
   },
   {
     title: "About the visual material",
@@ -63,7 +63,7 @@ const PROJECT_NOTES = [
   {
     title: "A residential ownership opportunity",
     body:
-      "Foakh Wind Corridor Enclave is presented as a residential lifestyle and ownership opportunity shaped around design, comfort and future-ready planning. Project features described as planned remain subject to final engineering and approvals.",
+      "Foakh Wind Corridor Enclave is presented as a residential lifestyle and ownership opportunity shaped around design, comfort and future-ready planning.",
   },
 ];
 

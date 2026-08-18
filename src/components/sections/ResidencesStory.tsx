@@ -1000,21 +1000,6 @@ function CategoryPanel({
         >
           {c.mark}
         </span>
-        <span
-          aria-hidden="true"
-          className="font-display pointer-events-none absolute top-1/2 right-[1vw] z-0 -translate-y-1/2 font-medium whitespace-nowrap uppercase select-none"
-          style={{
-            writingMode: "vertical-rl",
-            transform: "translateY(-50%) rotate(180deg)",
-            fontSize: "clamp(5rem, 11vw, 13rem)",
-            letterSpacing: "0.12em",
-            lineHeight: 1,
-            opacity: 0.13,
-            color: "#EFD5A3",
-          }}
-        >
-          {c.mark}
-        </span>
         <div className="grid w-full grid-cols-[19%_1fr_28%] items-center gap-[2vw] pr-[1.5vw] pl-[5vw]">
           {/* LEFT — the exclusive marker */}
           <motion.div style={{ x: textX, y: textY }}>
@@ -1104,21 +1089,6 @@ function CategoryPanel({
         {c.mark}
       </span>
       {/* the type name down the right edge, matching the mobile card */}
-      <span
-        aria-hidden="true"
-        className="font-display pointer-events-none absolute top-1/2 right-[1vw] z-0 -translate-y-1/2 font-medium whitespace-nowrap uppercase select-none"
-        style={{
-          writingMode: "vertical-rl",
-          transform: "translateY(-50%) rotate(180deg)",
-          fontSize: "clamp(5rem, 11vw, 13rem)",
-          letterSpacing: "0.12em",
-          lineHeight: 1,
-          opacity: 0.1,
-          color: dup ? "#EFD5A3" : "#94432F",
-        }}
-      >
-        {c.mark}
-      </span>
       <div className="grid w-full grid-cols-[23%_1fr_22%] items-center gap-[2.2vw] pr-[1.5vw] pl-[5vw]">
         {/* LEFT — marker + serif heading + italic lead */}
         <motion.div className="relative z-20" style={{ x: textX, y: textY }}>

@@ -32,7 +32,7 @@ import {
  * a type turns over in well under a screen of thumb travel.
  */
 
-const TYPE_BEAT_DVH = 70;
+const TYPE_BEAT_DVH = 56;
 
 type ApartmentType = {
   letter: string;
@@ -116,7 +116,14 @@ const IVORY = "#F5EDE3";
 const CHAMPAGNE = "#E8CFA4";
 /** where the heading lands — deep enough to clear 3:1 on the terracotta
  *  ground at display size, which is what large text has to hold */
-const HEADING_LIT = "#1C110D";
+const HEADING_LIT = "#201713";
+/** where the heading starts — light enough to read as unlit, dark enough to
+ *  stay legible on the terracotta ground before the scroll reaches it */
+const HEADING_REST = "rgba(255,245,228,0.5)";
+const LEAD_REST = "rgba(250,243,232,0.34)";
+const LEAD_LIT = "rgba(250,243,232,0.9)";
+const LEAD_TEXT =
+  "Every residence at Foakh begins as one of four floor plans. Choose the shape of the home first \u2014 then the level of finish.";
 
 export default function ApartmentTypes() {
   const reduced = useReducedMotion();
@@ -128,6 +135,19 @@ export default function ApartmentTypes() {
     offset: ["start start", "end end"],
   });
   const p = useSpring(scrollYProgress, { stiffness: 110, damping: 28, mass: 0.32 });
+
+  /* Below lg the head scrolls, so it lights against its own crossing. */
+  const headRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: headRaw } = useScroll({
+    target: headRef,
+    offset: ["start 0.92", "start 0.28"],
+  });
+  const headP = useSpring(headRaw, { stiffness: 120, damping: 26, mass: 0.3 });
+
+  /* From lg the head is pinned and never travels, so it lights against the
+     zone's progress instead — the only value that still moves. It completes
+     inside the first type's beat, well before the switcher is used. */
+  const deskHeadP = useTransform(p, [0.01, 0.16], [0, 1], { clamp: true });
 
   /* which type the scroll is currently sitting on, for the capsule state */
   const [active, setActive] = useState(0);
@@ -153,23 +173,26 @@ export default function ApartmentTypes() {
   if (reduced) return <StaticTypes />;
 
   return (
-    <section aria-labelledby="apartment-types-heading" className="relative">
-      {/* the introduction reads normally, before anything is pinned */}
-      <div className="mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-16 lg:pt-24">
+    <section aria-label="Apartment Types" className="relative">
+      {/* BELOW LG the head scrolls normally ahead of the pinned stage — a
+          phone cannot hold head, switcher, image and specification in one
+          viewport. It lights against its own crossing of the screen. */}
+      <div
+        ref={headRef}
+        className="mx-auto max-w-(--container-page) px-(--spacing-gutter) pt-14 lg:hidden"
+      >
         <p
           className="text-[0.65rem] font-medium tracking-[0.3em] uppercase"
           style={{ color: CHAMPAGNE }}
         >
           Apartment Types
         </p>
-        <LetterHeading text="Four plans. One address." reduced={false} />
-        <p
-          className="mt-5 max-w-[56ch] text-[0.92rem] leading-[1.7] lg:text-[1rem] lg:leading-[1.75]"
-          style={{ color: "rgba(250,243,232,0.85)" }}
-        >
-          Every residence at Foakh begins as one of four floor plans. Choose the shape of the
-          home first — then the level of finish.
-        </p>
+        <LetterHeading
+          text="Four plans. One address."
+          progress={headP}
+          className="mt-4"
+        />
+        <LeadCopy progress={headP} className="mt-4 max-w-[52ch] text-[0.92rem] leading-[1.7]" />
       </div>
 
       {/* The stage stacks four inert copies in one cell, so none of them can
@@ -194,22 +217,48 @@ export default function ApartmentTypes() {
 
       <div
         ref={zoneRef}
-        className="relative mt-10 lg:mt-14"
+        className="relative mt-6 lg:mt-8"
         style={{ height: `${100 + n * TYPE_BEAT_DVH}dvh` }}
       >
         <div className="sticky top-0 flex h-dvh items-center overflow-hidden">
           <div className="mx-auto w-full max-w-(--container-page) px-(--spacing-gutter)">
-            {/* the switcher rides the pinned stage, so it is reachable for
-                the whole sequence rather than only on the way in */}
-            <TypeCapsules active={active} onSelect={goTo} reduced={false} />
+            {/* FROM LG the head rides the pinned stage, so eyebrow, heading,
+                intro, switcher and the active type are one composition held
+                in a single frame instead of the head floating a screen above
+                the experience it introduces. */}
+            <div className="hidden lg:block">
+              <p
+                className="text-[0.65rem] font-medium tracking-[0.3em] uppercase"
+                style={{ color: CHAMPAGNE }}
+              >
+                Apartment Types
+              </p>
+              <LetterHeading
+                text="Four plans. One address."
+                progress={deskHeadP}
+                className="mt-4"
+              />
+              <LeadCopy
+                progress={deskHeadP}
+                className="mt-4 mb-8 max-w-[52ch] text-[1rem] leading-[1.7]"
+              />
+            </div>
 
-            <div className="mt-5 grid items-center gap-5 lg:mt-9 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
+            {/* One composition rather than a full-width switcher sitting on
+                top of a two-column grid: from lg the image holds the left
+                across both rows while the capsules sit immediately above the
+                specification they control, so choosing a type and reading it
+                happen in the same column instead of opposite corners. */}
+            <div className="grid items-center gap-4 lg:grid-cols-[1.02fr_1fr] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-12 lg:gap-y-4">
+              <div className="lg:col-start-2 lg:row-start-1">
+                <TypeCapsules active={active} onSelect={goTo} reduced={false} />
+              </div>
               {/* ---------------- the image ----------------------------
                   Sized against the viewport rather than by aspect ratio
                   below lg: on a 568px-tall phone a 4/3 frame plus the
                   specification is taller than the screen, and the last rows
                   fall off the bottom of a stage that cannot scroll. */}
-              <div className="relative h-[23dvh] w-full overflow-hidden rounded-[20px] border border-[#E8CFA4]/25 sm:h-[30dvh] lg:h-auto lg:aspect-[5/4]">
+              <div className="relative h-[23dvh] w-full overflow-hidden rounded-[20px] border border-[#E8CFA4]/25 sm:h-[30dvh] lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:h-auto lg:aspect-[4/5] lg:max-h-[56dvh]">
                 {TYPES.map((t, i) => (
                   <TypeImage key={t.letter} t={t} i={i} n={n} p={p} />
                 ))}
@@ -228,7 +277,7 @@ export default function ApartmentTypes() {
               </div>
 
               {/* ---------------- the specification -------------------- */}
-              <div className="relative min-h-[20rem] sm:min-h-[19rem] lg:min-h-[24rem]">
+              <div className="relative min-h-[19rem] sm:min-h-[18rem] lg:col-start-2 lg:row-start-2 lg:min-h-[19rem]">
                 {TYPES.map((t, i) => (
                   <TypePanel key={`p-${t.letter}`} t={t} i={i} n={n} p={p} />
                 ))}
@@ -251,40 +300,107 @@ export default function ApartmentTypes() {
  * at any point, and it runs once — `viewport.once` — rather than replaying
  * every time the section is scrolled back over.
  */
-function LetterHeading({ text, reduced }: { text: string; reduced: boolean }) {
+function HeadChar({
+  ch,
+  i,
+  n,
+  p,
+}: {
+  ch: string;
+  i: number;
+  n: number;
+  p: MotionValue<number>;
+}) {
+  /* Each character owns a slice of the scroll. The slices overlap, so the
+     darkening travels as a soft front across the line rather than snapping
+     letter by letter. The last character finishes at p = 1. */
+  const span = 0.42;
+  const from = (i / n) * (1 - span);
+  const color = useTransform(p, [from, from + span], [HEADING_REST, HEADING_LIT], {
+    clamp: true,
+  });
+  return (
+    <motion.span aria-hidden="true" style={{ color }}>
+      {ch}
+    </motion.span>
+  );
+}
+
+/**
+ * The heading, darkening character by character AGAINST SCROLL POSITION.
+ *
+ * `progress` is supplied by the caller because on desktop this heading sits
+ * on a pinned stage: the element never travels, so its own scroll offset
+ * would read a constant and the line would never light. The caller passes
+ * whichever progress actually moves — the zone's, when pinned; the heading's
+ * own crossing of the viewport, when it scrolls normally.
+ */
+function LetterHeading({
+  text,
+  progress,
+  className = "",
+}: {
+  text: string;
+  progress: MotionValue<number>;
+  className?: string;
+}) {
   const chars = [...text];
 
-  if (reduced) {
-    return (
-      <h2
-        id="apartment-types-heading"
-        className="font-display mt-5 max-w-[20ch] leading-[1.12]"
-        style={{ color: HEADING_LIT, fontSize: "clamp(1.9rem,4.4vw,3rem)", fontWeight: 500 }}
-      >
-        {text}
-      </h2>
-    );
-  }
-
   return (
-    <motion.h2
-      id="apartment-types-heading"
-      className="font-display mt-5 max-w-[20ch] leading-[1.12]"
+    <h2
+      aria-label={text}
+      className={`font-display max-w-[20ch] leading-[1.12] ${className}`}
       style={{ fontSize: "clamp(1.9rem,4.4vw,3rem)", fontWeight: 500 }}
-      initial="rest"
-      whileInView="lit"
-      viewport={{ once: true, amount: 0.55 }}
     >
       {chars.map((ch, i) => (
-        <motion.span
-          key={`${ch}-${i}`}
-          variants={{ rest: { color: IVORY }, lit: { color: HEADING_LIT } }}
-          transition={{ duration: 0.5, delay: i * 0.03, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          {ch}
-        </motion.span>
+        <HeadChar key={`${ch}-${i}`} ch={ch} i={i} n={chars.length} p={progress} />
       ))}
-    </motion.h2>
+    </h2>
+  );
+}
+
+/** The lead paragraph, resolving on the same scroll but far more quietly —
+ *  a word-level darkening with a blur that clears, so the heading stays the
+ *  stronger of the two effects. */
+function LeadCopy({
+  progress,
+  className = "",
+}: {
+  progress: MotionValue<number>;
+  className?: string;
+}) {
+  const words = LEAD_TEXT.split(" ");
+  return (
+    <p aria-label={LEAD_TEXT} className={className}>
+      {words.map((w, i) => (
+        <LeadWord key={`${w}-${i}`} w={w} i={i} n={words.length} p={progress} />
+      ))}
+    </p>
+  );
+}
+
+function LeadWord({
+  w,
+  i,
+  n,
+  p,
+}: {
+  w: string;
+  i: number;
+  n: number;
+  p: MotionValue<number>;
+}) {
+  const span = 0.55;
+  const from = (i / n) * (1 - span);
+  const t = useTransform(p, [from, from + span], [0, 1], { clamp: true });
+  const color = useTransform(t, [0, 1], [LEAD_REST, LEAD_LIT]);
+  const blur = useTransform(t, [0, 1], [3.5, 0]);
+  const filter = useMotionTemplate`blur(${blur}px)`;
+  return (
+    <motion.span aria-hidden="true" style={{ color, filter }}>
+      {w}
+      {i < n - 1 ? " " : ""}
+    </motion.span>
   );
 }
 
@@ -471,7 +587,10 @@ function TypePanel({
 
   return (
     <motion.div
-      className="absolute inset-x-0 top-1/2 -translate-y-1/2"
+      /* centred on the phone, where the cell is the content; top-aligned
+         from lg so the specification hugs the capsules that control it
+         instead of floating in the middle of a taller cell */
+      className="absolute inset-x-0 top-1/2 -translate-y-1/2 lg:top-0 lg:translate-y-0"
       style={{ opacity: presence, y, filter }}
       /* only the type in focus is reachable — the others are inert copies
          stacked in the same cell, and must not be announced or tabbed into */
@@ -569,7 +688,12 @@ function StaticTypes() {
         >
           Apartment Types
         </p>
-        <LetterHeading text="Four plans. One address." reduced />
+        <h2
+          className="font-display mt-4 max-w-[20ch] leading-[1.12]"
+          style={{ color: HEADING_LIT, fontSize: "clamp(1.9rem,4.4vw,3rem)", fontWeight: 500 }}
+        >
+          Four plans. One address.
+        </h2>
         <p
           className="mt-5 max-w-[56ch] text-[0.92rem] leading-[1.7]"
           style={{ color: "rgba(250,243,232,0.85)" }}

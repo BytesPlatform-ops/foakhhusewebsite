@@ -38,6 +38,11 @@ import {
 
 const INK = "#2B211D";
 
+/** The two systems that carry the project's innovation story. Named rather
+ *  than taken by position: the last row of the air stage is "Cooler Shared
+ *  Areas", which is an outcome, not an innovation to spotlight. */
+const SPOTLIT = new Set(["Kite Energy", "Atmospheric Water Generation"]);
+
 /* the layer runs taller than the render (1122x1402) so object-cover
    crops the render's own pale margins instead of glaring at the edges */
 const FRAME_ASPECT = 0.7;
@@ -83,9 +88,26 @@ const STAGES: Stage[] = [
     eyebrow: "A — Air & Ventilation",
     heading: "Wind Catcher",
     copy: "A dedicated architectural system designed to capture high-velocity natural air and guide it through internal circulation spaces.",
-    items: [{ t: "Natural Air Capture" }, { t: "Corridor Distribution" }, { t: "Cooler Shared Areas" }],
+    items: [
+      {
+        t: "Natural Air Capture",
+        d: "High-velocity natural air is captured through the building's dedicated wind-catcher system and directed into the development.",
+      },
+      {
+        t: "Corridor Distribution",
+        d: "Captured airflow is guided through internal circulation corridors to support continuous natural ventilation across shared spaces.",
+      },
+      {
+        t: "Cooler Shared Areas",
+        d: "The movement of natural air helps create more comfortable, better-ventilated corridors, lift lobbies and communal areas.",
+      },
+    ],
     at: [0.04, 0.08, 0.22, 0.26],
-    card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[46%]",
+    /* Sat at 46% while its three rows were headings only. With their
+       descriptions restored the card is ~540px tall, which ran past the
+       bottom of a 768px pinned stage — it starts higher now so the whole
+       card is inside the viewport at every desktop height. */
+    card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[24%]",
     frames: [
       {
         /* the wind-catcher tower itself — the previous frame showed the gap
@@ -689,8 +711,11 @@ function MobileSystems() {
             className="top-0 right-5 rotate-[2.2deg]"
           />
 
-          <div
-            className="relative rounded-[20px] border border-[#C99355]/45 px-6 pt-20 pb-6"
+          {/* The emphasis is on THIS card, not on the article around it —
+             the stills and the section behind hold still, so the panel
+             reads as coming forward rather than the page jumping. */}
+          <motion.div
+            className="relative rounded-[20px] border px-6 pt-20 pb-6"
             style={{
               /* mobile only — the desktop cards are unchanged. Dropped from
                  0.97 to 0.82 so the façade reads through the card instead of
@@ -699,8 +724,26 @@ function MobileSystems() {
               background: "rgba(250,246,240,0.82)",
               backdropFilter: "blur(10px)",
               WebkitBackdropFilter: "blur(10px)",
-              boxShadow: "0 22px 46px -30px rgba(36,27,23,0.5)",
+              transformOrigin: "50% 30%",
             }}
+            animate={
+              reduced
+                ? undefined
+                : active === i
+                  ? {
+                      scale: 1.02,
+                      y: -4,
+                      borderColor: "rgba(201,147,85,0.75)",
+                      boxShadow: "0 30px 60px -28px rgba(36,27,23,0.62)",
+                    }
+                  : {
+                      scale: 1,
+                      y: 0,
+                      borderColor: "rgba(201,147,85,0.45)",
+                      boxShadow: "0 22px 46px -30px rgba(36,27,23,0.5)",
+                    }
+            }
+            transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <p className="text-[0.58rem] font-bold tracking-[0.22em] uppercase" style={{ color: "#B65438" }}>
               {st.eyebrow}
@@ -712,28 +755,22 @@ function MobileSystems() {
             {/* each system resolves out of a soft blur as it is reached,
                 one after the next — the reveal that makes the water systems
                 in particular feel like arrivals rather than a bullet list */}
-            <ul className="mt-4">
+            <div className="mt-4">
               {st.items.map((it, k) => (
-                <motion.li
+                <SystemRow
                   key={it.t}
-                  className="border-t border-[#94432F]/12 py-2.5 first:border-t-0 first:pt-0"
-                  initial={reduced ? undefined : { opacity: 0, y: 14, filter: "blur(6px)" }}
-                  whileInView={reduced ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{ duration: 0.62, delay: k * 0.11, ease: [0.25, 0.1, 0.25, 1] }}
-                >
-                  <p className="text-[0.86rem] font-semibold" style={{ color: "#2B211D" }}>
-                    {it.t}
-                  </p>
-                  {it.d && <p className="mt-0.5 text-[0.8rem] leading-snug text-[#2B211D]/82">{it.d}</p>}
-                </motion.li>
+                  item={it}
+                  j={k}
+                  tone="mobile"
+                  spotlight={SPOTLIT.has(it.t)}
+                />
               ))}
-            </ul>
+            </div>
             {/* clear space for whichever stills sit over the card's foot */}
             {st.frames[1] && (
               <div aria-hidden="true" className={st.frames[2] ? "h-36" : i === 2 ? "h-28" : "h-24"} />
             )}
-          </div>
+          </motion.div>
 
           {st.frames[1] && (
             <MobileStill
@@ -791,13 +828,36 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
   /* the pieces travel the diagonal: in from upper-left, out lower-right */
   const x = useTransform(p, [st.at[0], st.at[1], st.at[2], st.at[3]], [-26, 0, 0, 20]);
   const y = useTransform(p, [st.at[0], st.at[1], st.at[2], st.at[3]], [-18, 0, 0, 14]);
-  const scale = useTransform(p, [st.at[0], st.at[1]], [0.985, 1]);
+  /* the card sits fractionally forward while its system is the active one,
+     then settles back as it leaves — the card only; the stills and the stage
+     behind it never move */
+  const scale = useTransform(p, st.at, [0.985, 1.02, 1.02, 1]);
+  /* the spotlight window for this stage's innovation row: it lifts once the
+     stage has landed and settles again before the stage leaves. The row is on
+     a pinned stage, so it cannot measure its own crossing — this is the only
+     progress that actually moves while the card is held. */
+  const rowLit = useTransform(
+    p,
+    [
+      st.at[1],
+      st.at[1] + (st.at[2] - st.at[1]) * 0.3,
+      st.at[2] - (st.at[2] - st.at[1]) * 0.12,
+      st.at[2],
+    ],
+    [0, 1, 1, 0]
+  );
+  const cardShadow = useTransform(p, st.at, [
+    "0 18px 40px -26px rgba(36,27,23,0.42)",
+    "0 34px 66px -30px rgba(36,27,23,0.6)",
+    "0 34px 66px -30px rgba(36,27,23,0.6)",
+    "0 18px 40px -26px rgba(36,27,23,0.42)",
+  ]);
   return (
     <>
       {/* the printed editorial note */}
       <motion.div
         className={`absolute z-30 w-[min(92vw,28rem)] overflow-hidden p-7 lg:p-8 ${st.card}`}
-        style={{ opacity, x, y, scale, clipPath: clip, ...CARD_STYLE }}
+        style={{ opacity, x, y, scale, clipPath: clip, ...CARD_STYLE, boxShadow: cardShadow }}
       >
         <motion.span
           aria-hidden="true"
@@ -817,20 +877,13 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
         </p>
         <div className="mt-4">
           {st.items.map((item, j) => (
-            <div
+            <SystemRow
               key={item.t}
-              className={j > 0 ? "mt-3 border-t pt-3" : ""}
-              style={j > 0 ? { borderColor: "rgba(170,95,61,0.16)" } : undefined}
-            >
-              <p className="text-[0.92rem] font-semibold" style={{ color: INK }}>
-                {item.t}
-              </p>
-              {item.d && (
-                <p className="mt-1 text-[0.82rem] leading-[1.6]" style={{ color: "rgba(42,30,26,0.64)" }}>
-                  {item.d}
-                </p>
-              )}
-            </div>
+              item={item}
+              j={j}
+              spotlight={SPOTLIT.has(item.t)}
+              emphasis={rowLit}
+            />
           ))}
         </div>
       </motion.div>
@@ -1115,5 +1168,109 @@ function StaticSystems() {
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * One system row inside a stage card, with a scroll-scrubbed spotlight.
+ *
+ * The emphasis exists for the row that carries the stage's innovation —
+ * Kite Energy in the renewable stage, Atmospheric Water in the water one.
+ * It is deliberately confined to the row: the card, the stills and the
+ * section behind it never move, so the effect reads as one line coming
+ * forward rather than the layout shifting.
+ *
+ * `emphasis` is supplied by the caller when the row sits on a PINNED stage,
+ * where the element itself never travels and its own scroll offset would
+ * stay flat. Otherwise the row measures its own crossing of the viewport,
+ * which is what lets it settle back as the scroll leaves.
+ */
+function SystemRow({
+  item,
+  j,
+  spotlight,
+  emphasis,
+  tone = "desktop",
+}: {
+  item: { t: string; d?: string };
+  j: number;
+  /** does this row carry the stage's innovation */
+  spotlight: boolean;
+  emphasis?: MotionValue<number>;
+  tone?: "desktop" | "mobile";
+}) {
+  const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  /* rise as the row comes up the screen, hold, settle as it leaves */
+  const own = useTransform(scrollYProgress, [0.24, 0.44, 0.66, 0.84], [0, 1, 1, 0]);
+  const raw = emphasis ?? own;
+  const lit = useSpring(raw, { stiffness: 120, damping: 26, mass: 0.3 });
+
+  const on = spotlight && !reduced;
+  const y = useTransform(lit, [0, 1], [0, -5]);
+  const scale = useTransform(lit, [0, 1], [1, 1.022]);
+  const titleColor = useTransform(lit, [0, 1], [INK, "#A8492F"]);
+  const descColor = useTransform(
+    lit,
+    [0, 1],
+    tone === "mobile"
+      ? ["rgba(43,33,29,0.82)", "rgba(43,33,29,1)"]
+      : ["rgba(42,30,26,0.64)", "rgba(42,30,26,0.92)"]
+  );
+  const glow = useTransform(lit, [0, 1], [0, 1]);
+
+  const titleCls =
+    tone === "mobile" ? "text-[0.86rem] font-semibold" : "text-[0.92rem] font-semibold";
+  const descCls =
+    tone === "mobile"
+      ? "mt-0.5 text-[0.8rem] leading-snug"
+      : "mt-1 text-[0.82rem] leading-[1.6]";
+
+  return (
+    <motion.div
+      ref={ref}
+      className={
+        tone === "mobile"
+          ? "relative border-t border-[#94432F]/12 py-2.5 first:border-t-0 first:pt-0"
+          : j > 0
+            ? "relative mt-3 border-t pt-3"
+            : "relative"
+      }
+      style={{
+        ...(tone === "desktop" && j > 0 ? { borderColor: "rgba(170,95,61,0.16)" } : {}),
+        ...(on ? { y, scale, transformOrigin: "0% 50%" } : {}),
+      }}
+    >
+      {on && (
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-3 -inset-y-1.5 -z-10 rounded-[12px]"
+          style={{
+            opacity: glow,
+            background:
+              "radial-gradient(70% 120% at 12% 50%, rgba(201,147,85,0.28) 0%, rgba(201,147,85,0.10) 46%, transparent 78%)",
+          }}
+        />
+      )}
+      <motion.p className={titleCls} style={on ? { color: titleColor } : { color: INK }}>
+        {item.t}
+      </motion.p>
+      {item.d && (
+        <motion.p
+          className={descCls}
+          style={
+            on
+              ? { color: descColor }
+              : { color: tone === "mobile" ? "rgba(43,33,29,0.82)" : "rgba(42,30,26,0.64)" }
+          }
+        >
+          {item.d}
+        </motion.p>
+      )}
+    </motion.div>
   );
 }

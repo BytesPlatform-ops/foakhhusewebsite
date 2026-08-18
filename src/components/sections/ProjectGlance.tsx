@@ -90,12 +90,10 @@ function PanelCopy({ h }: { h: (typeof HIGHLIGHTS)[number] }) {
   );
 }
 
-/** The claim, led by the intent; the qualification follows it rather than
- *  opening the paragraph. Both always render together. */
+/** The energy story, stated as intent. No figure is claimed here, so no
+ *  performance qualification has to travel with it. */
 const SAVINGS_LEAD =
-  "The project has been envisioned to support meaningful long-term energy efficiency. Under favourable operating conditions and according to engineering performance, residents will benefit from substantial electricity-cost reduction potential.";
-const SAVINGS_NOTE =
-  "Actual performance may vary depending on environmental conditions, occupancy patterns, appliance usage, tariff structures and final implemented system specifications.";
+  "The project has been envisioned to support meaningful long-term energy efficiency.";
 
 export default function ProjectGlance() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -420,13 +418,6 @@ function ProjectIntroduction() {
             </span>
             <span className="h-px flex-1" style={{ background: "rgba(155,82,55,0.4)" }} />
           </div>
-          <p
-            aria-hidden="true"
-            className="pointer-events-none absolute right-4 bottom-3 hidden text-[0.52rem] tracking-[0.22em] uppercase lg:right-6 lg:bottom-4 lg:block"
-            style={{ color: "rgba(142,67,47,0.6)" }}
-          >
-            WCR · Sheet 01 — Project Introduction · Not to scale
-          </p>
 
           {/* ---------------- content, attached to the sheet ---------- */}
           <motion.div
@@ -513,12 +504,6 @@ function ProjectIntroduction() {
                   heat gain and reduce reliance on conventional cooling and grid electricity.{" "}
                   {SAVINGS_LEAD}
                 </p>
-                <p
-                  className="mt-4 max-w-[62ch] border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"
-                  style={{ color: "rgba(81,68,61,0.85)", borderColor: "rgba(199,140,73,0.6)" }}
-                >
-                  {SAVINGS_NOTE}
-                </p>
               </motion.div>
 
               {/* The six qualities. Below md they are a single-column
@@ -553,18 +538,12 @@ function ProjectIntroduction() {
 
             </div>
 
-            {/* the savings claim and the qualification it must carry */}
+            {/* the energy story, as intent */}
             <div className="mt-10 md:hidden">
               <p className="text-[0.88rem] leading-[1.65]" style={{ color: "#625750" }}>
                 Together, these systems are designed to enhance natural ventilation, moderate
                 heat gain and reduce reliance on conventional cooling and grid electricity.
                 {" "}{SAVINGS_LEAD}
-              </p>
-              <p
-                className="mt-4 border-l-2 pl-3.5 text-[0.75rem] leading-[1.6]"
-                style={{ color: "rgba(81,68,61,0.85)", borderColor: "rgba(199,140,73,0.6)" }}
-              >
-                {SAVINGS_NOTE}
               </p>
             </div>
 

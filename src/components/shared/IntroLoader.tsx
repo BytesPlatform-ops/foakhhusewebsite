@@ -58,21 +58,25 @@ export default function IntroLoader() {
   const [progress, setProgress] = useState(3);
 
   useEffect(() => {
+    let cancelled = false;
     try {
       if (sessionStorage.getItem(SESSION_KEY)) return;
       sessionStorage.setItem(SESSION_KEY, "1");
-      setVisible(true);
+      /* deferred a tick: setting state synchronously inside the effect makes
+         the first paint render twice before anything is shown */
+      queueMicrotask(() => {
+        if (!cancelled) setVisible(true);
+      });
     } catch {
       // sessionStorage unavailable (private mode edge cases) — skip quietly
     }
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
-    if (!visible) return;
-    if (reduced) {
-      setReady(true);
-      return;
-    }
+    if (!visible || reduced) return;
 
     document.body.style.overflow = "hidden";
 
@@ -107,9 +111,13 @@ export default function IntroLoader() {
     };
   }, [visible, reduced]);
 
+  /* reduced motion never runs the loading sequence, so it is ready by
+     definition — derived rather than written into state from an effect */
+  const isReady = ready || reduced;
+
   useEffect(() => {
-    if (ready) document.body.style.overflow = "";
-  }, [ready]);
+    if (isReady) document.body.style.overflow = "";
+  }, [isReady]);
 
   if (!visible) return null;
 
@@ -117,7 +125,7 @@ export default function IntroLoader() {
 
   return (
     <AnimatePresence>
-      {!ready && (
+      {!isReady && (
         <motion.div
           role="status"
           aria-live="polite"

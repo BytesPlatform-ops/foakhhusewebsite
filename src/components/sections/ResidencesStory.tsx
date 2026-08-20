@@ -246,12 +246,18 @@ export default function ResidencesStory() {
         } as React.CSSProperties
       }
     >
-      {/* ============ 03A — APARTMENT TYPES (the floor plans) ==========
+      {/* ============ 03B — APARTMENT TYPES (the floor plans) ==========
           Ahead of the categories on purpose: the shape of the home is the
           first decision, the level of finish is the second. */}
       <ApartmentTypes />
 
-      {/* ==================== 03B — RESIDENCE CATEGORIES =============== */}
+      {/* The hinge between the two decisions, as one cinematic beat: the
+          sentence is the whole screen and nothing else. Deliberately NOT
+          pinned — the headline is scrubbed by ordinary page scroll, so the
+          reader passes through the statement instead of being held at it. */}
+      <PlanStatement />
+
+      {/* ==================== 03C — RESIDENCE CATEGORIES =============== */}
       <ResidenceCategories reduced={!!reduced} />
 
       {/* ---- Apartments & Interiors — the deck's introduction ------- */}
@@ -1784,5 +1790,141 @@ function QualityAside({ spec, p }: { spec: DeckSpec; p: MotionValue<number> }) {
         </p>
       </motion.div>
     </div>
+  );
+}
+
+/**
+ * "Choose the plan. Then make it yours." — a full-height statement that
+ * bridges layout selection and finish selection.
+ *
+ * No pin, no hold: a sticky layer inside a ~112dvh section, driven entirely
+ * by where the section sits in the viewport. Enter 0–30%, hold 30–65%,
+ * leave 65–100%, so the line rises in, reads, and lifts away as the reader
+ * keeps scrolling at their own pace.
+ */
+const STATEMENT = "Choose the plan. Then make it yours.";
+
+function PlanStatement() {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  /* 0–20% the ground arrives, 20–65% the line resolves, 65–80% it simply
+     reads, 80–100% it lifts away. No pin: the page's own scroll drives it. */
+  const groundIn = useTransform(scrollYProgress, [0, 0.2], [0, 1], { clamp: true });
+  const reveal = useTransform(scrollYProgress, [0.2, 0.65], [0, 1], { clamp: true });
+  const exitY = useTransform(scrollYProgress, [0.8, 1], [0, -80], { clamp: true });
+  const exitO = useTransform(scrollYProgress, [0.8, 1], [1, 0], { clamp: true });
+  /* hooks stay unconditional: the reduced-motion branch reads the value, it
+     does not skip creating it */
+  const groundOut = useTransform(groundIn, [0, 1], [1, 0]);
+
+  /* Words, then characters inside them. Splitting the whole line into loose
+     inline-blocks let the browser break mid-word ("Th / en"); each word is
+     now an unbreakable group and only the spaces between them can wrap. */
+  const words = STATEMENT.split(" ");
+  let charIndex = 0;
+  const total = STATEMENT.length;
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Choose the plan"
+      /* full bleed: it must own the whole phone screen, edge to edge, with
+         no page gutter narrowing it into a column */
+      className="relative min-h-[100svh] w-full"
+      style={{ height: "115dvh" }}
+    >
+      {/* the terracotta ground, revealed out of the black the residence
+          section leaves behind — black → deep brown → terracotta */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(80% 55% at 50% 24%, rgba(214,124,92,0.34) 0%, transparent 62%)," +
+            "linear-gradient(168deg,#8E3B27 0%,#A44A31 46%,#7C3323 100%)",
+        }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          opacity: reduced ? 0 : groundOut,
+          background: "linear-gradient(180deg,#090705 0%,#2A160E 58%,#5E2A1D 100%)",
+        }}
+      />
+
+      <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden px-5 sm:px-8">
+        <motion.h2
+          aria-label={STATEMENT}
+          className="font-display relative max-w-[16ch] text-center leading-[1.06]"
+          style={{
+            fontWeight: 500,
+            fontSize: "clamp(2.3rem, 8.4vw, 6rem)",
+            ...(reduced ? {} : { y: exitY, opacity: exitO }),
+          }}
+        >
+          {reduced
+            ? STATEMENT
+            : words.map((word, w) => {
+                const start = charIndex;
+                charIndex += word.length + 1; // + the space that follows
+                return (
+                  <span key={`${word}-${w}`} className="inline-block whitespace-nowrap">
+                    {[...word].map((ch, k) => (
+                      <StatementChar
+                        key={`${ch}-${k}`}
+                        ch={ch}
+                        i={start + k}
+                        n={total}
+                        p={reveal}
+                      />
+                    ))}
+                    {w < words.length - 1 && (
+                      <StatementChar ch=" " i={start + word.length} n={total} p={reveal} />
+                    )}
+                  </span>
+                );
+              })}
+        </motion.h2>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * One character of the statement. Each owns an overlapping slice of the
+ * reveal, so the line resolves left to right as a soft front rather than a
+ * typewriter. The whole word is still announced once, from the h2's label.
+ */
+function StatementChar({
+  ch,
+  i,
+  n,
+  p,
+}: {
+  ch: string;
+  i: number;
+  n: number;
+  p: MotionValue<number>;
+}) {
+  const span = 0.34;
+  const from = (i / n) * (1 - span);
+  const t = useTransform(p, [from, from + span], [0, 1], { clamp: true });
+  const opacity = useTransform(t, [0, 1], [0.15, 1]);
+  const filter = useTransform(t, (v) => `blur(${(1 - v) * 3}px)`);
+  const y = useTransform(t, [0, 1], [4, 0]);
+  return (
+    <motion.span
+      aria-hidden="true"
+      className="inline-block whitespace-pre"
+      style={{ color: "#F7EFE3", opacity, filter, y }}
+    >
+      {ch}
+    </motion.span>
   );
 }

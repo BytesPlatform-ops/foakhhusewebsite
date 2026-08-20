@@ -128,6 +128,10 @@ export default function VideoHero() {
         if (entry.boundingClientRect.bottom <= 0) {
           setPlaying(false);
           setMuted(true);
+          /* clear the hint here rather than in an effect: this is the moment
+             playback stops, so the hint can never linger to reappear stale
+             when the film resumes */
+          setShowHint(false);
         }
       },
       { threshold: 0 }
@@ -146,7 +150,6 @@ export default function VideoHero() {
     } else {
       video.pause();
     }
-    if (!playing) setShowHint(false);
   }, [reduced, playing]);
 
   const toggleAudio = () => {

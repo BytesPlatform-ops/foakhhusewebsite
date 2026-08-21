@@ -262,7 +262,39 @@ export default function ApartmentTypes() {
      tied to the section it hung around long after the plan had scrolled by.
      `amount: 0.5` retires it once the card is mostly behind you. */
   const sectionRef = useRef<HTMLElement>(null);
-  const sectionInView = useInView(sectionRef, { amount: "some" });
+  /* "some" kept the bar alive until the section's last pixel left, so it
+     rode along into the statement screen. This retires it once the section's
+     bottom is within the lower part of the viewport — i.e. while the reader
+     is still on the residences, but gone before the next section arrives. */
+  const [sectionInView, setSectionInView] = useState(false);
+  useEffect(() => {
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const el = sectionRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      /* How much of the section is actually on screen. Comparing edges to
+         fixed fractions of the viewport failed here: unpinned, the mobile
+         section is barely taller than one screen, so an edge rule retired the
+         bar almost as soon as it appeared. */
+      const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+      const share = visible / Math.min(r.height || vh, vh);
+      setSectionInView(share > 0.35);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check);
+    };
+    check();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
   const zoneRef = useRef<HTMLDivElement>(null);
   /* Beats, not entries: the penthouse spends two (11th, then 12th) while
      each layout spends one. BEAT_ENTRY maps a beat back to the selector
@@ -841,17 +873,22 @@ function TypeCapsules({
       aria-label="Jump to a residence"
       className="inline-flex items-center gap-1 rounded-full p-[3px] sm:p-1"
       style={{
-        /* The track is nearly opaque, not glass. At 32% the floor plan
-           scrolling underneath showed straight through the control and made
-           it look like a rendering fault; the blur alone could not settle a
-           drawing that busy. It still carries the warm border and inner
-           highlight, so it reads as a solid premium rail. */
-        background: "linear-gradient(180deg,#241811 0%,#160E09 100%)",
-        border: "1px solid rgba(232,207,164,0.28)",
-        backdropFilter: "blur(10px) saturate(1.3)",
-        WebkitBackdropFilter: "blur(10px) saturate(1.3)",
+        /* The duplex scrolls a dense drawing under this control, so there it
+           has to be a solid rail — at low opacity the plan showed through and
+           read as a rendering fault. The four layouts sit on the calm
+           terracotta ground, where liquid glass belongs. */
+        background:
+          active === 0
+            ? "linear-gradient(180deg,#241811 0%,#160E09 100%)"
+            : "rgba(28,15,10,0.30)",
+        border: `1px solid rgba(232,207,164,${active === 0 ? 0.28 : 0.24})`,
+        backdropFilter: "blur(16px) saturate(1.6)",
+        WebkitBackdropFilter: "blur(16px) saturate(1.6)",
         boxShadow:
-          "inset 0 1px 0 rgba(255,236,222,0.16), 0 12px 30px -14px rgba(0,0,0,0.85)",
+          active === 0
+            ? "inset 0 1px 0 rgba(255,236,222,0.16), 0 12px 30px -14px rgba(0,0,0,0.85)"
+            : "inset 0 1px 0 rgba(255,236,222,0.18), 0 10px 26px -16px rgba(20,10,6,0.5)",
+        transition: "background 400ms ease, box-shadow 400ms ease",
       }}
     >
       {/* One control for the whole collection, the penthouse first. It is
@@ -1763,9 +1800,17 @@ function MobileResidences({
   const lv = PENTHOUSE.levels[phFloor];
   const t = active > 0 ? TYPES[active - 1] : null;
   const last = TYPES.length; // penthouse + four layouts
+  /* which way the last change went, so the card can answer the gesture:
+     content leaves toward the swipe and the next one arrives behind it */
+  const [dir, setDir] = useState(0);
+  const go = (next: number) => {
+    if (next === active) return;
+    setDir(next > active ? 1 : -1);
+    setActive(next);
+  };
   const swipe = useSwipe(
-    () => setActive(Math.max(0, active - 1)),
-    () => setActive(Math.min(last, active + 1))
+    () => go(Math.max(0, active - 1)),
+    () => go(Math.min(last, active + 1))
   );
 
   return (
@@ -1783,15 +1828,19 @@ function MobileResidences({
         className="sticky z-30 pt-1 pb-2"
         style={{ top: stickyTop }}
       >
-        <TypeCapsules active={active} onSelect={setActive} reduced={reduced} scope="m" />
+        <TypeCapsules active={active} onSelect={go} reduced={reduced} scope="m" />
       </div>
 
       {/* No keyed remount and no vertical entry: switching tabs used to drop
           the whole card in from above, which read as a dropdown rather than a
           segmented control. The sliding pill carries the change now; the card
           only cross-fades its contents. */}
-      <div
+      <motion.div
         {...swipe}
+        key={active}
+        initial={reduced ? false : { opacity: 0, x: dir * 26 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
         className="mt-4 rounded-[20px] border p-3.5"
         style={{
           background: dark
@@ -1926,8 +1975,7 @@ function MobileResidences({
                 <FeatureCell key={sp.label} t={sp.value} d={sp.label} dark={false} />
               ))}
         </div>
-
-      </div>
+      </motion.div>
     </div>
   );
 }

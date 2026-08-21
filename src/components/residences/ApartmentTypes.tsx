@@ -950,24 +950,34 @@ function TypeCapsules({
 
 /** the beat window for type i, plus a short shared crossfade at each edge */
 
-/** Height the fixed site header occupies, plus a small breathing gap. */
+/**
+ * Height the fixed site header occupies, plus a small breathing gap.
+ *
+ * Measured live rather than once at mount: the header settles from 70px to
+ * 58px after its fonts land, and a mount-time reading baked in the taller
+ * value, leaving a visible gap under it. A ResizeObserver keeps this honest.
+ */
 function useHeaderOffset() {
-  const [top, setTop] = useState(96);
+  const [top, setTop] = useState(84);
   useEffect(() => {
+    const el = document.querySelector("header");
+    if (!el) return;
     const measure = () => {
-      const el = document.querySelector("header");
-      if (!el) return;
       const cs = getComputedStyle(el);
       if (cs.position !== "fixed") return;
-      /* read its resting inset, not its current transform: the header hides
-         on scroll-down, and a transformed rect would collapse the offset */
+      /* its resting inset, not its live rect: the header hides on scroll-down
+         and a transformed rect would collapse the offset */
       const inset = parseFloat(cs.top || "0") || 0;
-      const h = el.offsetHeight;
-      setTop(Math.round(inset + h + 14));
+      setTop(Math.round(inset + (el as HTMLElement).offsetHeight + 8));
     };
     measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
   return top;
 }

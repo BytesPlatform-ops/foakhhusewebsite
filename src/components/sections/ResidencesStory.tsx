@@ -120,7 +120,7 @@ const DECK: DeckSpec[] = [
     quality: {
       num: "02",
       title: "Intuitive",
-      copy: "Planning that follows real routines — cooking, gathering, moving through the day.",
+      copy: "Planning that follows real routines: cooking, gathering, moving through the day.",
     },
     accent: "138 152 132",
   },
@@ -428,7 +428,7 @@ const CAT_PANELS: CatPanelData[] = [
       </>
     ),
     lead: "Precisely planned layouts created for practical everyday living.",
-    body: "Classic Apartments feature precisely planned architectural layouts created for comfortable, convenient and practical everyday living.",
+    body: "Classic Apartments feature precisely planned architectural layouts created for comfortable, convenient and practical everyday living in DHA City.",
     points: [
       { t: "Fine Finishes", d: "Dependable workmanship and carefully selected materials." },
       { t: "Welcoming Environment", d: "A calm, practical home for modern families." },
@@ -454,7 +454,7 @@ const CAT_PANELS: CatPanelData[] = [
       { t: "Enhanced Interiors", d: "Modern fixtures, carpet flooring and selected wallpapers." },
       { t: "Statement Details", d: "Feature lighting, chandeliers and a solid-wood entrance door." },
     ],
-    note: "Best for · residents seeking an upgraded interior experience.",
+    note: "Best for · residents seeking an upgraded, move-in-ready interior.",
     src: "/interior-elegant.jpg",
     alt: "An Elegant-category living room — feature lighting, panelled walls and the solid-wood entrance door",
     pos: "50% 50%",
@@ -471,7 +471,7 @@ const CAT_PANELS: CatPanelData[] = [
       </>
     ),
     lead: "Foakh's premium serviced-apartment category.",
-    body: "Coordinated interiors, premium finishes, selected furnishings and resident-focused convenience combine to create an effortless and refined ready-to-live experience.",
+    body: "Foakh\u2019s premium serviced-apartment category. Coordinated interiors, premium finishes, selected furnishings and resident-focused convenience combine to create an effortless, ready-to-live experience. Sonder suits owners who want effortless living, and overseas investors who need their apartment in Karachi looked after while they\u2019re abroad.",
     points: [
       { t: "Coordinated Interiors", d: "Furnished and finished as one considered composition." },
       { t: "Resident Services", d: "Everyday convenience built into the experience." },
@@ -492,7 +492,7 @@ const CAT_PANELS: CatPanelData[] = [
       </>
     ),
     lead: "The most exclusive residences in the collection.",
-    body: "Eight exclusive duplex penthouses elevate the residential collection with additional space, privacy and independent swimming pools.",
+    body: "Eight exclusive duplex penthouses elevate the collection with additional space, privacy and independent swimming pools.",
     points: [
       { t: "Private Pools", d: "An independent swimming pool with every penthouse." },
       { t: "Elevated Privacy", d: "Duplex living at the crown of the building." },
@@ -778,7 +778,7 @@ function ResidenceCategories({ reduced }: { reduced: boolean }) {
                 className="font-display mt-6 leading-[1.05] font-medium"
                 style={{ color: "#94432F", fontSize: "clamp(2.6rem,3.4vw,3.6rem)" }}
               >
-                One exceptional address. Three distinctive categories.
+                One Exceptional Address. Three Distinctive Categories.
               </p>
               <p className="mt-5 max-w-md text-[0.95rem] leading-[1.65]" style={{ color: "rgba(33,26,23,0.72)" }}>
                 From practical family living to serviced sophistication — each category
@@ -1372,7 +1372,7 @@ function StackedCategories({ embedded = false }: { embedded?: boolean }) {
         className="font-display mt-5 leading-[1.08] font-medium"
         style={{ color: "#94432F", fontSize: "clamp(2.2rem,7vw,3rem)" }}
       >
-        One exceptional address. Three distinctive categories.
+        One Exceptional Address. Three Distinctive Categories.
       </p>
       <MobileIndex active={active} onJump={jump} />
       <div className="space-y-16">

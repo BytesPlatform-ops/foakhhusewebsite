@@ -11,27 +11,27 @@ const ITEMS: { icon: keyof typeof ICONS; label: string; sub: string }[] = [
   {
     icon: "cross",
     label: "Healthcare",
-    sub: "Shaukat Khanum Hospital — important healthcare access close to home",
+    sub: "Shaukat Khanum Hospital, moments from home.",
   },
   {
     icon: "bag",
     label: "Shopping",
-    sub: "Convenient access to shopping and everyday essentials",
+    sub: "Convenient access to shopping and everyday essentials.",
   },
   {
     icon: "cap",
     label: "Education",
-    sub: "Connectivity to schools and educational facilities for families",
+    sub: "Connectivity to schools and educational facilities for families.",
   },
   {
     icon: "road",
     label: "Major Roads",
-    sub: "Access to surrounding communities and key transport routes",
+    sub: "Access to surrounding communities and key transport routes.",
   },
   {
     icon: "route",
     label: "Commercial Areas",
-    sub: "Everyday services and commercial destinations within the wider location",
+    sub: "Everyday services and commercial destinations within the wider location.",
   },
 ];
 

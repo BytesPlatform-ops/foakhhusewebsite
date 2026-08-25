@@ -28,11 +28,14 @@ import {
  * settled end-frame statically with everything readable.
  */
 
+/* Approved SEO copy, verbatim. These strings are immutable: no rewriting,
+   shortening or punctuation normalisation. */
 const COPY = {
   eyebrow: "01 — The Project",
-  headline: "Designed around nature. Created around modern life.",
+  headline: "A New Residential Project in DHA City, Designed Around Nature",
   body: "A distinctive residential concept created for comfort, efficiency and future-ready living.",
   caption: "Umer Block · Abdullah Block — 12 storeys · 160 apartments · 8 duplex penthouses",
+  closing: "The future of responsible urban living in DHA City starts here.",
 };
 
 const HIGHLIGHTS = [
@@ -46,19 +49,19 @@ const HIGHLIGHTS = [
   },
   {
     title: "Modern Family Living",
-    copy: "Spacious layouts designed around comfort, functionality and everyday needs.",
+    copy: "Spacious 1, 2 and 3 bedroom layouts designed around comfort and everyday needs.",
   },
   {
     title: "Renewable Energy",
-    copy: "Wind turbines, solar panels and kite energy planned as part of an integrated renewable-energy strategy.",
+    copy: "Wind turbines, solar panels and kite energy in one integrated strategy.",
   },
   {
     title: "Innovative Ventilation",
-    copy: "A dedicated wind-catcher system designed to capture and channel natural airflow.",
+    copy: "A dedicated wind-catcher system that captures and channels natural airflow.",
   },
   {
     title: "Strategic Location",
-    copy: "Located within Karachi's wind corridor, adjacent to Shaukat Khanum Hospital.",
+    copy: "Within Karachi's wind corridor, adjacent to Shaukat Khanum Hospital.",
   },
 ];
 
@@ -66,8 +69,8 @@ const HIGHLIGHTS = [
  *  story reads them. Same words the sheet carries on desktop — held here so
  *  the story and the reduced-motion fallback cannot drift apart. */
 const DECK_INTRO = [
-  "Foakh Wind Corridor Enclave is an exclusive 12-storey residential development in DHA City, Karachi, comprising Umer Block and Abdullah Block. With 160 carefully planned apartments and eight duplex penthouses with independent swimming pools, the development brings together privacy, spacious living and a distinctive contemporary architectural identity.",
-  "The project has been conceived around the intelligent use of natural resources. Wind turbines, solar energy and kite energy form part of its renewable-energy strategy, while a dedicated wind-catcher system captures high-velocity natural air and directs it through the development.",
+  "Foakh Wind Corridor Enclave is an exclusive collection of apartments for sale in DHA City Karachi: a 12-storey development comprising Umer Block and Abdullah Block, with 160 carefully planned residences and eight duplex penthouses with independent swimming pools. The development brings together privacy, spacious living and a distinctive contemporary architectural identity.",
+  "Most new projects in DHA City revolve around plots. Foakh is a ready-designed vertical community instead, where families can own a modern flat without the years of construction a plot demands. The project has been conceived around the intelligent use of natural resources: wind turbines, solar energy and kite energy form its renewable-energy strategy, while a dedicated wind-catcher system captures high-velocity natural air and directs it through the development.",
 ];
 
 /** one panel surface, shared by the desktop grid and the mobile rail */

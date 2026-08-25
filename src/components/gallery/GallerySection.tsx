@@ -33,7 +33,7 @@ export interface GalleryItem {
 const ITEMS: GalleryItem[] = [
   {
     src: "/buildingfront.jpg",
-    alt: "Frontal view of the two residential blocks above the landscaped courtyard at dusk",
+    alt: "Frontal view of the two residential blocks above the landscaped courtyard at dusk, DHA City Karachi",
     category: "Architecture",
     title: "The two blocks at dusk",
     aspect: "aspect-[4/4.4]",
@@ -96,7 +96,7 @@ const ITEMS: GalleryItem[] = [
   },
   {
     src: "/foakhshaukat.jpg",
-    alt: "The development beneath the evening sky, Shaukat Khanum Hospital and wind turbines nearby",
+    alt: "The development beneath the evening sky, Shaukat Khanum Hospital and wind turbines nearby, DHA City Karachi",
     category: "Site context",
     title: "Within the wind corridor",
     aspect: "aspect-[4/3]",

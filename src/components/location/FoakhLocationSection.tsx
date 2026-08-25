@@ -91,8 +91,8 @@ function PanelHeader() {
         className="font-display mt-7 leading-[1.06] sm:mt-9 sm:leading-[1.07]"
         style={{ fontSize: "clamp(2.05rem,8.4vw,4rem)", fontWeight: 500, letterSpacing: "-0.01em" }}
       >
-        <span className="block text-[#FAF6F0]">Connected to</span>
-        <span className="block text-[#C99355]">what matters.</span>
+        <span className="block text-[#FAF6F0]">Apartments Near Shaukat Khanum Hospital,</span>
+        <span className="block text-[#C99355]">Connected to What Matters</span>
       </h2>
       {/* champagne divider with diamond accent */}
       <div className="mt-6 flex items-center gap-2.5" aria-hidden="true">
@@ -100,12 +100,14 @@ function PanelHeader() {
         <span className="h-1.5 w-1.5 rotate-45 bg-[#C99355]" />
       </div>
       <p className="mt-5 max-w-lg text-[0.98rem] leading-[1.65] text-[#FAF6F0]/92 sm:mt-6 sm:text-[1.02rem] sm:leading-[1.7]">
-        A convenient address close to healthcare, shopping, education and major road links.
+        A convenient DHA City address close to healthcare, shopping, education and major road
+        links.
       </p>
       <p className="mt-3 max-w-lg text-[0.88rem] leading-[1.65] text-[#FAF6F0]/78 sm:mt-4 sm:text-[0.92rem] sm:leading-[1.7]">
-        Foakh Wind Corridor Enclave is positioned within Karachi&rsquo;s wind corridor and
-        adjacent to Shaukat Khanum Hospital, combining environmental advantages with access
-        to an important emerging residential area.
+        Foakh Wind Corridor Enclave is positioned within Karachi&rsquo;s wind corridor at
+        2FQ3+W4X, DHA City, directly adjacent to Shaukat Khanum Hospital. The address combines
+        environmental advantages with access to one of Pakistan&rsquo;s largest planned
+        communities, where apartment supply remains limited and infrastructure continues to grow.
       </p>
 
       {/* The confirmed address in its single-line form. A visitor planning a

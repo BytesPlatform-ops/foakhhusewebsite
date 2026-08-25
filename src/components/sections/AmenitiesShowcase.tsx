@@ -620,12 +620,12 @@ function Heading({ compact = false }: { compact?: boolean }) {
         className="font-display mt-3 leading-[1.06] text-balance"
         style={{ color: IVORY, fontSize: compact ? "clamp(1.9rem,2.7vw,2.8rem)" : "clamp(2.4rem,3.8vw,3.9rem)", fontWeight: 500 }}
       >
-        Everyday comfort, elevated.
+        Everyday Comfort, Elevated
       </h3>
       {!compact && (
         <p className="mt-3 max-w-xl text-[1rem] leading-[1.65]" style={{ color: "rgba(250,243,232,0.88)" }}>
           A carefully selected collection of amenities supports convenience, wellness,
-        security and family life.
+          security and family life at Foakh.
         </p>
       )}
     </div>

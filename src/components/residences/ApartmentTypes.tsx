@@ -15,6 +15,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import ExploreIn3DButton from "@/components/tour/ExploreIn3DButton";
 
 /**
  * 03 — Apartment Types.
@@ -85,7 +86,7 @@ const PENTHOUSE = {
   name: "Duplex Penthouse",
   headline: "Two levels. One exceptional residence.",
   blurb:
-    "A double-storey residence occupying the 11th and 12th floors, connected by its own internal staircase \u2014 with a private swimming pool and open terrace on the upper level.",
+    "A double-storey residence occupying the 11th and 12th floors. A penthouse with a private pool is rare anywhere in Karachi, in DHA City, these eight are the only ones of their kind.",
   specs: [
     { label: "Configuration", value: "Double-storey" },
     { label: "Levels", value: "11th + 12th Floor" },
@@ -107,7 +108,7 @@ const PENTHOUSE = {
       crop: [0.31, 0.07, 0.48, 0.79],
       planAlt:
         "Eleventh floor plan of Foakh Wind Corridor Enclave \u2014 the lower level of the duplex penthouses",
-      note: "The arrival level. Entrance halls, family lounges and bedrooms sit either side of the central circulation core, with the internal staircase rising to the level above.",
+      note: "Entrance halls, family lounges and bedrooms either side of the central core, with the internal staircase rising above.",
       features: [
         { t: "Entrance Hall", d: "with family lounge" },
         { t: "Bedrooms", d: "with attached baths" },
@@ -127,7 +128,7 @@ const PENTHOUSE = {
       crop: [0.11, 0.11, 0.42, 0.83],
       planAlt:
         "Twelfth floor plan of Foakh Wind Corridor Enclave \u2014 the upper level, with private swimming pools and open terraces",
-      note: "The private level. Each residence opens onto its own swimming pool and open terrace, reached by the staircase from the floor below.",
+      note: "Each residence opens onto its own swimming pool and open terrace.",
       features: [
         { t: "Swimming Pool", d: "private to each residence" },
         { t: "Open Terrace", d: "with open views" },
@@ -144,7 +145,7 @@ const TYPES: ApartmentType[] = [
     name: "Type A",
     area: 1102,
     blurb:
-      "The largest of the four layouts — a three-bedroom home with an attached bathroom to every room and a balcony off the living space.",
+      "The largest of the four layouts. A three bedroom apartment with an attached bathroom to every room and a balcony off the living space.",
     plan: "/plan-type-a.png",
       sheet: "/plan-view-type-a.png",
     crop: [0.36, 0.04, 0.53, 0.89],
@@ -164,7 +165,7 @@ const TYPES: ApartmentType[] = [
     name: "Type B",
     area: 860,
     blurb:
-      "A balanced two-bedroom layout that keeps the balcony and the dedicated parking space of the larger plan in a more compact footprint.",
+      "A balanced two bedroom flat that keeps the balcony and dedicated parking of the larger plan in a more compact footprint.",
     plan: "/plan-type-b.png",
       sheet: "/plan-view-type-b.png",
     crop: [0.44, 0.04, 0.41, 0.86],
@@ -184,7 +185,7 @@ const TYPES: ApartmentType[] = [
     name: "Type C",
     area: 682,
     blurb:
-      "Two bedrooms held in an efficient plan — the full room count of Type B, arranged for a smaller, easier-to-run home.",
+      "Two bedrooms held in an efficient plan: the full room count of Type B, arranged for a smaller, easier-to-run home.",
     plan: "/plan-type-c.png",
       sheet: "/plan-view-type-c.png",
     crop: [0.35, 0.03, 0.45, 0.86],
@@ -204,7 +205,7 @@ const TYPES: ApartmentType[] = [
     name: "Type D",
     area: 464,
     blurb:
-      "The most compact residence in the collection — a single-bedroom home planned around one person or a couple, and the easiest entry into the address.",
+      "The most compact residence in the collection. A single-bedroom home planned around one person or a couple, and the easiest entry into the address.",
     plan: "/plan-type-d.png",
       sheet: "/plan-view-type-d.png",
     crop: [0.43, 0.04, 0.43, 0.86],
@@ -250,7 +251,7 @@ const HEADING_REST = "rgba(255,245,228,0.5)";
 const LEAD_REST = "rgba(250,243,232,0.34)";
 const LEAD_LIT = "rgba(250,243,232,0.9)";
 const LEAD_TEXT =
-  "Four standard layouts, and a double-storey penthouse above them. Choose the shape of the home first \u2014 then the level of finish.";
+  "Four standard layouts, and a double-storey penthouse above them. Choose the shape of the home first, then the level of finish. Pricing starts at PKR 79 lakh.";
 
 export default function ApartmentTypes() {
   const reduced = useReducedMotion();
@@ -453,7 +454,7 @@ export default function ApartmentTypes() {
           The Residences
         </p>
         <LetterHeading
-          text="A penthouse. Four plans."
+          text="A residence. Four plans."
           progress={headP}
           dark={onBlack}
           className="mt-4"
@@ -580,7 +581,7 @@ export default function ApartmentTypes() {
                 The Residences
               </p>
               <LetterHeading
-                text="A penthouse. Four plans."
+                text="A residence. Four plans."
                 progress={deskHeadP}
                 dark={onBlack}
                 className="mt-2.5"
@@ -1307,6 +1308,11 @@ function PenthouseInfo({
             ))}
           </motion.div>
         ))}
+      </div>
+
+      {/* The duplex is the one residence you can actually walk through. */}
+      <div className="mt-4">
+        <ExploreIn3DButton tone="dark" />
       </div>
     </div>
   );

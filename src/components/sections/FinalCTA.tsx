@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ChapterHeading, Eyebrow, Lead } from "@/components/shared/Chapter";
+import FaqSection from "./FaqSection";
 
 /**
  * 22 — Limited Community & Long-Term Value, closing into the Final CTA.
@@ -52,7 +53,7 @@ export default function FinalCTA() {
         <Eyebrow num="06" tone="light">
           Limited by Design
         </Eyebrow>
-        <ChapterHeading tone="light">A distinctive address with long-term appeal.</ChapterHeading>
+        <ChapterHeading tone="light">A Distinctive DHA City Address with Long-Term Appeal</ChapterHeading>
         <Lead tone="light">
           Foakh Wind Corridor Enclave combines a limited residential collection, distinctive
           architecture, multiple renewable-energy systems and a strategically positioned
@@ -71,6 +72,10 @@ export default function FinalCTA() {
           opportunity shaped around design, comfort and future-ready planning.
         </p>
 
+        {/* FAQ sits between "Limited by Design" and the enquiry form, where
+            the SEO brief places it. */}
+        <FaqSection />
+
         {/* ---- The dusk composition + enquiry ---- */}
         <div className="mt-20 grid items-center gap-12 lg:grid-cols-12">
           <figure className="lg:col-span-6">
@@ -79,13 +84,13 @@ export default function FinalCTA() {
 
           <div className="lg:col-span-6">
             <h3 className="font-display text-ivory text-d3 max-w-[14ch] font-semibold">
-              Live where nature moves with you.
+              Live Where Nature Moves With You
             </h3>
             <p className="text-ivory/70 mt-4 max-w-md text-pretty">
-              Discover a residential development shaped around architecture, natural airflow,
-              renewable resources and modern family living. Register your interest in Foakh
-              Wind Corridor Enclave to receive project information, residential availability
-              and future development updates.
+              Discover apartments for sale in DHA City Karachi shaped around architecture,
+              natural airflow, renewable resources and modern family living. Register your
+              interest in Foakh Wind Corridor Enclave to receive project information,
+              residential availability and development updates.
             </p>
 
             {/* Enquiry panel — real fields, honest delivery state */}

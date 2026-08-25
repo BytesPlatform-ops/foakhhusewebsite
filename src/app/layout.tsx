@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import IntroLoader from "@/components/shared/IntroLoader";
-import { FOAKH_PROJECT } from "@/lib/project";
 import "./globals.css";
+import StructuredData from "@/components/shared/StructuredData";
 
 // High-contrast editorial serif for display — graceful, tall, refined
 // thin-thick strokes; cleaner and more modern than the reference. Inter
@@ -19,12 +19,12 @@ const body = Inter({
   display: "swap",
 });
 
+/* Approved SEO metadata — verbatim from the specialist brief. Do not
+   paraphrase, shorten or re-punctuate these two strings. */
 export const metadata: Metadata = {
-  title: FOAKH_PROJECT.projectName,
+  title: "Foakh Wind Corridor Enclave | Apartments for Sale in DHA City",
   description:
-    `${FOAKH_PROJECT.projectName} — a 12-storey residential development at ` +
-    `${FOAKH_PROJECT.displayAddress}. Two blocks, 160 apartments and eight duplex ` +
-    "penthouses, shaped around natural airflow, renewable energy and resilient water planning.",
+    "Luxury flats & apartments for sale in DHA City Karachi. 1 to 3 bed residences, serviced apartments & duplex penthouses with private pools.",
 };
 
 export default function RootLayout({
@@ -35,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="antialiased">
+        <StructuredData />
         <IntroLoader />
         <a href="#main" className="skip-link">
           Skip to content

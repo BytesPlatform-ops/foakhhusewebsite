@@ -50,9 +50,9 @@ const FRAME_ASPECT = 0.7;
 /* the heading is lit letter by letter as the façade rises behind it:
    ink while the cream scrim is there, warm white once the terracotta
    fills the frame */
-const HEADING_TEXT = "Nature, engineered for better living.";
+const HEADING_TEXT = "Nature, Engineered for Lower Bills and Better Living";
 const LEAD_TEXT =
-  "A connected set of natural-resource systems designed to support airflow, renewable power and resilient water planning throughout the development.";
+  "A connected set of natural-resource systems designed to support airflow, renewable power and resilient water planning throughout the development. Electricity costs are the biggest hidden expense of apartment living in Karachi; Foakh was designed around that reality.";
 
 const CARD_STYLE: React.CSSProperties = {
   background: "rgba(248, 240, 229, 0.985)",
@@ -85,21 +85,21 @@ interface Stage {
 
 const STAGES: Stage[] = [
   {
-    eyebrow: "A — Air & Ventilation",
+    eyebrow: "A: Air & Ventilation. The Wind Catcher",
     heading: "Wind Catcher",
-    copy: "A dedicated architectural system designed to capture high-velocity natural air and guide it through internal circulation spaces.",
+    copy: "A dedicated architectural system captures high-velocity natural air from Karachi\u2019s wind corridor and guides it through internal circulation spaces.",
     items: [
       {
         t: "Natural Air Capture",
-        d: "High-velocity natural air is captured through the building's dedicated wind-catcher system and directed into the development.",
+        d: "High-velocity air is captured through the wind-catcher system and directed into the development.",
       },
       {
         t: "Corridor Distribution",
-        d: "Captured airflow is guided through internal circulation corridors to support continuous natural ventilation across shared spaces.",
+        d: "Captured airflow moves through internal corridors for continuous natural ventilation.",
       },
       {
         t: "Cooler Shared Areas",
-        d: "The movement of natural air helps create more comfortable, better-ventilated corridors, lift lobbies and communal areas.",
+        d: "Corridors, lift lobbies and communal areas stay comfortable with less conventional cooling.",
       },
     ],
     at: [0.04, 0.08, 0.22, 0.26],
@@ -129,12 +129,12 @@ const STAGES: Stage[] = [
     ],
   },
   {
-    eyebrow: "B — Renewable Energy",
+    eyebrow: "B: Renewable Energy. Wind Turbines, Solar and Kite Energy",
     heading: "Wind Turbines · Solar · Kite Energy",
-    copy: "Wind, sunlight and high-altitude airflow contribute to a diversified renewable-energy strategy.",
+    copy: "Wind, sunlight and high-altitude airflow contribute to a diversified renewable-energy strategy: solar powered apartment living designed for meaningful long-term energy efficiency.",
     items: [
-      { t: "Wind Turbines", d: "Planned to convert available regional wind into renewable electricity." },
-      { t: "Solar Energy", d: "Panels harness Karachi's abundant sunlight to complement the other systems." },
+      { t: "Wind Turbines", d: "Convert available regional wind into renewable electricity." },
+      { t: "Solar Energy", d: "Panels harness Karachi's abundant sunlight." },
       { t: "Kite Energy", d: "Airborne tethered wings capture stronger high-altitude winds for ground-based generation." },
     ],
     at: [0.26, 0.30, 0.46, 0.50],
@@ -167,11 +167,11 @@ const STAGES: Stage[] = [
     ],
   },
   {
-    eyebrow: "C — Water Systems",
+    eyebrow: "C: Water Systems. A More Resilient Approach",
     heading: "A more resilient approach to water.",
-    copy: "Desalination and atmospheric water generation work together as part of a diversified water strategy.",
+    copy: "Desalination and atmospheric water generation work together as a diversified water strategy, built for dependable supply.",
     items: [
-      { t: "Water Desalination", d: "Reverse-osmosis treatment planned to support dependable water availability." },
+      { t: "Water Desalination", d: "Reverse-osmosis treatment planned to support dependable availability." },
       { t: "Atmospheric Water Generation", d: "Thin Air technology extracts water from atmospheric air." },
     ],
     at: [0.50, 0.54, 0.68, 0.72],

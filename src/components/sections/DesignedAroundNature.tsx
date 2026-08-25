@@ -140,7 +140,7 @@ export default function DesignedAroundNature() {
 
         {/* accessible heading for the whole composition */}
         <h2 id="nature-heading" className="sr-only">
-          Designed around how you live
+          Designed Around How You Live
         </h2>
 
         {/* ---------------- oversized heading, four fragments ------------ */}
@@ -252,7 +252,7 @@ export default function DesignedAroundNature() {
             Architecture that responds to air, energy, water and everyday comfort.
           </p>
           <p className="mt-3 text-[0.82rem] leading-relaxed text-[#2B211D]/75 md:text-[0.9rem]">
-            Natural airflow, renewable-energy planning, future-ready water systems and refined residential living — brought together in one considered development.
+            Architecture that responds to air, energy, water and everyday comfort. Natural airflow, renewable-energy planning, future-ready water systems and refined residential living, brought together in one considered address in DHA City Karachi.
           </p>
           <motion.a
             href="#route"
@@ -414,7 +414,7 @@ function MobileVision() {
         </p>
         <p className="mt-3 text-[0.88rem] leading-relaxed text-[#2B211D]/75">
           Natural airflow, renewable-energy planning, future-ready water systems and refined
-          residential living — brought together in one considered development.
+          residential living, brought together in one considered address in DHA City Karachi.
         </p>
         <a
           href="#route"
@@ -494,7 +494,7 @@ function StaticSpread() {
           id="nature-heading"
           className="font-display mt-6 max-w-[14ch] text-[clamp(2.4rem,6vw,5.4rem)] leading-[1.02] font-medium text-[#2B211D]"
         >
-          Designed around how you live.
+          Designed Around How You Live
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[

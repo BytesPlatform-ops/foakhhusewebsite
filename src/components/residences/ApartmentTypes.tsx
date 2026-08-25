@@ -15,7 +15,6 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import ExploreIn3DButton from "@/components/tour/ExploreIn3DButton";
 
 /**
  * 03 — Apartment Types.
@@ -1312,7 +1311,6 @@ function PenthouseInfo({
 
       {/* The duplex is the one residence you can actually walk through. */}
       <div className="mt-4">
-        <ExploreIn3DButton tone="dark" />
       </div>
     </div>
   );

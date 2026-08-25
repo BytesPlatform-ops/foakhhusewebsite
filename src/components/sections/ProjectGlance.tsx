@@ -32,7 +32,9 @@ import {
    shortening or punctuation normalisation. */
 const COPY = {
   eyebrow: "01 — The Project",
-  headline: "A New Residential Project in DHA City, Designed Around Nature",
+  /* the sticky stage carries the short form; the deck below carries
+     the full approved H2 */
+  headline: "Designed Around Nature",
   body: "A distinctive residential concept created for comfort, efficiency and future-ready living.",
   caption: "Umer Block · Abdullah Block — 12 storeys · 160 apartments · 8 duplex penthouses",
   closing: "The future of responsible urban living in DHA City starts here.",
@@ -456,7 +458,7 @@ function ProjectIntroduction() {
                     className="font-display mt-3 leading-[1.05] uppercase"
                     style={{ color: "#94432F", fontSize: "clamp(2rem,3.4vw,3.4rem)", fontWeight: 600 }}
                   >
-                    Designed around nature
+                    A New Residential Project in DHA City
                   </h3>
                   <p className="mt-4 text-[0.95rem] leading-[1.6] lg:text-[1.05rem]" style={{ color: "#2B211D" }}>
                     A distinctive residential concept created for comfort, efficiency and
@@ -489,24 +491,15 @@ function ProjectIntroduction() {
                 {...rise(0.08)}
                 className="hidden rounded-md p-0 sm:p-5 md:block lg:bg-[rgba(247,236,222,0.82)] lg:shadow-[0_0_34px_22px_rgba(247,236,222,0.82)]"
               >
-                <p className="max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]" style={{ color: "#625750" }}>
-                  Foakh Wind Corridor Enclave is an exclusive 12-storey residential development
-                  in DHA City, Karachi, comprising Umer Block and Abdullah Block. With 160
-                  carefully planned apartments and eight duplex penthouses with independent
-                  swimming pools, the development brings together privacy, spacious living and
-                  a distinctive contemporary architectural identity.
-                </p>
-                <p className="mt-4 max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]" style={{ color: "#625750" }}>
-                  The project has been conceived around the intelligent use of natural
-                  resources. Wind turbines, solar energy and kite energy form part of its
-                  renewable-energy strategy, while a dedicated wind-catcher system captures
-                  high-velocity natural air and directs it through the development.
-                </p>
-                <p className="mt-4 max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]" style={{ color: "#625750" }}>
-                  Together, these systems are designed to enhance natural ventilation, moderate
-                  heat gain and reduce reliance on conventional cooling and grid electricity.{" "}
-                  {SAVINGS_LEAD}
-                </p>
+                {DECK_INTRO.map((para, i) => (
+                  <p
+                    key={i}
+                    className={`${i ? "mt-4 " : ""}max-w-[62ch] text-[0.92rem] leading-[1.7] lg:text-[1.02rem] lg:leading-[1.75]`}
+                    style={{ color: "#625750" }}
+                  >
+                    {para}
+                  </p>
+                ))}
               </motion.div>
 
               {/* The six qualities. Below md they are a single-column
@@ -557,7 +550,7 @@ function ProjectIntroduction() {
               style={{ borderColor: "rgba(155,82,55,0.28)" }}
             >
               <p className="text-[0.74rem] font-semibold tracking-[0.28em] uppercase" style={{ color: "#94432F" }}>
-                The future of responsible urban living starts here.
+                {COPY.closing}
               </p>
               <a
                 href="#residences"
@@ -671,7 +664,7 @@ function HighlightDeck({
           className="mt-8 text-[0.68rem] font-semibold tracking-[0.22em] uppercase"
           style={{ color: "#94432F" }}
         >
-          The future of responsible urban living starts here.
+          {COPY.closing}
         </p>
         <a
           href="#residences"
@@ -756,7 +749,7 @@ function HighlightDeck({
             className="text-[0.62rem] font-semibold tracking-[0.2em] uppercase"
             style={{ color: "#94432F" }}
           >
-            The future of responsible urban living starts here.
+            {COPY.closing}
           </p>
           <a
             href="#residences"

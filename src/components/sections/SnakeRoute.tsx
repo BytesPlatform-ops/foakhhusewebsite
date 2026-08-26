@@ -107,9 +107,10 @@ const STAGES: Stage[] = [
        descriptions restored the card is ~540px tall, which ran past the
        bottom of a 768px pinned stage — it starts higher now so the whole
        card is inside the viewport at every desktop height. */
-    /* Right-hand side: on the left it sat under the heading and covered the
-       sub-line. The two stills swap across to the space it vacated. */
-    card: "left-[6%] top-[42%] lg:left-auto lg:right-[5%] lg:top-[20%]",
+    /* Back on the left, where it reads against the darker edge of the render.
+       It sits lower than it originally did because the approved copy above it
+       is taller than the copy this stage was built for. */
+    card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[32%] xl:top-[35%]",
     frames: [
       {
         /* the wind-catcher tower itself — the previous frame showed the gap
@@ -119,16 +120,14 @@ const STAGES: Stage[] = [
         alt: "The wind catcher above the two blocks, its captured air drawn down into the buildings",
         label: "Natural Air Capture",
         pos: "50% 50%",
-        /* 2xl only bumps a little: a wide-but-short screen (1700x845) put the
-           larger pair back into contact. */
-        className: "left-[4%] top-[43%] w-[11rem] rotate-[1.6deg] 2xl:w-[13rem]",
+        className: "left-[56%] top-[12%] w-[16rem] rotate-[1.6deg] 2xl:w-[19rem]",
       },
       {
         src: "/aislefoakh.jpg",
         alt: "Captured air guided along the ventilated corridor",
         label: "Corridor Distribution",
         pos: "50% 45%",
-        className: "left-[9%] top-[67%] w-[11rem] -rotate-[1.8deg] 2xl:w-[12rem]",
+        className: "left-[59%] top-[55%] w-[14rem] -rotate-[1.8deg] 2xl:w-[16rem]",
       },
     ],
   },
@@ -335,7 +334,7 @@ export default function SnakeRoute() {
              sized for, so at the old width it ran to three lines and the
              third landed inside the Wind Catcher card. Wider column, smaller
              ceiling: it holds two lines and clears the card. */
-          className="absolute top-[5%] left-[6%] z-30 max-w-[34rem] lg:top-[6%] lg:left-[7%] lg:max-w-[44rem]"
+          className="absolute top-[5%] left-[6%] z-30 max-w-[34rem] lg:top-[5%] lg:left-[7%] lg:max-w-[44rem]"
           style={{ opacity: headOp, y: headY }}
         >
           <motion.p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: eyebrowColour }}>
@@ -357,7 +356,7 @@ export default function SnakeRoute() {
               to="#FAF6F0"
             />
           </h2>
-          <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65]">
+          <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65] lg:max-w-2xl">
             <span className="sr-only">{LEAD_TEXT}</span>
             <LitText
               p={p}
@@ -383,7 +382,10 @@ export default function SnakeRoute() {
         ))}
 
         {/* ------------- stage rail — bottom left --------------------- */}
-        <div className="absolute bottom-[5%] left-[6%] z-30 flex items-center gap-3 rounded-full bg-[#F5EDE3]/88 px-4 py-2 lg:left-[7%]">
+        {/* From lg the rail moves to the opposite corner: it shared the
+            bottom-left with the system card, and on a short stage the card
+            had nowhere to go without landing on it. */}
+        <div className="absolute bottom-[5%] left-[6%] z-30 flex items-center gap-3 rounded-full bg-[#F5EDE3]/88 px-4 py-2 lg:left-auto lg:right-[6%]">
           {RAIL.map((r) => (
             <RailMark key={r.label} label={r.label} range={r.range} progress={p} />
           ))}
@@ -864,7 +866,7 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
     <>
       {/* the printed editorial note */}
       <motion.div
-        className={`absolute z-30 w-[min(92vw,28rem)] overflow-hidden p-7 lg:w-[21rem] lg:p-6 xl:w-[27rem] xl:p-8 ${st.card}`}
+        className={`absolute z-30 w-[min(92vw,28rem)] overflow-hidden p-7 lg:w-[24rem] lg:p-6 xl:w-[26rem] xl:p-6 2xl:w-[27rem] 2xl:p-6 ${st.card}`}
         style={{ opacity, x, y, scale, clipPath: clip, ...CARD_STYLE, boxShadow: cardShadow }}
       >
         <motion.span

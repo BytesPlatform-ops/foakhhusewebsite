@@ -119,14 +119,16 @@ const STAGES: Stage[] = [
         alt: "The wind catcher above the two blocks, its captured air drawn down into the buildings",
         label: "Natural Air Capture",
         pos: "50% 50%",
-        className: "left-[5%] top-[41%] w-[13rem] rotate-[1.6deg] 2xl:top-[36%] 2xl:w-[18rem]",
+        /* 2xl only bumps a little: a wide-but-short screen (1700x845) put the
+           larger pair back into contact. */
+        className: "left-[4%] top-[43%] w-[11rem] rotate-[1.6deg] 2xl:w-[13rem]",
       },
       {
         src: "/aislefoakh.jpg",
         alt: "Captured air guided along the ventilated corridor",
         label: "Corridor Distribution",
         pos: "50% 45%",
-        className: "left-[16%] top-[66%] w-[11rem] -rotate-[1.8deg] 2xl:top-[64%] 2xl:w-[14rem]",
+        className: "left-[9%] top-[67%] w-[11rem] -rotate-[1.8deg] 2xl:w-[12rem]",
       },
     ],
   },

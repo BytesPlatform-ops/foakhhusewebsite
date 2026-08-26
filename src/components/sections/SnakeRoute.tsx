@@ -107,7 +107,9 @@ const STAGES: Stage[] = [
        descriptions restored the card is ~540px tall, which ran past the
        bottom of a 768px pinned stage — it starts higher now so the whole
        card is inside the viewport at every desktop height. */
-    card: "left-[6%] top-[42%] lg:left-[7%] lg:top-[24%]",
+    /* Right-hand side: on the left it sat under the heading and covered the
+       sub-line. The two stills swap across to the space it vacated. */
+    card: "left-[6%] top-[42%] lg:left-auto lg:right-[5%] lg:top-[20%]",
     frames: [
       {
         /* the wind-catcher tower itself — the previous frame showed the gap
@@ -117,14 +119,14 @@ const STAGES: Stage[] = [
         alt: "The wind catcher above the two blocks, its captured air drawn down into the buildings",
         label: "Natural Air Capture",
         pos: "50% 50%",
-        className: "left-[44%] top-[11%] w-[19rem] rotate-[1.6deg]",
+        className: "left-[6%] top-[37%] w-[19rem] rotate-[1.6deg]",
       },
       {
         src: "/aislefoakh.jpg",
         alt: "Captured air guided along the ventilated corridor",
         label: "Corridor Distribution",
         pos: "50% 45%",
-        className: "left-[40%] top-[56%] w-[16rem] -rotate-[1.8deg]",
+        className: "left-[13%] top-[70%] w-[16rem] -rotate-[1.8deg]",
       },
     ],
   },
@@ -860,7 +862,7 @@ function StagePieces({ st, p }: { st: Stage; p: MotionValue<number>; flip?: bool
     <>
       {/* the printed editorial note */}
       <motion.div
-        className={`absolute z-30 w-[min(92vw,28rem)] overflow-hidden p-7 lg:p-8 ${st.card}`}
+        className={`absolute z-30 w-[min(92vw,28rem)] overflow-hidden p-7 lg:w-[21rem] lg:p-6 xl:w-[27rem] xl:p-8 ${st.card}`}
         style={{ opacity, x, y, scale, clipPath: clip, ...CARD_STYLE, boxShadow: cardShadow }}
       >
         <motion.span

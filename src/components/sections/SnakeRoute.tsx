@@ -327,7 +327,11 @@ export default function SnakeRoute() {
 
         {/* ------------- heading — enters from the left --------------- */}
         <motion.div
-          className="absolute top-[8%] left-[6%] z-30 max-w-xl lg:top-[11%] lg:left-[7%]"
+          /* The approved heading is half again as long as the one this was
+             sized for, so at the old width it ran to three lines and the
+             third landed inside the Wind Catcher card. Wider column, smaller
+             ceiling: it holds two lines and clears the card. */
+          className="absolute top-[5%] left-[6%] z-30 max-w-[34rem] lg:top-[6%] lg:left-[7%] lg:max-w-[44rem]"
           style={{ opacity: headOp, y: headY }}
         >
           <motion.p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: eyebrowColour }}>
@@ -336,7 +340,7 @@ export default function SnakeRoute() {
           <h2
             id="route-heading"
             className="font-display mt-4 leading-[1.06]"
-            style={{ fontSize: "clamp(2.3rem,3.8vw,3.9rem)", fontWeight: 500 }}
+            style={{ fontSize: "clamp(1.85rem,2.9vw,3.05rem)", fontWeight: 500 }}
           >
             <span className="sr-only">{HEADING_TEXT}</span>
             <LitText

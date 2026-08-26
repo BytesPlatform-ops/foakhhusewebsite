@@ -72,12 +72,12 @@ export default function FinalCTA() {
           opportunity shaped around design, comfort and future-ready planning.
         </p>
 
-        {/* FAQ sits between "Limited by Design" and the enquiry form, where
-            the SEO brief places it. */}
-        <FaqSection />
-
+        {/* Both live inside this panel. Only their order changes: on a phone
+            the form comes first and the FAQ follows it; from lg the FAQ sits
+            above the enquiry composition, where it was. */}
+        <div className="flex flex-col">
         {/* ---- The dusk composition + enquiry ---- */}
-        <div className="mt-20 grid items-center gap-12 lg:grid-cols-12">
+        <div className="order-1 mt-16 grid items-center gap-12 lg:order-2 lg:mt-20 lg:grid-cols-12">
           <figure className="lg:col-span-6">
             <TwoBlockIllustration reduced={!!reduced} />
           </figure>
@@ -129,7 +129,12 @@ export default function FinalCTA() {
             </form>
           </div>
           </div>
+
+          <div className="order-2 lg:order-1">
+            <FaqSection />
+          </div>
         </div>
+      </div>
       </div>
     </section>
   );

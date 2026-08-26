@@ -17,7 +17,7 @@ export default function FaqSection() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section aria-labelledby="faq-heading" className="mt-20 lg:mt-24">
+    <section aria-labelledby="faq-heading" className="mt-16 lg:mt-20">
       <h2
         id="faq-heading"
         className="font-display text-ivory max-w-[18ch] leading-[1.08] font-semibold"

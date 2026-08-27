@@ -202,7 +202,7 @@ export default function ProjectGlance() {
             >
               <Image
                 src="/buildingfront.jpg"
-                alt=""
+                alt="The two residential blocks at dusk, the landscaped walkway leading to the lit entrance"
                 fill
                 priority={false}
                 sizes="100vw"

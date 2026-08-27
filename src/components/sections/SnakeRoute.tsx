@@ -617,7 +617,7 @@ function MobileSystems() {
                 the layer crops. */}
             <Image
               src="/building-mobile.jpg"
-              alt=""
+              alt="The lit façade of the two residential blocks at dusk"
               fill
               sizes="100vw"
               className="object-cover"

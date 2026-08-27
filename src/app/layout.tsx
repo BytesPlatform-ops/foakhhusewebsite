@@ -25,6 +25,12 @@ export const metadata: Metadata = {
   title: "Foakh Wind Corridor Enclave | Apartments for Sale in DHA City",
   description:
     "Luxury flats & apartments for sale in DHA City Karachi. 1 to 3 bed residences, serviced apartments & duplex penthouses with private pools.",
+  /* Google Search Console ownership. Next emits this as
+     <meta name="google-site-verification" ...>, so it must not be removed
+     while the property is verified by the meta-tag method. */
+  verification: {
+    google: "roNkDiYBhfPgr52aV8Vnl6bZIdbPWm_d2XNfjrKxx7s",
+  },
 };
 
 export default function RootLayout({

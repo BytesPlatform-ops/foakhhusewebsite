@@ -1,0 +1,1833 @@
+{
+ "generatedFrom": "/Users/bytes/PenthouseA1_Blender/PenthouseA1_Duplex.blend",
+ "model": "/models/foakh-penthouse.glb",
+ "units": "meters",
+ "upAxis": "Y",
+ "spawn": {
+  "position": [
+   8.55,
+   15.6,
+   0.0
+  ],
+  "yaw": -1.5707963267948966,
+  "pitch": -0.03,
+  "yawConvention": "three.js Y-up, radians about +Y"
+ },
+ "floorLevels": [
+  0.0,
+  3.2,
+  3.86
+ ],
+ "rooms": [
+  {
+   "id": "entrance",
+   "label": "Entrance Hall",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    7.8,
+    14.3,
+    14.7,
+    17.3
+   ],
+   "entry": [
+    11.15,
+    15.85,
+    0.05
+   ]
+  },
+  {
+   "id": "lounge",
+   "label": "Living Room",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    4.1,
+    3.8,
+    14.7,
+    9.6
+   ],
+   "entry": [
+    9.25,
+    6.75,
+    0.05
+   ]
+  },
+  {
+   "id": "kitchen",
+   "label": "Kitchen",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    0.25,
+    4.6,
+    3.85,
+    8.4
+   ],
+   "entry": [
+    2.0,
+    6.15,
+    0.05
+   ]
+  },
+  {
+   "id": "bed_l_11",
+   "label": "Bedroom II",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    0.25,
+    0.25,
+    4.9,
+    3.55
+   ],
+   "entry": [
+    2.2,
+    1.8,
+    0.05
+   ]
+  },
+  {
+   "id": "bed_r_11",
+   "label": "Bedroom III",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    9.9,
+    0.25,
+    14.65,
+    3.55
+   ],
+   "entry": [
+    13.65,
+    1.8,
+    0.05
+   ]
+  },
+  {
+   "id": "bath_11",
+   "label": "Guest Bathroom",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    5.1,
+    0.25,
+    7.25,
+    3.55
+   ],
+   "entry": [
+    6.45,
+    1.8,
+    0.05
+   ]
+  },
+  {
+   "id": "powder_11",
+   "label": "Powder Room",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    10.35,
+    9.85,
+    14.65,
+    11.55
+   ],
+   "entry": [
+    12.5,
+    10.6,
+    0.05
+   ]
+  },
+  {
+   "id": "lobby_11",
+   "label": "Lift Lobby",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    7.8,
+    9.85,
+    12.2,
+    14.05
+   ],
+   "entry": [
+    9.95,
+    12.0,
+    0.05
+   ]
+  },
+  {
+   "id": "balcony_11",
+   "label": "Balcony",
+   "level": 11,
+   "floor": -0.05,
+   "aabb": [
+    14.95,
+    0.1,
+    16.25,
+    8.1
+   ],
+   "entry": [
+    15.6,
+    4.05,
+    0.0
+   ]
+  },
+  {
+   "id": "stair",
+   "label": "Duplex Stair",
+   "level": 11,
+   "floor": 0.0,
+   "aabb": [
+    8.6,
+    17.4,
+    13.2,
+    18.8
+   ],
+   "entry": [
+    10.95,
+    18.15,
+    0.05
+   ]
+  },
+  {
+   "id": "master",
+   "label": "Master Bedroom",
+   "level": 12,
+   "floor": 3.2,
+   "aabb": [
+    0.25,
+    0.25,
+    4.5,
+    6.75
+   ],
+   "entry": [
+    2.4,
+    3.4,
+    3.25
+   ]
+  },
+  {
+   "id": "dressing",
+   "label": "Dressing Room",
+   "level": 12,
+   "floor": 3.2,
+   "aabb": [
+    0.25,
+    7.08,
+    2.28,
+    8.5
+   ],
+   "entry": [
+    1.265,
+    7.79,
+    3.25
+   ]
+  },
+  {
+   "id": "changing",
+   "label": "Changing Room",
+   "level": 12,
+   "floor": 3.2,
+   "aabb": [
+    2.47,
+    7.08,
+    4.75,
+    8.5
+   ],
+   "entry": [
+    3.82,
+    7.83,
+    3.25
+   ]
+  },
+  {
+   "id": "master_bath",
+   "label": "Master Bathroom",
+   "level": 12,
+   "floor": 3.2,
+   "aabb": [
+    0.25,
+    8.72,
+    4.75,
+    14.05
+   ],
+   "entry": [
+    2.6,
+    11.67,
+    3.25
+   ]
+  },
+  {
+   "id": "terrace",
+   "label": "Roof Terrace",
+   "level": 12,
+   "floor": 3.24,
+   "aabb": [
+    9.6,
+    5.35,
+    14.85,
+    11.35
+   ],
+   "entry": [
+    12.15,
+    7.1,
+    3.29
+   ]
+  },
+  {
+   "id": "pool",
+   "label": "Pool Deck",
+   "level": 12,
+   "floor": 3.86,
+   "aabb": [
+    4.9,
+    0.1,
+    14.85,
+    3.9
+   ],
+   "entry": [
+    11.45,
+    0.85,
+    3.91
+   ]
+  },
+  {
+   "id": "upper_lounge",
+   "label": "Upper Lounge",
+   "level": 12,
+   "floor": 3.2,
+   "aabb": [
+    9.15,
+    11.65,
+    14.85,
+    14.25
+   ],
+   "entry": [
+    11.9,
+    13.0,
+    3.25
+   ]
+  },
+  {
+   "id": "upper_hall",
+   "label": "Upper Landing",
+   "level": 12,
+   "floor": 3.2,
+   "aabb": [
+    7.85,
+    14.35,
+    14.65,
+    18.9
+   ],
+   "entry": [
+    11.2,
+    16.7,
+    3.25
+   ]
+  }
+ ],
+ "doors": [
+  {
+   "id": "D11_BedL",
+   "leaf": "D11_BedL_Leaf",
+   "hardware": "D11_BedL_Hardware",
+   "hinge": [
+    1.638,
+    3.665,
+    0.0
+   ],
+   "axis": "x",
+   "width": 0.824,
+   "height": 2.362,
+   "openAngle": 1.4835,
+   "center": [
+    2.05,
+    3.665,
+    1.0
+   ]
+  },
+  {
+   "id": "D11_BedR",
+   "leaf": "D11_BedR_Leaf",
+   "hardware": "D11_BedR_Hardware",
+   "hinge": [
+    11.038,
+    3.665,
+    0.0
+   ],
+   "axis": "x",
+   "width": 0.824,
+   "height": 2.362,
+   "openAngle": 1.4835,
+   "center": [
+    11.45,
+    3.665,
+    1.0
+   ]
+  },
+  {
+   "id": "D11_Bath1",
+   "leaf": "D11_Bath1_Leaf",
+   "hardware": "D11_Bath1_Hardware",
+   "hinge": [
+    5.388,
+    3.665,
+    0.0
+   ],
+   "axis": "x",
+   "width": 0.724,
+   "height": 2.362,
+   "openAngle": 1.4835,
+   "center": [
+    5.75,
+    3.665,
+    1.0
+   ]
+  },
+  {
+   "id": "D11_Bath2",
+   "leaf": "D11_Bath2_Leaf",
+   "hardware": "D11_Bath2_Hardware",
+   "hinge": [
+    8.638,
+    3.665,
+    0.0
+   ],
+   "axis": "x",
+   "width": 0.724,
+   "height": 2.362,
+   "openAngle": 1.4835,
+   "center": [
+    9.0,
+    3.665,
+    1.0
+   ]
+  },
+  {
+   "id": "D11_Powder",
+   "leaf": "D11_Powder_Leaf",
+   "hardware": "D11_Powder_Hardware",
+   "hinge": [
+    10.738,
+    9.74,
+    0.0
+   ],
+   "axis": "x",
+   "width": 0.824,
+   "height": 2.362,
+   "openAngle": 1.4835,
+   "center": [
+    11.15,
+    9.74,
+    1.0
+   ]
+  },
+  {
+   "id": "D12_Bath",
+   "leaf": "D12_Bath_Leaf",
+   "hardware": "D12_Bath_Hardware",
+   "hinge": [
+    1.038,
+    8.61,
+    3.2
+   ],
+   "axis": "x",
+   "width": 0.824,
+   "height": 2.362,
+   "openAngle": 1.4835,
+   "center": [
+    1.45,
+    8.61,
+    4.2
+   ]
+  },
+  {
+   "id": "D12_Dress",
+   "leaf": "D12_Dress_Leaf",
+   "hardware": "D12_Dress_Hardware",
+   "hinge": [
+    0.938,
+    6.915,
+    3.2
+   ],
+   "axis": "x",
+   "width": 0.824,
+   "height": 2.362,
+   "openAngle": 1.4835,
+   "center": [
+    1.35,
+    6.915,
+    4.2
+   ]
+  },
+  {
+   "id": "D12_Changing",
+   "leaf": "D12_Changing_Leaf",
+   "hardware": "D12_Changing_Hardware",
+   "hinge": [
+    3.138,
+    6.915,
+    3.2
+   ],
+   "axis": "x",
+   "width": 0.724,
+   "height": 2.362,
+   "openAngle": 1.4835,
+   "center": [
+    3.5,
+    6.915,
+    4.2
+   ]
+  },
+  {
+   "id": "D12_BedLobby",
+   "leaf": "D12_BedLobby_Leaf",
+   "hardware": "D12_BedLobby_Hardware",
+   "hinge": [
+    4.7,
+    4.638,
+    3.2
+   ],
+   "axis": "y",
+   "width": 1.124,
+   "height": 2.382,
+   "openAngle": -1.4835,
+   "center": [
+    4.7,
+    5.2,
+    4.2
+   ]
+  }
+ ],
+ "collision": {
+  "APPL_Fridge_Front": "none",
+  "APPL_Hob": "none",
+  "APPL_Hood": "none",
+  "APPL_Oven_Front": "none",
+  "APPL_Sink": "none",
+  "ART_11F_Lounge": "none",
+  "ART_12F_Lobby": "none",
+  "BALC_11F_Chairs": "none",
+  "BALC_11F_Table": "none",
+  "BASE_Plinth": "static",
+  "BASIN_11F_B1": "none",
+  "BASIN_11F_B2": "none",
+  "BASIN_11F_Powder": "none",
+  "BATH_12F_Basin": "none",
+  "BATH_12F_Shower": "none",
+  "BATH_12F_ShowerGlass": "none",
+  "BATH_12F_Tub": "none",
+  "BATH_12F_Vanity": "none",
+  "BATH_12F_WC": "none",
+  "BED_11F_BedL_Base": "none",
+  "BED_11F_BedL_Duvet": "none",
+  "BED_11F_BedL_Mattress": "none",
+  "BED_11F_BedL_Pillows": "none",
+  "BED_11F_BedL_Throw": "none",
+  "BED_11F_BedR_Base": "none",
+  "BED_11F_BedR_Duvet": "none",
+  "BED_11F_BedR_Mattress": "none",
+  "BED_11F_BedR_Pillows": "none",
+  "BED_11F_BedR_Throw": "none",
+  "BED_12F_Master_Base": "none",
+  "BED_12F_Master_Duvet": "none",
+  "BED_12F_Master_Mattress": "none",
+  "BED_12F_Master_Pillows": "none",
+  "BED_12F_Master_Throw": "none",
+  "BENCH_12F_Bed": "none",
+  "CEIL_11F_Main": "none",
+  "CEIL_11F_NorthBlk": "none",
+  "CEIL_11F_PoolBulkhead": "none",
+  "CEIL_12F_Main": "none",
+  "CEIL_12F_NorthBlk": "none",
+  "CHAIR_11F_A_Cushions": "none",
+  "CHAIR_11F_A_Frame": "none",
+  "CHAIR_11F_A_Pillows": "none",
+  "CHG_12F_Basin": "none",
+  "CHG_12F_Bench": "none",
+  "CHG_12F_Glass": "none",
+  "CHG_12F_ShowerTray": "none",
+  "CHG_12F_Vanity": "none",
+  "CHUTE_Hopper_11F": "static",
+  "CHUTE_Hopper_12F": "static",
+  "CHUTE_Pipe": "static",
+  "COL_FURN_BALC_11F_Chairs_p0": "proxy",
+  "COL_FURN_BALC_11F_Chairs_p1": "proxy",
+  "COL_FURN_BATH_12F_Tub": "proxy",
+  "COL_FURN_BATH_12F_Vanity": "proxy",
+  "COL_FURN_BATH_12F_WC": "proxy",
+  "COL_FURN_BED_11F_BedL_Base_p0": "proxy",
+  "COL_FURN_BED_11F_BedL_Mattress_p0": "proxy",
+  "COL_FURN_BED_11F_BedL_Mattress_p1": "proxy",
+  "COL_FURN_BED_11F_BedR_Base_p0": "proxy",
+  "COL_FURN_BED_11F_BedR_Mattress_p0": "proxy",
+  "COL_FURN_BED_11F_BedR_Mattress_p1": "proxy",
+  "COL_FURN_BED_12F_Master_Base_p0": "proxy",
+  "COL_FURN_BED_12F_Master_Mattress_p0": "proxy",
+  "COL_FURN_BED_12F_Master_Mattress_p1": "proxy",
+  "COL_FURN_BENCH_12F_Bed_p0": "proxy",
+  "COL_FURN_BENCH_12F_Bed_p1": "proxy",
+  "COL_FURN_CHAIR_11F_A_Frame_p0": "proxy",
+  "COL_FURN_CHG_12F_Bench": "proxy",
+  "COL_FURN_CHG_12F_Vanity": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p0": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p1": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p10": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p11": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p2": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p3": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p4": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p5": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p6": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p7": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p8": "proxy",
+  "COL_FURN_DINING_11F_Chairs_p9": "proxy",
+  "COL_FURN_DRESS_12F_Island": "proxy",
+  "COL_FURN_DRESS_12F_Wardrobe_p0": "proxy",
+  "COL_FURN_DRESS_12F_Wardrobe_p1": "proxy",
+  "COL_FURN_KIT_Island": "proxy",
+  "COL_FURN_KIT_Run_E": "proxy",
+  "COL_FURN_KIT_Run_W": "proxy",
+  "COL_FURN_KIT_Splashback_p1": "proxy",
+  "COL_FURN_KIT_TallUnits": "proxy",
+  "COL_FURN_MEDIA_12F_Console": "proxy",
+  "COL_FURN_NS_11F_L1_p0": "proxy",
+  "COL_FURN_NS_11F_L1_p1": "proxy",
+  "COL_FURN_NS_11F_L2_p0": "proxy",
+  "COL_FURN_NS_11F_L2_p1": "proxy",
+  "COL_FURN_NS_11F_R1_p0": "proxy",
+  "COL_FURN_NS_11F_R1_p1": "proxy",
+  "COL_FURN_NS_11F_R2_p0": "proxy",
+  "COL_FURN_NS_11F_R2_p1": "proxy",
+  "COL_FURN_NS_12F_1_p0": "proxy",
+  "COL_FURN_NS_12F_1_p1": "proxy",
+  "COL_FURN_NS_12F_2_p0": "proxy",
+  "COL_FURN_NS_12F_2_p1": "proxy",
+  "COL_FURN_PLANT_11F_B1": "proxy",
+  "COL_FURN_PLANT_11F_B2": "proxy",
+  "COL_FURN_PLANT_11F_Entry_Pot_p0": "proxy",
+  "COL_FURN_PLANT_11F_Lounge_Pot_p0": "proxy",
+  "COL_FURN_PLANT_12F_Lobby_Pot_p0": "proxy",
+  "COL_FURN_PLANTER_11F_B1": "proxy",
+  "COL_FURN_PLANTER_11F_B2": "proxy",
+  "COL_FURN_POOL_Lounger1_Frame_p4": "proxy",
+  "COL_FURN_POOL_Lounger2_Frame_p4": "proxy",
+  "COL_FURN_POOL_SideTable": "proxy",
+  "COL_FURN_SOFA_11F_Frame_p0": "proxy",
+  "COL_FURN_SOFA_12F_Lounge_Frame_p0": "proxy",
+  "COL_FURN_TABLE_11F_Coffee_p0": "proxy",
+  "COL_FURN_TABLE_11F_Side": "proxy",
+  "COL_FURN_TABLE_12F_Coffee_p0": "proxy",
+  "COL_FURN_TERR_Chair_Frame_p0": "proxy",
+  "COL_FURN_TERR_CoffeeTable_p0": "proxy",
+  "COL_FURN_TERR_Sofa_N_Frame_p0": "proxy",
+  "COL_FURN_TERR_Sofa_W_Frame_p0": "proxy",
+  "COL_FURN_VANITY_11F_B1": "proxy",
+  "COL_FURN_VANITY_11F_B2": "proxy",
+  "COL_FURN_VANITY_11F_Powder": "proxy",
+  "COL_FURN_WARDROBE_11F_BedL": "proxy",
+  "COL_FURN_WARDROBE_11F_BedR": "proxy",
+  "COL_FURN_WC_11F_B1": "proxy",
+  "COL_FURN_WC_11F_B2": "proxy",
+  "COL_FURN_WC_11F_Powder": "proxy",
+  "COL_GUARD_EntryVoid": "proxy",
+  "COL_GUARD_Pool": "proxy",
+  "COL_GUARD_StairVoidW": "proxy",
+  "COL_GUARD_TerrN": "proxy",
+  "COL_GUARD_TerrW": "proxy",
+  "CONSOLE_11F_Entry": "none",
+  "COVE_11F_BedL_Reveal": "none",
+  "COVE_11F_BedL_Strip": "none",
+  "COVE_11F_BedR_Reveal": "none",
+  "COVE_11F_BedR_Strip": "none",
+  "COVE_11F_Hall_Reveal": "none",
+  "COVE_11F_Hall_Strip": "none",
+  "COVE_11F_Lounge_Reveal": "none",
+  "COVE_11F_Lounge_Strip": "none",
+  "COVE_12F_Bed_Reveal": "none",
+  "COVE_12F_Bed_Strip": "none",
+  "COVE_12F_Lobby_Reveal": "none",
+  "COVE_12F_Lobby_Strip": "none",
+  "CURTAIN_11F_BedL_A": "none",
+  "CURTAIN_11F_BedL_B": "none",
+  "CURTAIN_11F_BedR": "none",
+  "CURTAIN_11F_Lounge_A": "none",
+  "CURTAIN_11F_Lounge_B": "none",
+  "CURTAIN_12F_BedW": "none",
+  "D11_Bath1_Frame": "static",
+  "D11_Bath1_Hardware": "door",
+  "D11_Bath1_Leaf": "door",
+  "D11_Bath2_Frame": "static",
+  "D11_Bath2_Hardware": "door",
+  "D11_Bath2_Leaf": "door",
+  "D11_BedL_Frame": "static",
+  "D11_BedL_Hardware": "door",
+  "D11_BedL_Leaf": "door",
+  "D11_BedR_Frame": "static",
+  "D11_BedR_Hardware": "door",
+  "D11_BedR_Leaf": "door",
+  "D11_Chute_Frame": "static",
+  "D11_Chute_Leaf": "static",
+  "D11_DuctAcc_Frame": "static",
+  "D11_DuctAcc_Hardware": "static",
+  "D11_DuctAcc_Leaf": "static",
+  "D11_Entrance_Frame": "static",
+  "D11_Entrance_Hardware": "static",
+  "D11_Entrance_Leaf": "static",
+  "D11_ExtStair_Frame": "static",
+  "D11_ExtStair_Leaf": "static",
+  "D11_Lift1_Frame": "static",
+  "D11_Lift1_Leaf": "static",
+  "D11_Lift2_Frame": "static",
+  "D11_Lift2_Leaf": "static",
+  "D11_Powder_Frame": "static",
+  "D11_Powder_Hardware": "door",
+  "D11_Powder_Leaf": "door",
+  "D12_Bath_Frame": "static",
+  "D12_Bath_Hardware": "door",
+  "D12_Bath_Leaf": "door",
+  "D12_BedLobby_Frame": "static",
+  "D12_BedLobby_Hardware": "door",
+  "D12_BedLobby_Leaf": "door",
+  "D12_Changing_Frame": "static",
+  "D12_Changing_Hardware": "door",
+  "D12_Changing_Leaf": "door",
+  "D12_Chute_Frame": "static",
+  "D12_Chute_Leaf": "static",
+  "D12_Dress_Frame": "static",
+  "D12_Dress_Hardware": "door",
+  "D12_Dress_Leaf": "door",
+  "D12_DuctAcc_Frame": "static",
+  "D12_DuctAcc_Hardware": "static",
+  "D12_DuctAcc_Leaf": "static",
+  "D12_Lift2_Frame": "static",
+  "D12_Lift2_Leaf": "static",
+  "D12_MachRoom_Frame": "static",
+  "D12_MachRoom_Hardware": "static",
+  "D12_MachRoom_Leaf": "static",
+  "DECK_EdgeHedge_L": "static",
+  "DECK_EdgeHedge_R": "static",
+  "DECK_EdgePlanters": "static",
+  "DECK_StairRail": "static",
+  "DECK_Upstand": "static",
+  "DECOR_11F_Books": "none",
+  "DECOR_11F_Vase": "none",
+  "DINING_11F_Chairs": "none",
+  "DINING_11F_Legs": "none",
+  "DINING_11F_Table": "none",
+  "DL_11F_BedL": "none",
+  "DL_11F_BedR": "none",
+  "DL_11F_Hall": "none",
+  "DL_11F_Kitchen": "none",
+  "DL_11F_Lounge": "none",
+  "DL_12F_Bed": "none",
+  "DL_12F_Lobby": "none",
+  "DRESS_12F_Island": "none",
+  "DRESS_12F_Wardrobe": "none",
+  "DUCT_CableTray": "static",
+  "DUCT_Riser_AC": "static",
+  "DUCT_Riser_Elec": "static",
+  "DUCT_Riser_Gas": "static",
+  "DUCT_Riser_Waste": "static",
+  "DUCT_Riser_Water": "static",
+  "FASCIA_11F": "static",
+  "FASCIA_12F": "static",
+  "FASCIA_Balcony": "static",
+  "FASCIA_ROOF": "static",
+  "FEATURE_11F_EntryStone": "static",
+  "FEATURE_11F_TVWall": "static",
+  "FEATURE_12F_Lounge": "static",
+  "FIN_11F_Balcony_Deck": "static",
+  "FIN_11F_Baths_Marble": "static",
+  "FIN_11F_Bedrooms_Oak": "static",
+  "FIN_11F_Kitchen_Tile": "static",
+  "FIN_11F_Lounge_Tile": "static",
+  "FIN_11F_Lounge_Tile_B": "static",
+  "FIN_11F_Passage_Oak": "static",
+  "FIN_12F_CoreLobby": "static",
+  "FIN_12F_Lobby_Tile": "static",
+  "FIN_12F_MachineRoom": "static",
+  "FIN_12F_Marble": "static",
+  "FIN_12F_Oak": "static",
+  "FIN_12F_Passage_Oak_B": "static",
+  "GLZ_12F_Lobby_E": "static",
+  "GLZ_12F_Lobby_E_Slider": "static",
+  "GLZ_12F_Lobby_S": "static",
+  "GLZ_12F_Lobby_S_Slider": "static",
+  "KIT_Island": "none",
+  "KIT_IslandTop": "none",
+  "KIT_Run_E": "none",
+  "KIT_Run_W": "none",
+  "KIT_Splashback": "none",
+  "KIT_TallUnits": "none",
+  "KIT_UpperUnits": "none",
+  "KIT_Worktop": "none",
+  "LAMP_11F_L1_Base": "none",
+  "LAMP_11F_L1_Shade": "none",
+  "LAMP_11F_L2_Base": "none",
+  "LAMP_11F_L2_Shade": "none",
+  "LAMP_11F_Lounge_Shade": "none",
+  "LAMP_11F_Lounge_Stand": "none",
+  "LAMP_11F_R1_Base": "none",
+  "LAMP_11F_R1_Shade": "none",
+  "LAMP_11F_R2_Base": "none",
+  "LAMP_11F_R2_Shade": "none",
+  "LAMP_12F_1_Base": "none",
+  "LAMP_12F_1_Shade": "none",
+  "LAMP_12F_2_Base": "none",
+  "LAMP_12F_2_Shade": "none",
+  "LIFT1_Car_Service": "static",
+  "LIFT2_Car_Passenger": "static",
+  "LIFT_GuideRails": "static",
+  "LIFT_MachineRoom_Gear": "static",
+  "LINING_11F_Bath1": "static",
+  "LINING_11F_Bath2": "static",
+  "LINING_11F_Powder": "static",
+  "LINING_12F_Bath": "static",
+  "LINING_12F_Changing": "static",
+  "MEDIA_12F_Console": "none",
+  "MIRROR_11F_Entry": "none",
+  "MIRROR_11F_Entry_Frame": "none",
+  "MUL_11F_BedL_S": "static",
+  "MUL_11F_BedR_E": "static",
+  "MUL_11F_BedR_S": "static",
+  "MUL_11F_Hall_E": "static",
+  "MUL_11F_Hall_N": "static",
+  "MUL_11F_Lounge_E": "static",
+  "MUL_12F_Bed_S": "static",
+  "MUL_12F_Bed_W": "static",
+  "MUL_12F_Hall_E": "static",
+  "MUL_12F_Hall_N": "static",
+  "MUL_12F_LobbyE": "static",
+  "MUL_12F_LobbyS": "static",
+  "NIGHT_PergolaStrip": "none",
+  "NIGHT_PoolLights": "none",
+  "NIGHT_Uplights": "none",
+  "NS_11F_L1": "none",
+  "NS_11F_L2": "none",
+  "NS_11F_R1": "none",
+  "NS_11F_R2": "none",
+  "NS_12F_1": "none",
+  "NS_12F_2": "none",
+  "P11_Bath_E": "static",
+  "P11_Bath_Mid": "static",
+  "P11_BedL_E": "static",
+  "P11_BedRow_N": "static",
+  "P11_Kitchen_E": "static",
+  "P11_Kitchen_S": "static",
+  "P11_Powder_N": "static",
+  "P11_Powder_S": "static",
+  "P11_Powder_W": "static",
+  "P12_Bed_N": "static",
+  "P12_Dress_E": "static",
+  "P12_Mid": "static",
+  "P12_Passage_E": "static",
+  "PARAPET_Coping": "static",
+  "PARAPET_Roof": "static",
+  "PENDANT_11F_Entry": "none",
+  "PERGOLA_Frame": "static",
+  "PERGOLA_Slats": "static",
+  "PLANT_11F_B1": "none",
+  "PLANT_11F_B2": "none",
+  "PLANT_11F_Entry_Pot": "none",
+  "PLANT_11F_Lounge_Foliage": "none",
+  "PLANT_11F_Lounge_Pot": "none",
+  "PLANT_11F_Lounge_Stem": "none",
+  "PLANT_12F_Lobby_Foliage": "none",
+  "PLANT_12F_Lobby_Pot": "none",
+  "PLANT_12F_Lobby_Stem": "none",
+  "PLANTER_11F_B1": "none",
+  "PLANTER_11F_B2": "none",
+  "POOL_Coping": "static",
+  "POOL_DeckPlatform": "static",
+  "POOL_DeckSteps": "static",
+  "POOL_EntrySteps": "static",
+  "POOL_Lounger1_Cushion": "none",
+  "POOL_Lounger1_Frame": "none",
+  "POOL_Lounger2_Cushion": "none",
+  "POOL_Lounger2_Frame": "none",
+  "POOL_Parasol_Canopy": "none",
+  "POOL_Parasol_Pole": "none",
+  "POOL_SideTable": "none",
+  "POOL_Tank": "static",
+  "POOL_Water": "static",
+  "POOL_Waterline": "static",
+  "RAIL_11F_Balcony_Glass": "static",
+  "RAIL_11F_Balcony_Handrail": "static",
+  "RAIL_12F_PoolDeck_Glass": "static",
+  "RAIL_12F_PoolDeck_Handrail": "static",
+  "RAIL_12F_Terrace_Glass": "static",
+  "RAIL_12F_Terrace_Handrail": "static",
+  "RAIL_Bronze_Balcony": "static",
+  "RAIL_Bronze_Trim": "static",
+  "ROOF_12F_Lobby": "static",
+  "ROOF_12F_NorthBlk": "static",
+  "ROOF_12F_Passage": "static",
+  "ROOF_12F_WestWing": "static",
+  "ROOF_Finish": "static",
+  "ROOF_Plant": "static",
+  "ROOF_PlantScreen": "static",
+  "RUG_11F_BedL": "none",
+  "RUG_11F_BedR": "none",
+  "RUG_11F_Entry": "none",
+  "RUG_11F_Lounge": "none",
+  "RUG_12F_Bed": "none",
+  "RUG_12F_Lounge": "none",
+  "SC_Chute_E_11F": "static",
+  "SC_Chute_E_12F": "static",
+  "SC_Chute_S_11F": "static",
+  "SC_Chute_S_12F": "static",
+  "SC_Duct_E_11F": "static",
+  "SC_Duct_E_12F": "static",
+  "SC_Duct_N_11F": "static",
+  "SC_Duct_N_12F": "static",
+  "SC_Duct_S_11F": "static",
+  "SC_Duct_S_12F": "static",
+  "SC_Duct_W_11F": "static",
+  "SC_Duct_W_12F": "static",
+  "SC_Lift1_E_11F": "static",
+  "SC_Lift1_E_12F": "static",
+  "SC_Lift1_S_11F": "static",
+  "SC_Lift1_S_12F": "static",
+  "SC_Lift2_N_11F": "static",
+  "SC_Lift2_N_12F": "static",
+  "SC_Lift2_S_11F": "static",
+  "SC_Lift2_S_12F": "static",
+  "SC_Lift2_W_11F": "static",
+  "SC_Lift2_W_12F": "static",
+  "SHOWER_11F_B1": "none",
+  "SHOWER_11F_B2": "none",
+  "SKIRT_11F_BedL": "static",
+  "SKIRT_11F_BedR": "static",
+  "SKIRT_11F_Corridor": "static",
+  "SKIRT_11F_Hall": "static",
+  "SKIRT_11F_Lounge": "static",
+  "SKIRT_12F_Bed": "static",
+  "SKIRT_12F_CoreLobby": "static",
+  "SKIRT_12F_Lobby": "static",
+  "SKIRT_12F_Passage": "static",
+  "SLAB_11F_Balcony": "static",
+  "SLAB_11F_ExtStair": "static",
+  "SLAB_11F_Main": "static",
+  "SLAB_11F_NorthBlk": "static",
+  "SLAB_12F_Main": "static",
+  "SLAB_12F_NorthBlk": "static",
+  "SLAB_ExtStair_Roof": "static",
+  "SLAT_11F_BedL_Backing": "static",
+  "SLAT_11F_BedL_Slats": "static",
+  "SLAT_11F_BedR_Backing": "static",
+  "SLAT_11F_BedR_Slats": "static",
+  "SLAT_11F_Entry_Backing": "static",
+  "SLAT_11F_Entry_Slats": "static",
+  "SLAT_11F_TV_L_Backing": "static",
+  "SLAT_11F_TV_L_Slats": "static",
+  "SLAT_11F_TV_R_Backing": "static",
+  "SLAT_11F_TV_R_Slats": "static",
+  "SLAT_12F_Master_Backing": "static",
+  "SLAT_12F_Master_Slats": "static",
+  "SOFA_11F_Cushions": "none",
+  "SOFA_11F_Frame": "none",
+  "SOFA_11F_Pillows": "none",
+  "SOFA_12F_Lounge_Cushions": "none",
+  "SOFA_12F_Lounge_Frame": "none",
+  "SOFA_12F_Lounge_Pillows": "none",
+  "STAIR_12F_OpeningGlass": "static",
+  "STAIR_Core_Base": "static",
+  "STAIR_Core_West_Flight": "static",
+  "STAIR_Core_West_Landing": "static",
+  "STAIR_Duplex_Glass": "static",
+  "STAIR_Duplex_Handrail": "static",
+  "STAIR_Duplex_Steps": "static",
+  "STAIR_Duplex_Waist": "static",
+  "TABLE_11F_Coffee": "none",
+  "TABLE_11F_Side": "none",
+  "TABLE_12F_Coffee": "none",
+  "TAP_11F_B1": "none",
+  "TAP_11F_B2": "none",
+  "TAP_11F_Kitchen": "none",
+  "TAP_11F_Powder": "none",
+  "TAP_12F_Bath": "none",
+  "TAP_12F_Chg": "none",
+  "TERR_Chair_Cushions": "none",
+  "TERR_Chair_Frame": "none",
+  "TERR_Chair_Pillows": "none",
+  "TERR_CoffeeTable": "none",
+  "TERR_Hedge_N": "static",
+  "TERR_Hedge_W": "static",
+  "TERR_Planters": "static",
+  "TERR_Rug": "none",
+  "TERR_Sofa_N_Cushions": "none",
+  "TERR_Sofa_N_Frame": "none",
+  "TERR_Sofa_N_Pillows": "none",
+  "TERR_Sofa_W_Cushions": "none",
+  "TERR_Sofa_W_Frame": "none",
+  "TERR_Sofa_W_Pillows": "none",
+  "TERR_TreeA_Foliage": "static",
+  "TERR_TreeA_Stem": "static",
+  "TERR_TreeB_Foliage": "static",
+  "TERR_TreeB_Stem": "static",
+  "TERR_TreeC_Foliage": "static",
+  "TERR_TreeC_Stem": "static",
+  "TERRACE_Paving": "static",
+  "TV_11F_Console": "none",
+  "TV_11F_Screen": "none",
+  "TV_12F_Console": "none",
+  "TV_12F_Screen": "none",
+  "VANITY_11F_B1": "none",
+  "VANITY_11F_B2": "none",
+  "VANITY_11F_Powder": "none",
+  "W11_Bath1_S_Frame": "static",
+  "W11_Bath1_S_Glass": "static",
+  "W11_Bath2_S_Frame": "static",
+  "W11_Bath2_S_Glass": "static",
+  "W11_BedL_S_Frame": "static",
+  "W11_BedL_S_Glass": "static",
+  "W11_BedR_E_Frame": "static",
+  "W11_BedR_E_Glass": "static",
+  "W11_BedR_S_Frame": "static",
+  "W11_BedR_S_Glass": "static",
+  "W11_EXT_E": "static",
+  "W11_EXT_N_low": "static",
+  "W11_EXT_S": "static",
+  "W11_EXT_W": "static",
+  "W11_EXTSTAIR_N": "static",
+  "W11_EXTSTAIR_S": "static",
+  "W11_EXTSTAIR_W": "static",
+  "W11_Hall_E_Frame": "static",
+  "W11_Hall_E_Glass": "static",
+  "W11_Hall_N_Frame": "static",
+  "W11_Hall_N_Glass": "static",
+  "W11_Kitchen_W_Frame": "static",
+  "W11_Kitchen_W_Glass": "static",
+  "W11_Lounge_E_Frame": "static",
+  "W11_Lounge_E_Glass": "static",
+  "W11_NB_N": "static",
+  "W11_NB_W": "static",
+  "W11_Powder_E_Frame": "static",
+  "W11_Powder_E_Glass": "static",
+  "W12_Bath_W_Frame": "static",
+  "W12_Bath_W_Glass": "static",
+  "W12_Bed_E": "static",
+  "W12_Bed_E_Frame": "static",
+  "W12_Bed_E_Glass": "static",
+  "W12_Bed_S_Frame": "static",
+  "W12_Bed_S_Glass": "static",
+  "W12_Bed_W_Frame": "static",
+  "W12_Bed_W_Glass": "static",
+  "W12_EXT_N": "static",
+  "W12_EXT_S": "static",
+  "W12_EXT_W": "static",
+  "W12_Hall_E_Frame": "static",
+  "W12_Hall_E_Glass": "static",
+  "W12_Hall_N_Frame": "static",
+  "W12_Hall_N_Glass": "static",
+  "W12_Lobby_S": "static",
+  "W12_NB_E": "static",
+  "W12_NB_N": "static",
+  "W12_NB_W": "static",
+  "WARDROBE_11F_BedL": "none",
+  "WARDROBE_11F_BedL_Doors": "none",
+  "WARDROBE_11F_BedL_Handles": "none",
+  "WARDROBE_11F_BedR": "none",
+  "WARDROBE_11F_BedR_Doors": "none",
+  "WARDROBE_11F_BedR_Handles": "none",
+  "WC_11F_B1": "none",
+  "WC_11F_B2": "none",
+  "WC_11F_Powder": "none"
+ },
+ "proxies": [
+  "COL_FURN_BALC_11F_Chairs_p0",
+  "COL_FURN_BALC_11F_Chairs_p1",
+  "COL_FURN_BATH_12F_Tub",
+  "COL_FURN_BATH_12F_Vanity",
+  "COL_FURN_BATH_12F_WC",
+  "COL_FURN_BED_11F_BedL_Base_p0",
+  "COL_FURN_BED_11F_BedL_Mattress_p0",
+  "COL_FURN_BED_11F_BedL_Mattress_p1",
+  "COL_FURN_BED_11F_BedR_Base_p0",
+  "COL_FURN_BED_11F_BedR_Mattress_p0",
+  "COL_FURN_BED_11F_BedR_Mattress_p1",
+  "COL_FURN_BED_12F_Master_Base_p0",
+  "COL_FURN_BED_12F_Master_Mattress_p0",
+  "COL_FURN_BED_12F_Master_Mattress_p1",
+  "COL_FURN_BENCH_12F_Bed_p0",
+  "COL_FURN_BENCH_12F_Bed_p1",
+  "COL_FURN_CHAIR_11F_A_Frame_p0",
+  "COL_FURN_CHG_12F_Bench",
+  "COL_FURN_CHG_12F_Vanity",
+  "COL_FURN_DINING_11F_Chairs_p0",
+  "COL_FURN_DINING_11F_Chairs_p1",
+  "COL_FURN_DINING_11F_Chairs_p2",
+  "COL_FURN_DINING_11F_Chairs_p3",
+  "COL_FURN_DINING_11F_Chairs_p4",
+  "COL_FURN_DINING_11F_Chairs_p5",
+  "COL_FURN_DINING_11F_Chairs_p6",
+  "COL_FURN_DINING_11F_Chairs_p7",
+  "COL_FURN_DINING_11F_Chairs_p8",
+  "COL_FURN_DINING_11F_Chairs_p9",
+  "COL_FURN_DINING_11F_Chairs_p10",
+  "COL_FURN_DINING_11F_Chairs_p11",
+  "COL_FURN_DRESS_12F_Island",
+  "COL_FURN_DRESS_12F_Wardrobe_p0",
+  "COL_FURN_DRESS_12F_Wardrobe_p1",
+  "COL_FURN_KIT_Island",
+  "COL_FURN_KIT_Run_E",
+  "COL_FURN_KIT_Run_W",
+  "COL_FURN_KIT_Splashback_p1",
+  "COL_FURN_KIT_TallUnits",
+  "COL_FURN_MEDIA_12F_Console",
+  "COL_FURN_NS_11F_L1_p0",
+  "COL_FURN_NS_11F_L1_p1",
+  "COL_FURN_NS_11F_L2_p0",
+  "COL_FURN_NS_11F_L2_p1",
+  "COL_FURN_NS_11F_R1_p0",
+  "COL_FURN_NS_11F_R1_p1",
+  "COL_FURN_NS_11F_R2_p0",
+  "COL_FURN_NS_11F_R2_p1",
+  "COL_FURN_NS_12F_1_p0",
+  "COL_FURN_NS_12F_1_p1",
+  "COL_FURN_NS_12F_2_p0",
+  "COL_FURN_NS_12F_2_p1",
+  "COL_FURN_PLANT_11F_B1",
+  "COL_FURN_PLANT_11F_B2",
+  "COL_FURN_PLANT_11F_Entry_Pot_p0",
+  "COL_FURN_PLANT_11F_Lounge_Pot_p0",
+  "COL_FURN_PLANT_12F_Lobby_Pot_p0",
+  "COL_FURN_PLANTER_11F_B1",
+  "COL_FURN_PLANTER_11F_B2",
+  "COL_FURN_POOL_Lounger1_Frame_p4",
+  "COL_FURN_POOL_Lounger2_Frame_p4",
+  "COL_FURN_POOL_SideTable",
+  "COL_FURN_SOFA_11F_Frame_p0",
+  "COL_FURN_SOFA_12F_Lounge_Frame_p0",
+  "COL_FURN_TABLE_11F_Coffee_p0",
+  "COL_FURN_TABLE_11F_Side",
+  "COL_FURN_TABLE_12F_Coffee_p0",
+  "COL_FURN_TERR_Chair_Frame_p0",
+  "COL_FURN_TERR_CoffeeTable_p0",
+  "COL_FURN_TERR_Sofa_N_Frame_p0",
+  "COL_FURN_TERR_Sofa_W_Frame_p0",
+  "COL_FURN_VANITY_11F_B1",
+  "COL_FURN_VANITY_11F_B2",
+  "COL_FURN_VANITY_11F_Powder",
+  "COL_FURN_WARDROBE_11F_BedL",
+  "COL_FURN_WARDROBE_11F_BedR",
+  "COL_FURN_WC_11F_B1",
+  "COL_FURN_WC_11F_B2",
+  "COL_FURN_WC_11F_Powder",
+  "COL_GUARD_Pool",
+  "COL_GUARD_EntryVoid",
+  "COL_GUARD_TerrW",
+  "COL_GUARD_TerrN",
+  "COL_GUARD_StairVoidW"
+ ],
+ "stats": {
+  "total_tris": 38996,
+  "visual_tris": 37988,
+  "collision_tris": 1008,
+  "total_verts": 25264,
+  "texture_count": 45,
+  "texture_vram_bytes": 47468700,
+  "texture_vram_mb": 45.27,
+  "textures": [
+   [
+    "calacatta_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "calacatta_nrm.jpg",
+    512,
+    512
+   ],
+   [
+    "calacatta_rough.jpg",
+    512,
+    512
+   ],
+   [
+    "concrete_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "concrete_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "deck_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "deck_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "deck_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "fabric_bc.jpg",
+    256,
+    256
+   ],
+   [
+    "fabric_grey_bc.jpg",
+    256,
+    256
+   ],
+   [
+    "fabric_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "fabric_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "granite_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "greige_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "greige_nrm.jpg",
+    512,
+    512
+   ],
+   [
+    "greige_rough.jpg",
+    512,
+    512
+   ],
+   [
+    "marble_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "marble_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "marble_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "mosaic_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "mosaic_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "mosaic_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "oak_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "oak_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "oak_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "plan_11F.png",
+    896,
+    1200
+   ],
+   [
+    "plan_12F.png",
+    896,
+    1200
+   ],
+   [
+    "quartz_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "quartz_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "stone_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "stone_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "stone_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "tile_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "tile_grey_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "tile_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "tile_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "travertine_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "travertine_nrm.jpg",
+    512,
+    512
+   ],
+   [
+    "travertine_rough.jpg",
+    512,
+    512
+   ],
+   [
+    "wall_bc.jpg",
+    256,
+    256
+   ],
+   [
+    "wall_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "wall_rough.jpg",
+    256,
+    256
+   ],
+   [
+    "walnut_bc.jpg",
+    512,
+    512
+   ],
+   [
+    "walnut_nrm.jpg",
+    256,
+    256
+   ],
+   [
+    "walnut_rough.jpg",
+    256,
+    256
+   ]
+  ],
+  "materials": 42,
+  "mesh_objects": 534,
+  "glb_bytes": 2310620,
+  "glb_mb": 2.2
+ },
+ "validation": {
+  "unit_system": "METRIC",
+  "scale_length": 1.0,
+  "unapplied_scale": [],
+  "mirrored_transforms": [],
+  "missing_textures": [],
+  "problems": []
+ },
+ "doorClashesTrimmed": [
+  {
+   "panel": "FEATURE_11F_TVWall",
+   "opening": "CUT_D11_BedR",
+   "width": 0.85
+  },
+  {
+   "panel": "SLAT_11F_BedL_Backing",
+   "opening": "CUT_D11_BedL",
+   "width": 0.45
+  },
+  {
+   "panel": "SLAT_11F_BedL_Slats",
+   "opening": "CUT_D11_BedL",
+   "width": 0.435
+  },
+  {
+   "panel": "SLAT_11F_BedR_Backing",
+   "opening": "CUT_D11_BedR",
+   "width": 0.9
+  },
+  {
+   "panel": "SLAT_11F_BedR_Slats",
+   "opening": "CUT_D11_BedR",
+   "width": 0.9
+  },
+  {
+   "panel": "SLAT_12F_Master_Backing",
+   "opening": "CUT_D12_Dress",
+   "width": 0.75
+  },
+  {
+   "panel": "SLAT_12F_Master_Backing",
+   "opening": "CUT_D12_Changing",
+   "width": 0.7
+  },
+  {
+   "panel": "SLAT_12F_Master_Slats",
+   "opening": "CUT_D12_Dress",
+   "width": 0.735
+  },
+  {
+   "panel": "SLAT_12F_Master_Slats",
+   "opening": "CUT_D12_Changing",
+   "width": 0.66
+  }
+ ],
+ "skippedProxies": [
+  {
+   "object": "APPL_Fridge_Front",
+   "reason": "small (0.05 m2)"
+  },
+  {
+   "object": "APPL_Hob",
+   "reason": "flat (0.02 m)"
+  },
+  {
+   "object": "APPL_Hood",
+   "reason": "overhead (+1.60 m)"
+  },
+  {
+   "object": "APPL_Oven_Front",
+   "reason": "small (0.04 m2)"
+  },
+  {
+   "object": "APPL_Sink",
+   "reason": "flat (0.05 m)"
+  },
+  {
+   "object": "ART_11F_Lounge",
+   "reason": "name filter"
+  },
+  {
+   "object": "ART_12F_Lobby",
+   "reason": "name filter"
+  },
+  {
+   "object": "BALC_11F_Table",
+   "reason": "flat (0.06 m)"
+  },
+  {
+   "object": "BASIN_11F_B1",
+   "reason": "flat (0.12 m)"
+  },
+  {
+   "object": "BASIN_11F_B2",
+   "reason": "flat (0.12 m)"
+  },
+  {
+   "object": "BASIN_11F_Powder",
+   "reason": "flat (0.12 m)"
+  },
+  {
+   "object": "BATH_12F_Basin",
+   "reason": "flat (0.12 m)"
+  },
+  {
+   "object": "BATH_12F_Shower",
+   "reason": "flat (0.05 m)"
+  },
+  {
+   "object": "BATH_12F_ShowerGlass",
+   "reason": "small (0.06 m2)"
+  },
+  {
+   "object": "BED_11F_BedL_Duvet",
+   "reason": "flat (0.14 m)"
+  },
+  {
+   "object": "BED_11F_BedL_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "BED_11F_BedL_Throw",
+   "reason": "name filter"
+  },
+  {
+   "object": "BED_11F_BedR_Duvet",
+   "reason": "flat (0.14 m)"
+  },
+  {
+   "object": "BED_11F_BedR_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "BED_11F_BedR_Throw",
+   "reason": "name filter"
+  },
+  {
+   "object": "BED_12F_Master_Duvet",
+   "reason": "flat (0.14 m)"
+  },
+  {
+   "object": "BED_12F_Master_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "BED_12F_Master_Throw",
+   "reason": "name filter"
+  },
+  {
+   "object": "CHAIR_11F_A_Cushions",
+   "reason": "name filter"
+  },
+  {
+   "object": "CHAIR_11F_A_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "CHG_12F_Basin",
+   "reason": "flat (0.12 m)"
+  },
+  {
+   "object": "CHG_12F_Glass",
+   "reason": "small (0.07 m2)"
+  },
+  {
+   "object": "CHG_12F_ShowerTray",
+   "reason": "name filter"
+  },
+  {
+   "object": "CONSOLE_11F_Entry",
+   "reason": "all parts flat/small/overhead"
+  },
+  {
+   "object": "CURTAIN_11F_BedL_A",
+   "reason": "name filter"
+  },
+  {
+   "object": "CURTAIN_11F_BedL_B",
+   "reason": "name filter"
+  },
+  {
+   "object": "CURTAIN_11F_BedR",
+   "reason": "name filter"
+  },
+  {
+   "object": "CURTAIN_11F_Lounge_A",
+   "reason": "name filter"
+  },
+  {
+   "object": "CURTAIN_11F_Lounge_B",
+   "reason": "name filter"
+  },
+  {
+   "object": "CURTAIN_12F_BedW",
+   "reason": "name filter"
+  },
+  {
+   "object": "DECOR_11F_Books",
+   "reason": "name filter"
+  },
+  {
+   "object": "DECOR_11F_Vase",
+   "reason": "name filter"
+  },
+  {
+   "object": "DINING_11F_Legs",
+   "reason": "all parts flat/small/overhead"
+  },
+  {
+   "object": "DINING_11F_Table",
+   "reason": "all parts flat/small/overhead"
+  },
+  {
+   "object": "KIT_IslandTop",
+   "reason": "flat (0.04 m)"
+  },
+  {
+   "object": "KIT_UpperUnits",
+   "reason": "overhead (+1.50 m)"
+  },
+  {
+   "object": "KIT_Worktop",
+   "reason": "flat (0.04 m)"
+  },
+  {
+   "object": "LAMP_11F_L1_Base",
+   "reason": "small (0.02 m2)"
+  },
+  {
+   "object": "LAMP_11F_L1_Shade",
+   "reason": "small (0.06 m2)"
+  },
+  {
+   "object": "LAMP_11F_L2_Base",
+   "reason": "small (0.02 m2)"
+  },
+  {
+   "object": "LAMP_11F_L2_Shade",
+   "reason": "small (0.06 m2)"
+  },
+  {
+   "object": "LAMP_11F_Lounge_Shade",
+   "reason": "overhead (+1.63 m)"
+  },
+  {
+   "object": "LAMP_11F_Lounge_Stand",
+   "reason": "small (0.10 m2)"
+  },
+  {
+   "object": "LAMP_11F_R1_Base",
+   "reason": "small (0.02 m2)"
+  },
+  {
+   "object": "LAMP_11F_R1_Shade",
+   "reason": "small (0.06 m2)"
+  },
+  {
+   "object": "LAMP_11F_R2_Base",
+   "reason": "small (0.02 m2)"
+  },
+  {
+   "object": "LAMP_11F_R2_Shade",
+   "reason": "small (0.06 m2)"
+  },
+  {
+   "object": "LAMP_12F_1_Base",
+   "reason": "small (0.02 m2)"
+  },
+  {
+   "object": "LAMP_12F_1_Shade",
+   "reason": "small (0.06 m2)"
+  },
+  {
+   "object": "LAMP_12F_2_Base",
+   "reason": "small (0.02 m2)"
+  },
+  {
+   "object": "LAMP_12F_2_Shade",
+   "reason": "small (0.06 m2)"
+  },
+  {
+   "object": "MIRROR_11F_Entry",
+   "reason": "name filter"
+  },
+  {
+   "object": "MIRROR_11F_Entry_Frame",
+   "reason": "name filter"
+  },
+  {
+   "object": "NIGHT_PergolaStrip",
+   "reason": "overhead (+1.63 m)"
+  },
+  {
+   "object": "NIGHT_PoolLights",
+   "reason": "flat (0.16 m)"
+  },
+  {
+   "object": "NIGHT_Uplights",
+   "reason": "flat (0.06 m)"
+  },
+  {
+   "object": "PENDANT_11F_Entry",
+   "reason": "name filter"
+  },
+  {
+   "object": "PLANT_11F_Lounge_Foliage",
+   "reason": "name filter"
+  },
+  {
+   "object": "PLANT_11F_Lounge_Stem",
+   "reason": "small (0.01 m2)"
+  },
+  {
+   "object": "PLANT_12F_Lobby_Foliage",
+   "reason": "name filter"
+  },
+  {
+   "object": "PLANT_12F_Lobby_Stem",
+   "reason": "small (0.01 m2)"
+  },
+  {
+   "object": "POOL_Lounger1_Cushion",
+   "reason": "name filter"
+  },
+  {
+   "object": "POOL_Lounger2_Cushion",
+   "reason": "name filter"
+  },
+  {
+   "object": "POOL_Parasol_Canopy",
+   "reason": "overhead (+2.05 m)"
+  },
+  {
+   "object": "POOL_Parasol_Pole",
+   "reason": "small (0.00 m2)"
+  },
+  {
+   "object": "RUG_11F_BedL",
+   "reason": "name filter"
+  },
+  {
+   "object": "RUG_11F_BedR",
+   "reason": "name filter"
+  },
+  {
+   "object": "RUG_11F_Entry",
+   "reason": "name filter"
+  },
+  {
+   "object": "RUG_11F_Lounge",
+   "reason": "name filter"
+  },
+  {
+   "object": "RUG_12F_Bed",
+   "reason": "name filter"
+  },
+  {
+   "object": "RUG_12F_Lounge",
+   "reason": "name filter"
+  },
+  {
+   "object": "SHOWER_11F_B1",
+   "reason": "flat (0.04 m)"
+  },
+  {
+   "object": "SHOWER_11F_B2",
+   "reason": "flat (0.04 m)"
+  },
+  {
+   "object": "SOFA_11F_Cushions",
+   "reason": "name filter"
+  },
+  {
+   "object": "SOFA_11F_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "SOFA_12F_Lounge_Cushions",
+   "reason": "name filter"
+  },
+  {
+   "object": "SOFA_12F_Lounge_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "TAP_11F_B1",
+   "reason": "small (0.01 m2)"
+  },
+  {
+   "object": "TAP_11F_B2",
+   "reason": "small (0.01 m2)"
+  },
+  {
+   "object": "TAP_11F_Kitchen",
+   "reason": "small (0.01 m2)"
+  },
+  {
+   "object": "TAP_11F_Powder",
+   "reason": "small (0.01 m2)"
+  },
+  {
+   "object": "TAP_12F_Bath",
+   "reason": "small (0.01 m2)"
+  },
+  {
+   "object": "TAP_12F_Chg",
+   "reason": "small (0.01 m2)"
+  },
+  {
+   "object": "TERR_Chair_Cushions",
+   "reason": "name filter"
+  },
+  {
+   "object": "TERR_Chair_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "TERR_Rug",
+   "reason": "name filter"
+  },
+  {
+   "object": "TERR_Sofa_N_Cushions",
+   "reason": "name filter"
+  },
+  {
+   "object": "TERR_Sofa_N_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "TERR_Sofa_W_Cushions",
+   "reason": "name filter"
+  },
+  {
+   "object": "TERR_Sofa_W_Pillows",
+   "reason": "name filter"
+  },
+  {
+   "object": "TV_11F_Console",
+   "reason": "name filter"
+  },
+  {
+   "object": "TV_11F_Screen",
+   "reason": "name filter"
+  },
+  {
+   "object": "TV_12F_Console",
+   "reason": "name filter"
+  },
+  {
+   "object": "TV_12F_Screen",
+   "reason": "name filter"
+  },
+  {
+   "object": "WARDROBE_11F_BedL_Doors",
+   "reason": "small (0.07 m2)"
+  },
+  {
+   "object": "WARDROBE_11F_BedL_Handles",
+   "reason": "overhead (+1.30 m)"
+  },
+  {
+   "object": "WARDROBE_11F_BedR_Doors",
+   "reason": "small (0.07 m2)"
+  },
+  {
+   "object": "WARDROBE_11F_BedR_Handles",
+   "reason": "overhead (+1.30 m)"
+  }
+ ]
+}
